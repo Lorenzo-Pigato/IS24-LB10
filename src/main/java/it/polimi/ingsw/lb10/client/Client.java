@@ -1,7 +1,5 @@
 package it.polimi.ingsw.lb10.client;
 
-import it.polimi.ingsw.lb10.client.controller.ClientViewController;
-import it.polimi.ingsw.lb10.client.util.ClientViewControllerFactory;
 import it.polimi.ingsw.lb10.client.view.ClientView;
 
 import java.net.Socket;
@@ -11,14 +9,12 @@ public class Client implements Runnable{
     //a command will be provided to choose the interface he wants and then pass it directly to the constructor, which will be
     //unaware of it
 
-    private int port;
-    private String ip;
+    private Socket socket;
     private ClientView view;
     private boolean active = true;
 
-    public Client(int port, String ip, ClientView view) {
-        this.port = port;
-        this.ip = ip;
+    public Client(Socket socket,  ClientView view) {
+        this.socket = socket;
         this.view = view;
     }
 
@@ -30,14 +26,7 @@ public class Client implements Runnable{
     }
 
     public void run(){
-        try{
-            Socket socket = new Socket(ip, port);
-            ClientViewController clientViewController = ClientViewControllerFactory.getClientViewController(view, this, socket);
-            clientViewController.setUp();
-            //OCCORRE COMUNQUE CAPIRE COME GESTIRE I THREAD COME QUELLI SEMPRE ATTIVI CON IL CLIENT E COME GESTIRE LE LORO CHIUSURE !!!
-        }catch(Exception e){
-            //handle error (close)
-        }
+    //we assign the clientviewController based on the view
     }
 
     /**

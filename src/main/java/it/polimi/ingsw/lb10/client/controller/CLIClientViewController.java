@@ -50,7 +50,6 @@ public class CLIClientViewController implements ClientViewController{
     public void showUserOutput(Object o) {
         Thread viewChanger = asyncWriteToTerminal();
         viewChanger.start();
-
     }
 
     @Override
@@ -68,7 +67,7 @@ public class CLIClientViewController implements ClientViewController{
         return new Thread(() -> {
             try{
                 while(client.isActive()){
-                    Response input = (Response) socketIn.readObject();
+                    Response input = (Response)socketIn.readObject();
                     // REACTS!!!
                 }
             }catch(Exception e){
