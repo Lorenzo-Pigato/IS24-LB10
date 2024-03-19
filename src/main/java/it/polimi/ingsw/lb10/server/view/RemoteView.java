@@ -1,10 +1,10 @@
-package org.example.server.view;
+package it.polimi.ingsw.lb10.server.view;
 
-import org.example.network.ClientConnection;
-import org.example.network.Request;
-import org.example.server.model.Player;
-import org.example.util.Observable;
-import org.example.util.Observer;
+import it.polimi.ingsw.lb10.network.ClientConnection;
+import it.polimi.ingsw.lb10.network.Request;
+import it.polimi.ingsw.lb10.server.model.Player;
+import it.polimi.ingsw.lb10.util.Observable;
+import it.polimi.ingsw.lb10.util.Observer;
 
 /**
  * This class is used to update the client-side on controller's update
@@ -17,7 +17,6 @@ public class RemoteView extends Observable<Request> implements Observer<Request>
     @Override
     //Gets updated by the Model
     public void update(Request request) {
-
     }
 
     @Override

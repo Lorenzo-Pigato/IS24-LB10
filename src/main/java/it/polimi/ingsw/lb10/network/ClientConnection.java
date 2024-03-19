@@ -1,8 +1,8 @@
 package it.polimi.ingsw.lb10.network;
 
+import it.polimi.ingsw.lb10.util.Observable;
 import it.polimi.ingsw.lb10.server.Server;
 import it.polimi.ingsw.lb10.server.controller.MatchController;
-import it.polimi.ingsw.lb10.util.Observable;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

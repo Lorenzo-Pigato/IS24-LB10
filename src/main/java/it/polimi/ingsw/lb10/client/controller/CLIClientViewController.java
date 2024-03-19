@@ -26,37 +26,37 @@ public class CLIClientViewController implements ClientViewController{
         this.socket = socket;
     }
 
-    /**
-     * This method is called to set up the communication environment between the client and all the possible streams in the
-     * application : the Objs in/out stream via socket (Message requests) and the TUI streams.
-     * After the setup all the listening threads are launched, every thread handles the closing phase of the streams when communication ends.
-     */
-    public void launch(){
+    @Override
+    public void close() {
 
-        setUp();
-        Thread waiter = new Thread(() -> {
-            Thread socketReader = asyncReadFromSocket();
-            Thread terminalReader = asyncReadFromTerminal();
+    }
 
-            terminalReader.start();
-            socketReader.start();
+    @Override
+    public void setUp(){
+        try{
+            socketIn = new ObjectInputStream(socket.getInputStream());
+        }catch(IOException e){
+            System.out.println("Error creating Socket Input Stream...");
+        }
+        try{
+            socketOut = new ObjectOutputStream(socket.getOutputStream());
+        }catch(IOException e){
+            System.out.println("Error creating Socket Output Stream...");
+        }
+    }
 
-            try{
-                terminalReader.join();
-                socketReader.join();
 
-            }catch(Exception e){
-                //handle
-            }finally{
-                try{
-                    socketIn.close();
-                    socketOut.close();
-                }catch(IOException e){
-                    //handle
-                }
-            }
-        });
-        waiter.start();
+    @Override
+    public void showUserOutput(Object o) {
+        Thread viewChanger = asyncWriteToTerminal();
+        viewChanger.start();
+
+    }
+
+    @Override
+    public void getUserInput() {
+        Thread userListener = asyncReadFromTerminal();
+        userListener.start();
     }
 
     /**
@@ -73,6 +73,9 @@ public class CLIClientViewController implements ClientViewController{
                 }
             }catch(Exception e){
                 //handle
+            }
+            finally {
+                close();
             }
         });
     }
@@ -91,18 +94,9 @@ public class CLIClientViewController implements ClientViewController{
                 socketOut.flush();
             }catch(Exception e){
                 //handle
+            }finally{
+                close();
             }
-        });
-    }
-
-    /**
-     * This asynchronous method is run by a separated thread to print the result of the view's state change on the TUI
-     * @param message the message to print
-     * @return the thread to be run
-     */
-    public Thread asyncWriteToTerminal(String message){
-        return new Thread(() -> {
-
         });
     }
 
@@ -113,7 +107,6 @@ public class CLIClientViewController implements ClientViewController{
      * @return the thread to be run
      */
     public Thread asyncReadFromTerminal() {
-
         return new Thread(() -> {
             Scanner in = new Scanner(System.in);
             while (client.isActive()) {
@@ -123,21 +116,17 @@ public class CLIClientViewController implements ClientViewController{
                     // REACTS!!!
                 } catch (Exception e) {
                     //handle
+                }finally {
+                    close();
                 }
             }
         });
     }
 
-    public void setUp(){
-        try{
-            socketIn = new ObjectInputStream(socket.getInputStream());
-        }catch(IOException e){
-            System.out.println("Error creating Socket Input Stream...");
-        }
-        try{
-            socketOut = new ObjectOutputStream(socket.getOutputStream());
-        }catch(IOException e){
-            System.out.println("Error creating Socket Output Stream...");
-        }
+    public Thread asyncWriteToTerminal() {
+        return new Thread(() -> {
+           //show view
+        });
     }
+
 }

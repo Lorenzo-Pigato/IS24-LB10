@@ -1,16 +1,52 @@
 package it.polimi.ingsw.lb10.client.controller;
 
+import it.polimi.ingsw.lb10.network.Request;
+
 public interface ClientViewController {
 
-    /**
-     * This method provides logic to build the structure of UI and communication between Server and Client (creates communication threads)
+
+    /**This method closes all Socket streams used to communicate
+     *
      */
-    public void launch();
+    public void close();
+
 
     /**
-     * This method is used to set up the communication streams with the Server
+     * This method is used to set up the communication streams with the Server.
      */
-    public void setUp();
+    public abstract void setUp();
+
+
+
+    /**
+     *  This asynchronous method provides a thread to send asynchronous requests to the network layer through
+     *  serialization
+     * @param message the request
+     * @return the thread
+     */
+    public Thread asyncWriteToSocket(Request message);
+
+
+
+    /**This method is used to set the view output changes
+     * @param o a general parameter to show the output on the UI
+     */
+    public void showUserOutput(Object o);
+
+
+
+    /**
+     * This method provides the asynchronous functions to get the input in the UI
+     */
+    public void getUserInput();
+
+
+
+    /** This method pro
+     * @return the thread to be run
+     */
+    public Thread asyncReadFromSocket();
+
 
 }
 

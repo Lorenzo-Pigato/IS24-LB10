@@ -1,8 +1,8 @@
 package it.polimi.ingsw.lb10.server.controller;
 
 import it.polimi.ingsw.lb10.network.Request;
-import it.polimi.ingsw.lb10.server.model.MatchModel;
 import it.polimi.ingsw.lb10.util.Observer;
+import it.polimi.ingsw.lb10.server.model.MatchModel;
 
 import java.util.concurrent.BlockingQueue;
 
