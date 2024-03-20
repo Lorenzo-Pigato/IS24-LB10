@@ -1,4 +1,4 @@
-package it.polimi.ingsw.lb10.client.view.clidesign.ansi;
+package it.polimi.ingsw.lb10.client.clidesign.ansi;
 
 /**
  * This class provides a way to print strings with ANSI colors and formats
@@ -36,6 +36,10 @@ public class AnsiString {
                         this.string +
                         AnsiSpecial.RESET.getCode()
         );
+    }
+
+    public String getString() {
+        return string;
     }
 }
 

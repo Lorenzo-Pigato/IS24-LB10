@@ -1,8 +1,8 @@
-package it.polimi.ingsw.lb10.client.view.clidesign;
+package it.polimi.ingsw.lb10.client.clidesign;
 
-import it.polimi.ingsw.lb10.client.view.clidesign.ansi.AnsiColor;
-import it.polimi.ingsw.lb10.client.view.clidesign.ansi.AnsiSpecial;
-import it.polimi.ingsw.lb10.client.view.clidesign.ansi.AnsiString;
+import it.polimi.ingsw.lb10.client.clidesign.ansi.AnsiColor;
+import it.polimi.ingsw.lb10.client.clidesign.ansi.AnsiSpecial;
+import it.polimi.ingsw.lb10.client.clidesign.ansi.AnsiString;
 
 public abstract class CLILine {
 

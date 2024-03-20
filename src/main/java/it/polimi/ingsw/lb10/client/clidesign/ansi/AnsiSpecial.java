@@ -1,4 +1,4 @@
-package it.polimi.ingsw.lb10.client.view.clidesign.ansi;
+package it.polimi.ingsw.lb10.client.clidesign.ansi;
 
 public enum AnsiSpecial {
     RESET("\u001B[0m"),

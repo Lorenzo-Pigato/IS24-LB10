@@ -1,11 +1,9 @@
-package it.polimi.ingsw.lb10.client.view.clidesign;
+package it.polimi.ingsw.lb10.client.clidesign;
 
-import it.polimi.ingsw.lb10.client.view.clidesign.ansi.AnsiColor;
-import it.polimi.ingsw.lb10.client.view.clidesign.ansi.AnsiFormat;
-import it.polimi.ingsw.lb10.client.view.clidesign.ansi.AnsiSpecial;
-import it.polimi.ingsw.lb10.client.view.clidesign.ansi.AnsiString;
-
-import java.util.Scanner;
+import it.polimi.ingsw.lb10.client.clidesign.ansi.AnsiColor;
+import it.polimi.ingsw.lb10.client.clidesign.ansi.AnsiFormat;
+import it.polimi.ingsw.lb10.client.clidesign.ansi.AnsiSpecial;
+import it.polimi.ingsw.lb10.client.clidesign.ansi.AnsiString;
 
 public abstract class CLIBox {
 
@@ -22,7 +20,7 @@ public abstract class CLIBox {
      * @param borderFormat box's border format ANSI
      * @param textFormat box's text format
      */
-    static void draw(int col, int row, int width, int height, String text, AnsiColor borderColor, AnsiColor textColor, AnsiFormat borderFormat, AnsiFormat textFormat) {
+    public static void draw(int col, int row, int width, int height, String text, AnsiColor borderColor, AnsiColor textColor, AnsiFormat borderFormat, AnsiFormat textFormat) {
 
         AnsiString verticalLine = new AnsiString(AnsiSpecial.VERTICAL.getCode(), borderColor, borderFormat);
         AnsiString horizontalLine = new AnsiString(AnsiSpecial.HORIZONTAL.getCode(), borderColor, borderFormat);
@@ -60,7 +58,7 @@ public abstract class CLIBox {
         }
     }
 
-    static void draw(int col, int row, String text, AnsiColor borderColor, AnsiColor textColor, AnsiFormat borderFormat, AnsiFormat textFormat) {
+    public static void draw(int col, int row, String text, AnsiColor borderColor, AnsiColor textColor, AnsiFormat borderFormat, AnsiFormat textFormat) {
         CLIBox.draw(col, row, text.length() + 2, 3, text, borderColor, textColor, borderFormat, textFormat);
     }
 
@@ -68,24 +66,23 @@ public abstract class CLIBox {
         CLIBox.draw(col, row, width, height, "", AnsiColor.DEFAULT, AnsiColor.DEFAULT, AnsiFormat.DEFAULT, AnsiFormat.DEFAULT);
 
     }
-    static void draw(int col, int row, int width, int height, AnsiColor borderColor, AnsiFormat borderFormat) {
+    public static void draw(int col, int row, int width, int height, AnsiColor borderColor, AnsiFormat borderFormat) {
         CLIBox.draw(col, row, width, height, "", borderColor, AnsiColor.DEFAULT, borderFormat, AnsiFormat.DEFAULT);
 
     }
 
-    static void draw(int col, int row, int width, int height, AnsiColor borderColor) {
+    public static void draw(int col, int row, int width, int height, AnsiColor borderColor) {
         CLIBox.draw(col, row, width, height, "", borderColor, AnsiColor.DEFAULT, AnsiFormat.DEFAULT, AnsiFormat.DEFAULT);
     }
 
-    static void draw(int col, int row, String text, AnsiColor borderColor) {
+    public static void draw(int col, int row, String text, AnsiColor borderColor) {
         CLIBox.draw(col, row, text, borderColor, AnsiColor.DEFAULT, AnsiFormat.DEFAULT, AnsiFormat.DEFAULT);
 
     }
 
-    static void draw(int col, int row, String text, AnsiColor borderColor, AnsiColor textColor){
+    public static void draw(int col, int row, String text, AnsiColor borderColor, AnsiColor textColor){
         CLIBox.draw(col, row, text, borderColor, textColor, AnsiFormat.DEFAULT, AnsiFormat.DEFAULT);
 
     }
-
 
 }
