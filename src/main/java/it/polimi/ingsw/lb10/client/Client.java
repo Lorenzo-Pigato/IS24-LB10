@@ -26,7 +26,7 @@ public class Client implements Runnable{
     }
 
     public void run(){
-    //we assign the clientviewController based on the view
+    //we assign and run the ClientViewController based on the view
     }
 
     /**

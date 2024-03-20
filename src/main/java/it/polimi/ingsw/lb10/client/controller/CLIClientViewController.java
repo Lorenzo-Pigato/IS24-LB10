@@ -14,8 +14,8 @@ import java.util.Scanner;
 
 public class CLIClientViewController implements ClientViewController{
 
-    private CLIClientView cliClientView;
-    private Socket socket;
+    private final CLIClientView cliClientView;
+    private final Socket socket;
     private Client client;
     private ObjectInputStream socketIn;
     private ObjectOutputStream socketOut;
@@ -28,6 +28,15 @@ public class CLIClientViewController implements ClientViewController{
 
     @Override
     public void close() {
+        try{
+            socketIn.close();
+            socketOut.close();
+        }catch(IOException e){
+            e.printStackTrace();
+            System.out.println("Error closing sockets");
+        }finally{
+            client.setActive(false);
+        }
 
     }
 
@@ -114,7 +123,7 @@ public class CLIClientViewController implements ClientViewController{
                     Response command = CommandParser.parse(input);
                     // REACTS!!!
                 } catch (Exception e) {
-                    //handle
+                    e.printStackTrace();
                 }finally {
                     close();
                 }
@@ -124,7 +133,7 @@ public class CLIClientViewController implements ClientViewController{
 
     public Thread asyncWriteToTerminal() {
         return new Thread(() -> {
-           //show view
+           //show view via the VIEW
         });
     }
 
