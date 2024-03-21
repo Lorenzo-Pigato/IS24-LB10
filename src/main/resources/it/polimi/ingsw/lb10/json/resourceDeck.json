@@ -1,0 +1,141 @@
+[ {
+  "id" : 0,
+  "flipped" : true,
+  "points" : 1,
+  "resource" : "ANIMAL",
+  "corner" : [ {
+    "resource" : "FEATHER",
+    "up" : false,
+    "left" : true
+  }, {
+    "resource" : "PLANT",
+    "up" : true,
+    "left" : false
+  } ]
+}, {
+  "id" : 1,
+  "flipped" : true,
+  "points" : 1,
+  "resource" : "ANIMAL",
+  "corner" : [ {
+    "resource" : "FEATHER",
+    "up" : false,
+    "left" : true
+  }, {
+    "resource" : "PLANT",
+    "up" : true,
+    "left" : false
+  } ]
+}, {
+  "id" : 2,
+  "flipped" : true,
+  "points" : 1,
+  "resource" : "ANIMAL",
+  "corner" : [ {
+    "resource" : "FEATHER",
+    "up" : false,
+    "left" : true
+  }, {
+    "resource" : "PLANT",
+    "up" : true,
+    "left" : false
+  } ]
+}, {
+  "id" : 3,
+  "flipped" : true,
+  "points" : 1,
+  "resource" : "ANIMAL",
+  "corner" : [ {
+    "resource" : "FEATHER",
+    "up" : false,
+    "left" : true
+  }, {
+    "resource" : "PLANT",
+    "up" : true,
+    "left" : false
+  } ]
+}, {
+  "id" : 4,
+  "flipped" : true,
+  "points" : 1,
+  "resource" : "ANIMAL",
+  "corner" : [ {
+    "resource" : "FEATHER",
+    "up" : false,
+    "left" : true
+  }, {
+    "resource" : "PLANT",
+    "up" : true,
+    "left" : false
+  } ]
+}, {
+  "id" : 5,
+  "flipped" : true,
+  "points" : 1,
+  "resource" : "ANIMAL",
+  "corner" : [ {
+    "resource" : "FEATHER",
+    "up" : false,
+    "left" : true
+  }, {
+    "resource" : "PLANT",
+    "up" : true,
+    "left" : false
+  } ]
+}, {
+  "id" : 6,
+  "flipped" : true,
+  "points" : 1,
+  "resource" : "ANIMAL",
+  "corner" : [ {
+    "resource" : "FEATHER",
+    "up" : false,
+    "left" : true
+  }, {
+    "resource" : "PLANT",
+    "up" : true,
+    "left" : false
+  } ]
+}, {
+  "id" : 7,
+  "flipped" : true,
+  "points" : 1,
+  "resource" : "ANIMAL",
+  "corner" : [ {
+    "resource" : "FEATHER",
+    "up" : false,
+    "left" : true
+  }, {
+    "resource" : "PLANT",
+    "up" : true,
+    "left" : false
+  } ]
+}, {
+  "id" : 8,
+  "flipped" : true,
+  "points" : 1,
+  "resource" : "ANIMAL",
+  "corner" : [ {
+    "resource" : "FEATHER",
+    "up" : false,
+    "left" : true
+  }, {
+    "resource" : "PLANT",
+    "up" : true,
+    "left" : false
+  } ]
+}, {
+  "id" : 9,
+  "flipped" : true,
+  "points" : 1,
+  "resource" : "ANIMAL",
+  "corner" : [ {
+    "resource" : "FEATHER",
+    "up" : false,
+    "left" : true
+  }, {
+    "resource" : "PLANT",
+    "up" : true,
+    "left" : false
+  } ]
+} ]

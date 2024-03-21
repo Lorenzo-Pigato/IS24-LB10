@@ -1,13 +1,20 @@
-package it.polimi.ingsw.lb10.server.model;
+package it.polimi.ingsw.lb10.server.model.cards;
+
 import java.util.ArrayList;
 
 public abstract class Card {
 
-    private int id;
+    private  int id;
     private boolean flipped;
     private int points;
     private ArrayList<Corner> corners = new ArrayList<Corner>();
 
+
+
+    // --------> METHODS <--------
+    public void flip(){
+        flipped=!flipped;
+    }
 
     // --------> GETTER <--------
     public boolean isFlipped() {
