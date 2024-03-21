@@ -1,18 +1,15 @@
 package it.polimi.ingsw.lb10.server.model;
-import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 
 public abstract class Card {
 
-    public int id;
+    private int id;
+    private boolean flipped;
+    private int points;
+    private ArrayList<Corner> corners = new ArrayList<Corner>();
 
-    public boolean flipped;
 
-    public int points;
-//        private ArrayList<Corner> corners = new ArrayList<Corner>();
-//    public ArrayList<Corner> getCorner(){
-//        return corners;
-//    }
+    // --------> GETTER <--------
     public boolean isFlipped() {
         return flipped;
     }
@@ -21,6 +18,11 @@ public abstract class Card {
     }
     public int getId(){return id;}
 
+    public ArrayList<Corner> getCorner(){
+        return corners;
+    }
+
+    // --------> SETTER <--------
     public void setFlipped(boolean flipped) {
         this.flipped = flipped;
     }
@@ -31,5 +33,9 @@ public abstract class Card {
 
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    public void setCorners(ArrayList<Corner> corners) {
+        this.corners = corners;
     }
 }
