@@ -2,7 +2,7 @@ package it.polimi.ingsw.lb10.client.controller;
 
 import it.polimi.ingsw.lb10.client.view.GUIClientView;
 import it.polimi.ingsw.lb10.client.Client;
-import it.polimi.ingsw.lb10.network.Request;
+import it.polimi.ingsw.lb10.network.requests.Request;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

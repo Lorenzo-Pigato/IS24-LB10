@@ -2,7 +2,7 @@ package it.polimi.ingsw.lb10.client.controller;
 
 import it.polimi.ingsw.lb10.client.Client;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
-import it.polimi.ingsw.lb10.network.Request;
+import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.network.Response;
 import it.polimi.ingsw.lb10.util.CommandParser;
 

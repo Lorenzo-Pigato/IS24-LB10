@@ -1,6 +1,6 @@
 package it.polimi.ingsw.lb10.server.controller;
 
-import it.polimi.ingsw.lb10.network.Request;
+import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.util.Observer;
 import it.polimi.ingsw.lb10.server.model.MatchModel;
 
@@ -17,7 +17,7 @@ import java.util.concurrent.BlockingQueue;
 *@ won't have to wait for the model and view to be updated, they can get continuous request that will be submitted
 *@ to this queue and executed inside this separeted thread!*/
 
-public class MatchController implements Runnable , Observer<Request> {
+public class MatchController implements Runnable, Observer<Request> {
 
     private MatchModel model;
     private BlockingQueue<Request> requests;

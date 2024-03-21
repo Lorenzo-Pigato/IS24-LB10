@@ -1,6 +1,6 @@
 package it.polimi.ingsw.lb10.server.model;
 
-import it.polimi.ingsw.lb10.network.Request;
+import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.util.Observable;
 
 import java.util.ArrayList;

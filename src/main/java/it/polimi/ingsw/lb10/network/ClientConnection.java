@@ -1,5 +1,7 @@
 package it.polimi.ingsw.lb10.network;
 
+import it.polimi.ingsw.lb10.network.requests.Request;
+import it.polimi.ingsw.lb10.server.controller.RequestHandler;
 import it.polimi.ingsw.lb10.util.Observable;
 import it.polimi.ingsw.lb10.server.Server;
 import it.polimi.ingsw.lb10.server.controller.MatchController;
@@ -17,8 +19,9 @@ public class ClientConnection extends Observable<Request> implements Runnable {
     private Boolean active = true;
     private Server server;
     private MatchController matchController;
+    private RequestHandler requestHandler = RequestHandler.instance();
 
-    public ClientConnection(Socket socket, Server server) {
+    public ClientConnection(Socket socket, Server server){
         this.socket = socket;
         this.server = server;
     }
@@ -44,13 +47,11 @@ public class ClientConnection extends Observable<Request> implements Runnable {
     // the object Request type
 
     public void run(){
-
-        System.out.println(">>>Server : new Client connected...\n");
-
+        System.out.println(">>Server : new Client connected...\n");
         while(isActive()){
             try{
                 Request request = (Request) (input.readObject());
-                //handle
+                //requestHandler.handle(request); use Visitor Patter or Map<Class<? extends Request>, Consumer>
 
             }catch(Exception e){
                 System.out.println(e.toString() + "occurred");
@@ -60,10 +61,9 @@ public class ClientConnection extends Observable<Request> implements Runnable {
                 close();
             }
         }
-
     }
 
-    public void send(Request r){
+    public void send(Response r){
         try{
             output.reset();
             output.writeObject(r);
@@ -73,30 +73,13 @@ public class ClientConnection extends Observable<Request> implements Runnable {
         }
     }
 
-    public void asyncSend(Request r){
+    public void asyncSend(Response r){
         new Thread(new Runnable() {
             @Override
             public void run() {
                 send(r);
             }
         }).start();
-    }
-
-    public void login(){
-        //String username = showLoginModel(); sends a response to the client which contains login form
-        //Player player = new Player(username);
-    }
-
-    public void lobby(){
-
-        //***this methods must access the Server object in SYNCHRONIZED mode to check match-IDs
-
-        //String matchId = lobbyForm(); sends a response to the client containing
-        //match-code lobby and returns the match controller to be joined
-
-        //matchController = join(matchId);
-        //if the match-id already exists, this method just returns it, if it doesn't, this method must generate a new
-        //matchModel and a new matchController
     }
 
 }

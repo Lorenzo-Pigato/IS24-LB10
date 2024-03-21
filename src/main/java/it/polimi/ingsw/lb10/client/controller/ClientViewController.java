@@ -1,6 +1,6 @@
 package it.polimi.ingsw.lb10.client.controller;
 
-import it.polimi.ingsw.lb10.network.Request;
+import it.polimi.ingsw.lb10.network.requests.Request;
 
 public interface ClientViewController {
 
