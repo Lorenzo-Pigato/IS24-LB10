@@ -4,38 +4,10 @@ import it.polimi.ingsw.lb10.client.clidesign.ansi.AnsiColor;
 import it.polimi.ingsw.lb10.client.clidesign.ansi.AnsiString;
 
 public abstract class CLIBanner {
-    public static void displayCodex(AnsiColor color){
-        CLIPage.setPosition(48, 0);
-        new AnsiString(
-            "\n                         -%%%*                                     \n" +
-            "                 =%%+: *%%%%%%#%%%%%:                                   \n" +
-            "                -%%%+ :#= #%%%%%%%%%-                                   \n" +
-            "             -%%%%: =%#     -*%+:         -%%:                          \n" +
-            "          :#%%%%: -%%%*:                 -%%%%%-:                       \n" +
-            "         :#%%%%#  *%%%%%:          =%-    :*%%%%%*       +#:   :*:   * :\n" +
-            "        +%%%%%=  *%%%%%%=      :#%%%%%=   +%:*%%#%:  :#%%%%::*#%%*:#%%* \n" +
-            "        %%%%%%-  =%%%%%%%*    *%%- *%%%=:%%%  =%%#= #%=:%%%-: =%*%%--:  \n" +
-            "        %#%%%%=   *%%%%%%%=  :%%%-  #%%*+#%%   %%#=##%= =%%:   %#%%:-   \n" +
-            "        %#%%%%*    +%%%%%%%  :%%%-  #%%*+#%%   %%#=##%= ##   +%%#%%%-   \n" +
-            "        %#%%%%%     :%#%%%*  :%%%=  #%%*+#%%   %%%=##%%%:      %#%%:    \n" +
-            "         #%#%%%%*      +%%%:   ##%%- #%%:=%#%#: %%%:*%%%:      :%#%%+  :\n" +
-            "         :%%%%%%%+      #%=    :%%%%%#-   +%#%%#%+   %#%%%*--%%%:*##%%+ \n" +
-            "          =%%%%%%%%**%*=%=       :#*        +%*:      +%%-  +:*-  :##:  \n" +
-            "           =%%#%%%%%#::*:                                               \n" +
-            "            *#%%#%%%%%%#+:     :=#%-                                    \n" +
-            "              :*%%##%%%%%%%%%%%%%:                                      \n" +
-            "                  =%%%%%%%%%%*:                                         \n"
-        , color).print();
-    }
 
     public static void displayCodex(){
-        displayCodex(AnsiColor.DEFAULT);
-    }
-
-    public static void displayCodexBlocks(AnsiColor color){
-        CLIPage.setPosition(48, 0);
-        new AnsiString(
-            "\n                 ░███░                                          \n" +
+        new CLIString(
+            "                 ░███░                                          \n" +
             "         ░██░░ ░████████████░                                   \n" +
             "      ░███░ ░█░ ██████████░                                     \n" +
             "    ░████░ ░██     ░░█░░         ░██░                           \n" +
@@ -53,13 +25,7 @@ public abstract class CLIBanner {
             "    ░███████████░░     ░░██░                                    \n" +
             "      ░░█████████████████░                                      \n" +
             "          ░██████████░░                                         \n"
-        ,color).print();
+        ,AnsiColor.GREEN, 1, 5).centerPrint();
     }
 
-    public static void displayCodexBlocks(){
-        displayCodexBlocks(AnsiColor.DEFAULT);
-    }
 }
-
-
-////RIPOSIZIONARE CON LISTA DI STRINGHE

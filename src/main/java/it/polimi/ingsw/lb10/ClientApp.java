@@ -13,7 +13,7 @@ public class ClientApp {
     //checks the IOException while creating socket, the client has to run independently
     public static void main( String[] args )
     {
-
+        System.out.println("Wella to mare omo");
     }
 
     public static String showConfig(){

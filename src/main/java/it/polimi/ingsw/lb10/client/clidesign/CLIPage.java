@@ -3,9 +3,9 @@ package it.polimi.ingsw.lb10.client.clidesign;
 /**
  * This interface provides all methods to create simple graphics on terminal
  */
-public class CLIPage {
-    private final int defaultWidth = 160;
-    private final int defaultHeight = 50;
+public abstract class CLIPage {
+    private static final int defaultWidth = 160;
+    private static final int defaultHeight = 50;
 
     /**
      * Set cursor position to (1,1) - Home
@@ -76,10 +76,6 @@ public class CLIPage {
         System.out.print("\033[" + row + ";" + col + "H");
     }
 
-    public static void goToInputLine(){
-        setPosition(0,23);
-    }
-
     public static void setInvisibleInput(){
         System.out.print("\u001B[8m");
         System.out.flush();
@@ -94,11 +90,11 @@ public class CLIPage {
         System.out.flush();
     }
 
-    public int getDefaultHeight() {
+    public static int getDefaultHeight() {
         return defaultHeight;
     }
 
-    public int getDefaultWidth() {
+    public static int getDefaultWidth() {
         return defaultWidth;
     }
 }

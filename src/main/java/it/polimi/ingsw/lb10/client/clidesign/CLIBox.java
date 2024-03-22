@@ -22,39 +22,32 @@ public abstract class CLIBox {
      */
     public static void draw(int col, int row, int width, int height, String text, AnsiColor borderColor, AnsiColor textColor, AnsiFormat borderFormat, AnsiFormat textFormat) {
 
-        AnsiString verticalLine = new AnsiString(AnsiSpecial.VERTICAL.getCode(), borderColor, borderFormat);
-        AnsiString horizontalLine = new AnsiString(AnsiSpecial.HORIZONTAL.getCode(), borderColor, borderFormat);
-        AnsiString downLeftCorner = new AnsiString(AnsiSpecial.DLCORNER.getCode(), borderColor, borderFormat);
-        AnsiString downRightCorner = new AnsiString(AnsiSpecial.DRCORNER.getCode(), borderColor, borderFormat);
-        AnsiString upLeftCorner = new AnsiString(AnsiSpecial.ULCORNER.getCode(), borderColor, borderFormat);
-        AnsiString upRightCorner = new AnsiString(AnsiSpecial.URCORNER.getCode(), borderColor, borderFormat);
-
         if (width < 2) width = 2;
         if (height < 2) height = 2;
 
         CLIPage.setPosition(col, row);
+        AnsiString.print(AnsiSpecial.ULCORNER.getCode(), borderColor, borderFormat);
 
-        upLeftCorner.print();
-        for (int i = 1; i < width - 1; i++) horizontalLine.print();
-        upRightCorner.print();
+        for (int i = 1; i < width - 1; i++) AnsiString.print(AnsiSpecial.HORIZONTAL.getCode(), borderColor, borderFormat);
+        AnsiString.print(AnsiSpecial.URCORNER.getCode(), borderColor, borderFormat);
 
         for (int i = row + 1; i < row + height - 1; i++) {
             CLIPage.setPosition(col, i);
-            verticalLine.print();
+            AnsiString.print(AnsiSpecial.VERTICAL.getCode(), borderColor, borderFormat);
             CLIPage.setPosition(col + width - 1, i);
-            verticalLine.print();
+            AnsiString.print(AnsiSpecial.VERTICAL.getCode(), borderColor, borderFormat);
         }
 
         CLIPage.setPosition(col, row + height - 1);
-        downLeftCorner.print();
-        for (int i = 1; i < width - 1; i++) horizontalLine.print();
-        downRightCorner.print();
+        AnsiString.print(AnsiSpecial.DLCORNER.getCode(), borderColor, borderFormat);
+        for (int i = 1; i < width - 1; i++) AnsiString.print(AnsiSpecial.HORIZONTAL.getCode(), borderColor, borderFormat);
+        AnsiString.print(AnsiSpecial.DRCORNER.getCode(), borderColor, borderFormat);
 
         if (height > 2) {
             if (text.length() > width - 2) text = text.substring(0, width - 5) + "...";
 
             CLIPage.setPosition(col + 1, row + (height) / 2);
-            new AnsiString(text, textColor, textFormat).print();
+            AnsiString.print(text, textColor, textFormat);
         }
     }
 
