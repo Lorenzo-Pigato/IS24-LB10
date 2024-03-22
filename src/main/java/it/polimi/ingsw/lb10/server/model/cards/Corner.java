@@ -1,8 +1,6 @@
 package it.polimi.ingsw.lb10.server.model.cards;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import it.polimi.ingsw.lb10.server.model.Resource;
 import java.util.ArrayList;
 
@@ -11,44 +9,47 @@ import java.util.ArrayList;
  * */
 
 // I tried to add Lombok, but I don't know how to make the de-serializing work
-@Getter
-@Setter
+
 public class Corner {
 
 
     private Resource resource;
-    private boolean left_right;
-    private boolean up_down;
+    private boolean left;
+    private boolean up;
 
 
     public Corner(){}
 
-    public Corner(boolean left_right, boolean up_down, Resource resource){
-        this.left_right=left_right;
-        this.up_down=up_down;
-
+    public Corner(Resource resource, boolean up_down,boolean left_right){
+        this.left=left_right;
+        this.up=up_down;
         this.resource=resource;
     }
 
     // --------> GETTER <--------
-    public boolean isLeft() {
-        return left_right;
+    @JsonAlias("left")
+    public boolean isLeft_Right() {
+        return left;
     }
-
-    public boolean isUp() {
-        return up_down;
+    @JsonAlias("up")
+    public boolean isUp_Down() {
+        return up;
     }
+    @JsonAlias("resource")
     public Resource getResource() {
         return resource;
     }
 
     // --------> SETTER <--------
+    @JsonAlias("left")
     public void setLeft_right(boolean left_right) {
-        this.left_right = left_right;
+        this.left = left_right;
     }
+    @JsonAlias("up")
     public void setUp_down(boolean up_down) {
-        this.up_down = up_down;
+        this.up = up_down;
     }
+    @JsonAlias("resource")
     public void setResource(Resource resource) {
         this.resource = resource;
     }

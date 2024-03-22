@@ -1,7 +1,9 @@
-{
-  "id" : 0,
-  "flipped" : true,
-  "points" : 1,
-  "resource" : "ANIMAL",
-  "corner" : [ ]
-}
+[ {
+  "resource" : "FEATHER",
+  "up" : false,
+  "left" : true
+}, {
+  "resource" : "PLANT",
+  "up" : true,
+  "left" : false
+}     ]

@@ -47,7 +47,7 @@ public class ResourceDeck implements Deck {
 //        mapper.enable(SerializationFeature.INDENT_OUTPUT);
 //        mapper.writeValue(new File("src/main/resources/it/polimi/ingsw/lb10/json", "try.json"), cards);
         try {
-                    ResourceCard resourceCards = mapper.readValue(new File("src/main/resources/it/polimi/ingsw/lb10/json/resourceDeck.json"),ResourceCard.class);
+            cards = mapper.readValue(new File("src/main/resources/it/polimi/ingsw/lb10/json/resourceDeck.json"),new TypeReference<ArrayList<ResourceCard>>() {});
         } catch (Exception e) {
             System.out.println(e);
         }

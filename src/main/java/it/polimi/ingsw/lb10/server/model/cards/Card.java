@@ -1,5 +1,7 @@
 package it.polimi.ingsw.lb10.server.model.cards;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+
 import java.util.ArrayList;
 
 public abstract class Card {
@@ -17,6 +19,7 @@ public abstract class Card {
     }
 
     // --------> GETTER <--------
+    @JsonAlias("flipped")
     public boolean isFlipped() {
         return flipped;
     }
