@@ -45,6 +45,11 @@ public abstract class CLICommand {
         }
     }
 
+    public static void clearScreenAfterCursor(){
+        System.out.print("\033[0J");
+        System.out.flush();
+    }
+
     /**
      * This method sets current terminal windows size
      * @param cols number of terminal columns

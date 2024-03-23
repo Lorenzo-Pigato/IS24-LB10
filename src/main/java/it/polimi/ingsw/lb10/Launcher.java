@@ -6,7 +6,7 @@ public class Launcher {
     public static void main(String[] args) {
         String mode = LauncherView.runLauncherPage();
 
-        if(mode.split(":")[0].equals("client")) ClientApp.main(mode.split(":"));
-        else ServerApp.main(null);
+        if(mode.split(":")[0].equals("client")) ClientLauncher.main(mode.split(":"));
+        else ServerLauncher.main(null);
     }
 }

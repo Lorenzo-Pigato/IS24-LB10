@@ -9,16 +9,16 @@ import it.polimi.ingsw.lb10.client.util.InputVerifier;
 import java.util.Scanner;
 
 public abstract class LauncherView {
-    private static final CLIString welcome = new CLIString(">> Welcome to Codex! <<", AnsiColor.YELLOW, 0, 26);
-    private static final CLIString welcomePlayer = new CLIString(">> Welcome to Codex, Player! <<", AnsiColor.YELLOW, 0, 26);
-    private static final CLIString inputError = new CLIString(">> Invalid input <<", AnsiColor.RED, 0, 26);
+    private static final CLIString welcome = new CLIString(">> Welcome to Codex! <<", AnsiColor.YELLOW, 0, 36);
+    private static final CLIString welcomePlayer = new CLIString(">> Welcome to Codex, Player! <<", AnsiColor.YELLOW, 0, 36);
+    private static final CLIString inputError = new CLIString(">> Invalid input <<", AnsiColor.RED, 0, 36);
     private static final CLIString chooseApplication = new CLIString(
             ">> Choose [SERVER] or [CLIENT] to launch application\n>> ",
-            AnsiColor.YELLOW, 0, 27
+            AnsiColor.YELLOW, 0, 37
     );
     private static final CLIString choseInterface = new CLIString(
             ">> Do you want to launch the Graphic Interface? [Y/N]\n>> "
-            , AnsiColor.YELLOW, 0, 27
+            , AnsiColor.YELLOW, 0, 37
     );
 
     public static String runLauncherPage() {

@@ -5,6 +5,9 @@ import it.polimi.ingsw.lb10.client.clidesign.ansi.AnsiFormat;
 import it.polimi.ingsw.lb10.client.clidesign.ansi.AnsiSpecial;
 import it.polimi.ingsw.lb10.client.clidesign.ansi.AnsiString;
 
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
+
 public abstract class CLIBox {
 
     /**
@@ -17,65 +20,76 @@ public abstract class CLIBox {
      * @param text box's text
      * @param borderColor box's border color ANSI
      * @param textColor box's text color
-     * @param borderFormat box's border format ANSI
      * @param textFormat box's text format
      */
-    public static void draw(int col, int row, int width, int height, String text, AnsiColor borderColor, AnsiColor textColor, AnsiFormat borderFormat, AnsiFormat textFormat) {
+
+    public static void draw(int col, int row, int width, int height, String text, AnsiColor borderColor, AnsiColor textColor, AnsiFormat textFormat) {
 
         if (width < 2) width = 2;
         if (height < 2) height = 2;
 
         CLICommand.setPosition(col, row);
-        AnsiString.print(AnsiSpecial.ULCORNER.getCode(), borderColor, borderFormat);
+        AnsiString.print(AnsiSpecial.ULCORNER.getCode(), borderColor);
 
-        for (int i = 1; i < width - 1; i++) AnsiString.print(AnsiSpecial.HORIZONTAL.getCode(), borderColor, borderFormat);
-        AnsiString.print(AnsiSpecial.URCORNER.getCode(), borderColor, borderFormat);
+        for (int i = 1; i < width - 1; i++) AnsiString.print(AnsiSpecial.HORIZONTAL.getCode(), borderColor);
+        AnsiString.print(AnsiSpecial.URCORNER.getCode(), borderColor);
 
         for (int i = row + 1; i < row + height - 1; i++) {
             CLICommand.setPosition(col, i);
-            AnsiString.print(AnsiSpecial.VERTICAL.getCode(), borderColor, borderFormat);
+            AnsiString.print(AnsiSpecial.VERTICAL.getCode(), borderColor);
             CLICommand.setPosition(col + width - 1, i);
-            AnsiString.print(AnsiSpecial.VERTICAL.getCode(), borderColor, borderFormat);
+            AnsiString.print(AnsiSpecial.VERTICAL.getCode(), borderColor);
         }
 
         CLICommand.setPosition(col, row + height - 1);
-        AnsiString.print(AnsiSpecial.DLCORNER.getCode(), borderColor, borderFormat);
-        for (int i = 1; i < width - 1; i++) AnsiString.print(AnsiSpecial.HORIZONTAL.getCode(), borderColor, borderFormat);
-        AnsiString.print(AnsiSpecial.DRCORNER.getCode(), borderColor, borderFormat);
+        AnsiString.print(AnsiSpecial.DLCORNER.getCode(), borderColor);
+        for (int i = 1; i < width - 1; i++) AnsiString.print(AnsiSpecial.HORIZONTAL.getCode(), borderColor);
+        AnsiString.print(AnsiSpecial.DRCORNER.getCode(), borderColor);
 
-        if (height > 2) {
-            if (text.length() > width - 2) text = text.substring(0, width - 5) + "...";
+        if (height >= calcStringHeight(text)+2) {
+            int cursorCol = calcMaxLength(text) > width + 2 ? col + 1 : col + (width - calcMaxLength(text)) / 2;
+            int cursorRow = row + (height - calcStringHeight(text)) / 2;
 
-            CLICommand.setPosition(col + 1, row + (height) / 2);
-            AnsiString.print(text, textColor, textFormat);
+            AtomicInteger index = new AtomicInteger(0);
+            Arrays.stream(text.split("\n")).forEach(
+                    line -> {
+                        CLICommand.setPosition(cursorCol, cursorRow+index.getAndIncrement());
+                        AnsiString.print(line, textColor, textFormat);
+                    }
+            );
         }
     }
 
-    public static void draw(int col, int row, String text, AnsiColor borderColor, AnsiColor textColor, AnsiFormat borderFormat, AnsiFormat textFormat) {
-        CLIBox.draw(col, row, text.length() + 2, 3, text, borderColor, textColor, borderFormat, textFormat);
+    //Overloaded draw Methods
+    public static void draw(int col, int row, String text, AnsiColor borderColor, AnsiColor textColor, AnsiFormat textFormat) {
+        CLIBox.draw(col, row, calcMaxLength(text) + 2, calcStringHeight(text)+2, text, borderColor, textColor, textFormat);
     }
 
     static void draw(int col, int row, int width, int height, String text) {
-        CLIBox.draw(col, row, width, height, "", AnsiColor.DEFAULT, AnsiColor.DEFAULT, AnsiFormat.DEFAULT, AnsiFormat.DEFAULT);
-
-    }
-    public static void draw(int col, int row, int width, int height, AnsiColor borderColor, AnsiFormat borderFormat) {
-        CLIBox.draw(col, row, width, height, "", borderColor, AnsiColor.DEFAULT, borderFormat, AnsiFormat.DEFAULT);
+        CLIBox.draw(col, row, width, height, text, AnsiColor.DEFAULT, AnsiColor.DEFAULT, AnsiFormat.DEFAULT);
 
     }
 
     public static void draw(int col, int row, int width, int height, AnsiColor borderColor) {
-        CLIBox.draw(col, row, width, height, "", borderColor, AnsiColor.DEFAULT, AnsiFormat.DEFAULT, AnsiFormat.DEFAULT);
+        CLIBox.draw(col, row, width, height, "", borderColor, AnsiColor.DEFAULT, AnsiFormat.DEFAULT);
     }
 
     public static void draw(int col, int row, String text, AnsiColor borderColor) {
-        CLIBox.draw(col, row, text, borderColor, AnsiColor.DEFAULT, AnsiFormat.DEFAULT, AnsiFormat.DEFAULT);
-
+        CLIBox.draw(col, row, text, borderColor, AnsiColor.DEFAULT, AnsiFormat.DEFAULT);
     }
 
     public static void draw(int col, int row, String text, AnsiColor borderColor, AnsiColor textColor){
-        CLIBox.draw(col, row, text, borderColor, textColor, AnsiFormat.DEFAULT, AnsiFormat.DEFAULT);
+        CLIBox.draw(col, row, text, borderColor, textColor, AnsiFormat.DEFAULT);
 
+    }
+    // - END of overloaded methods -
+
+    private static int calcStringHeight(String text) {
+        return (int)Arrays.stream(text.split("\n")).count();
+    }
+
+    private static int calcMaxLength(String text) {
+        return Arrays.stream(text.split("\n")).mapToInt(String::length).max().orElse(0);
     }
 
 }
