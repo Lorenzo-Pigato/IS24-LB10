@@ -1,7 +1,9 @@
 package it.polimi.ingsw.lb10.server.model;
 
 import it.polimi.ingsw.lb10.network.Request;
+import it.polimi.ingsw.lb10.server.model.Quest.Quest;
 import it.polimi.ingsw.lb10.server.model.cards.Card;
+import it.polimi.ingsw.lb10.server.model.decks.Deck;
 import it.polimi.ingsw.lb10.server.model.decks.GoldenDeck;
 import it.polimi.ingsw.lb10.server.model.decks.QuestDeck;
 import it.polimi.ingsw.lb10.server.model.decks.ResourceDeck;
@@ -18,9 +20,9 @@ public class MatchModel extends Observable<Request>{
     private final int numberOfPlayers;
     private int turn;
 
-    private final ResourceDeck resourceDeck= new ResourceDeck();
-    private final GoldenDeck goldenDeck = new GoldenDeck();
-    private final QuestDeck questDeck = new QuestDeck();
+    private final Deck resourceDeck= new ResourceDeck();
+    private final Deck goldenDeck = new GoldenDeck();
+    private final Deck questDeck = new QuestDeck();
 
     private List<Quest> commonQuests = new ArrayList<>();
     private List<Card> goldenUncovered = new ArrayList<>();
@@ -31,6 +33,12 @@ public class MatchModel extends Observable<Request>{
         this.id = id;
         this.numberOfPlayers = numberOfPlayers;
         initializeTable();
+
+    }
+
+    public void initializeTable() throws IOException {
+        initializeDecks();
+        startingUncoveredCards();
     }
 
     private void initializeDecks() throws IOException {
@@ -39,21 +47,45 @@ public class MatchModel extends Observable<Request>{
         questDeck.fillDeck();
     }
 
-    public void initializeTable() throws IOException {
-        initializeDecks();
-        for(int i=0;i<2;i++)
+    private void startingUncoveredCards(){
+        for(int i=0;i<2;i++) {
             goldenUncovered.add(goldenDeck.draw());
-        for(int i=0;i<2;i++)
             resourceUncovered.add(resourceDeck.draw());
-//        for(int i=0;i<2;i++)
-//            commonQuests.add(questDeck.draw());
-        //I need time to dev the Quest!
+        }
+// commonQuests.add(questDeck.json.draw());
+// I need time to dev the Quest!
+    }
+
+    public void addResourceUncovered(){
+        resourceUncovered.add(resourceDeck.draw());
+    }
+    public void addGoldenUncovered(){
+        goldenUncovered.add(goldenDeck.draw());
+    }
+
+    // --------> GETTER <--------
+    public Card getResourceUncovered() {
+        Card temp=resourceUncovered.get(resourceUncovered.size()-1);
+        resourceUncovered.remove(resourceUncovered.size()-1);
+        addResourceUncovered();
+        return temp;
+    }
+
+    public Card getGoldenUncovered() {
+        Card temp=goldenUncovered.get(goldenUncovered.size()-1);
+        goldenUncovered.remove(goldenUncovered.size()-1);
+        addGoldenUncovered();
+        return temp;
     }
 
 
+    // --------> SETTER <--------
     @Override
     public void notify(Request request) {
         super.notify(request);
     }
 
+    public static class Matrix {
+
+    }
 }

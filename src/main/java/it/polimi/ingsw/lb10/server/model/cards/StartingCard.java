@@ -10,12 +10,10 @@ import java.util.ArrayList;
  */
 public class StartingCard extends Card {
     private ArrayList<Resource> resources=new ArrayList<>();
-
-    //I think that json works only with the setter/getter, so it's useless the constructor
-
     /**
      * @return the ArrayList of the resources of the starting card
      */
+    
     public ArrayList<Resource> getResources(){return resources;}
     public void setResource(ArrayList<Resource> resources) {
         this.resources = resources;

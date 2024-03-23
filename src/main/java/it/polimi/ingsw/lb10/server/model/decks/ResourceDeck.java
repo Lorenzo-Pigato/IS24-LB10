@@ -34,18 +34,11 @@ public class ResourceDeck implements Deck {
         return cards;
     }
 
-    public void fillDeck() throws IOException {
-
-//        corners.add(new Corner(true, false,Resource.FEATHER));
-//        corners.add(new Corner(false, true,Resource.PLANT));
-//        for(int i=0;i<3;i++){
-//            cards.add(new ResourceCard(i, true, 1, Resource.ANIMAL));
-//            cards.add(new ResourceCard(i, true, 1, corners,Resource.ANIMAL));
-//        }
-
+    /**
+     * This method'll call the json with the complete resource cards' deck
+     */
+    public void fillDeck() {
         ObjectMapper mapper = new ObjectMapper();
-//        mapper.enable(SerializationFeature.INDENT_OUTPUT);
-//        mapper.writeValue(new File("src/main/resources/it/polimi/ingsw/lb10/json", "try.json"), cards);
         try {
             cards = mapper.readValue(new File("src/main/resources/it/polimi/ingsw/lb10/json/resourceDeck.json"),new TypeReference<ArrayList<ResourceCard>>() {});
         } catch (Exception e) {
@@ -57,6 +50,16 @@ public class ResourceDeck implements Deck {
 
         ResourceDeck rd = new ResourceDeck();
         rd.fillDeck();
-
     }
 }
+/*
+//        corners.add(new Corner(true, false,Resource.FEATHER));
+//        corners.add(new Corner(false, true,Resource.PLANT));
+//        for(int i=0;i<3;i++){
+//            cards.add(new ResourceCard(i, true, 1, Resource.ANIMAL));
+//            cards.add(new ResourceCard(i, true, 1, corners,Resource.ANIMAL));
+//        }
+//        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+//        mapper.writeValue(new File("src/main/resources/it/polimi/ingsw/lb10/json", ""), cards);
+
+ */

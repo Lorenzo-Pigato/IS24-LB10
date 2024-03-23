@@ -7,8 +7,7 @@ import java.util.HashMap;
 public class GoldenCard extends Card {
     private Resource resource;
     private HashMap<Resource,Integer> activationCost= new HashMap<>();
-
-
+    
     /**
      * @param resource
      * Setter & Getter of GoldenCard's resource

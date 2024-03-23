@@ -1,9 +1,0 @@
-[ {
-  "resource" : "FEATHER",
-  "up" : false,
-  "left" : true
-}, {
-  "resource" : "PLANT",
-  "up" : true,
-  "left" : false
-}     ]
