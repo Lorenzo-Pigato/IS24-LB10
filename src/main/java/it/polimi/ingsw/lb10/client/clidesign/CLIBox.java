@@ -25,20 +25,20 @@ public abstract class CLIBox {
         if (width < 2) width = 2;
         if (height < 2) height = 2;
 
-        CLIPage.setPosition(col, row);
+        CLICommand.setPosition(col, row);
         AnsiString.print(AnsiSpecial.ULCORNER.getCode(), borderColor, borderFormat);
 
         for (int i = 1; i < width - 1; i++) AnsiString.print(AnsiSpecial.HORIZONTAL.getCode(), borderColor, borderFormat);
         AnsiString.print(AnsiSpecial.URCORNER.getCode(), borderColor, borderFormat);
 
         for (int i = row + 1; i < row + height - 1; i++) {
-            CLIPage.setPosition(col, i);
+            CLICommand.setPosition(col, i);
             AnsiString.print(AnsiSpecial.VERTICAL.getCode(), borderColor, borderFormat);
-            CLIPage.setPosition(col + width - 1, i);
+            CLICommand.setPosition(col + width - 1, i);
             AnsiString.print(AnsiSpecial.VERTICAL.getCode(), borderColor, borderFormat);
         }
 
-        CLIPage.setPosition(col, row + height - 1);
+        CLICommand.setPosition(col, row + height - 1);
         AnsiString.print(AnsiSpecial.DLCORNER.getCode(), borderColor, borderFormat);
         for (int i = 1; i < width - 1; i++) AnsiString.print(AnsiSpecial.HORIZONTAL.getCode(), borderColor, borderFormat);
         AnsiString.print(AnsiSpecial.DRCORNER.getCode(), borderColor, borderFormat);
@@ -46,7 +46,7 @@ public abstract class CLIBox {
         if (height > 2) {
             if (text.length() > width - 2) text = text.substring(0, width - 5) + "...";
 
-            CLIPage.setPosition(col + 1, row + (height) / 2);
+            CLICommand.setPosition(col + 1, row + (height) / 2);
             AnsiString.print(text, textColor, textFormat);
         }
     }

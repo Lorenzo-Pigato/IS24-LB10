@@ -7,9 +7,9 @@ import it.polimi.ingsw.lb10.client.clidesign.ansi.AnsiString;
 public abstract class CLILine {
 
     public static void drawHorizontal(int col, int row, int finalRow, AnsiColor color){
-        CLIPage.setPosition(col, row);
+        CLICommand.setPosition(col, row);
 
-        if(finalRow < row) CLIPage.setPosition(col, finalRow);
+        if(finalRow < row) CLICommand.setPosition(col, finalRow);
 
         for(int i = 0; i < finalRow-row; i++) AnsiString.print(AnsiSpecial.HORIZONTAL.getCode(), color);
     }
@@ -19,21 +19,21 @@ public abstract class CLILine {
     }
 
     public static void drawVertical(int col, int row, int finalCol, AnsiColor color){
-        CLIPage.setPosition(col, row);
+        CLICommand.setPosition(col, row);
 
         if(finalCol < col){
-            CLIPage.setPosition(finalCol, row);
+            CLICommand.setPosition(finalCol, row);
 
             for(int i = finalCol; i < col; i++) {
                 AnsiString.print(AnsiSpecial.VERTICAL.getCode(), color);
-                CLIPage.setPosition(i, row);
+                CLICommand.setPosition(i, row);
             }
         }
 
         else{
             for(int i = col; i < finalCol; i++) {
                 AnsiString.print(AnsiSpecial.VERTICAL.getCode(), color);
-                CLIPage.setPosition(i, row);
+                CLICommand.setPosition(i, row);
             }
         }
     }

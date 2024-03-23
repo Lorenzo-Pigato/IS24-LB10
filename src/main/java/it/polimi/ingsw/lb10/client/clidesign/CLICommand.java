@@ -3,7 +3,7 @@ package it.polimi.ingsw.lb10.client.clidesign;
 /**
  * This interface provides all methods to create simple graphics on terminal
  */
-public abstract class CLIPage {
+public abstract class CLICommand {
     private static final int defaultWidth = 160;
     private static final int defaultHeight = 50;
 
@@ -76,6 +76,17 @@ public abstract class CLIPage {
         System.out.print("\033[" + row + ";" + col + "H");
     }
 
+    public static void saveCursorPosition(){
+        System.out.print("\0337");
+        System.out.flush();
+    }
+
+    public static void restoreCursorPosition(){
+        System.out.print("\0338");
+        System.out.flush();
+    }
+
+/*
     public static void setInvisibleInput(){
         System.out.print("\u001B[8m");
         System.out.flush();
@@ -89,6 +100,7 @@ public abstract class CLIPage {
         System.out.print("\u001b[?25h");
         System.out.flush();
     }
+*/
 
     public static int getDefaultHeight() {
         return defaultHeight;
