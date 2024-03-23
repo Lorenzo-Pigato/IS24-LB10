@@ -43,7 +43,7 @@ public abstract class CLIBanner {
                         "         ░▓▒░▓█        \n" +
                         "          █▓▓▓░        \n" +
                         "           ██░         \n"
-                , AnsiColor.CYAN, col, row);
+                , AnsiColor.CYAN, col, row).print();
     }
 
     public static void displayMushroom(int col, int row) {
@@ -61,7 +61,7 @@ public abstract class CLIBanner {
                         "         ▒▓██▓         \n" +
                         "         ▒███▓         \n" +
                         "          ▒█▒          \n"
-                , AnsiColor.RED, col, row);
+                , AnsiColor.RED, col, row).print();
     }
 
     public static void displayButterfly(int col, int row) {
@@ -78,12 +78,12 @@ public abstract class CLIBanner {
                         " ▒██▓▓███  █░ ▒███▓██▓ \n" +
                         "  █▓▓██▓       ████▓▓░ \n" +
                         "     ░           ░░    \n"
-                , AnsiColor.PURPLE, col, row);
+                , AnsiColor.PURPLE, col, row).print();
     }
 
     public static void displayLeaf(int col, int row) {
         new CLIString(
-                "         ░         \n" +
+                "            ░      \n" +
                         "         ░██▓          \n" +
                         "        ░█▒▒▒█         \n" +
                         " ░░     █▒██▒██     ░░ \n" +
@@ -96,7 +96,7 @@ public abstract class CLIBanner {
                         "      ░▒███▓███▒       \n" +
                         "          ░█           \n" +
                         "          ▓░           \n"
-                , AnsiColor.GREEN, col, row);
+                , AnsiColor.GREEN, col, row).print();
     }
 
 }

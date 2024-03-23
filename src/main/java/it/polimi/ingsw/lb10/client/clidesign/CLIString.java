@@ -117,6 +117,11 @@ public class CLIString {
         return  new int[] {position[0], position[1]};
     }
 
+    /**
+     * This method replaces a string with another one, restoring old cursor position after the replacement
+     * @param oldString the string to be replaced
+     * @param newString the string to replace the old one with
+     */
     public static void replace(CLIString oldString, CLIString newString){
         oldString.deleteString();
         if (oldString.isCentered) newString.centerPrint();
@@ -124,6 +129,7 @@ public class CLIString {
             newString.reposition(oldString.getPosition()[0], oldString.getPosition()[1]);
             newString.print();
         }
+        CLICommand.restoreCursorPosition();
     }
 
 }
