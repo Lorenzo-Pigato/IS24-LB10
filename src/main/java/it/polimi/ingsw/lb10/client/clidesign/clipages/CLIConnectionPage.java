@@ -8,19 +8,12 @@ import it.polimi.ingsw.lb10.client.clidesign.ansi.AnsiColor;
 import it.polimi.ingsw.lb10.client.clidesign.ansi.AnsiString;
 
 public abstract class CLIConnectionPage {
-<<<<<<< HEAD
     private static final CLIString welcome = new CLIString(">> Welcome to Codex, new Player! <<", AnsiColor.YELLOW, 0, 36);
     private  static final CLIString invalidIp = new CLIString(">> Invalid server ip <<", AnsiColor.RED, 0, 36);
     private static final CLIString invalidPort = new CLIString(">> Invalid port number <<", AnsiColor.RED,0,36);
     private static final CLIString invalidInput = new CLIString(">> Invalid input <<", AnsiColor.RED, 0, 36);
     private static final CLIString options = new CLIString(">> Insert your server IP and PORT as IP:PORT\n>> ", AnsiColor.YELLOW, 0, 37);
-=======
-    private static final CLIString welcome = new CLIString(">> Welcome to Codex, new Player! <<", AnsiColor.YELLOW, 0, 26);
-    private  static final CLIString invalidIp = new CLIString(">> Invalid server ip <<", AnsiColor.RED, 0, 26);
-    private static final CLIString invalidPort = new CLIString(">> Invalid port number <<", AnsiColor.RED,0,26);
-    private static final CLIString invalidInput = new CLIString(">> Invalid input <<", AnsiColor.RED, 0, 26);
-    private static final CLIString options = new CLIString(">> Insert your server IP and PORT as IP:PORT\n>> ", AnsiColor.YELLOW, 0, 27);
->>>>>>> d56e9bbcaefd7478a12528a035ee25cc21444083
+
     public static void display() {
         CLICommand.clearScreen();
         CLICommand.home();
@@ -43,11 +36,7 @@ public abstract class CLIConnectionPage {
 
     public static void invalidIp(){
         CLICommand.restoreCursorPosition();
-<<<<<<< HEAD
         CLICommand.clearScreenAfterCursor();
-=======
-        CLICommand.clearLineAfterCursor();
->>>>>>> d56e9bbcaefd7478a12528a035ee25cc21444083
         CLIString.replace(welcome, invalidIp);
     }
 
