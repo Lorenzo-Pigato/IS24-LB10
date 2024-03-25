@@ -1,7 +1,11 @@
 package it.polimi.ingsw.lb10;
 
 import it.polimi.ingsw.lb10.client.Client;
+<<<<<<< HEAD
 import it.polimi.ingsw.lb10.client.clidesign.clipages.CLI404Page;
+=======
+import it.polimi.ingsw.lb10.client.clidesign.CLIBanner;
+>>>>>>> d56e9bbcaefd7478a12528a035ee25cc21444083
 import it.polimi.ingsw.lb10.client.clidesign.clipages.CLIConnectionPage;
 
 import java.util.Scanner;
@@ -38,9 +42,12 @@ public class ClientLauncher {
                     !isValidIP(input.split(":")[0]) ||
                     !isValidPort(input.split(":")[1])
                     );
+<<<<<<< HEAD
 
             CLI404Page.display404Page();
             input = in.nextLine();
+=======
+>>>>>>> d56e9bbcaefd7478a12528a035ee25cc21444083
         }
 
     }

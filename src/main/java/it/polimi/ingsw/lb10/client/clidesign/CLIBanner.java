@@ -88,7 +88,8 @@ public abstract class CLIBanner {
 
     public static void displayLeaf(int col, int row) {
         new CLIString(
-                "           ░       \n" +
+
+                "            ░      \n" +
                         "         ░██▓          \n" +
                         "        ░█▒▒▒█         \n" +
                         " ░░     █▒██▒██     ░░ \n" +
