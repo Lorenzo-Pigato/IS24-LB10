@@ -1,6 +1,9 @@
 package it.polimi.ingsw.lb10.client.controller;
 
 import it.polimi.ingsw.lb10.client.Client;
+import it.polimi.ingsw.lb10.client.clidesign.clipages.CLI404Page;
+import it.polimi.ingsw.lb10.client.clidesign.clipages.CLIConnectionPage;
+import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
 import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.network.Response;
@@ -10,19 +13,29 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CLIClientViewController implements ClientViewController{
 
-    private final CLIClientView cliClientView;
-    private final Socket socket;
+    private final CLIClientView view;
+    private Socket socket;
     private Client client;
     private ObjectInputStream socketIn;
     private ObjectOutputStream socketOut;
 
 
-    public CLIClientViewController(CLIClientView cliClientView, Socket socket, Client client) {
-        this.cliClientView = cliClientView;
+    public CLIClientViewController(CLIClientView cliClientView) {
+        this.view = cliClientView;
+    }
+
+    @Override
+    public void setSocket(Socket socket) {
         this.socket = socket;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     @Override
@@ -39,6 +52,9 @@ public class CLIClientViewController implements ClientViewController{
 
     }
 
+    /**
+     * this method is the first one running after instantiation of the controller, it opens the socket streams to communicate with server
+     */
     @Override
     public void setUp(){
         try{
@@ -136,4 +152,60 @@ public class CLIClientViewController implements ClientViewController{
         });
     }
 
+    private boolean isNotValidIP(String split){
+        String ipv4Pattern ="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
+        Pattern pattern = Pattern.compile(ipv4Pattern);
+        Matcher matcher = pattern.matcher(split);
+        return !matcher.matches();
+    }
+
+    private boolean isNotValidPort(String port){
+        try{
+            int portNumber = Integer.parseInt(port);
+            return portNumber < 1024 || portNumber > 65535;
+        }catch(NumberFormatException e){
+            return true;
+        }
+    }
+
+    @Override
+    public Socket initializeConnection() throws ConnectionErrorException {
+
+        Socket cliSocket;
+        view.setPage(new CLIConnectionPage());
+        Scanner in = new Scanner(System.in);
+        String input;
+        String[] parsed;
+        //x.y.z.w:k
+
+        do{
+            view.displayPage();       //Calling ClientView
+            input = in.nextLine();
+            parsed = input.split(":");
+            if(parsed.length != 2 ||
+                     isNotValidIP(parsed[0]) && isNotValidPort(parsed[1])){ //invalid input, none of the fields is correct (ip:port)
+                view.getPage().update(new CLIConnectionPage.InvalidInput());
+
+            } else if (isNotValidIP(parsed[0])) {
+                view.getPage().update(new CLIConnectionPage.InvalidIP());
+
+            } else if (isNotValidPort(parsed[1])) {
+                view.getPage().update(new CLIConnectionPage.InvalidPort());
+            }
+        }while(parsed.length != 2 || isNotValidPort(parsed[1]) || isNotValidIP(parsed[0]));
+
+        try {
+            cliSocket = new Socket(parsed[0], Integer.parseInt(parsed[1]));
+        } catch (IOException e) {
+            throw new ConnectionErrorException();
+        }
+
+        return cliSocket;
+    }
+
+    @Override
+    public void errorPage() {
+        view.setPage(new CLI404Page());
+        view.displayPage();
+    }
 }

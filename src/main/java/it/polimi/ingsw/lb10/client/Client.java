@@ -1,6 +1,9 @@
 package it.polimi.ingsw.lb10.client;
 
+import it.polimi.ingsw.lb10.client.controller.ClientViewController;
+import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.view.ClientView;
+import it.polimi.ingsw.lb10.network.requests.preMatch.LoginRequest;
 
 import java.net.Socket;
 
@@ -10,12 +13,15 @@ public class Client implements Runnable{
     //unaware of it
 
     private Socket socket;
-    private ClientView view;
+    private final ClientViewController controller;
     private boolean active = true;
 
-    public Client(Socket socket,  ClientView view) {
+    public Client(ClientViewController controller) {
+        this.controller = controller;
+    }
+
+    public void setSocket(Socket socket) {
         this.socket = socket;
-        this.view = view;
     }
 
     /**
@@ -26,7 +32,27 @@ public class Client implements Runnable{
     }
 
     public void run(){
-    //we assign and run the ClientViewController based on the view
+        //we have instantiated both view and view controller
+        controller.setClient(this);
+
+        //server connection
+        try{
+            Socket socket = controller.initializeConnection();
+        }catch(ConnectionErrorException e){
+            controller.errorPage();
+            return;
+        }
+
+        setSocket(socket);
+
+        //setup
+        controller.setUp();
+
+        //login
+        //controller.asyncWriteToSocket(new LoginRequest());
+
+
+
     }
 
     /**

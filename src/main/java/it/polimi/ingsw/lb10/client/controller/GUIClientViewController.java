@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lb10.client.controller;
 
+import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.view.GUIClientView;
 import it.polimi.ingsw.lb10.client.Client;
 import it.polimi.ingsw.lb10.network.requests.Request;
@@ -16,9 +17,19 @@ public class GUIClientViewController implements ClientViewController {
     private ObjectInputStream socketIn;
     private ObjectOutputStream socketOut;
 
-    public GUIClientViewController(GUIClientView cliClientView, Socket socket, Client client) {
+    public GUIClientViewController(GUIClientView cliClientView) {
         this.guiClientView = cliClientView;
-        this.socket = socket;
+    }
+
+
+    @Override
+    public void setSocket(Socket socket) {
+
+    }
+
+    @Override
+    public void setClient(Client client) {
+
     }
 
     @Override
@@ -46,6 +57,17 @@ public class GUIClientViewController implements ClientViewController {
     @Override
     public Thread asyncReadFromSocket() {
         return null;
+    }
+
+
+    @Override
+    public Socket initializeConnection() throws ConnectionErrorException {
+        return null;
+    }
+
+    @Override
+    public void errorPage() {
+
     }
 
 }

@@ -1,8 +1,16 @@
 package it.polimi.ingsw.lb10.client.controller;
 
+import it.polimi.ingsw.lb10.client.Client;
+import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.network.requests.Request;
 
+import java.net.Socket;
+
 public interface ClientViewController {
+
+    public void setSocket(Socket socket);
+
+    public void setClient(Client client);
 
 
     /**This method closes all Socket streams used to communicate
@@ -48,6 +56,9 @@ public interface ClientViewController {
     public Thread asyncReadFromSocket();
 
 
+    Socket initializeConnection() throws ConnectionErrorException;
+
+    public void errorPage();
 }
 
 
