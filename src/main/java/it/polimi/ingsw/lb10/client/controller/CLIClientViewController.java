@@ -4,7 +4,6 @@ import it.polimi.ingsw.lb10.client.Client;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
 import it.polimi.ingsw.lb10.network.Request;
 import it.polimi.ingsw.lb10.network.Response;
-import it.polimi.ingsw.lb10.util.CommandParser;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -120,7 +119,7 @@ public class CLIClientViewController implements ClientViewController{
             while (client.isActive()) {
                 try {
                     String input = in.nextLine();
-                    Response command = CommandParser.parse(input);
+                    //Response command = CommandParser.parse(input);
                     // REACTS!!!
                 } catch (Exception e) {
                     e.printStackTrace();
