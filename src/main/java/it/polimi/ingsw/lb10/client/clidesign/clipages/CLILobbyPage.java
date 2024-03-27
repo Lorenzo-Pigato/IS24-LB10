@@ -3,11 +3,10 @@ package it.polimi.ingsw.lb10.client.clidesign.clipages;
 import it.polimi.ingsw.lb10.client.clidesign.*;
 import it.polimi.ingsw.lb10.client.clidesign.ansi.AnsiColor;
 import it.polimi.ingsw.lb10.client.clidesign.ansi.AnsiFormat;
-import it.polimi.ingsw.lb10.client.clidesign.ansi.AnsiString;
 
 public abstract class CLILobbyPage {
     private static final CLIString enterChoice = new CLIString(">> Enter your choice <<\n>> ", AnsiColor.CYAN, AnsiFormat.BOLD, 1, 38);
-    public static void displayLobbyPage(){
+    public static void display(){
         CLICommand.initialize();
 
         CLIBanner.displayCodex(5);
@@ -27,7 +26,7 @@ public abstract class CLILobbyPage {
     }
 
     public static void main(String[] args) {
-        displayLobbyPage();
+        display();
     }
 
     public static void updateOnInvalidInput() {

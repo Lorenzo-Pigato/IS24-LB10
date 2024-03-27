@@ -39,7 +39,7 @@ public class ClientLauncher {
                     !isValidPort(input.split(":")[1])
                     );
 
-            CLI404Page.display404Page();
+            CLI404Page.display();
             input = in.nextLine();
         }
 
