@@ -33,9 +33,11 @@ public class MatchModel extends Observable<Request>{
         this.id = id;
         this.numberOfPlayers = numberOfPlayers;
         initializeTable();
-
     }
 
+    /**
+     * Core of the game start, it's defined everything excepts the matrix that it's defined inside the Player's constructor
+     */
     public void initializeTable() throws IOException {
         initializeDecks();
         startingUncoveredCards();
@@ -55,6 +57,7 @@ public class MatchModel extends Observable<Request>{
 // commonQuests.add(questDeck.json.draw());
 // I need time to dev the Quest!
     }
+
 
     public void addResourceUncovered(){
         resourceUncovered.add(resourceDeck.draw());

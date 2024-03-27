@@ -26,6 +26,7 @@ public class GoldenDeck implements Deck {
 
     public void fillDeck(){
         ObjectMapper mapper = new ObjectMapper();
+
         try {
             cards = mapper.readValue(new File("src/main/resources/it/polimi/ingsw/lb10/json/goldenDeck.json"),new TypeReference<ArrayList<GoldenCard>>() {});
         } catch (Exception e) {

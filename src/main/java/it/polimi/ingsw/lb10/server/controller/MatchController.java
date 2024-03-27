@@ -2,6 +2,8 @@ package it.polimi.ingsw.lb10.server.controller;
 
 import it.polimi.ingsw.lb10.network.Request;
 import it.polimi.ingsw.lb10.server.model.MatchModel;
+import it.polimi.ingsw.lb10.server.model.Player;
+import it.polimi.ingsw.lb10.server.model.cards.Card;
 import it.polimi.ingsw.lb10.util.Observer;
 
 import java.util.concurrent.BlockingQueue;
@@ -31,6 +33,22 @@ public class MatchController implements Runnable , Observer<Request> {
         }
 
     }
+
+    /** Rules to position the card inside the matrix
+     * @return 0
+     */
+    public int availableCorner(Player player,Card card,int i, int j){
+
+        for(int count=0;count<4;count++){
+            // all the code that I wrote...
+        }
+
+        //get i and j to the starting position
+        player.getMatrix().setCard(card,i,j);
+        // I need in matrix one method instead of setCard with all the methods
+        return -1;
+    }
+
 
     @Override
     public void update(Request request) {

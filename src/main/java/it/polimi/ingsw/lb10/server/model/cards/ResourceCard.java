@@ -16,14 +16,6 @@ public class ResourceCard extends Card {
     private Resource resource;
     public ResourceCard(){}
 
-public ResourceCard(int id, boolean flipped, int points,Resource resource){
-    this.setId(id);
-    this.setPoints(points);
-    this.setFlipped(flipped);
-    this.resource= resource;
-}
-
-
     public ResourceCard(int id, boolean flipped, int points, ArrayList<Corner> corners, Resource resource){
         this.setId(id);
         this.setPoints(points);
