@@ -1,22 +1,16 @@
-package it.polimi.ingsw.lb10.client.view.clidesign;
-
-import it.polimi.ingsw.lb10.client.view.clidesign.ansi.AnsiColor;
-import it.polimi.ingsw.lb10.client.view.clidesign.ansi.AnsiFormat;
-import it.polimi.ingsw.lb10.client.view.clidesign.ansi.AnsiSpecial;
-import it.polimi.ingsw.lb10.client.view.clidesign.ansi.AnsiString;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.Scanner;
+package it.polimi.ingsw.lb10.client.clidesign;
 
 /**
  * This interface provides all methods to create simple graphics on terminal
  */
-public class CLIPage {
+public abstract class CLICommand {
+    private static final int defaultWidth = 160;
+    private static final int defaultHeight = 50;
+
     /**
      * Set cursor position to (1,1) - Home
      */
-    static void home() {
+    public static void home() {
         System.out.print("\033[H");
         System.out.flush();
     }
@@ -24,23 +18,35 @@ public class CLIPage {
     /**
      * Clear screen using ANSI code
      */
-    static void clearScreen() {
+    public static void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
 
-    static void clearLineAfterCursor(){
+    public static void clearLineAfterCursor(){
         System.out.print("\033[0K");
         System.out.flush();
     }
 
-    static void clearLineUntilCursor(){
+    public static void clearLineUntilCursor(){
         System.out.print("\033[1K");
         System.out.flush();
     }
 
-    static void clearLine(){
+    public static void clearLine(){
         System.out.print("\033[2K");
+        System.out.flush();
+    }
+
+    public static void clearNextLines(int lineCount){
+        for(int i = 0; i < lineCount; i++) {
+            clearLine();
+            System.out.println("\n");;
+        }
+    }
+
+    public static void clearScreenAfterCursor(){
+        System.out.print("\033[0J");
         System.out.flush();
     }
 
@@ -49,7 +55,7 @@ public class CLIPage {
      * @param cols number of terminal columns
      * @param rows number of terminal rows
      */
-    static void setScreenSize(int cols, int rows) {
+    public static void setScreenSize(int cols, int rows) {
         System.out.print("\033[8;"+rows+";"+cols+"t");
     }
 
@@ -58,8 +64,8 @@ public class CLIPage {
      * window size of 80x40 - default system size
      * clear window, cursor in (1,1)
      */
-    static void initialize() {
-        setScreenSize(80,24);
+    public static void initialize() {
+        setScreenSize(160,50);
         home();
         clearScreen();
     }
@@ -69,27 +75,46 @@ public class CLIPage {
      * @param col column position - starting at 1
      * @param row row position - starting at 1
      */
-    static void setPosition(int col, int row) {
+    public static void setPosition(int col, int row) {
         if(row < 1) row = 1;
         if(col < 1) col = 1;
         System.out.print("\033[" + row + ";" + col + "H");
     }
 
-    static void goToInputLine(){
-        setPosition(0,23);
+    public static void saveCursorPosition(){
+        System.out.print("\0337");
+        System.out.flush();
     }
 
-    static void setInvisibleInput(){
+    public static void restoreCursorPosition(){
+        System.out.print("\0338");
+        System.out.flush();
+    }
+
+/*
+    public static void setInvisibleInput(){
         System.out.print("\u001B[8m");
         System.out.flush();
         System.out.print("\u001b[?25l");
         System.out.flush();
     }
 
-    static void resetInvisibleInput(){
+    public static void resetInvisibleInput(){
         System.out.print("\u001B[28m");
         System.out.flush();
         System.out.print("\u001b[?25h");
         System.out.flush();
     }
+*/
+
+    public static int getDefaultHeight() {
+        return defaultHeight;
+    }
+
+    public static int getDefaultWidth() {
+        return defaultWidth;
+    }
 }
+
+
+////Implementare cancellazione porzioni pagina

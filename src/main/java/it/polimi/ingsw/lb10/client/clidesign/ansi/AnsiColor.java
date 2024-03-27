@@ -1,4 +1,4 @@
-package it.polimi.ingsw.lb10.client.view.clidesign.ansi;
+package it.polimi.ingsw.lb10.client.clidesign.ansi;
 
 public enum AnsiColor {
     DEFAULT(""),
@@ -9,6 +9,7 @@ public enum AnsiColor {
     CYAN("\u001B[36m"),
     WHITE("\u001B[37m"),
     YELLOW("\u001B[33m"),
+    GREY("\u001B[90m"),
     YELLOWBG("\033[35;47m");
 
     private final String code;

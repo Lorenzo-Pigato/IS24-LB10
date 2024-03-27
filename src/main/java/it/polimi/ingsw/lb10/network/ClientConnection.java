@@ -42,7 +42,7 @@ public class ClientConnection extends Observable<Request> implements Runnable {
             close();
         }
     }
-    //the idea is: Client has an asyncronous stream of requests to send via his view, so server just waits for them
+    //the idea is: Client has an asynchronous stream of requests to send via his view, so server just waits for them
     //and handles them transparently via a handler, which reacts using CONTROLLER and MODEL just by evaluating
     // the object Request type
 
