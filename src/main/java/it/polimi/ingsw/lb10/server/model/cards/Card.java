@@ -11,8 +11,6 @@ public abstract class Card {
     private int points;
     private ArrayList<Corner> corners = new ArrayList<Corner>();
 
-
-
     // --------> METHODS <--------
     public void flip(){
         flipped=!flipped;
@@ -48,4 +46,6 @@ public abstract class Card {
     public void setCorners(ArrayList<Corner> corners) {
         this.corners = corners;
     }
+
+
 }

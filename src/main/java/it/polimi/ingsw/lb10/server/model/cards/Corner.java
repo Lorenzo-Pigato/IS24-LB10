@@ -4,53 +4,35 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import it.polimi.ingsw.lb10.server.model.Resource;
 import java.util.ArrayList;
 
-/*
- *  Define how to set the null element (null or 0)
- * */
 
-// I tried to add Lombok, but I don't know how to make the de-serializing work
+public abstract class Corner {
+    private boolean available;
+    private Position position;
 
-public class Corner {
-
-
-    private Resource resource;
-    private boolean left;
-    private boolean up;
-
-
-    public Corner(){}
-
-    public Corner(Resource resource, boolean up_down,boolean left_right){
-        this.left=left_right;
-        this.up=up_down;
-        this.resource=resource;
+    public Corner(Position position){
+        this.position=position;
     }
 
     // --------> GETTER <--------
-    @JsonAlias("left")
-    public boolean isLeft_Right() {
-        return left;
+    @JsonAlias("position")
+    public Position getPosition() {
+        return position;
     }
-    @JsonAlias("up")
-    public boolean isUp_Down() {
-        return up;
-    }
-    @JsonAlias("resource")
-    public Resource getResource() {
-        return resource;
+
+    @JsonAlias("available")
+    public boolean isAvailable() {
+        return available;
     }
 
     // --------> SETTER <--------
-    @JsonAlias("left")
-    public void setLeft_right(boolean left_right) {
-        this.left = left_right;
+    @JsonAlias("position")
+    public void setPosition(Position position) {
+        this.position = position;
     }
-    @JsonAlias("up")
-    public void setUp_down(boolean up_down) {
-        this.up = up_down;
+
+    @JsonAlias("available")
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
-    @JsonAlias("resource")
-    public void setResource(Resource resource) {
-        this.resource = resource;
-    }
+
 }

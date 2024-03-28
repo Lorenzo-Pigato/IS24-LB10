@@ -1,0 +1,40 @@
+[ {
+  "id" : 0,
+  "flipped" : true,
+  "points" : 1,
+  "resource" : "ANIMAL",
+  "corner" : [ {
+    "available" : false,
+    "position" : "TOPRIGHT"
+  }, {
+    "available" : true,
+    "position" : "TOPLEFT",
+    "resource" : null
+  } ]
+}, {
+  "id" : 1,
+  "flipped" : true,
+  "points" : 1,
+  "resource" : "ANIMAL",
+  "corner" : [ {
+    "available" : false,
+    "position" : "TOPRIGHT"
+  }, {
+    "available" : true,
+    "position" : "TOPLEFT",
+    "resource" : null
+  } ]
+}, {
+  "id" : 2,
+  "flipped" : true,
+  "points" : 1,
+  "resource" : "ANIMAL",
+  "corner" : [ {
+    "available" : false,
+    "position" : "TOPRIGHT"
+  }, {
+    "available" : true,
+    "position" : "TOPLEFT",
+    "resource" : null
+  } ]
+} ]

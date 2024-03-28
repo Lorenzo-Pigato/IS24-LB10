@@ -58,6 +58,14 @@ public class MatchModel extends Observable<Request>{
 // I need time to dev the Quest!
     }
 
+    public boolean isPlayerIn(Player playerToCheck){
+        List<Player> players = getPlayers();
+        for(Player player :  players){
+            if(player.equals(playerToCheck))
+                return true;
+        }
+        return false;
+    }
 
     public void addResourceUncovered(){
         resourceUncovered.add(resourceDeck.draw());
@@ -81,6 +89,9 @@ public class MatchModel extends Observable<Request>{
         return temp;
     }
 
+    public List<Player> getPlayers() {
+        return players;
+    }
 
     // --------> SETTER <--------
     @Override
@@ -88,7 +99,4 @@ public class MatchModel extends Observable<Request>{
         super.notify(request);
     }
 
-    public static class Matrix {
-
-    }
 }

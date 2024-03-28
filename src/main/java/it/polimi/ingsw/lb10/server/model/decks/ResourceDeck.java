@@ -3,9 +3,7 @@ package it.polimi.ingsw.lb10.server.model.decks;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import it.polimi.ingsw.lb10.server.model.cards.Card;
-import it.polimi.ingsw.lb10.server.model.cards.Corner;
-import it.polimi.ingsw.lb10.server.model.cards.ResourceCard;
+import it.polimi.ingsw.lb10.server.model.cards.*;
 
 import it.polimi.ingsw.lb10.server.model.Resource;
 
@@ -37,13 +35,22 @@ public class ResourceDeck implements Deck {
     /**
      * This method'll call the json with the complete resource cards' deck
      */
-    public void fillDeck() {
+    public void fillDeck() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        try {
-            cards = mapper.readValue(new File("src/main/resources/it/polimi/ingsw/lb10/json/resourceDeck.json"),new TypeReference<ArrayList<ResourceCard>>() {});
-        } catch (Exception e) {
-            System.out.println(e);
+        corners.add(new CornetNotAvailable(Position.TOPRIGHT));
+        corners.add(new CornerAvailable(Position.TOPLEFT));
+        for(int i=0;i<3;i++){
+            cards.add(new ResourceCard(i, true, 1,corners, Resource.ANIMAL));
         }
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        mapper.writeValue(new File("src/main/resources/it/polimi/ingsw/lb10/json", "questDeck.json"), cards);
+        
+//        try {
+//            cards = mapper.readValue(new File("src/main/resources/it/polimi/ingsw/lb10/json/resourceDeck.json"),new TypeReference<ArrayList<ResourceCard>>() {});
+//        } catch (Exception e) {
+//            System.out.println(e);
+//        }
+
     }
 
     public static void main(String args[]) throws IOException {
@@ -52,14 +59,5 @@ public class ResourceDeck implements Deck {
         rd.fillDeck();
     }
 }
-/*
-//        corners.add(new Corner(true, false,Resource.FEATHER));
-//        corners.add(new Corner(false, true,Resource.PLANT));
-//        for(int i=0;i<3;i++){
-//            cards.add(new ResourceCard(i, true, 1, Resource.ANIMAL));
-//            cards.add(new ResourceCard(i, true, 1, corners,Resource.ANIMAL));
-//        }
-//        mapper.enable(SerializationFeature.INDENT_OUTPUT);
-//        mapper.writeValue(new File("src/main/resources/it/polimi/ingsw/lb10/json", ""), cards);
 
- */
+

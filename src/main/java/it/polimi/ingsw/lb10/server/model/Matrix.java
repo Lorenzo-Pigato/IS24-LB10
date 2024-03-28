@@ -15,7 +15,6 @@ public class Matrix {
         startingMatrix();
         this.player=player;
     }
-
     /**
      *    we work with the worst case, 83x83
      */
@@ -27,6 +26,17 @@ public class Matrix {
                 matrix.get(i).add(node);
             }
         }
+    }
+
+    /**
+     * @param card is the starting card!
+     */
+    public void setCard(Card card){
+        //I may create a method that if there's a determinate position, skip to the next
+        getMatrixNode(41,41).addNode(card);
+        getMatrixNode(41+1,41).addNode(card);
+        getMatrixNode(41,41+1).addNode(card);
+        getMatrixNode(41+1,41+1).addNode(card);
     }
 
     /**
@@ -42,7 +52,7 @@ public class Matrix {
        getMatrixNode(i,j+1).addNode(card);
        getMatrixNode(i+1,j+1).addNode(card);
 
-       setAvailabilityCorner(card,i--,j--);
+//       setAvailabilityCorner(card,i--,j--);
     }
 
     /**
@@ -59,23 +69,25 @@ public class Matrix {
         getMatrixNode(i+1,j+1);
     }
 
-    /**
-     * @param card to add
-     * @param i row
-     * @param j column
-     */
-    public void setAvailabilityCorner(Card card, int i, int j){
-        for (Corner corner: card.getCorner() ){
-            if(corner.isLeft_Right() && corner.isUp_Down())//x,y
-                updatingCard(corner.getResource(),i,j);
-            if(!corner.isLeft_Right() && corner.isUp_Down())//x+1,y
-                updatingCard(corner.getResource(),i+1,j);
-            if(corner.isLeft_Right() && !corner.isUp_Down())//x,y+1
-                updatingCard(corner.getResource(),i,j+1);
-            if(!corner.isLeft_Right() && !corner.isUp_Down())//x+1,y+1
-                updatingCard(corner.getResource(),i+1,j+1);
-           }
-    }
+//    /**
+//     * @param card to add
+//     * @param i row
+//     * @param j column
+//     */
+//    public void setAvailabilityCorner(Card card, int i, int j){
+//        for (Corner corner: card.getCorner() ){
+//            if(corner.isLeft_Right() && corner.isUp_Down())//x,y
+//                updatingCard(corner.getResource(),i,j);
+//            if(!corner.isLeft_Right() && corner.isUp_Down())//x+1,y
+//                updatingCard(corner.getResource(),i+1,j);
+//            if(corner.isLeft_Right() && !corner.isUp_Down())//x,y+1
+//                updatingCard(corner.getResource(),i,j+1);
+//            if(!corner.isLeft_Right() && !corner.isUp_Down())//x+1,y+1
+//                updatingCard(corner.getResource(),i+1,j+1);
+//           }
+//    }
+
+
     public void updatingCard(Resource resource, int i, int j){
         getMatrixNode(i,j).setAvailable(true);
         player.addOnMapResources(resource);
@@ -83,21 +95,8 @@ public class Matrix {
         //node, id it has 2 of size I take the first and I delete the resource.
     }
 
-    /**
-     * @param card is the starting card!
-     */
-    public void setCard(Card card){
-        getMatrixNode(41,41).addNode(card);
-        getMatrixNode(41+1,41).addNode(card);
-        getMatrixNode(41,41+1).addNode(card);
-        getMatrixNode(41+1,41+1).addNode(card);
-    }
-
     public Node getMatrixNode(int i, int j){
         return  matrix.get(i).get(j);
-    }
-    public void setMatrixNode(int i, int j){
-
     }
 
 }
