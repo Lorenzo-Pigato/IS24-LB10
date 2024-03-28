@@ -1,5 +1,7 @@
 package it.polimi.ingsw.lb10.client.view;
 
+import org.jetbrains.annotations.Nullable;
+
 public interface ClientView {
     /**
      * Pages are a container for states, which are the actual views

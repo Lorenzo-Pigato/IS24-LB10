@@ -4,6 +4,7 @@ import it.polimi.ingsw.lb10.client.cli.CLIBanner;
 import it.polimi.ingsw.lb10.client.cli.CLICommand;
 import it.polimi.ingsw.lb10.client.cli.CLIString;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
+import org.jetbrains.annotations.NotNull;
 
 public class CLILoginPage implements CLIPage {
     private static final CLIString insertUsername = new CLIString(">> Insert your username <<\n>> ", AnsiColor.GREEN, 1, 34);
@@ -29,23 +30,25 @@ public class CLILoginPage implements CLIPage {
 
     public static class invalidLength implements CLIState {
         @Override
-        public void apply(String[] args) {
+        public void apply(String @NotNull [] args) {
             if(alreadyTaken.isVisible()) CLIString.replace(alreadyTaken, invalidLength);
             else invalidLength.centerPrint();
 
             CLICommand.restoreCursorPosition();
-            CLICommand.clearLineAfterCursor();
+            CLICommand.clearUserInput(args[0]);
         }
     }
 
     public static class alreadyTaken implements CLIState {
         @Override
-        public void apply(String[] args) {
+        public void apply(String @NotNull [] args) {
+            if(args[0] == null) throw new IllegalArgumentException();
+
             if(invalidLength.isVisible()) CLIString.replace(invalidLength, alreadyTaken);
             else alreadyTaken.centerPrint();
 
             CLICommand.restoreCursorPosition();
-            CLICommand.clearLineAfterCursor();
+            CLICommand.clearUserInput(args[0]);
         }
     }
 }

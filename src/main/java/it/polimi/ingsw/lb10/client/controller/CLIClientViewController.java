@@ -206,7 +206,7 @@ public class CLIClientViewController implements ClientViewController{
     }
 
     @Override
-    public void errorPage() {
+    public void handleConnectionError() {
         view.setPage(new CLI404Page());
         view.pageStateDisplay(new CLI404Page.Default(), null);
     }

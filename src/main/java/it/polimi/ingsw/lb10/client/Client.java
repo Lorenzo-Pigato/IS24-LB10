@@ -2,8 +2,6 @@ package it.polimi.ingsw.lb10.client;
 
 import it.polimi.ingsw.lb10.client.controller.ClientViewController;
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
-import it.polimi.ingsw.lb10.client.view.ClientView;
-import it.polimi.ingsw.lb10.network.requests.preMatch.LoginRequest;
 
 import java.net.Socket;
 
@@ -39,7 +37,7 @@ public class Client implements Runnable{
         try{
             Socket socket = controller.initializeConnection();
         }catch(ConnectionErrorException e){
-            controller.errorPage();
+            controller.handleConnectionError();
             return;
         }
 

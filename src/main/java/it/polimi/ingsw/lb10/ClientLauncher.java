@@ -5,6 +5,7 @@ import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
 import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
 import it.polimi.ingsw.lb10.client.view.GUIClientView;
+import org.jetbrains.annotations.NotNull;
 
 public class ClientLauncher {
     /**
@@ -13,7 +14,7 @@ public class ClientLauncher {
      * @param args cli/gui user choice
      */
 
-    public static void main( String[] args )
+    public static void main( String @NotNull [] args )
     {
         Client client;
         if(args[1].equals("cli")){
