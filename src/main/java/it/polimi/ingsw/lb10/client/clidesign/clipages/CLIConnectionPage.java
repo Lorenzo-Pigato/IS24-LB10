@@ -14,21 +14,21 @@ public class CLIConnectionPage implements CLIPage{
     private static final CLIString invalidInput = new CLIString(">> Invalid input <<", AnsiColor.RED, 0, 36);
     private static final CLIString options = new CLIString(">> Insert your server IP and PORT as IP:PORT\n>> ", AnsiColor.YELLOW, 0, 37);
 
-    private PageState state = new Default();
+    private CLIState state = new Default();
 
     @Override
     public void display() {
-        state.display();
+        state.update();
     }
 
     @Override
-    public void update(PageState state) {
+    public void update(CLIState state) {
         this.state = state;
     }
 
-    private static class Default extends PageState{
+    private static class Default implements CLIState {
         @Override
-        public void display() {
+        public void update() {
             CLICommand.clearScreen();
             CLICommand.home();
             CLIBanner.displayWolf(20,15);
@@ -46,27 +46,27 @@ public class CLIConnectionPage implements CLIPage{
         }
     }
 
-    public static class InvalidInput extends PageState{
+    public static class InvalidInput implements CLIState {
         @Override
-        public void display() {
+        public void update() {
             CLICommand.restoreCursorPosition();
             CLICommand.clearScreenAfterCursor();
             CLIString.replace(welcome, invalidInput);
         }
     }
 
-    public static class InvalidIP extends PageState {
+    public static class InvalidIP implements CLIState {
         @Override
-        public void display(){
+        public void update(){
             CLICommand.restoreCursorPosition();
             CLICommand.clearScreenAfterCursor();
             CLIString.replace(welcome, invalidIp);
         }
     }
 
-    public static class InvalidPort extends PageState {
+    public static class InvalidPort implements CLIState {
         @Override
-        public void display() {
+        public void update() {
             CLICommand.restoreCursorPosition();
             CLICommand.clearScreenAfterCursor();
             CLIString.replace(welcome, invalidPort);

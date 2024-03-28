@@ -32,17 +32,4 @@ public class ClientLauncher {
         final Thread clientThread = new Thread(client);
         clientThread.start();
     }
-
-    public static String showConfig(){
-        return null;
-    }
-
-    public static boolean parseConfig(String config){
-
-        return true;
-    }
-
-
-
-
 }

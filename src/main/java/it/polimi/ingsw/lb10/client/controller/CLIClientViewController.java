@@ -53,7 +53,8 @@ public class CLIClientViewController implements ClientViewController{
     }
 
     /**
-     * this method is the first one running after instantiation of the controller, it opens the socket streams to communicate with server
+     * this method is the first to be run after instantiation of the controller,
+     * opening socket streams to communicate with the server
      */
     @Override
     public void setUp(){
