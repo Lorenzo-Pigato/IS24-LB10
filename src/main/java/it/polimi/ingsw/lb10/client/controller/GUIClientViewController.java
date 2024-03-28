@@ -61,8 +61,8 @@ public class GUIClientViewController implements ClientViewController {
 
 
     @Override
-    public Socket initializeConnection() throws ConnectionErrorException {
-        return null;
+    public void initializeConnection() throws ConnectionErrorException {
+
     }
 
     @Override

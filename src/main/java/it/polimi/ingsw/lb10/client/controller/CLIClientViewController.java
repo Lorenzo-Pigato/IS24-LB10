@@ -44,7 +44,6 @@ public class CLIClientViewController implements ClientViewController{
             socketIn.close();
             socketOut.close();
         }catch(IOException e){
-            e.printStackTrace();
             System.out.println("Error closing sockets");
         }finally{
             client.setActive(false);
@@ -169,7 +168,7 @@ public class CLIClientViewController implements ClientViewController{
     }
 
     @Override
-    public Socket initializeConnection() throws ConnectionErrorException {
+    public void initializeConnection() throws ConnectionErrorException {
 
         Socket cliSocket;
         view.setPage(new CLIConnectionPage());
@@ -196,11 +195,11 @@ public class CLIClientViewController implements ClientViewController{
 
         try {
             cliSocket = new Socket(parsed[0], Integer.parseInt(parsed[1]));
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new ConnectionErrorException();
         }
 
-        return cliSocket;
+        setSocket(cliSocket);
     }
 
     @Override

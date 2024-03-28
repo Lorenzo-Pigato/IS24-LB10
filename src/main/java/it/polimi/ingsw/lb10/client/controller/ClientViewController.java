@@ -56,7 +56,7 @@ public interface ClientViewController {
     public Thread asyncReadFromSocket();
 
 
-    Socket initializeConnection() throws ConnectionErrorException;
+    public void initializeConnection() throws ConnectionErrorException;
 
     public void errorPage();
 }
