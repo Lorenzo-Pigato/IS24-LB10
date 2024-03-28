@@ -10,7 +10,7 @@ import java.util.concurrent.BlockingQueue;
 *@ the run() method takes continuously the requests (pushed by ClientConnection(s)) from the BlockingQueue snd processes
 *@ them by entering the model and updating the view
 *@ this implementation goes over the Observer implementation to optimize thread synchronization
-*@ Infact, using an Observer implementation, this class wouldn't be a Runnable istance, and ClientConnection
+*@ In fact, using an Observer implementation, this class wouldn't be a Runnable istance, and ClientConnection
 *@ would access this object
 *@ with synchronized blocks to update the model and the view. Using this kind of implementation (BlockingQueue),
 *@ ClientConnection
@@ -19,6 +19,7 @@ import java.util.concurrent.BlockingQueue;
 
 public class MatchController implements Runnable, Observer<Request> {
 
+    private Boolean active = true;
     private MatchModel model;
     private BlockingQueue<Request> requests;
 
@@ -26,10 +27,9 @@ public class MatchController implements Runnable, Observer<Request> {
 
     @Override
     public void run() {
-        while(true){
+        while(active){
 
         }
-
     }
 
     @Override

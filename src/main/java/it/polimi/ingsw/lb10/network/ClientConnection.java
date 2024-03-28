@@ -47,11 +47,10 @@ public class ClientConnection extends Observable<Request> implements Runnable {
     // the object Request type
 
     public void run(){
-        System.out.println(">>Server : new Client connected...\n");
         while(isActive()){
             try{
                 Request request = (Request) (input.readObject());
-                //requestHandler.handle(request); use Visitor Patter or Map<Class<? extends Request>, Consumer>
+                //requestHandler.handle(request); use Visitor Pattern
 
             }catch(Exception e){
                 System.out.println(e.toString() + "occurred");
@@ -80,6 +79,21 @@ public class ClientConnection extends Observable<Request> implements Runnable {
                 send(r);
             }
         }).start();
+    }
+
+    /**
+     * Sets up the streams to communicate with client
+     */
+    public void setUp(){
+        try{
+            input = new ObjectInputStream(socket.getInputStream());
+            output = new ObjectOutputStream(socket.getOutputStream());
+            output.flush();
+        }catch(IOException e){
+            close();
+        }
+
+
     }
 
 }

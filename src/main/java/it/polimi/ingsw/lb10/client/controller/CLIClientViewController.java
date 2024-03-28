@@ -33,16 +33,20 @@ public class CLIClientViewController implements ClientViewController{
     public void setSocket(Socket socket) {
         this.socket = socket;
     }
-
     public void setClient(Client client) {
         this.client = client;
     }
+    public Socket getSocket() {return socket;}
+    public Client getClient() {return client;}
+    public ObjectInputStream getSocketIn() {return socketIn;}
+    public ObjectOutputStream getSocketOut() {return socketOut;}
 
     @Override
     public void close() {
         try{
             socketIn.close();
             socketOut.close();
+            socket.close();
         }catch(IOException e){
             System.out.println("Error closing sockets");
         }finally{
@@ -57,14 +61,15 @@ public class CLIClientViewController implements ClientViewController{
     @Override
     public void setUp(){
         try{
+            socketOut = new ObjectOutputStream(socket.getOutputStream());
+            socketOut.flush();
+        }catch(IOException e){
+            System.out.println("Error creating Socket Output Stream...");
+        }
+        try{
             socketIn = new ObjectInputStream(socket.getInputStream());
         }catch(IOException e){
             System.out.println("Error creating Socket Input Stream...");
-        }
-        try{
-            socketOut = new ObjectOutputStream(socket.getOutputStream());
-        }catch(IOException e){
-            System.out.println("Error creating Socket Output Stream...");
         }
     }
 
@@ -151,22 +156,6 @@ public class CLIClientViewController implements ClientViewController{
         });
     }
 
-    private boolean isNotValidIP(String split){
-        String ipv4Pattern ="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
-        Pattern pattern = Pattern.compile(ipv4Pattern);
-        Matcher matcher = pattern.matcher(split);
-        return !matcher.matches();
-    }
-
-    private boolean isNotValidPort(String port){
-        try{
-            int portNumber = Integer.parseInt(port);
-            return portNumber < 1024 || portNumber > 65535;
-        }catch(NumberFormatException e){
-            return true;
-        }
-    }
-
     @Override
     public void initializeConnection() throws ConnectionErrorException {
 
@@ -206,5 +195,21 @@ public class CLIClientViewController implements ClientViewController{
     public void errorPage() {
         view.setPage(new CLI404Page());
         view.displayPage();
+    }
+
+    protected boolean isNotValidIP(String split){
+        String ipv4Pattern ="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
+        Pattern pattern = Pattern.compile(ipv4Pattern);
+        Matcher matcher = pattern.matcher(split);
+        return !matcher.matches();
+    }
+
+    protected boolean isNotValidPort(String port){
+        try{
+            int portNumber = Integer.parseInt(port);
+            return portNumber < 1024 || portNumber > 65535;
+        }catch(NumberFormatException e){
+            return true;
+        }
     }
 }
