@@ -1,17 +1,10 @@
 package it.polimi.ingsw.lb10;
 
 import it.polimi.ingsw.lb10.client.Client;
-import it.polimi.ingsw.lb10.client.clidesign.clipages.CLI404Page;
-import it.polimi.ingsw.lb10.client.clidesign.clipages.CLIConnectionPage;
 import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
 import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
-import it.polimi.ingsw.lb10.client.view.ClientView;
 import it.polimi.ingsw.lb10.client.view.GUIClientView;
-
-import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ClientLauncher {
     /**

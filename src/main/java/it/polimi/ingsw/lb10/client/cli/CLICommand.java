@@ -1,4 +1,4 @@
-package it.polimi.ingsw.lb10.client.clidesign;
+package it.polimi.ingsw.lb10.client.cli;
 
 /**
  * This interface provides all methods to create simple graphics on terminal

@@ -1,22 +1,15 @@
-package it.polimi.ingsw.lb10.client.clidesign.clipages;
+package it.polimi.ingsw.lb10.client.cli.clipages;
 
-import it.polimi.ingsw.lb10.client.clidesign.*;
-import it.polimi.ingsw.lb10.client.clidesign.ansi.AnsiColor;
-import it.polimi.ingsw.lb10.client.clidesign.ansi.AnsiFormat;
+import it.polimi.ingsw.lb10.client.cli.*;
+import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
+import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
 
 public class CLILobbyPage implements CLIPage {
     private static final CLIString enterChoice = new CLIString(">> Enter your choice <<\n>> ", AnsiColor.CYAN, AnsiFormat.BOLD, 1, 38);
 
-    private CLIState state = new Default();
-    @Override
-    public void display(){ state.update(); }
-
-    @Override
-    public void update(CLIState state) { this.state = state; }
-
     public static class Default implements CLIState {
         @Override
-        public void update() {
+        public void apply(String[] args) {
             CLICommand.initialize();
             CLIBanner.displayCodex(5);
 
@@ -37,10 +30,13 @@ public class CLILobbyPage implements CLIPage {
 
     public static class InvalidInput implements CLIState {
         @Override
-        public void update() {
+        public void apply(String[] args) {
             CLIString.replace(enterChoice, new CLIString(">> Invalid input <<", AnsiColor.RED, AnsiFormat.BOLD, 1, 35));
             CLICommand.restoreCursorPosition();
             CLICommand.clearScreenAfterCursor();
         }
     }
 }
+
+
+/////RIVEDERE UPDATE ARGS

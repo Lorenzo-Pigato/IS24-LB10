@@ -1,8 +1,8 @@
 package it.polimi.ingsw.lb10.client.controller;
 
 import it.polimi.ingsw.lb10.client.Client;
-import it.polimi.ingsw.lb10.client.clidesign.clipages.CLI404Page;
-import it.polimi.ingsw.lb10.client.clidesign.clipages.CLIConnectionPage;
+import it.polimi.ingsw.lb10.client.cli.clipages.CLI404Page;
+import it.polimi.ingsw.lb10.client.cli.clipages.CLIConnectionPage;
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
 import it.polimi.ingsw.lb10.network.requests.Request;
@@ -179,19 +179,20 @@ public class CLIClientViewController implements ClientViewController{
         String[] parsed;
         //x.y.z.w:k
 
+        view.pageStateDisplay(new CLIConnectionPage.Default(), null);
+
         do{
-            view.displayPage();       //Calling ClientView
             input = in.nextLine();
             parsed = input.split(":");
             if(parsed.length != 2 ||
                      isNotValidIP(parsed[0]) && isNotValidPort(parsed[1])){ //invalid input, none of the fields is correct (ip:port)
-                view.getPage().update(new CLIConnectionPage.InvalidInput());
+                view.pageStateDisplay(new CLIConnectionPage.InvalidInput(), null);
 
             } else if (isNotValidIP(parsed[0])) {
-                view.getPage().update(new CLIConnectionPage.InvalidIP());
+                view.pageStateDisplay(new CLIConnectionPage.InvalidIP(), null);
 
             } else if (isNotValidPort(parsed[1])) {
-                view.getPage().update(new CLIConnectionPage.InvalidPort());
+                view.pageStateDisplay(new CLIConnectionPage.InvalidPort(), null);
             }
         }while(parsed.length != 2 || isNotValidPort(parsed[1]) || isNotValidIP(parsed[0]));
 
@@ -207,6 +208,6 @@ public class CLIClientViewController implements ClientViewController{
     @Override
     public void errorPage() {
         view.setPage(new CLI404Page());
-        view.displayPage();
+        view.pageStateDisplay(new CLI404Page.Default(), null);
     }
 }

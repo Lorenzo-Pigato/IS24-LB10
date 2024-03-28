@@ -1,7 +1,6 @@
-package it.polimi.ingsw.lb10.client.clidesign;
+package it.polimi.ingsw.lb10.client.cli;
 
-import it.polimi.ingsw.lb10.client.clidesign.ansi.AnsiColor;
-import it.polimi.ingsw.lb10.client.clidesign.ansi.AnsiString;
+import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
 
 /**
  * This class contains the ASCII art for the game's banners

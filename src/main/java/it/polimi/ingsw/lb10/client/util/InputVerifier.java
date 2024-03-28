@@ -1,7 +1,7 @@
 package it.polimi.ingsw.lb10.client.util;
 
-import it.polimi.ingsw.lb10.client.clidesign.CLICommand;
-import it.polimi.ingsw.lb10.client.clidesign.CLIString;
+import it.polimi.ingsw.lb10.client.cli.CLICommand;
+import it.polimi.ingsw.lb10.client.cli.CLIString;
 import java.util.Arrays;
 import java.util.Scanner;
 

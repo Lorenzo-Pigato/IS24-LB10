@@ -1,11 +1,11 @@
-package it.polimi.ingsw.lb10.client.clidesign.clipages;
+package it.polimi.ingsw.lb10.client.cli.clipages;
 
-import it.polimi.ingsw.lb10.client.clidesign.CLIBanner;
-import it.polimi.ingsw.lb10.client.clidesign.CLICommand;
-import it.polimi.ingsw.lb10.client.clidesign.CLILine;
-import it.polimi.ingsw.lb10.client.clidesign.CLIString;
-import it.polimi.ingsw.lb10.client.clidesign.ansi.AnsiColor;
-import it.polimi.ingsw.lb10.client.clidesign.ansi.AnsiString;
+import it.polimi.ingsw.lb10.client.cli.CLIBanner;
+import it.polimi.ingsw.lb10.client.cli.CLICommand;
+import it.polimi.ingsw.lb10.client.cli.CLILine;
+import it.polimi.ingsw.lb10.client.cli.CLIString;
+import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
+import it.polimi.ingsw.lb10.client.cli.ansi.AnsiString;
 
 public class CLIConnectionPage implements CLIPage{
     private static final CLIString welcome = new CLIString(">> Welcome to Codex, new Player! <<", AnsiColor.YELLOW, 0, 36);
@@ -14,21 +14,10 @@ public class CLIConnectionPage implements CLIPage{
     private static final CLIString invalidInput = new CLIString(">> Invalid input <<", AnsiColor.RED, 0, 36);
     private static final CLIString options = new CLIString(">> Insert your server IP and PORT as IP:PORT\n>> ", AnsiColor.YELLOW, 0, 37);
 
-    private CLIState state = new Default();
 
-    @Override
-    public void display() {
-        state.update();
-    }
-
-    @Override
-    public void update(CLIState state) {
-        this.state = state;
-    }
-
-    private static class Default implements CLIState {
+    public static class Default implements CLIState {
         @Override
-        public void update() {
+        public void apply(String[] args) {
             CLICommand.clearScreen();
             CLICommand.home();
             CLIBanner.displayWolf(20,15);
@@ -48,7 +37,7 @@ public class CLIConnectionPage implements CLIPage{
 
     public static class InvalidInput implements CLIState {
         @Override
-        public void update() {
+        public void apply(String[] args) {
             CLICommand.restoreCursorPosition();
             CLICommand.clearScreenAfterCursor();
             CLIString.replace(welcome, invalidInput);
@@ -57,7 +46,7 @@ public class CLIConnectionPage implements CLIPage{
 
     public static class InvalidIP implements CLIState {
         @Override
-        public void update(){
+        public void apply(String[] args) {
             CLICommand.restoreCursorPosition();
             CLICommand.clearScreenAfterCursor();
             CLIString.replace(welcome, invalidIp);
@@ -66,7 +55,7 @@ public class CLIConnectionPage implements CLIPage{
 
     public static class InvalidPort implements CLIState {
         @Override
-        public void update() {
+        public void apply(String[] args) {
             CLICommand.restoreCursorPosition();
             CLICommand.clearScreenAfterCursor();
             CLIString.replace(welcome, invalidPort);
