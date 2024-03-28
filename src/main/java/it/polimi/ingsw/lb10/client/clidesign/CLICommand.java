@@ -50,6 +50,13 @@ public abstract class CLICommand {
         System.out.flush();
     }
 
+    public static void clearUserInput(String input){
+        CLICommand.restoreCursorPosition();     //Pushing back cursor to the beginning of the input
+
+        for (int i = 0; i < input.length(); i++) System.out.print(" ");     //Overwriting input with spaces
+    }
+
+
     /**
      * This method sets current terminal windows size
      * @param cols number of terminal columns
@@ -91,6 +98,15 @@ public abstract class CLICommand {
         System.out.flush();
     }
 
+
+    public static int getDefaultHeight() {
+        return defaultHeight;
+    }
+
+    public static int getDefaultWidth() {
+        return defaultWidth;
+    }
+
 /*
     public static void setInvisibleInput(){
         System.out.print("\u001B[8m");
@@ -106,15 +122,4 @@ public abstract class CLICommand {
         System.out.flush();
     }
 */
-
-    public static int getDefaultHeight() {
-        return defaultHeight;
-    }
-
-    public static int getDefaultWidth() {
-        return defaultWidth;
-    }
 }
-
-
-////Implementare cancellazione porzioni pagina

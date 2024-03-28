@@ -22,14 +22,14 @@ public abstract class InputVerifier {
 
         while(Arrays.stream(expected).noneMatch(input::equalsIgnoreCase)) {
             CLIString.replace(message, errorMessage);
+            CLICommand.clearUserInput(input);
             CLICommand.restoreCursorPosition();
-            CLICommand.clearLineAfterCursor();
 
             input = in.nextLine();
         }
 
+        CLICommand.clearUserInput(input);
         CLICommand.restoreCursorPosition();
-        CLICommand.clearLineAfterCursor();
 
         return input;
 

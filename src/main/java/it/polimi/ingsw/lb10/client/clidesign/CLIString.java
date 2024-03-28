@@ -152,6 +152,8 @@ public class CLIString {
                                                                 .mapToInt(String::length)
                                                                 .max().orElse(0)) / 2
                 , position[1]);
+
+        this.print();
         this.centered = true;
         this.visible = true;
     }
