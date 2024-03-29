@@ -15,6 +15,7 @@ import it.polimi.ingsw.lb10.network.requests.preMatch.LoginRequest;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.annotation.Documented;
 import java.net.Socket;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -190,7 +191,7 @@ public class CLIClientViewController implements ClientViewController{
     }
 
     @Override
-    public void initializeConnection() throws ConnectionErrorException {
+    public void initializeConnection() throws ConnectionErrorException { //------> Tested | OK <------//
 
         Socket cliSocket;
         view.setPage(new CLIConnectionPage());
