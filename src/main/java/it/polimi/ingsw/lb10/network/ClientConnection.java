@@ -1,7 +1,8 @@
 package it.polimi.ingsw.lb10.network;
 
 import it.polimi.ingsw.lb10.network.requests.Request;
-import it.polimi.ingsw.lb10.server.controller.RequestHandler;
+import it.polimi.ingsw.lb10.network.response.Response;
+import it.polimi.ingsw.lb10.server.visitors.requestDispatch.RequestHandler;
 import it.polimi.ingsw.lb10.util.Observable;
 import it.polimi.ingsw.lb10.server.Server;
 import it.polimi.ingsw.lb10.server.controller.MatchController;
@@ -19,7 +20,7 @@ public class ClientConnection extends Observable<Request> implements Runnable {
     private Boolean active = true;
     private Server server;
     private MatchController matchController;
-    private RequestHandler requestHandler = RequestHandler.instance();
+    private static final RequestHandler visitor = new RequestHandler();
 
     public ClientConnection(Socket socket, Server server){
         this.socket = socket;
@@ -42,15 +43,13 @@ public class ClientConnection extends Observable<Request> implements Runnable {
             close();
         }
     }
-    //the idea is: Client has an asynchronous stream of requests to send via his view, so server just waits for them
-    //and handles them transparently via a handler, which reacts using CONTROLLER and MODEL just by evaluating
-    // the object Request type
 
     public void run(){
         while(isActive()){
             try{
                 Request request = (Request) (input.readObject());
-                //requestHandler.handle(request); use Visitor Pattern
+                request.accept(visitor); /***/
+                //IDEA PER MANDARE BENE LA RESPONSE: IL METODO ACCEPT RITORNA UNA RESPONSE GENERICA !!!!!!!!
 
             }catch(Exception e){
                 System.out.println(e.toString() + "occurred");
@@ -68,7 +67,7 @@ public class ClientConnection extends Observable<Request> implements Runnable {
             output.writeObject(r);
             output.flush();
         }catch(IOException e){
-            System.out.println(">>>Server : error sending Response " + r.toString());
+            //System.out.println(">>>Server : error sending Response " + r.toString());
         }
     }
 
@@ -95,5 +94,4 @@ public class ClientConnection extends Observable<Request> implements Runnable {
 
 
     }
-
 }

@@ -4,7 +4,6 @@ import it.polimi.ingsw.lb10.client.controller.ClientViewController;
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.network.requests.preMatch.LoginRequest;
 
-import java.net.Socket;
 
 public class Client implements Runnable{
     //Client can choose from command line which type of interface he wants(TUI/GUI), in the ClientLauncher
@@ -12,6 +11,8 @@ public class Client implements Runnable{
 
     private final ClientViewController controller;
     private boolean active = true;
+    private String username;
+    private int matchId;
 
 
     /**
@@ -41,7 +42,6 @@ public class Client implements Runnable{
 
         //we set the client reference to our controller
         controller.setClient(this);
-
         //server connection
         try{
             controller.initializeConnection();
