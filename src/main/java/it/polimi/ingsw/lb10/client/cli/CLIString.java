@@ -1,11 +1,10 @@
-package it.polimi.ingsw.lb10.client.clidesign;
+package it.polimi.ingsw.lb10.client.cli;
 
-import it.polimi.ingsw.lb10.client.clidesign.ansi.AnsiColor;
-import it.polimi.ingsw.lb10.client.clidesign.ansi.AnsiString;
-import it.polimi.ingsw.lb10.client.clidesign.ansi.AnsiFormat;
+import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
+import it.polimi.ingsw.lb10.client.cli.ansi.AnsiString;
+import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
 
 import java.util.Arrays;
-import java.util.Comparator;
 
 /**
  * This class provides a way to print strings with ANSI colors and formats
@@ -14,12 +13,14 @@ import java.util.Comparator;
  * Strings are declared as objects, use AnsiString to print without creating an object
  */
 public class CLIString {
-    private String string;
+    private final String string;
     private AnsiColor color;
     private AnsiFormat format;
     private final int[] position = new int[2];
-    private boolean isCentered = false;
+    private boolean centered = false;
+    private boolean visible = false;
 
+    //-------------------------- Builders -----------------------------//
     public CLIString(String string, AnsiColor color, AnsiFormat format, int col, int row, int widthLimit){
         this.string = string.length() > widthLimit ? string.substring(0, widthLimit-3)+ "..." : string;
         this.color = color;
@@ -28,7 +29,8 @@ public class CLIString {
         this.position[0] = col;
         this.position[1] = row;
 
-        this.isCentered = false;
+        this.centered = false;
+        this.visible = false;
     }
 
     public CLIString(String string, AnsiColor color, int col, int row, int widthLimit){
@@ -60,22 +62,63 @@ public class CLIString {
         this(string, AnsiColor.DEFAULT, AnsiFormat.DEFAULT, col, row);
     }
 
+    //------------------------ Refactoring ---------------------------//
+
     /**
-     * This method changes the color of the string by creating a new AnsiString object
-     * and printing it to the console on top of the old string, effectively changing its color
-     * without having to delete it
-     * @param color the color to change to
+     * This method changes string's color by calling AnsiString's print() method
+     * so that the new colored string is printed on top of the old string, effectively changing
+     * its color without having to delete it
+     * @param color new color to apply to the string
      */
     public void changeColor(AnsiColor color){
         this.color = color;
-        this.print();
+        if(this.visible) this.print() ;
     }
 
+    /**
+     * This method changes string's format by calling AnsiString's print() method
+     * so that the new colored string is printed on top of the old string, effectively changing
+     * its format without having to delete it
+     * @param format new format to apply to the string
+     */
     public void changeFormat(AnsiFormat format){
         this.format = format;
-        this.print();
+        if(this.visible) this.print();
     }
 
+    /**
+     * This method replaces a string with another one, restoring old cursor position after the replacement
+     * @param oldString the string to be replaced
+     * @param newString the string to replace the old one with
+     */
+    public static void replace(CLIString oldString, CLIString newString){
+        oldString.deleteString();
+        if (oldString.centered) newString.centerPrint();
+        else {
+            newString.reposition(oldString.getPosition()[0], oldString.getPosition()[1]);
+            newString.print();
+        }
+        CLICommand.restoreCursorPosition();
+    }
+
+    public void reposition(int col, int row){
+        if(this.visible){
+            this.deleteString();
+            this.position[0] = col;
+            this.position[1] = row;
+            this.print();
+        }
+        else {
+            this.position[0] = col;
+            this.position[1] = row;
+        }
+    }
+
+    /**
+     * This method is used to replace a string with " " chars in order to
+     * effectively delete it on the CLI.
+     * It sets the isVisible flag to false after
+     */
     public void deleteString(){
         CLICommand.setPosition(this.position[0], this.position[1]);
         int row = position[1];
@@ -87,15 +130,9 @@ public class CLIString {
                 }
         );
         position[1] = row;
+        this.visible = false;
     }
-
-    public void reposition(int col, int row){
-        this.deleteString();
-        this.position[0] = col;
-        this.position[1] = row;
-        this.print();
-    }
-
+    //------------------ String printing Methods ----------------------//
     public void print(){
         CLICommand.setPosition(position[0], position[1]);
         int row = position[1];
@@ -107,6 +144,7 @@ public class CLIString {
                 }
         );
         position[1] = row;
+        this.visible = true;
     }
 
     public void centerPrint(){
@@ -114,26 +152,22 @@ public class CLIString {
                                                                 .mapToInt(String::length)
                                                                 .max().orElse(0)) / 2
                 , position[1]);
-        this.isCentered = true;
+
+        this.print();
+        this.centered = true;
+        this.visible = true;
     }
 
+    //------------------------   Getters   ----------------------------//
     public int[] getPosition() {
         return  new int[] {position[0], position[1]};
     }
 
-    /**
-     * This method replaces a string with another one, restoring old cursor position after the replacement
-     * @param oldString the string to be replaced
-     * @param newString the string to replace the old one with
-     */
-    public static void replace(CLIString oldString, CLIString newString){
-        oldString.deleteString();
-        if (oldString.isCentered) newString.centerPrint();
-        else {
-            newString.reposition(oldString.getPosition()[0], oldString.getPosition()[1]);
-            newString.print();
-        }
-        CLICommand.restoreCursorPosition();
+    public boolean isCentered() {
+        return centered;
     }
 
+    public boolean isVisible() {
+        return visible;
+    }
 }

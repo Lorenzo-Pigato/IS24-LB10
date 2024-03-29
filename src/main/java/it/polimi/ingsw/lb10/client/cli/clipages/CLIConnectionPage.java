@@ -1,11 +1,12 @@
-package it.polimi.ingsw.lb10.client.clidesign.clipages;
+package it.polimi.ingsw.lb10.client.cli.clipages;
 
-import it.polimi.ingsw.lb10.client.clidesign.CLIBanner;
-import it.polimi.ingsw.lb10.client.clidesign.CLICommand;
-import it.polimi.ingsw.lb10.client.clidesign.CLILine;
-import it.polimi.ingsw.lb10.client.clidesign.CLIString;
-import it.polimi.ingsw.lb10.client.clidesign.ansi.AnsiColor;
-import it.polimi.ingsw.lb10.client.clidesign.ansi.AnsiString;
+import it.polimi.ingsw.lb10.client.cli.CLIBanner;
+import it.polimi.ingsw.lb10.client.cli.CLICommand;
+import it.polimi.ingsw.lb10.client.cli.CLILine;
+import it.polimi.ingsw.lb10.client.cli.CLIString;
+import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
+import it.polimi.ingsw.lb10.client.cli.ansi.AnsiString;
+import org.jetbrains.annotations.NotNull;
 
 public class CLIConnectionPage implements CLIPage{
     private static final CLIString welcome = new CLIString(">> Welcome to Codex, new Player! <<", AnsiColor.YELLOW, 0, 36);
@@ -14,21 +15,10 @@ public class CLIConnectionPage implements CLIPage{
     private static final CLIString invalidInput = new CLIString(">> Invalid input <<", AnsiColor.RED, 0, 36);
     private static final CLIString options = new CLIString(">> Insert your server IP and PORT as IP:PORT\n>> ", AnsiColor.YELLOW, 0, 37);
 
-    private PageState state = new Default();
 
-    @Override
-    public void display() {
-        state.display();
-    }
-
-    @Override
-    public void update(PageState state) {
-        this.state = state;
-    }
-
-    private static class Default extends PageState{
+    public static class Default implements CLIState {
         @Override
-        public void display() {
+        public void apply(String[] args) {
             CLICommand.clearScreen();
             CLICommand.home();
             CLIBanner.displayWolf(20,15);
@@ -46,29 +36,38 @@ public class CLIConnectionPage implements CLIPage{
         }
     }
 
-    public static class InvalidInput extends PageState{
+    public static class InvalidInput implements CLIState {
+        /**
+         * @param args user invalid input as args[0]
+         */
         @Override
-        public void display() {
+        public void apply(String @NotNull [] args) {
             CLICommand.restoreCursorPosition();
-            CLICommand.clearScreenAfterCursor();
+            CLICommand.clearUserInput(args[0]);
             CLIString.replace(welcome, invalidInput);
         }
     }
 
-    public static class InvalidIP extends PageState {
+    public static class InvalidIP implements CLIState {
+        /**
+         * @param args user invalid input as args[0]
+         */
         @Override
-        public void display(){
+        public void apply(String @NotNull [] args) {
             CLICommand.restoreCursorPosition();
-            CLICommand.clearScreenAfterCursor();
+            CLICommand.clearUserInput(args[0]);
             CLIString.replace(welcome, invalidIp);
         }
     }
 
-    public static class InvalidPort extends PageState {
+    public static class InvalidPort implements CLIState {
+        /**
+         * @param args user invalid input as args[0]
+         */
         @Override
-        public void display() {
+        public void apply(String[] args) {
             CLICommand.restoreCursorPosition();
-            CLICommand.clearScreenAfterCursor();
+            CLICommand.clearUserInput(args[0]);
             CLIString.replace(welcome, invalidPort);
         }
     }

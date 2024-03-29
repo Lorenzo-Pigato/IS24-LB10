@@ -1,7 +1,7 @@
 package it.polimi.ingsw.lb10.client.util;
 
-import it.polimi.ingsw.lb10.client.clidesign.CLICommand;
-import it.polimi.ingsw.lb10.client.clidesign.CLIString;
+import it.polimi.ingsw.lb10.client.cli.CLICommand;
+import it.polimi.ingsw.lb10.client.cli.CLIString;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -22,14 +22,14 @@ public abstract class InputVerifier {
 
         while(Arrays.stream(expected).noneMatch(input::equalsIgnoreCase)) {
             CLIString.replace(message, errorMessage);
+            CLICommand.clearUserInput(input);
             CLICommand.restoreCursorPosition();
-            CLICommand.clearLineAfterCursor();
 
             input = in.nextLine();
         }
 
+        CLICommand.clearUserInput(input);
         CLICommand.restoreCursorPosition();
-        CLICommand.clearLineAfterCursor();
 
         return input;
 

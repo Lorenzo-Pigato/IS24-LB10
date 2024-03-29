@@ -2,6 +2,7 @@ package it.polimi.ingsw.lb10.client.controller;
 
 import it.polimi.ingsw.lb10.client.Client;
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
+import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
 import org.junit.jupiter.api.AfterAll;
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,7 +29,9 @@ public class CLIClientViewControllerTest {
              outputStream.close();
              localSocket.close();
              serverSocket.close();
-         }catch (Exception e){}
+         }catch (Exception e){
+             ExceptionHandler.handle(e, new CLIClientView());
+         }
 
      }
 
@@ -51,7 +54,7 @@ public class CLIClientViewControllerTest {
                         outputStream.flush();
 
 
-                    } catch (Exception e) {e.printStackTrace();}
+                    } catch (Exception e) {ExceptionHandler.handle(e, new CLIClientView());}
                 }
             });
             listener.start();
