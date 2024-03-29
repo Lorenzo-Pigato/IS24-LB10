@@ -50,7 +50,7 @@ public interface ClientViewController {
 
 
 
-    /** This method pro
+    /** This method provides a thread to read asynchronously from the Socket
      * @return the thread to be run
      */
     Thread asyncReadFromSocket();

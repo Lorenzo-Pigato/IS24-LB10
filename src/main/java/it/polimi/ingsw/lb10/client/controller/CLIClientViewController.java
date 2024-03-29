@@ -3,6 +3,7 @@ package it.polimi.ingsw.lb10.client.controller;
 import it.polimi.ingsw.lb10.client.Client;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLI404Page;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIConnectionPage;
+import it.polimi.ingsw.lb10.client.cli.clipages.CLIErrorPage;
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
 import it.polimi.ingsw.lb10.network.requests.Request;
@@ -24,11 +25,12 @@ public class CLIClientViewController implements ClientViewController{
     private ObjectInputStream socketIn;
     private ObjectOutputStream socketOut;
 
-
+    // ---------------- CONSTRUCTOR ---------------- //
     public CLIClientViewController(CLIClientView cliClientView) {
         this.view = cliClientView;
     }
 
+    // ------------------ SETTERS ------------------ //
     @Override
     public void setSocket(Socket socket) {
         this.socket = socket;
@@ -38,14 +40,15 @@ public class CLIClientViewController implements ClientViewController{
         this.client = client;
     }
 
+    // ------------------ METHODS ------------------ //
     @Override
     public void close() {
         try{
             socketIn.close();
             socketOut.close();
         }catch(IOException e){
-            e.printStackTrace();
-            System.out.println("Error closing sockets");
+            view.setPage(new CLIErrorPage());
+            view.pageStateDisplay(new CLIErrorPage.Default(), new String[] {">> Error closing sockets <<", e.getMessage()});
         }finally{
             client.setActive(false);
         }
@@ -153,22 +156,6 @@ public class CLIClientViewController implements ClientViewController{
         });
     }
 
-    private boolean isNotValidIP(String split){
-        String ipv4Pattern ="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
-        Pattern pattern = Pattern.compile(ipv4Pattern);
-        Matcher matcher = pattern.matcher(split);
-        return !matcher.matches();
-    }
-
-    private boolean isNotValidPort(String port){
-        try{
-            int portNumber = Integer.parseInt(port);
-            return portNumber < 1024 || portNumber > 65535;
-        }catch(NumberFormatException e){
-            return true;
-        }
-    }
-
     @Override
     public Socket initializeConnection() throws ConnectionErrorException {
 
@@ -203,6 +190,22 @@ public class CLIClientViewController implements ClientViewController{
         }
 
         return cliSocket;
+    }
+
+    private boolean isNotValidIP(String split){
+        String ipv4Pattern ="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
+        Pattern pattern = Pattern.compile(ipv4Pattern);
+        Matcher matcher = pattern.matcher(split);
+        return !matcher.matches();
+    }
+
+    private boolean isNotValidPort(String port){
+        try{
+            int portNumber = Integer.parseInt(port);
+            return portNumber < 1024 || portNumber > 65535;
+        }catch(NumberFormatException e){
+            return true;
+        }
     }
 
     @Override

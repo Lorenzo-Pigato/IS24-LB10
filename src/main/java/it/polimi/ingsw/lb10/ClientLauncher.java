@@ -9,9 +9,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class ClientLauncher {
     /**
-     * shows first output, asks for CLI/GUI, port, ip and builds the client(Socket socket, int port, String ip)
-     * checks the IOException while creating socket, the client has to run independently
-     * @param args cli/gui user choice
+     * Main method launches the Client thread after parsing args passed by Launcher to determine
+     * if cli or gui should be used.
+     * @param args client:ui - ui can be "cli" or "gui"
      */
 
     public static void main( String @NotNull [] args )

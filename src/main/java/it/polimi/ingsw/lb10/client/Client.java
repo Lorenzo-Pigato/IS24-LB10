@@ -43,10 +43,11 @@ public class Client implements Runnable{
 
         setSocket(socket);
 
-        //setup
+        //--------------- setup ----------------//
         controller.setUp();
 
-        //login
+        //-------------- login ----------------//
+
         //controller.asyncWriteToSocket(new LoginRequest());
 
 
