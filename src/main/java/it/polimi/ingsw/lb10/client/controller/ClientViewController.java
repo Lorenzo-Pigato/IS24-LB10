@@ -58,7 +58,7 @@ public interface ClientViewController {
 
     Socket initializeConnection() throws ConnectionErrorException;
 
-    void handleConnectionError();
+    void login();
 }
 
 

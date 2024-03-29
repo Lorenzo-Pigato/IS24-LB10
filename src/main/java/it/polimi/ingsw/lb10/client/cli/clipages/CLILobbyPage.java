@@ -3,6 +3,7 @@ package it.polimi.ingsw.lb10.client.cli.clipages;
 import it.polimi.ingsw.lb10.client.cli.*;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
+import org.jetbrains.annotations.NotNull;
 
 public class CLILobbyPage implements CLIPage {
     private static final CLIString enterChoice = new CLIString(">> Enter your choice <<\n>> ", AnsiColor.CYAN, AnsiFormat.BOLD, 1, 38);
@@ -29,14 +30,14 @@ public class CLILobbyPage implements CLIPage {
     }
 
     public static class InvalidInput implements CLIState {
+        /**
+         * @param args user invalid input as args[0]
+         */
         @Override
-        public void apply(String[] args) {
+        public void apply(String @NotNull [] args) {
             CLIString.replace(enterChoice, new CLIString(">> Invalid input <<", AnsiColor.RED, AnsiFormat.BOLD, 1, 35));
             CLICommand.restoreCursorPosition();
-            CLICommand.clearScreenAfterCursor();
+            CLICommand.clearUserInput(args[0]);
         }
     }
 }
-
-
-/////RIVEDERE UPDATE ARGS
