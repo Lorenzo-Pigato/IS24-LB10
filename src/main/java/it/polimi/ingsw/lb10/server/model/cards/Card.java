@@ -26,7 +26,7 @@ public abstract class Card {
     }
     public int getId(){return id;}
 
-    public ArrayList<Corner> getCorner(){
+    public ArrayList<Corner> getCorners(){
         return corners;
     }
 

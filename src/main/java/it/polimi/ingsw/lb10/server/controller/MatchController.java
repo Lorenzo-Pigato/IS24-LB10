@@ -42,31 +42,33 @@ public class MatchController implements Runnable , Observer<Request> {
      * @param card is to add
      * @param i row
      * @param j column
-     *          --->Errors<---
-     *     IN THIS CODE I DON'T CHECK THE AVAILABILITY OF THE CORNER THAT I WANT TO POSITION! FIX IT!
-     * @return 1 if one corner isn't available
-     * @return 2 if you covered more than one corner of a single card
-     * @return 0 check if there are more than 2 cards in a corner
-     * @return 3 check if at least one card it's covered
-     *          --->Okay<---
-     * @return -1 if there aren't errors
+     * @return true if the card passed all the requirements
      */
-    public int verificationSetting(Player player,Card card,int i, int j){
+    public boolean verificationSetting(Player player,Card card,int i, int j){
+        //if the player isn't in the MatchModel players List
         if(!getModel().isPlayerIn(player))
-            return 0;
+            return false;
+        //if one corner isn't available
+        if(!checkAvailability(player,i,j))
+            return false;
+
         ArrayList<Node> nodesVisited= new ArrayList<>();
+        boolean visitedOneCard=false;
+
         for(int count=0;count<4;count++){
-            if(!player.getMatrix().getMatrixNode(i, j).getCards().isEmpty()){
-                if(player.getMatrix().getMatrixNode(i,j).getCards().size()==2)
-                    return 0;
-                if(!player.getMatrix().getMatrixNode(i,j).isAvailable())
-                    return 1;
+            //if in the matrix node there's only the corner of the card that I want to add, there's nothing to check
+            if(player.getMatrix().getMatrixNode(i, j).getCorners().size()==1){
+                //Can't be more than 2 cards on a corner!
+                if(player.getMatrix().getMatrixNode(i,j).getCorners().size()==3)
+                    return false;
+                // I added the node that I visited inside the arraylist, because it has 2 corners in the node
                 nodesVisited.add(player.getMatrix().getMatrixNode(i,j));
+                // If I visited more than 1 node with 2 corners
                 if(nodesVisited.size()>1){
                     for(int x=0;x<nodesVisited.size()-1;x++){
                         for(int y=x+1;y<nodesVisited.size();y++){
-                            if(nodesVisited.get(x).getCards().get(0).getId() == nodesVisited.get(y).getCards().get(0).getId())
-                                return 1;
+                            if(nodesVisited.get(x).getCorners().get(0).getId() == nodesVisited.get(y).getCorners().get(0).getId())
+                                return false;
                         }
                     }
                 }
@@ -75,12 +77,20 @@ public class MatchController implements Runnable , Observer<Request> {
             if(count==1) j++;
             if(count==2) i--;
         }
-        if(nodesVisited.isEmpty())
-            return 3;
-        j--;//get i and j to the starting position
-        player.getMatrix().setCard(card,i,j);
-        // I need in matrix one method instead of setCard with all the methods
-        return -1;
+        //if the card doesn't cover at least one card, it's an error
+        return !nodesVisited.isEmpty();
+    }
+
+    public boolean checkAvailability(Player player,int i, int j){
+        if(player.getMatrix().getMatrixNode(i, j).checkAvailability())
+           return false;
+        if(player.getMatrix().getMatrixNode(i++, j).checkAvailability())
+            return false;
+        if(player.getMatrix().getMatrixNode(i, j++).checkAvailability())
+            return false;
+        if(player.getMatrix().getMatrixNode(i++, j++).checkAvailability())
+            return false;
+        return true;
     }
 
     public MatchModel getModel() {

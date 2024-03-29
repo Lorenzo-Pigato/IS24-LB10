@@ -59,12 +59,8 @@ public class MatchModel extends Observable<Request>{
     }
 
     public boolean isPlayerIn(Player playerToCheck){
-        List<Player> players = getPlayers();
-        for(Player player :  players){
-            if(player.equals(playerToCheck))
-                return true;
-        }
-        return false;
+        return this.getPlayers().stream()
+                                .anyMatch(player -> player.equals(playerToCheck));
     }
 
     public void addResourceUncovered(){

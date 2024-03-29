@@ -7,5 +7,4 @@ public class CornetNotAvailable extends Corner{
         super(position);
         setAvailable(false);
     }
-
 }

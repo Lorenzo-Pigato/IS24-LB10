@@ -9,6 +9,8 @@ public abstract class Corner {
     private boolean available;
     private Position position;
 
+    private int id;
+
     public Corner(Position position){
         this.position=position;
     }
@@ -24,6 +26,9 @@ public abstract class Corner {
         return available;
     }
 
+    public int getId() {
+        return id;
+    }
     // --------> SETTER <--------
     @JsonAlias("position")
     public void setPosition(Position position) {
@@ -35,4 +40,7 @@ public abstract class Corner {
         this.available = available;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 }

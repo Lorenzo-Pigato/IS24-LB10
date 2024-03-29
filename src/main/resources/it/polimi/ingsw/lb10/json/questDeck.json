@@ -1,40 +1,46 @@
 [ {
-  "id" : 0,
+  "id" : 32,
   "flipped" : true,
   "points" : 1,
-  "resource" : "ANIMAL",
-  "corner" : [ {
+  "corners" : [ {
     "available" : false,
-    "position" : "TOPRIGHT"
+    "position" : "TOPRIGHT",
+    "id" : 32
   }, {
     "available" : true,
     "position" : "TOPLEFT",
+    "id" : 0,
     "resource" : null
-  } ]
+  } ],
+  "resource" : "ANIMAL"
 }, {
   "id" : 1,
   "flipped" : true,
   "points" : 1,
-  "resource" : "ANIMAL",
-  "corner" : [ {
+  "corners" : [ {
     "available" : false,
-    "position" : "TOPRIGHT"
+    "position" : "TOPRIGHT",
+    "id" : 32
   }, {
     "available" : true,
     "position" : "TOPLEFT",
+    "id" : 0,
     "resource" : null
-  } ]
+  } ],
+  "resource" : "ANIMAL"
 }, {
   "id" : 2,
   "flipped" : true,
   "points" : 1,
-  "resource" : "ANIMAL",
-  "corner" : [ {
+  "corners" : [ {
     "available" : false,
-    "position" : "TOPRIGHT"
+    "position" : "TOPRIGHT",
+    "id" : 32
   }, {
     "available" : true,
     "position" : "TOPLEFT",
+    "id" : 0,
     "resource" : null
-  } ]
+  } ],
+  "resource" : "ANIMAL"
 } ]

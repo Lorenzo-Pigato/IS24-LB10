@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lb10.server.model;
 
-import it.polimi.ingsw.lb10.server.model.cards.Card;
+
+import it.polimi.ingsw.lb10.server.model.cards.Corner;
 
 import java.util.ArrayList;
 
@@ -8,24 +9,28 @@ import java.util.ArrayList;
  * It's the node of the Matrix! It may contain 2 cards, every node is a corner(free/occupied) of the card!
  */
 public class Node {
-    private ArrayList<Card> cards;
-    private boolean available;
+    private ArrayList<Corner> corners;
+
     public Node(){
-        cards=new ArrayList<>();
-        available=false;
+        corners=new ArrayList<>();
     }
 
-    public void addNode(Card card){
-        cards.add(card);
-    }
-    public ArrayList<Card> getCards() {
-        return cards;
+    public void addCorner(Corner corner){
+        corners.add(corner);
     }
 
-    public void setAvailable(boolean available) {
-        this.available = available;
+    public ArrayList<Corner> getCorners() {
+        return corners;
     }
-    public boolean isAvailable() {
-        return available;
+    public void deleteLastCorner(){
+        corners.remove(corners.size()-1);
+    }
+    public boolean checkAvailability(){
+        if(corners.size()==1)
+            return false;
+        if(!corners.get(0).isAvailable() || !corners.get(1).isAvailable() )
+            return true;
+        System.out.println(">>> E R R O R <<< This method isn't call if the Node is empty!!!!!");
+        return true;
     }
 }
