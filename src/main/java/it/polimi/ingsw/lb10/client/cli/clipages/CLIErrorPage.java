@@ -13,7 +13,7 @@ public class CLIErrorPage implements CLIPage {
         @Override
         public void apply(String @NotNull [] args){
             CLICommand.initialize();
-            CLIBanner.display404();
+            CLIBanner.displayError();
             new CLIString(args[0], AnsiColor.RED, AnsiFormat.BOLD, 1, 33).centerPrint();
             new CLIString(args[1] + "\n>> Quitting", AnsiColor.RED, 1, 35).centerPrint();
 

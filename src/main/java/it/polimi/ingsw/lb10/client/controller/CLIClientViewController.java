@@ -198,13 +198,13 @@ public class CLIClientViewController implements ClientViewController{
             parsed = input.split(":");
             if(parsed.length != 2 ||
                      isNotValidIP(parsed[0]) && isNotValidPort(parsed[1])){ //invalid input, none of the fields is correct (ip:port)
-                view.pageStateDisplay(new CLIConnectionPage.InvalidInput(), null);
+                view.pageStateDisplay(new CLIConnectionPage.InvalidInput(), new String[] {input});
 
             } else if (isNotValidIP(parsed[0])) {
-                view.pageStateDisplay(new CLIConnectionPage.InvalidIP(), null);
+                view.pageStateDisplay(new CLIConnectionPage.InvalidIP(), new String[] {input});
 
             } else if (isNotValidPort(parsed[1])) {
-                view.pageStateDisplay(new CLIConnectionPage.InvalidPort(), null);
+                view.pageStateDisplay(new CLIConnectionPage.InvalidPort(), new String[] {input});
             }
         }while(parsed.length != 2 || isNotValidPort(parsed[1]) || isNotValidIP(parsed[0]));
 

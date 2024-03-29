@@ -32,11 +32,3 @@ public class CLIClientView implements ClientView {
         return this.page;
     }
 }
-
-
-
-
-
-
-
-
