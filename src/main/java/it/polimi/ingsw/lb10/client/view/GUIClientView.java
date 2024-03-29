@@ -5,9 +5,13 @@ import it.polimi.ingsw.lb10.client.controller.ClientViewController;
 
 public class GUIClientView implements ClientView {
 
+    @Override
+    public void setPage(Page page) {
+
+    }
 
     @Override
-    public void displayPage() {
+    public void pageStateDisplay(State state, String[] args){
 
     }
 }

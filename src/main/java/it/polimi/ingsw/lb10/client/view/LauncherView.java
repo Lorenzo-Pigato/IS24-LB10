@@ -1,12 +1,11 @@
 package it.polimi.ingsw.lb10.client.view;
 
-import it.polimi.ingsw.lb10.client.clidesign.CLIBanner;
-import it.polimi.ingsw.lb10.client.clidesign.CLICommand;
-import it.polimi.ingsw.lb10.client.clidesign.CLIString;
-import it.polimi.ingsw.lb10.client.clidesign.ansi.AnsiColor;
+import it.polimi.ingsw.lb10.client.cli.CLIBanner;
+import it.polimi.ingsw.lb10.client.cli.CLICommand;
+import it.polimi.ingsw.lb10.client.cli.CLIString;
+import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
 import it.polimi.ingsw.lb10.client.util.InputVerifier;
-
-import java.util.Scanner;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class LauncherView {
     private static final CLIString welcome = new CLIString(">> Welcome to Codex! <<", AnsiColor.YELLOW, 0, 36);
@@ -21,7 +20,7 @@ public abstract class LauncherView {
             , AnsiColor.YELLOW, 0, 37
     );
 
-    public static String runLauncherPage() {
+    public static @NotNull String runLauncherPage() {
         CLICommand.initialize();
         CLIBanner.displayCodex();
         chooseApplication.centerPrint();

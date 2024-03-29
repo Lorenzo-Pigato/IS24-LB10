@@ -1,8 +1,10 @@
-package it.polimi.ingsw.lb10.client.clidesign;
+package it.polimi.ingsw.lb10.client.cli;
 
-import it.polimi.ingsw.lb10.client.clidesign.ansi.AnsiColor;
-import it.polimi.ingsw.lb10.client.clidesign.ansi.AnsiString;
+import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
 
+/**
+ * This class contains the ASCII art for the game's banners
+ */
 public abstract class CLIBanner {
 
     public static void displayCodex(int row){
@@ -118,6 +120,37 @@ public abstract class CLIBanner {
                         "│                           │\n"+
                         "└───────────────────────────┘\n"
                 , AnsiColor.CYAN, 1, 20).centerPrint();
+    }
+
+    public static void displayLogin(){
+        new CLIString(
+                "┌─────────────────────────────────────────┐\n" +
+                "│                                         │\n"+
+                "│ ██╗      ██████╗  ██████╗ ██╗███╗   ██╗ │\n"+
+                "│ ██║     ██╔═══██╗██╔════╝ ██║████╗  ██║ │\n"+
+                "│ ██║     ██║   ██║██║  ███╗██║██╔██╗ ██║ │\n"+
+                "│ ██║     ██║   ██║██║   ██║██║██║╚██╗██║ │\n"+
+                "│ ███████╗╚██████╔╝╚██████╔╝██║██║ ╚████║ │\n"+
+                "│ ╚══════╝ ╚═════╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝ │\n"+
+                "│                                         │\n"+
+                "└─────────────────────────────────────────┘\n"
+                , AnsiColor.GREEN, 1, 20).centerPrint();
+    }
+
+    public static void displayError(){
+        new CLIString(
+
+        "┌───────────────────────────────────────────┐" +
+            "│                                           │" +
+            "│ ███████╗██████╗ ██████╗  ██████╗ ██████╗  │" +
+            "│ ██╔════╝██╔══██╗██╔══██╗██╔═══██╗██╔══██╗ │" +
+            "│ █████╗  ██████╔╝██████╔╝██║   ██║██████╔╝ │" +
+            "│ ██╔══╝  ██╔══██╗██╔══██╗██║   ██║██╔══██╗ │" +
+            "│ ███████╗██║  ██║██║  ██║╚██████╔╝██║  ██║ │" +
+            "│ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝ │" +   "│                                           │" +
+            "└───────────────────────────────────────────┘"
+        ,AnsiColor.RED, 1, 20).centerPrint();
+
     }
 
 }

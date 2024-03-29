@@ -1,4 +1,4 @@
-package it.polimi.ingsw.lb10.client.clidesign.ansi;
+package it.polimi.ingsw.lb10.client.cli.ansi;
 
 /**
  * This class provides a way to print strings with ANSI colors and formats

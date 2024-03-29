@@ -1,4 +1,4 @@
-package it.polimi.ingsw.lb10.client.clidesign.ansi;
+package it.polimi.ingsw.lb10.client.cli.ansi;
 
 public enum AnsiColor {
     DEFAULT(""),
