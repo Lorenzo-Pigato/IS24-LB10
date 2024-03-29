@@ -10,6 +10,4 @@ public interface CLIPage extends Page {
     default void display(CLIState state, String[] args){
         state.apply(args);
     }
-
-    interface Default extends CLIState {};
 }

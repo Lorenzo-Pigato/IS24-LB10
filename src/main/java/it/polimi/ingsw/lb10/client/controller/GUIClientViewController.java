@@ -66,8 +66,7 @@ public class GUIClientViewController implements ClientViewController {
     }
 
     @Override
-    public void handleConnectionError() {
+    public void login() {
 
     }
-
 }

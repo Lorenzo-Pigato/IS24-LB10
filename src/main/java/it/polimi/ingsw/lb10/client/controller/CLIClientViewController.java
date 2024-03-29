@@ -5,9 +5,11 @@ import it.polimi.ingsw.lb10.client.cli.clipages.CLI404Page;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIConnectionPage;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIErrorPage;
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
+import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
 import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.network.Response;
+import it.polimi.ingsw.lb10.network.requests.preMatch.LoginRequest;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -40,20 +42,37 @@ public class CLIClientViewController implements ClientViewController{
         this.client = client;
     }
 
-    // ------------------ METHODS ------------------ //
+    // ------------------- UTILS ------------------- //
     @Override
     public void close() {
         try{
             socketIn.close();
             socketOut.close();
         }catch(IOException e){
-            view.setPage(new CLIErrorPage());
-            view.pageStateDisplay(new CLIErrorPage.Default(), new String[] {">> Error closing sockets <<", e.getMessage()});
+            ExceptionHandler.handle(e, view);
         }finally{
             client.setActive(false);
         }
 
     }
+
+    private boolean isNotValidIP(String split){
+        String ipv4Pattern ="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
+        Pattern pattern = Pattern.compile(ipv4Pattern);
+        Matcher matcher = pattern.matcher(split);
+        return !matcher.matches();
+    }
+
+    private boolean isNotValidPort(String port){
+        try{
+            int portNumber = Integer.parseInt(port);
+            return portNumber < 1024 || portNumber > 65535;
+        }catch(NumberFormatException e){
+            return true;
+        }
+    }
+
+    // ------------------ METHODS ------------------ //
 
     /**
      * this method is the first to be run after instantiation of the controller,
@@ -64,15 +83,22 @@ public class CLIClientViewController implements ClientViewController{
         try{
             socketIn = new ObjectInputStream(socket.getInputStream());
         }catch(IOException e){
-            System.out.println("Error creating Socket Input Stream...");
+            ExceptionHandler.handle(e, view);
         }
         try{
             socketOut = new ObjectOutputStream(socket.getOutputStream());
         }catch(IOException e){
-            System.out.println("Error creating Socket Output Stream...");
+            ExceptionHandler.handle(e, view);
         }
     }
 
+    @Override
+    public void login() {
+
+        asyncWriteToSocket(new LoginRequest(""));
+    }
+
+    // --------------- ASYNC IO HANDLING ------------- //
 
     @Override
     public void showUserOutput(Object o) {
@@ -139,10 +165,9 @@ public class CLIClientViewController implements ClientViewController{
             while (client.isActive()) {
                 try {
                     String input = in.nextLine();
-                    //Response command = CommandParser.parse(input);
-                    // REACTS!!!
+
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    ExceptionHandler.handle(e, view);
                 }finally {
                     close();
                 }
@@ -192,25 +217,4 @@ public class CLIClientViewController implements ClientViewController{
         return cliSocket;
     }
 
-    private boolean isNotValidIP(String split){
-        String ipv4Pattern ="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
-        Pattern pattern = Pattern.compile(ipv4Pattern);
-        Matcher matcher = pattern.matcher(split);
-        return !matcher.matches();
-    }
-
-    private boolean isNotValidPort(String port){
-        try{
-            int portNumber = Integer.parseInt(port);
-            return portNumber < 1024 || portNumber > 65535;
-        }catch(NumberFormatException e){
-            return true;
-        }
-    }
-
-    @Override
-    public void handleConnectionError() {
-        view.setPage(new CLI404Page());
-        view.pageStateDisplay(new CLI404Page.Default(), null);
-    }
 }

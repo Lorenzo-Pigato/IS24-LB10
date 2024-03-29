@@ -6,6 +6,7 @@ import it.polimi.ingsw.lb10.client.cli.CLILine;
 import it.polimi.ingsw.lb10.client.cli.CLIString;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiString;
+import org.jetbrains.annotations.NotNull;
 
 public class CLIConnectionPage implements CLIPage{
     private static final CLIString welcome = new CLIString(">> Welcome to Codex, new Player! <<", AnsiColor.YELLOW, 0, 36);
@@ -36,28 +37,37 @@ public class CLIConnectionPage implements CLIPage{
     }
 
     public static class InvalidInput implements CLIState {
+        /**
+         * @param args user invalid input as args[0]
+         */
         @Override
-        public void apply(String[] args) {
+        public void apply(String @NotNull [] args) {
             CLICommand.restoreCursorPosition();
-            CLICommand.clearScreenAfterCursor();
+            CLICommand.clearUserInput(args[0]);
             CLIString.replace(welcome, invalidInput);
         }
     }
 
     public static class InvalidIP implements CLIState {
+        /**
+         * @param args user invalid input as args[0]
+         */
         @Override
-        public void apply(String[] args) {
+        public void apply(String @NotNull [] args) {
             CLICommand.restoreCursorPosition();
-            CLICommand.clearScreenAfterCursor();
+            CLICommand.clearUserInput(args[0]);
             CLIString.replace(welcome, invalidIp);
         }
     }
 
     public static class InvalidPort implements CLIState {
+        /**
+         * @param args user invalid input as args[0]
+         */
         @Override
         public void apply(String[] args) {
             CLICommand.restoreCursorPosition();
-            CLICommand.clearScreenAfterCursor();
+            CLICommand.clearUserInput(args[0]);
             CLIString.replace(welcome, invalidPort);
         }
     }
