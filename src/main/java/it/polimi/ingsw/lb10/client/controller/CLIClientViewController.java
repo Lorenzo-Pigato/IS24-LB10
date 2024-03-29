@@ -4,6 +4,7 @@ import it.polimi.ingsw.lb10.client.Client;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLI404Page;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIConnectionPage;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIErrorPage;
+import it.polimi.ingsw.lb10.client.cli.clipages.CLILoginPage;
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
@@ -94,6 +95,8 @@ public class CLIClientViewController implements ClientViewController{
 
     @Override
     public void login() {
+        view.setPage(new CLILoginPage());
+        view.pageStateDisplay(new CLILoginPage.Default(), null);
 
         asyncWriteToSocket(new LoginRequest(""));
     }
@@ -113,7 +116,7 @@ public class CLIClientViewController implements ClientViewController{
     }
 
     /**
-     *  This asynchronous method is run by a separated thread to receive asynchronous requests from user command line (commands)
+     * This asynchronous method is run by a separated thread to receive asynchronous requests from user command line (commands)
      * This method uses CommandParser class' static method parse(String input) to figure out the command given and reacts by invoking
      * the handler method "..."
      */
