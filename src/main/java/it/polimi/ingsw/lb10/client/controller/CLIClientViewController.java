@@ -7,6 +7,7 @@ import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
 import it.polimi.ingsw.lb10.network.requests.Request;
+import it.polimi.ingsw.lb10.network.requests.preMatch.LoginRequest;
 import it.polimi.ingsw.lb10.network.response.Response;
 
 import java.io.IOException;
@@ -103,6 +104,37 @@ public class CLIClientViewController implements ClientViewController{
         Scanner in = new Scanner(System.in);
         String input = in.nextLine();
         boolean validUserName = false;
+
+        do {
+            if (input.length() < 3 || input.length() > 15) {
+                view.pageStateDisplay(new CLILoginPage.invalidLength(), new String[]{input});
+            } else {
+                //send request
+                //read response
+                //if response is positive, set validUserName to true
+                //else, display error message
+            }
+        } while (!validUserName);
+    }
+
+    // ---------- PROCEDURAL IO HANDLING ------------ //
+    public void writeToSocket(Request r){
+        try{
+            socketOut.reset();
+            socketOut.writeObject(r);
+            socketOut.flush();
+        }catch(IOException e){
+            ExceptionHandler.handle(e, view);
+        }
+    }
+
+    public void readFromSocket(){
+        try{
+            Response input = (Response)socketIn.readObject();
+
+        }catch(Exception e){
+            ExceptionHandler.handle(e, view);
+        }
     }
 
     // --------------- ASYNC IO HANDLING ------------- //

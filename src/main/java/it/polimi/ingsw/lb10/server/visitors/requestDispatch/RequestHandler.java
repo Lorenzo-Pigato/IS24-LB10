@@ -1,13 +1,14 @@
 package it.polimi.ingsw.lb10.server.visitors.requestDispatch;
 
 import it.polimi.ingsw.lb10.network.requests.preMatch.LoginRequest;
+import it.polimi.ingsw.lb10.network.response.BooleanResponse;
 import it.polimi.ingsw.lb10.server.controller.LobbyController;
 import it.polimi.ingsw.lb10.server.view.RemoteView;
 import org.jetbrains.annotations.NotNull;
 
 
 /**
- * This class is a sperimental brisge between ClientConnection , which receives the client Requests object
+ * This class is an experimental bridge between ClientConnection , which receives the client Requests object
  * and the controllers.
  * Every single request must be mapped into this class to be handled.
  * There are two ways of handling requests
@@ -36,7 +37,9 @@ public class RequestHandler implements RequestVisitor{
     public void visit(@NotNull LoginRequest lr) {
         if(lobbyController.validateUsername(lr.getUsername())){
             lobbyController.addSignedPlayer(lr.getUsername());
-            //remote view
+            remoteView.send(new BooleanResponse(true));
+        } else {
+            remoteView.send(new BooleanResponse(false));
         }
     }
 
