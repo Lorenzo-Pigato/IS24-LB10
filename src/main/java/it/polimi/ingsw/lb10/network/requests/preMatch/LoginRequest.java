@@ -1,13 +1,14 @@
 package it.polimi.ingsw.lb10.network.requests.preMatch;
+import it.polimi.ingsw.lb10.network.requests.Request;
+import it.polimi.ingsw.lb10.server.visitors.requestDispatch.RequestHandler;
 
-import it.polimi.ingsw.lb10.network.requests.preMatch.PreMatchRequest;
-import org.jetbrains.annotations.NotNull;
+public class LoginRequest extends Request {
+    private String username;
+    private static final long serialVersionUID = 1L;
 
-public class LoginRequest extends PreMatchRequest {
-    private final String username;
-
-    public LoginRequest(String username) {
-        this.username = username;
+    @Override
+    public void accept(RequestHandler handler) {
+        handler.visit(this);
     }
 
     public String getUsername() {

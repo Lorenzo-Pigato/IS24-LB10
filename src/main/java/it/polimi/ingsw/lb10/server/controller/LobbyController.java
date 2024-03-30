@@ -25,10 +25,20 @@ public class LobbyController {
         startedMatches = new ArrayList<>();
     }
 
-    public static LobbyController instance(){
+    public synchronized static LobbyController instance(){
         if(instance == null) instance = new LobbyController();
         return instance;
     }
 
+    public synchronized boolean validateUsername(String username){
+        return signedPlayers
+                .stream()
+                .map(Player::getUsername)
+                .noneMatch((username::equalsIgnoreCase));
+    }
+
+    public synchronized void addSignedPlayer(String username){
+        signedPlayers.add(new Player(username));
+    }
 
 }

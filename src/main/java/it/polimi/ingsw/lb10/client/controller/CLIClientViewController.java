@@ -1,21 +1,17 @@
 package it.polimi.ingsw.lb10.client.controller;
 
 import it.polimi.ingsw.lb10.client.Client;
-import it.polimi.ingsw.lb10.client.cli.clipages.CLI404Page;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIConnectionPage;
-import it.polimi.ingsw.lb10.client.cli.clipages.CLIErrorPage;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLILoginPage;
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
 import it.polimi.ingsw.lb10.network.requests.Request;
-import it.polimi.ingsw.lb10.network.Response;
-import it.polimi.ingsw.lb10.network.requests.preMatch.LoginRequest;
+import it.polimi.ingsw.lb10.network.response.Response;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.lang.annotation.Documented;
 import java.net.Socket;
 import java.util.Scanner;
 import java.util.regex.Matcher;

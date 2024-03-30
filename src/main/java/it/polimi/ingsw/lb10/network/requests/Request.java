@@ -1,8 +1,8 @@
 package it.polimi.ingsw.lb10.network.requests;
+import it.polimi.ingsw.lb10.server.visitors.requestDispatch.RequestVisitable;
 
-/**
- * This class represents a generic request that can be sent to the server
- */
-public abstract class Request {
+import java.io.Serializable;
+
+public abstract class Request implements RequestVisitable , Serializable {
 
 }
