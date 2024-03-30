@@ -104,7 +104,9 @@ public class CLIClientViewController implements ClientViewController{
         view.setPage(new CLILoginPage());
         view.pageStateDisplay(new CLILoginPage.Default(), null);
 
-        asyncWriteToSocket(new LoginRequest(""));
+        Scanner in = new Scanner(System.in);
+        String input = in.nextLine();
+        boolean validUserName = false;
     }
 
     // --------------- ASYNC IO HANDLING ------------- //
