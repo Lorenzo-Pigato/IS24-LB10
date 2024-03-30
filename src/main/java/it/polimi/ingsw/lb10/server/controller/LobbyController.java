@@ -31,7 +31,10 @@ public class LobbyController {
     }
 
     public synchronized boolean validateUsername(String username){
-        return signedPlayers.stream().map(player -> player.getUsername()).noneMatch((us->username.equalsIgnoreCase(us)));
+        return signedPlayers
+                .stream()
+                .map(Player::getUsername)
+                .noneMatch((username::equalsIgnoreCase));
     }
 
     public synchronized void addSignedPlayer(String username){

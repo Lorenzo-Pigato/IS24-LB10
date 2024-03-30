@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lb10.server.controller;
 
 import it.polimi.ingsw.lb10.network.requests.Request;
+import it.polimi.ingsw.lb10.server.view.RemoteView;
 import it.polimi.ingsw.lb10.util.Observer;
 import it.polimi.ingsw.lb10.server.model.MatchModel;
 
@@ -17,12 +18,12 @@ import java.util.concurrent.BlockingQueue;
 *@ won't have to wait for the model and view to be updated, they can get continuous request that will be submitted
 *@ to this queue and executed inside this separeted thread!*/
 
-public class MatchController implements Runnable, Observer<Request> {
+public class MatchController implements Runnable {
 
     private Boolean active = true;
     private MatchModel model;
     private BlockingQueue<Request> requests;
-
+    private RemoteView remoteView;
     //Game Model fields
 
     @Override
@@ -30,11 +31,6 @@ public class MatchController implements Runnable, Observer<Request> {
         while(active){
 
         }
-    }
-
-    @Override
-    public void update(Request request) {
-
     }
 
     public void process(Request m){
