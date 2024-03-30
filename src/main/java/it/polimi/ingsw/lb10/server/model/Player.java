@@ -1,6 +1,6 @@
 package it.polimi.ingsw.lb10.server.model;
 
-import it.polimi.ingsw.lb10.server.model.Quest.Quest;
+import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import it.polimi.ingsw.lb10.server.model.cards.Card;
 
 import java.util.ArrayList;

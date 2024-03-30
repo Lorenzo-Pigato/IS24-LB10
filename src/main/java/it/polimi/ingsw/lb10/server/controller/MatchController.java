@@ -5,16 +5,18 @@ import it.polimi.ingsw.lb10.server.model.MatchModel;
 import it.polimi.ingsw.lb10.server.model.Node;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.cards.Card;
+import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.util.Observer;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 
 /*@ this class is the single match controller, every match has one
 *@ the run() method takes continuously the requests (pushed by ClientConnection(s)) from the BlockingQueue snd processes
 *@ them by entering the model and updating the view
 *@ this implementation goes over the Observer implementation to optimize thread synchronization
-*@ Infact, using an Observer implementation, this class wouldn't be a Runnable istance, and ClientConnection
+*@ In fact, using an Observer implementation, this class wouldn't be a Runnable istance, and ClientConnection
 *@ would access this object
 *@ with synchronized blocks to update the model and the view. Using this kind of implementation (BlockingQueue),
 *@ ClientConnection
@@ -25,7 +27,12 @@ public class MatchController implements Runnable , Observer<Request> {
 
     private MatchModel model;
     private BlockingQueue<Request> requests;
+    private final Position[] possiblePosition;
 
+    public MatchController(MatchModel model){
+        this.model=model;
+        possiblePosition= new Position[]{Position.TOPLEFT, Position.TOPRIGHT, Position.BOTTOMRIGHT, Position.BOTTOMLEFT};
+    }
     //Game Model fields
 
     @Override
@@ -36,33 +43,49 @@ public class MatchController implements Runnable , Observer<Request> {
 
     }
 
+    /**
+     * The method that starts the Insertion rules
+     */
+    public boolean checkInsertion(Player player,Card card,int row, int column){
+        //if the player isn't in the MatchModel players List
+        if(getModel().isNotPlayerIn(player))
+            return false;
+        if(verificationSetting(player,card,row,column))
+            return true;
+        player.getMatrix().deleteCard(row,column);
+        return  false;
+    }
 
     /**
      * @param player calls the method, we need the reference for the matrix
      * @param card is to add
-     * @param i row
-     * @param j column
+     * @param row row
+     * @param column column
      * @return true if the card passed all the requirements
      */
-    public boolean verificationSetting(Player player,Card card,int i, int j){
-        //if the player isn't in the MatchModel players List
-        if(!getModel().isPlayerIn(player))
-            return false;
+    public boolean verificationSetting(Player player,Card card,int row, int column){
+
         //if one corner isn't available
-        if(!checkAvailability(player,i,j))
+        if(checkNotAvailability(player,row,column))
             return false;
 
         ArrayList<Node> nodesVisited= new ArrayList<>();
-        boolean visitedOneCard=false;
+        Map<Position, int[]> setIncrement = player.getMatrix().parsingPositionCorners();
+        int[] delta= new int[]{0,0};
 
-        for(int count=0;count<4;count++){
+        for(Position position: getPossiblePosition()){
+        //turning to the starting position
+            row-=delta[0]; column-=delta[1];
+                delta = setIncrement.get(position);
+            row+=delta[0]; column+=delta[1];
+
             //if in the matrix node there's only the corner of the card that I want to add, there's nothing to check
-            if(player.getMatrix().getMatrixNode(i, j).getCorners().size()==1){
+            if(player.getMatrix().getNode(row, column).getCorners().size()==1){
                 //Can't be more than 2 cards on a corner!
-                if(player.getMatrix().getMatrixNode(i,j).getCorners().size()==3)
+                if(player.getMatrix().getNode(row,column).getCorners().size()==3)
                     return false;
                 // I added the node that I visited inside the arraylist, because it has 2 corners in the node
-                nodesVisited.add(player.getMatrix().getMatrixNode(i,j));
+                nodesVisited.add(player.getMatrix().getNode(row,column));
                 // If I visited more than 1 node with 2 corners
                 if(nodesVisited.size()>1){
                     for(int x=0;x<nodesVisited.size()-1;x++){
@@ -73,29 +96,28 @@ public class MatchController implements Runnable , Observer<Request> {
                     }
                 }
             }
-            if(count==0) i++;
-            if(count==1) j++;
-            if(count==2) i--;
         }
+        //turning to the starting position
+        row-=delta[0]; column-=delta[1];
         //if the card doesn't cover at least one card, it's an error
         return !nodesVisited.isEmpty();
     }
 
-    public boolean checkAvailability(Player player,int i, int j){
-        if(player.getMatrix().getMatrixNode(i, j).checkAvailability())
-           return false;
-        if(player.getMatrix().getMatrixNode(i++, j).checkAvailability())
-            return false;
-        if(player.getMatrix().getMatrixNode(i, j++).checkAvailability())
-            return false;
-        if(player.getMatrix().getMatrixNode(i++, j++).checkAvailability())
-            return false;
+    public boolean checkNotAvailability(Player player,int row, int column){
+        Map<Position, int[]> setIncrement = player.getMatrix().parsingPositionCorners();
+
+        for(Position position: getPossiblePosition()){
+            int[] delta = setIncrement.get(position);
+            if (player.getMatrix().getNode(row + delta[0], column + delta[1]).checkIsNotAvailable())
+                return false;
+        }
         return true;
     }
-
-    public MatchModel getModel() {
-        return model;
-    }
+// I tried to set the increment with a method, but it's better in this way
+//    public void coordinateModifier(int row,int column, int[] delta){
+//        delta[0]+=row;
+//        delta[1]+=column;
+//    }
 
     @Override
     public void update(Request request) {
@@ -106,5 +128,13 @@ public class MatchController implements Runnable , Observer<Request> {
 
     }
 
+    // --------> GETTER <--------
+    public MatchModel getModel() {
+        return model;
+    }
+
+    public Position[] getPossiblePosition() {
+        return possiblePosition;
+    }
 
 }

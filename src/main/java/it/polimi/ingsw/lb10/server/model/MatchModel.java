@@ -1,7 +1,7 @@
 package it.polimi.ingsw.lb10.server.model;
 
 import it.polimi.ingsw.lb10.network.Request;
-import it.polimi.ingsw.lb10.server.model.Quest.Quest;
+import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import it.polimi.ingsw.lb10.server.model.cards.Card;
 import it.polimi.ingsw.lb10.server.model.decks.Deck;
 import it.polimi.ingsw.lb10.server.model.decks.GoldenDeck;
@@ -58,9 +58,9 @@ public class MatchModel extends Observable<Request>{
 // I need time to dev the Quest!
     }
 
-    public boolean isPlayerIn(Player playerToCheck){
+    public boolean isNotPlayerIn(Player playerToCheck){
         return this.getPlayers().stream()
-                                .anyMatch(player -> player.equals(playerToCheck));
+                                .noneMatch(player -> player.equals(playerToCheck));
     }
 
     public void addResourceUncovered(){

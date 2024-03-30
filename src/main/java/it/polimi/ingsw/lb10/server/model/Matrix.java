@@ -1,16 +1,18 @@
 package it.polimi.ingsw.lb10.server.model;
 
 import it.polimi.ingsw.lb10.server.model.cards.Card;
-import it.polimi.ingsw.lb10.server.model.cards.Corner;
-import it.polimi.ingsw.lb10.server.model.cards.Position;
+import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
+import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
  */
 public class Matrix {
-    private ArrayList<ArrayList<Node>> matrix= new ArrayList<>();
+    private final ArrayList<ArrayList<Node>> matrix= new ArrayList<>();
     Player player;
 
     public Matrix(Player player){
@@ -22,13 +24,22 @@ public class Matrix {
      *    we work with the worst case, 83x83
      */
     public void startingMatrix(){
-        for(int i=0;i<83;i++){
+        for(int row=0;row<83;row++){
             matrix.add(new ArrayList<>());
-            for(int j=0;j<83;j++){
+            for(int column=0;column<83;column++){
                 Node node = new Node();
-                matrix.get(i).add(node);
+                matrix.get(row).add(node);
             }
         }
+    }
+
+    public Map<Position, int[]> parsingPositionCorners(){
+            Map<Position, int[]> setIncrement = new HashMap<>();
+            setIncrement.put(Position.TOPLEFT, new int[]{0, 0});
+            setIncrement.put(Position.TOPRIGHT, new int[]{0, 1});
+            setIncrement.put(Position.BOTTOMRIGHT, new int[]{1, 1});
+            setIncrement.put(Position.BOTTOMLEFT, new int[]{1, 0});
+        return setIncrement;
     }
 
     /**
@@ -39,52 +50,32 @@ public class Matrix {
     }
 
     /**
-     * @param card to set inside the matrix
-     * @param i row
-     * @param j column
-     *i and j are the top-left node.
+     * @param card to set inside the matrix, it's not the staring
+     *      i and j are the top-left node.
      */
-    public void setCard(Card card,int i, int j){
-        for(Corner corner: card.getCorners() ){
-           if(corner.getPosition().equals(Position.TOPLEFT))
-               getMatrixNode(i,j).addCorner(corner);
-           if(corner.getPosition().equals(Position.TOPRIGHT))
-               getMatrixNode(i++,j).addCorner(corner);
-           if(corner.getPosition().equals(Position.BOTTOMRIGHT))
-               getMatrixNode(i++,j++).addCorner(corner);
-           if(corner.getPosition().equals(Position.BOTTOMLEFT))
-               getMatrixNode(i,j++).addCorner(corner);
+    public void setCard(Card card,int row, int column){
+        Map<Position, int[]> setIncrement = parsingPositionCorners();
+        for (Corner corner : card.getCorners()) {
+            int[] delta = setIncrement.get(corner.getPosition());
+            getNode(row + delta[0], column + delta[1]).addCorner(corner);
         }
     }
 
     /**
-     * @param i row
-     * @param j column
+     * @param row row
+     * @param column column
      *          if the card it's not validated, it's removed
      */
-    public void deleteCard(int i , int j){
-        getMatrixNode(i,j).deleteLastCorner();
-        getMatrixNode(i++,j).deleteLastCorner();
-        getMatrixNode(i,j++).deleteLastCorner();
-        getMatrixNode(i++,j++).deleteLastCorner();
+    public void deleteCard(int row , int column){
+        getNode(row,column).deleteLastCorner();
+        getNode(row++,column).deleteLastCorner();
+        getNode(row,column++).deleteLastCorner();
+        getNode(row++,column++).deleteLastCorner();
     }
 
-    /**
-     * @param i row
-     * @param j column
-     * the problem with this method is that in the object node could be more
-     * than 1 card, this is good for the fact that I can delete the covered resource
-     * from the player's obj!
-     */
-    public void getCard(int i, int j){
-        getMatrixNode(i,j);
-        getMatrixNode(i+1,j);
-        getMatrixNode(i,j+1);
-        getMatrixNode(i+1,j+1);
-    }
 
-    public Node getMatrixNode(int i, int j){
-        return  matrix.get(i).get(j);
+    public Node getNode(int row, int column){
+        return  matrix.get(row).get(column);
     }
 
 }

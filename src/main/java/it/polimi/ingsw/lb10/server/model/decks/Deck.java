@@ -6,8 +6,8 @@ import java.io.IOException;
 
 public interface Deck {
 
-    public void shuffle();
-    public void fillDeck() throws IOException;
-    public Card draw();
+    void shuffle();
+    void fillDeck() throws IOException;
+    Card draw();
 
 }

@@ -1,9 +1,8 @@
 package it.polimi.ingsw.lb10.server.model.decks;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.polimi.ingsw.lb10.server.model.Quest.Quest;
+import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import it.polimi.ingsw.lb10.server.model.cards.Card;
-import it.polimi.ingsw.lb10.server.model.cards.ResourceCard;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -11,8 +10,7 @@ import java.util.ArrayList;
 public class QuestDeck implements Deck {
     private ArrayList<Quest> cards= new ArrayList<>();
     @Override
-    public void shuffle() {
-    }
+    public void shuffle() {}
 
     @Override
     public Card draw() {

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.lb10.server.model.Quest;
+package it.polimi.ingsw.lb10.server.model.quest;
 
 import it.polimi.ingsw.lb10.server.model.Resource;
 

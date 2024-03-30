@@ -1,7 +1,7 @@
 package it.polimi.ingsw.lb10.server.model;
 
 
-import it.polimi.ingsw.lb10.server.model.cards.Corner;
+import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 
 import java.util.ArrayList;
 
@@ -25,7 +25,8 @@ public class Node {
     public void deleteLastCorner(){
         corners.remove(corners.size()-1);
     }
-    public boolean checkAvailability(){
+
+    public boolean checkIsNotAvailable(){
         if(corners.size()==1)
             return false;
         if(!corners.get(0).isAvailable() || !corners.get(1).isAvailable() )

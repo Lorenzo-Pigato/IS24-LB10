@@ -1,17 +1,19 @@
 package it.polimi.ingsw.lb10.server.model.decks;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import it.polimi.ingsw.lb10.server.model.cards.*;
 
 import it.polimi.ingsw.lb10.server.model.Resource;
+import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
+import it.polimi.ingsw.lb10.server.model.cards.corners.CornerAvailable;
+import it.polimi.ingsw.lb10.server.model.cards.corners.CornetNotAvailable;
+import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 
 import java.io.File;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ResourceDeck implements Deck {
 

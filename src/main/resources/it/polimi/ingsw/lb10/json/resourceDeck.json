@@ -1,141 +1,46 @@
 [ {
-  "id" : 0,
+  "id" : 32,
   "flipped" : true,
   "points" : 1,
-  "resource" : "ANIMAL",
-  "corner" : [ {
-    "resource" : "FEATHER",
-    "up" : false,
-    "left" : true
+  "corners" : [ {
+    "available" : false,
+    "position" : "TOPRIGHT",
+    "id" : 32
   }, {
-    "resource" : "PLANT",
-    "up" : true,
-    "left" : false
-  } ]
+    "available" : true,
+    "position" : "TOPLEFT",
+    "id" : 0,
+    "resource" : null
+  } ],
+  "resource" : "ANIMAL"
 }, {
   "id" : 1,
   "flipped" : true,
   "points" : 1,
-  "resource" : "ANIMAL",
-  "corner" : [ {
-    "resource" : "FEATHER",
-    "up" : false,
-    "left" : true
+  "corners" : [ {
+    "available" : false,
+    "position" : "TOPRIGHT",
+    "id" : 32
   }, {
-    "resource" : "PLANT",
-    "up" : true,
-    "left" : false
-  } ]
+    "available" : true,
+    "position" : "TOPLEFT",
+    "id" : 0,
+    "resource" : null
+  } ],
+  "resource" : "ANIMAL"
 }, {
   "id" : 2,
   "flipped" : true,
   "points" : 1,
-  "resource" : "ANIMAL",
-  "corner" : [ {
-    "resource" : "FEATHER",
-    "up" : false,
-    "left" : true
+  "corners" : [ {
+    "available" : false,
+    "position" : "TOPRIGHT",
+    "id" : 32
   }, {
-    "resource" : "PLANT",
-    "up" : true,
-    "left" : false
-  } ]
-}, {
-  "id" : 3,
-  "flipped" : true,
-  "points" : 1,
-  "resource" : "ANIMAL",
-  "corner" : [ {
-    "resource" : "FEATHER",
-    "up" : false,
-    "left" : true
-  }, {
-    "resource" : "PLANT",
-    "up" : true,
-    "left" : false
-  } ]
-}, {
-  "id" : 4,
-  "flipped" : true,
-  "points" : 1,
-  "resource" : "ANIMAL",
-  "corner" : [ {
-    "resource" : "FEATHER",
-    "up" : false,
-    "left" : true
-  }, {
-    "resource" : "PLANT",
-    "up" : true,
-    "left" : false
-  } ]
-}, {
-  "id" : 5,
-  "flipped" : true,
-  "points" : 1,
-  "resource" : "ANIMAL",
-  "corner" : [ {
-    "resource" : "FEATHER",
-    "up" : false,
-    "left" : true
-  }, {
-    "resource" : "PLANT",
-    "up" : true,
-    "left" : false
-  } ]
-}, {
-  "id" : 6,
-  "flipped" : true,
-  "points" : 1,
-  "resource" : "ANIMAL",
-  "corner" : [ {
-    "resource" : "FEATHER",
-    "up" : false,
-    "left" : true
-  }, {
-    "resource" : "PLANT",
-    "up" : true,
-    "left" : false
-  } ]
-}, {
-  "id" : 7,
-  "flipped" : true,
-  "points" : 1,
-  "resource" : "ANIMAL",
-  "corner" : [ {
-    "resource" : "FEATHER",
-    "up" : false,
-    "left" : true
-  }, {
-    "resource" : "PLANT",
-    "up" : true,
-    "left" : false
-  } ]
-}, {
-  "id" : 8,
-  "flipped" : true,
-  "points" : 1,
-  "resource" : "ANIMAL",
-  "corner" : [ {
-    "resource" : "FEATHER",
-    "up" : false,
-    "left" : true
-  }, {
-    "resource" : "PLANT",
-    "up" : true,
-    "left" : false
-  } ]
-}, {
-  "id" : 9,
-  "flipped" : true,
-  "points" : 1,
-  "resource" : "ANIMAL",
-  "corner" : [ {
-    "resource" : "FEATHER",
-    "up" : false,
-    "left" : true
-  }, {
-    "resource" : "PLANT",
-    "up" : true,
-    "left" : false
-  } ]
+    "available" : true,
+    "position" : "TOPLEFT",
+    "id" : 0,
+    "resource" : null
+  } ],
+  "resource" : "ANIMAL"
 } ]

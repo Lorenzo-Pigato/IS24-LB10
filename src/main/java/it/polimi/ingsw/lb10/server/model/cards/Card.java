@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lb10.server.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 
 import java.util.ArrayList;
 
