@@ -31,17 +31,21 @@ public class Player {
     }
 
     public void addOnMapResources(Resource resource) {
-        if (OnMapResources.containsKey(resource)) {
-            int currentQuantity = OnMapResources.get(resource);
-            OnMapResources.put(resource, currentQuantity+1);
-        }else
-            OnMapResources.put(resource, 1);
+        if(resource!=Resource.NULL) {
+            if (OnMapResources.containsKey(resource)) {
+                int currentQuantity = OnMapResources.get(resource);
+                OnMapResources.put(resource, currentQuantity + 1);
+            } else
+                OnMapResources.put(resource, 1);
+        }
     }
-    public void deleteOnMapResources(Resource resource){
-        if(OnMapResources.containsKey(resource)){
-            int currentQuantity = OnMapResources.get(resource);
-            OnMapResources.put(resource, currentQuantity-1);
-        }else
-            System.out.println(">>> E r r o r <<<");
+    public void deleteOnMapResources(Resource resource) {
+        if (resource != Resource.NULL) {
+            if (OnMapResources.containsKey(resource)) {
+                int currentQuantity = OnMapResources.get(resource);
+                OnMapResources.put(resource, currentQuantity - 1);
+            } else
+                System.out.println(">>> E r r o r <<<");
+        }
     }
 }

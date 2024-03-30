@@ -47,13 +47,17 @@ public class MatchController implements Runnable {
 
     /**
      * The method that starts the Insertion rules
+     *
      */
     public boolean checkInsertion(Player player,Card card,int row, int column){
         //if the player isn't in the MatchModel players List
         if(getModel().isNotPlayerIn(player))
             return false;
-        if(verificationSetting(player,card,row,column))
+        if(verificationSetting(player,card,row,column)){
+            setCardResourceOnPlayer(player,card);
+            deleteCoveredResource(player,row,column);
             return true;
+        }
         player.getMatrix().deleteCard(row,column);
         return  false;
     }
@@ -115,12 +119,21 @@ public class MatchController implements Runnable {
         }
         return true;
     }
-// I tried to set the increment with a method, but it's better in this way
-//    public void coordinateModifier(int row,int column, int[] delta){
-//        delta[0]+=row;
-//        delta[1]+=column;
-//    }
 
+    public void setCardResourceOnPlayer(Player player, Card card){
+        for(int i=0;i<4;i++)
+            player.addOnMapResources(card.getCorners().get(i).getResource());
+    }
+
+    public void deleteCoveredResource(Player player,int row, int column){
+        Map<Position, int[]> setIncrement = player.getMatrix().parsingPositionCorners();
+
+        for(Position position: getPossiblePosition()){
+            int[] delta = setIncrement.get(position);
+            if (player.getMatrix().getNode(row + delta[0], column + delta[1]).getCorners().size()==2)
+                player.deleteOnMapResources(player.getMatrix().getNode(row + delta[0], column + delta[1]).getCorners().get(0).getResource());
+        }
+    }
 
     public void process(Request m){
 
