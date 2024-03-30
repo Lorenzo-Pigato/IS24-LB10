@@ -1,22 +1,23 @@
 package it.polimi.ingsw.lb10.server.model;
 
-import it.polimi.ingsw.lb10.network.Request;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import it.polimi.ingsw.lb10.server.model.cards.Card;
 import it.polimi.ingsw.lb10.server.model.decks.Deck;
 import it.polimi.ingsw.lb10.server.model.decks.GoldenDeck;
 import it.polimi.ingsw.lb10.server.model.decks.QuestDeck;
 import it.polimi.ingsw.lb10.server.model.decks.ResourceDeck;
+import it.polimi.ingsw.lb10.network.requests.Request;
+
 import it.polimi.ingsw.lb10.util.Observable;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatchModel extends Observable<Request>{
+public class MatchModel extends Observable<Request> {
 
     private final String id;
-    private List<Player> players = new ArrayList<>();
+    private final List<Player> players = new ArrayList<>();
     private final int numberOfPlayers;
     private int turn;
 
@@ -24,9 +25,9 @@ public class MatchModel extends Observable<Request>{
     private final Deck goldenDeck = new GoldenDeck();
     private final Deck questDeck = new QuestDeck();
 
-    private List<Quest> commonQuests = new ArrayList<>();
-    private List<Card> goldenUncovered = new ArrayList<>();
-    private List<Card> resourceUncovered= new ArrayList<>();
+    private final List<Quest> commonQuests = new ArrayList<>();
+    private final List<Card> goldenUncovered = new ArrayList<>();
+    private final List<Card> resourceUncovered= new ArrayList<>();
 
 
     public MatchModel(String id, int numberOfPlayers) throws IOException {
@@ -87,12 +88,6 @@ public class MatchModel extends Observable<Request>{
 
     public List<Player> getPlayers() {
         return players;
-    }
-
-    // --------> SETTER <--------
-    @Override
-    public void notify(Request request) {
-        super.notify(request);
     }
 
 }

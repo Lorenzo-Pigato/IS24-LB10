@@ -1,0 +1,42 @@
+package it.polimi.ingsw.lb10.client.view;
+
+import it.polimi.ingsw.lb10.client.cli.CLIBanner;
+import it.polimi.ingsw.lb10.client.cli.CLICommand;
+import it.polimi.ingsw.lb10.client.cli.CLIString;
+import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
+import it.polimi.ingsw.lb10.client.util.InputVerifier;
+import org.jetbrains.annotations.NotNull;
+
+public abstract class LauncherView {
+    private static final CLIString welcome = new CLIString(">> Welcome to Codex! <<", AnsiColor.YELLOW, 0, 36);
+    private static final CLIString welcomePlayer = new CLIString(">> Welcome to Codex, Player! <<", AnsiColor.YELLOW, 0, 36);
+    private static final CLIString inputError = new CLIString(">> Invalid input <<", AnsiColor.RED, 0, 36);
+    private static final CLIString chooseApplication = new CLIString(
+            ">> Choose [SERVER] or [CLIENT] to launch application\n>> ",
+            AnsiColor.YELLOW, 0, 37
+    );
+    private static final CLIString choseInterface = new CLIString(
+            ">> Do you want to launch the Graphic Interface? [Y/N]\n>> "
+            , AnsiColor.YELLOW, 0, 37
+    );
+
+    public static @NotNull String runLauncherPage() {
+        CLICommand.initialize();
+        CLIBanner.displayCodex();
+        chooseApplication.centerPrint();
+
+        String choice = InputVerifier.verify(new String[]{"server", "client"}, welcome, inputError, true);
+
+        if(choice.equalsIgnoreCase(("client"))) {
+            CLIString.replace(welcome, welcomePlayer);
+            CLIString.replace(chooseApplication, choseInterface);
+
+            choice += InputVerifier.verify(new String[]{"Y", "N"}, welcomePlayer, inputError, true)
+                    .equalsIgnoreCase("Y") ? ":gui" : ":cli";
+        }
+
+        return choice.toLowerCase();
+    }
+}
+
+

@@ -1,12 +1,12 @@
 package it.polimi.ingsw.lb10.server.controller;
 
-import it.polimi.ingsw.lb10.network.Request;
 import it.polimi.ingsw.lb10.server.model.MatchModel;
 import it.polimi.ingsw.lb10.server.model.Node;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.cards.Card;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
-import it.polimi.ingsw.lb10.util.Observer;
+import it.polimi.ingsw.lb10.network.requests.Request;
+import it.polimi.ingsw.lb10.server.view.RemoteView;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -23,8 +23,9 @@ import java.util.concurrent.BlockingQueue;
 *@ won't have to wait for the model and view to be updated, they can get continuous request that will be submitted
 *@ to this queue and executed inside this separeted thread!*/
 
-public class MatchController implements Runnable , Observer<Request> {
+public class MatchController implements Runnable {
 
+    private Boolean active = true;
     private MatchModel model;
     private BlockingQueue<Request> requests;
     private final Position[] possiblePosition;
@@ -33,14 +34,15 @@ public class MatchController implements Runnable , Observer<Request> {
         this.model=model;
         possiblePosition= new Position[]{Position.TOPLEFT, Position.TOPRIGHT, Position.BOTTOMRIGHT, Position.BOTTOMLEFT};
     }
+    private RemoteView remoteView;
+
     //Game Model fields
 
     @Override
     public void run() {
-        while(true){
+        while(active){
 
         }
-
     }
 
     /**
@@ -119,10 +121,6 @@ public class MatchController implements Runnable , Observer<Request> {
 //        delta[1]+=column;
 //    }
 
-    @Override
-    public void update(Request request) {
-
-    }
 
     public void process(Request m){
 

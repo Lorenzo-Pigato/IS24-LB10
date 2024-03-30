@@ -1,66 +1,123 @@
 package it.polimi.ingsw.lb10.client.controller;
 
 import it.polimi.ingsw.lb10.client.Client;
+import it.polimi.ingsw.lb10.client.cli.clipages.CLIConnectionPage;
+import it.polimi.ingsw.lb10.client.cli.clipages.CLILoginPage;
+import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
+import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
-import it.polimi.ingsw.lb10.network.Request;
-import it.polimi.ingsw.lb10.network.Response;
-import it.polimi.ingsw.lb10.util.CommandParser;
+import it.polimi.ingsw.lb10.network.requests.Request;
+import it.polimi.ingsw.lb10.network.response.Response;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CLIClientViewController implements ClientViewController{
 
-    private CLIClientView cliClientView;
+    private final CLIClientView view;
     private Socket socket;
     private Client client;
     private ObjectInputStream socketIn;
     private ObjectOutputStream socketOut;
 
+    // ---------------- CONSTRUCTOR ---------------- //
+    public CLIClientViewController(CLIClientView cliClientView) {
+        this.view = cliClientView;
+    }
 
-    public CLIClientViewController(CLIClientView cliClientView, Socket socket, Client client) {
-        this.cliClientView = cliClientView;
+    // ------------------ SETTERS ------------------ //
+    @Override
+    public void setSocket(Socket socket) {
         this.socket = socket;
     }
+    public void setClient(Client client) {
+        this.client = client;
+    }
+    public Socket getSocket() {return socket;}
+    public Client getClient() {return client;}
+    public ObjectInputStream getSocketIn() {return socketIn;}
+    public ObjectOutputStream getSocketOut() {return socketOut;}
+
+    // ------------------- UTILS ------------------- //
+    @Override
+    public void close() {
+        try{
+            socketIn.close();
+            socketOut.close();
+            socket.close();
+        }catch(IOException e){
+            ExceptionHandler.handle(e, view);
+        }finally{
+            client.setActive(false);
+        }
+
+    }
+
+    protected boolean isNotValidIP(String split){
+        String ipv4Pattern ="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
+        Pattern pattern = Pattern.compile(ipv4Pattern);
+        Matcher matcher = pattern.matcher(split);
+        return !matcher.matches();
+    }
+
+    protected boolean isNotValidPort(String port){
+        try{
+            int portNumber = Integer.parseInt(port);
+            return portNumber < 1024 || portNumber > 65535;
+        }catch(NumberFormatException e){
+            return true;
+        }
+    }
+
+    // ------------------ METHODS ------------------ //
 
     /**
-     * This method is called to set up the communication environment between the client and all the possible streams in the
-     * application : the Objs in/out stream via socket (Message requests) and the TUI streams.
-     * After the setup all the listening threads are launched, every thread handles the closing phase of the streams when communication ends.
+     * this method is the first to be run after instantiation of the controller,
+     * opening socket streams to communicate with the server
      */
-    public void launch(){
+    @Override
+    public void setUp(){
+        try{
+            socketOut = new ObjectOutputStream(socket.getOutputStream());
+            socketOut.flush();
+        }catch(IOException e){
+            ExceptionHandler.handle(e, view);
+        }
+        try{
+            socketIn = new ObjectInputStream(socket.getInputStream());
+        }catch(IOException e){
+            ExceptionHandler.handle(e, view);
+        }
+    }
 
-        setUp();
-        Thread waiter = new Thread(() -> {
-            Thread socketReader = asyncReadFromSocket();
-            Thread terminalReader = asyncReadFromTerminal();
+    @Override
+    public void login() {
+        view.setPage(new CLILoginPage());
+        view.pageStateDisplay(new CLILoginPage.Default(), null);
 
-            terminalReader.start();
-            socketReader.start();
+    }
 
-            try{
-                terminalReader.join();
-                socketReader.join();
+    // --------------- ASYNC IO HANDLING ------------- //
 
-            }catch(Exception e){
-                //handle
-            }finally{
-                try{
-                    socketIn.close();
-                    socketOut.close();
-                }catch(IOException e){
-                    //handle
-                }
-            }
-        });
-        waiter.start();
+    @Override
+    public void showUserOutput(Object o) {
+        Thread viewChanger = asyncWriteToTerminal();
+        viewChanger.start();
+    }
+
+    @Override
+    public void getUserInput() {
+        Thread userListener = asyncReadFromTerminal();
+        userListener.start();
     }
 
     /**
-     *  This asynchronous method is run by a separated thread to receive asynchronous requests from user command line (commands)
+     * This asynchronous method is run by a separated thread to receive asynchronous requests from user command line (commands)
      * This method uses CommandParser class' static method parse(String input) to figure out the command given and reacts by invoking
      * the handler method "..."
      */
@@ -68,11 +125,14 @@ public class CLIClientViewController implements ClientViewController{
         return new Thread(() -> {
             try{
                 while(client.isActive()){
-                    Response input = (Response) socketIn.readObject();
+                    Response input = (Response)socketIn.readObject();
                     // REACTS!!!
                 }
             }catch(Exception e){
                 //handle
+            }
+            finally {
+                close();
             }
         });
     }
@@ -91,18 +151,9 @@ public class CLIClientViewController implements ClientViewController{
                 socketOut.flush();
             }catch(Exception e){
                 //handle
+            }finally{
+                close();
             }
-        });
-    }
-
-    /**
-     * This asynchronous method is run by a separated thread to print the result of the view's state change on the TUI
-     * @param message the message to print
-     * @return the thread to be run
-     */
-    public Thread asyncWriteToTerminal(String message){
-        return new Thread(() -> {
-
         });
     }
 
@@ -113,31 +164,60 @@ public class CLIClientViewController implements ClientViewController{
      * @return the thread to be run
      */
     public Thread asyncReadFromTerminal() {
-
         return new Thread(() -> {
             Scanner in = new Scanner(System.in);
             while (client.isActive()) {
                 try {
                     String input = in.nextLine();
-                    Response command = CommandParser.parse(input);
-                    // REACTS!!!
+
                 } catch (Exception e) {
-                    //handle
+                    ExceptionHandler.handle(e, view);
+                }finally {
+                    close();
                 }
             }
         });
     }
 
-    public void setUp(){
-        try{
-            socketIn = new ObjectInputStream(socket.getInputStream());
-        }catch(IOException e){
-            System.out.println("Error creating Socket Input Stream...");
+    public Thread asyncWriteToTerminal() {
+        return new Thread(() -> {
+           //show view via the VIEW
+        });
+    }
+
+    @Override
+    public void initializeConnection() throws ConnectionErrorException { //------> Tested | OK <------//
+
+        Socket cliSocket;
+        view.setPage(new CLIConnectionPage());
+        Scanner in = new Scanner(System.in);
+        String input;
+        String[] parsed;
+        //x.y.z.w:k
+
+        view.pageStateDisplay(new CLIConnectionPage.Default(), null);
+
+        do{
+            input = in.nextLine();
+            parsed = input.split(":");
+            if(parsed.length != 2 ||
+                     isNotValidIP(parsed[0]) && isNotValidPort(parsed[1])){ //invalid input, none of the fields is correct (ip:port)
+                view.pageStateDisplay(new CLIConnectionPage.InvalidInput(), new String[] {input});
+
+            } else if (isNotValidIP(parsed[0])) {
+                view.pageStateDisplay(new CLIConnectionPage.InvalidIP(), new String[] {input});
+
+            } else if (isNotValidPort(parsed[1])) {
+                view.pageStateDisplay(new CLIConnectionPage.InvalidPort(), new String[] {input});
+            }
+        }while(parsed.length != 2 || isNotValidPort(parsed[1]) || isNotValidIP(parsed[0]));
+
+        try {
+            cliSocket = new Socket(parsed[0], Integer.parseInt(parsed[1]));
+        } catch (Exception e) {
+            throw new ConnectionErrorException();
         }
-        try{
-            socketOut = new ObjectOutputStream(socket.getOutputStream());
-        }catch(IOException e){
-            System.out.println("Error creating Socket Output Stream...");
-        }
+
+        setSocket(cliSocket);
     }
 }

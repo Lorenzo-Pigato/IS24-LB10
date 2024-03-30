@@ -29,6 +29,7 @@ public class Player {
     public Matrix getMatrix() {
         return matrix;
     }
+
     public void addOnMapResources(Resource resource) {
         if (OnMapResources.containsKey(resource)) {
             int currentQuantity = OnMapResources.get(resource);

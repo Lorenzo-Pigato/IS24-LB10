@@ -1,6 +1,8 @@
 package it.polimi.ingsw.lb10.server;
 import it.polimi.ingsw.lb10.network.ClientConnection;
+import it.polimi.ingsw.lb10.server.controller.LobbyController;
 import it.polimi.ingsw.lb10.server.model.MatchModel;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -12,7 +14,6 @@ import java.util.concurrent.Executors;
 public class Server implements Runnable{
     private final ServerSocket serverSocket;
     private final int port;
-    private List<MatchModel> matches = new ArrayList<>();
     private final ExecutorService welcomeExecutor;
 
 
@@ -37,10 +38,6 @@ public class Server implements Runnable{
                 System.out.println(">>>Server: Couldn't connect to Client...");
             }
         }
-    }
-
-    public List<MatchModel> getMatches() {
-        return matches;
     }
 
 }

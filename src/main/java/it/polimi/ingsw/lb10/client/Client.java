@@ -1,24 +1,25 @@
 package it.polimi.ingsw.lb10.client;
 
 import it.polimi.ingsw.lb10.client.controller.ClientViewController;
-import it.polimi.ingsw.lb10.client.util.ClientViewControllerFactory;
-import it.polimi.ingsw.lb10.client.view.ClientView;
-import java.net.Socket;
+import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
+import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
+import it.polimi.ingsw.lb10.client.view.CLIClientView;
+
 
 public class Client implements Runnable{
-    //Client can choose from command line which type of interface he wants(TUI/GUI), in the ClientApp launcher
-    //a command will be provided to choose the interface he wants and then pass it directly to the constructor, which will be
-    //unaware of it
+    //Client can choose from command line which type of interface he wants(TUI/GUI), in the ClientLauncher
+    //a command will be provided to choose the interface he wants and then instantiating the right type of view and view controller
 
-    private int port;
-    private String ip;
-    private ClientView view;
+    private final ClientViewController controller;
     private boolean active = true;
+    private String username;
+    private int matchId;
 
-    public Client(int port, String ip, ClientView view) {
-        this.port = port;
-        this.ip = ip;
-        this.view = view;
+    /**
+     * @param controller the controller type (either GUIClientViewController or CLIClientViewController)
+     */
+    public Client(ClientViewController controller) {
+        this.controller = controller;
     }
 
     /**
@@ -28,14 +29,34 @@ public class Client implements Runnable{
         this.active = active;
     }
 
+    /**
+     * this is the main running thread on client. It is divided in different parts, the first one is used to reference the client object
+     * to the controller once the client has been built,
+     * then we get to instantiate the socket by connecting to the server
+     * once the socket is "online", the controller must set up all of his streams and thread to communicate.
+     * We then send, via controller, the login request to the server, and then we can proceed to the lobby.
+     * all of these processes are procedural.
+     */
     public void run(){
+        //we have instantiated both view and view controller
+
+        //we set the client reference to our controller
+        controller.setClient(this);
+        //server connection
         try{
-            Socket socket = new Socket(ip, port);
-            ClientViewController clientViewController = ClientViewControllerFactory.getClientViewController(view, this, socket);
-            clientViewController.launch();
-        }catch(Exception e){
-            //handle error (close)
+            controller.initializeConnection();
+        }catch(ConnectionErrorException e){
+            ExceptionHandler.handle(e, new CLIClientView());
+            return;
         }
+
+        //--------------- setup ----------------//
+        controller.setUp();
+
+        //-------------- login ----------------//
+        controller.login();
+
+
     }
 
     /**
