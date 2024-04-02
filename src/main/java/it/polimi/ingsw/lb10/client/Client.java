@@ -39,7 +39,6 @@ public class Client implements Runnable{
      */
     public void run(){
         //we have instantiated both view and view controller
-
         //we set the client reference to our controller
         controller.setClient(this);
         //server connection

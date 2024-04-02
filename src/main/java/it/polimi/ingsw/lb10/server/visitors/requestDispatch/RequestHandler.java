@@ -19,8 +19,6 @@ import org.jetbrains.annotations.NotNull;
  */
 public class RequestHandler implements RequestVisitor{
 
-    private static final LobbyController lobbyController = LobbyController.instance();
-    private final RemoteView remoteView;
 
     public RequestHandler(RemoteView remoteView) {
         this.remoteView = remoteView ;
@@ -32,12 +30,7 @@ public class RequestHandler implements RequestVisitor{
      *  checking if another player has the same username (sends a negative response in this case), then adds the player to
      *  the SignedPlayers list and sends a positive response to the Client (procedural).
      */
-    @Override
-    public void visit(@NotNull LoginRequest lr) {
-        if(lobbyController.validateUsername(lr.getUsername())){
-            lobbyController.addSignedPlayer(lr.getUsername());
-            //remote view
-        }
-    }
+
+
 
 }

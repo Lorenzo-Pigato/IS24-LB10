@@ -2,9 +2,9 @@ package it.polimi.ingsw.lb10.server.controller;
 
 import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.server.view.RemoteView;
-import it.polimi.ingsw.lb10.util.Observer;
 import it.polimi.ingsw.lb10.server.model.MatchModel;
 
+import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 
 /*@ this class is the single match controller, every match has one
@@ -23,7 +23,7 @@ public class MatchController implements Runnable {
     private Boolean active = true;
     private MatchModel model;
     private BlockingQueue<Request> requests;
-    private RemoteView remoteView;
+    private ArrayList<RemoteView> remoteView;
     //Game Model fields
 
     @Override

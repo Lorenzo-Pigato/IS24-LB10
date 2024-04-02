@@ -2,11 +2,8 @@ package it.polimi.ingsw.lb10.network.response;
 
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.ResponseHandler;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.ResponseVisitable;
-import it.polimi.ingsw.lb10.server.visitors.responseSender.ResponseSender;
-import it.polimi.ingsw.lb10.server.visitors.responseSender.ResponseSendingVisitable;
-import it.polimi.ingsw.lb10.server.visitors.responseSender.ResponseSendingVisitor;
 
-public class BooleanResponse extends Response implements ResponseVisitable, ResponseSendingVisitable {
+public class BooleanResponse extends Response implements ResponseVisitable {
 
     public Boolean responseState;
 
@@ -23,8 +20,4 @@ public class BooleanResponse extends Response implements ResponseVisitable, Resp
         return responseState;
     }
 
-    @Override
-    public void accept(ResponseSender sender) {
-        sender.visit(this);
-    }
 }

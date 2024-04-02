@@ -126,6 +126,7 @@ public class CLIClientViewController implements ClientViewController{
             try{
                 while(client.isActive()){
                     Response input = (Response)socketIn.readObject();
+
                     // REACTS!!!
                 }
             }catch(Exception e){
