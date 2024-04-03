@@ -17,7 +17,7 @@ public class Server implements Runnable{
     private final ExecutorService welcomeExecutor;
 
 
-    Server(ServerSocket serverSocket, int port){
+    public Server(ServerSocket serverSocket, int port){
         this.serverSocket = serverSocket;
         this.port = port;
         this.welcomeExecutor = Executors.newCachedThreadPool();
@@ -32,6 +32,7 @@ public class Server implements Runnable{
 
         while(true){
             try {
+                System.out.println("Server listening on port: " + port);
                 Socket clientSocket = serverSocket.accept();
                 welcomeExecutor.submit(new ClientConnection(clientSocket, this));
             }catch(IOException e){

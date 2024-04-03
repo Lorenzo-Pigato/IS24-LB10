@@ -18,7 +18,7 @@ import java.nio.charset.StandardCharsets;
 
 public class CLIClientViewControllerTest {
 
-     static CLIClientViewController controller;
+     static CLIClientViewController controller = CLIClientViewController.instance();
      static ServerSocket serverSocket;
      static Socket localSocket;
      static ObjectOutputStream outputStream;
@@ -38,9 +38,8 @@ public class CLIClientViewControllerTest {
 
     @BeforeAll
     static void initialize() {
-        controller = new CLIClientViewController(new CLIClientView());
-        controller.setClient(new Client(new CLIClientViewController(new CLIClientView())));
-
+        controller = CLIClientViewController.instance();
+        controller.setCliClientView(new CLIClientView());
         try {
             serverSocket = new ServerSocket(3557);
             Thread listener = new Thread(new Runnable() {

@@ -42,6 +42,10 @@ public class RemoteView  {
         }).start();
     }
 
+    public void setUp() throws IOException{
+        outputStream = new ObjectOutputStream(socket.getOutputStream());
+       // outputStream.flush();
+    }
 
 
 }

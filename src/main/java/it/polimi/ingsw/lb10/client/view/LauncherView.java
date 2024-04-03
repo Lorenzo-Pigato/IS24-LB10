@@ -7,6 +7,8 @@ import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
 import it.polimi.ingsw.lb10.client.util.InputVerifier;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Scanner;
+
 public abstract class LauncherView {
     private static final CLIString welcome = new CLIString(">> Welcome to Codex! <<", AnsiColor.YELLOW, 0, 36);
     private static final CLIString welcomePlayer = new CLIString(">> Welcome to Codex, Player! <<", AnsiColor.YELLOW, 0, 36);
@@ -15,9 +17,17 @@ public abstract class LauncherView {
             ">> Choose [SERVER] or [CLIENT] to launch application\n>> ",
             AnsiColor.YELLOW, 0, 37
     );
+
     private static final CLIString choseInterface = new CLIString(
             ">> Do you want to launch the Graphic Interface? [Y/N]\n>> "
             , AnsiColor.YELLOW, 0, 37
+    );
+
+    // Change display for server
+    private static final CLIString startingServer = new CLIString(">> Launching Server Application <<", AnsiColor.YELLOW,0,36);
+    private static final CLIString choosePort = new CLIString(
+            ">> Insert server port\n>> ",
+            AnsiColor.YELLOW, 0, 37
     );
 
     public static @NotNull String runLauncherPage() {
@@ -33,6 +43,15 @@ public abstract class LauncherView {
 
             choice += InputVerifier.verify(new String[]{"Y", "N"}, welcomePlayer, inputError, true)
                     .equalsIgnoreCase("Y") ? ":gui" : ":cli";
+        }
+
+        else{
+            CLIString.replace(welcome, startingServer);
+            CLIString.replace(chooseApplication, choosePort);
+
+            Scanner in = new Scanner(System.in);
+
+            choice += ":" + in.nextLine();
         }
 
         return choice.toLowerCase();

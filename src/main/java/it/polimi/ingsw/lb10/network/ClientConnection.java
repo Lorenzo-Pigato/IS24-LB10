@@ -49,22 +49,30 @@ public class ClientConnection extends Observable<Request> implements Runnable {
 
     public void run(){
 
+        setUp();//creates input Stream
+        try{
+            remoteView.setUp();  //sets up remote view opening output streams
+        }catch(IOException e){
+            close(); //closes the socket, client will handle an IOException
+        }
+
         remoteView.send(new HashResponse(socket.hashCode()));
+        System.out.println(">>> Hashcode sent to client : " + socket.hashCode());
 
         while(isActive()){
             try{
                 Request request = (Request) (input.readObject());
+                System.out.println(">>>Received new request from hashcode: " + request.getHashCode());
                 request.accept(requestHandler);
 
             }catch(Exception e){
                 System.out.println(e.toString() + "occurred");
                 setActive(false);
-            }
-            finally {
                 close();
             }
         }
     }
+
     /**
      * Sets up the streams to communicate with client
      */

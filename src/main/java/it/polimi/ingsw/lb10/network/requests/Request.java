@@ -6,6 +6,10 @@ import java.io.Serializable;
 public abstract class Request implements RequestVisitable , Serializable {
     private int hashCode;
 
+    public Request(int hashCode) {
+        this.hashCode = hashCode;
+    }
+
     public int getHashCode(){
         return hashCode;
     }

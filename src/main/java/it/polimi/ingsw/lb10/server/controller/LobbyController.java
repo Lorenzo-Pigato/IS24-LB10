@@ -13,7 +13,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 /**
- * This SINGLETON class handles the dispatch of players inside the different lobbies,
+ * This SINGLETON class handles the login requests and dispatches players inside match controllers,
  * keeps track of starting or waiting match and signed in players separated from Server.
  * Every class method has to be SYNCHRONIZED.
  */
@@ -57,13 +57,14 @@ public class LobbyController implements RequestVisitor{
         signedPlayers.add(new Player(username));
     }
 
+    // -------- REQUEST HANDLING -------------//
     @Override
     public void visit(@NotNull LoginRequest lr) {
-        if(validateUsername(lr.getUsername())){
-            addSignedPlayer(lr.getUsername());
-            getRemoteView(lr.getHashCode()).send(new BooleanResponse(true));
-        }
-        getRemoteView(lr.getHashCode()).send(new BooleanResponse(false));
+        System.out.println(">>>Request type : LoginRequest");
+        boolean validated = validateUsername(lr.getUsername());
+        if(validated) addSignedPlayer(lr.getUsername());
+        getRemoteView(lr.getHashCode()).send(new BooleanResponse(validated));
+        System.out.println(">>>Sent new BooleanResponse to hashcode: " + lr.getHashCode() + "status : " + validated + " player " + (validated? "logged" : "not logged") + "\n\n");
     }
 
     public RemoteView getRemoteView(int hashCode){

@@ -6,9 +6,10 @@ import it.polimi.ingsw.lb10.client.cli.clipages.CLILoginPage;
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
-import it.polimi.ingsw.lb10.network.requests.Request;
-import it.polimi.ingsw.lb10.network.response.Response;
-
+import it.polimi.ingsw.lb10.network.requests.*;
+import it.polimi.ingsw.lb10.network.requests.preMatch.LoginRequest;
+import it.polimi.ingsw.lb10.network.response.*;
+import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -19,18 +20,23 @@ import java.util.regex.Pattern;
 
 public class CLIClientViewController implements ClientViewController{
 
-    private final CLIClientView view;
+    private static CLIClientViewController instance;
+    private  CLIClientView view;
     private Socket socket;
     private Client client;
     private ObjectInputStream socketIn;
     private ObjectOutputStream socketOut;
+    private int hash;
+    private static final CLIResponseHandler responseHandler = CLIResponseHandler.instance();
 
-    // ---------------- CONSTRUCTOR ---------------- //
-    public CLIClientViewController(CLIClientView cliClientView) {
-        this.view = cliClientView;
-    }
+
+   public static CLIClientViewController instance(){
+       if(instance == null) instance = new CLIClientViewController();
+       return instance;
+   }
 
     // ------------------ SETTERS ------------------ //
+    public void setCliClientView(CLIClientView cliClientView){this.view = cliClientView;}
     @Override
     public void setSocket(Socket socket) {
         this.socket = socket;
@@ -40,8 +46,6 @@ public class CLIClientViewController implements ClientViewController{
     }
     public Socket getSocket() {return socket;}
     public Client getClient() {return client;}
-    public ObjectInputStream getSocketIn() {return socketIn;}
-    public ObjectOutputStream getSocketOut() {return socketOut;}
 
     // ------------------- UTILS ------------------- //
     @Override
@@ -55,7 +59,6 @@ public class CLIClientViewController implements ClientViewController{
         }finally{
             client.setActive(false);
         }
-
     }
 
     protected boolean isNotValidIP(String split){
@@ -95,11 +98,53 @@ public class CLIClientViewController implements ClientViewController{
         }
     }
 
+    /**
+     * this method provides an input scanner for login requests, checking the string for the username
+     * and sending it to the Server.
+     * A Boolean Response is waited and handled , setting "logged" flag to true is response is positive
+     */
     @Override
     public void login() {
         view.setPage(new CLILoginPage());
-        view.pageStateDisplay(new CLILoginPage.Default(), null);
+        Scanner in = new Scanner(System.in);
+        String username = null;
+        do {
+            if ((username == null)) view.pageStateDisplay(new CLILoginPage.Default(), null);
+            else view.pageStateDisplay(new CLILoginPage.alreadyTaken(), new String[]{username});
+            do {
+                username = in.nextLine();
+                if (username.length() < 2 || username.length() > 15)
+                    view.pageStateDisplay(new CLILoginPage.invalidLength(), new String[]{username});
+            } while (username.length() < 2 || username.length() > 15);
 
+            send(new LoginRequest(hash, username));
+
+            syncReceive().accept(responseHandler);
+
+        }while(!client.isLogged());
+
+    }
+
+    public void send(Request request){
+        try{
+            socketOut.reset();
+            socketOut.writeObject(request);
+            socketOut.flush();
+        }catch(IOException e){
+            ExceptionHandler.handle(e, view);
+            close();
+        }
+    }
+
+    public Response syncReceive(){
+        Response response = null;
+        try{
+            response = (Response)socketIn.readObject();
+        }catch( Exception e){
+            ExceptionHandler.handle(e, view);
+            close();
+        }
+        return response;
     }
 
     // --------------- ASYNC IO HANDLING ------------- //
@@ -126,13 +171,9 @@ public class CLIClientViewController implements ClientViewController{
             try{
                 while(client.isActive()){
                     Response input = (Response)socketIn.readObject();
-
                     // REACTS!!!
                 }
             }catch(Exception e){
-                //handle
-            }
-            finally {
                 close();
             }
         });
@@ -146,15 +187,7 @@ public class CLIClientViewController implements ClientViewController{
      */
     public Thread asyncWriteToSocket(Request message){
         return new Thread(() -> {
-            try{
-                socketOut.reset();
-                socketOut.writeObject(message);
-                socketOut.flush();
-            }catch(Exception e){
-                //handle
-            }finally{
-                close();
-            }
+            send(message);
         });
     }
 
@@ -218,7 +251,18 @@ public class CLIClientViewController implements ClientViewController{
         } catch (Exception e) {
             throw new ConnectionErrorException();
         }
-
         setSocket(cliSocket);
     }
+
+    @Override
+    public void setHash() {
+        try{
+            HashResponse hashResponse = (HashResponse) socketIn.readObject();
+            this.hash = hashResponse.getHash();
+        }catch(Exception e){
+            ExceptionHandler.handle(e,view);
+        }
+    }
 }
+
+
