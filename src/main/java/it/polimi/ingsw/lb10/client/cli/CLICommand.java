@@ -54,6 +54,8 @@ public abstract class CLICommand {
         CLICommand.restoreCursorPosition();     //Pushing back cursor to the beginning of the input
 
         for (int i = 0; i < input.length(); i++) System.out.print(" ");     //Overwriting input with spaces
+
+        CLICommand.restoreCursorPosition();     //Pushing back cursor to the beginning of the input
     }
 
 

@@ -5,6 +5,7 @@ import it.polimi.ingsw.lb10.client.cli.clipages.CLIConnectionPage;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLILoginPage;
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
+import it.polimi.ingsw.lb10.client.util.InputVerifier;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
 import it.polimi.ingsw.lb10.network.requests.*;
 import it.polimi.ingsw.lb10.network.requests.preMatch.LoginRequest;
@@ -58,22 +59,6 @@ public class CLIClientViewController implements ClientViewController{
             ExceptionHandler.handle(e, view);
         }finally{
             client.setActive(false);
-        }
-    }
-
-    protected boolean isNotValidIP(String split){
-        String ipv4Pattern ="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
-        Pattern pattern = Pattern.compile(ipv4Pattern);
-        Matcher matcher = pattern.matcher(split);
-        return !matcher.matches();
-    }
-
-    protected boolean isNotValidPort(String port){
-        try{
-            int portNumber = Integer.parseInt(port);
-            return portNumber < 1024 || portNumber > 65535;
-        }catch(NumberFormatException e){
-            return true;
         }
     }
 
@@ -235,16 +220,16 @@ public class CLIClientViewController implements ClientViewController{
             input = in.nextLine();
             parsed = input.split(":");
             if(parsed.length != 2 ||
-                     isNotValidIP(parsed[0]) && isNotValidPort(parsed[1])){ //invalid input, none of the fields is correct (ip:port)
+                    InputVerifier.isNotValidIP(parsed[0]) && InputVerifier.isNotValidPort(parsed[1])){ //invalid input, none of the fields is correct (ip:port)
                 view.pageStateDisplay(new CLIConnectionPage.InvalidInput(), new String[] {input});
 
-            } else if (isNotValidIP(parsed[0])) {
+            } else if (InputVerifier.isNotValidIP(parsed[0])) {
                 view.pageStateDisplay(new CLIConnectionPage.InvalidIP(), new String[] {input});
 
-            } else if (isNotValidPort(parsed[1])) {
+            } else if (InputVerifier.isNotValidPort(parsed[1])) {
                 view.pageStateDisplay(new CLIConnectionPage.InvalidPort(), new String[] {input});
             }
-        }while(parsed.length != 2 || isNotValidPort(parsed[1]) || isNotValidIP(parsed[0]));
+        }while(parsed.length != 2 || InputVerifier.isNotValidPort(parsed[1]) || InputVerifier.isNotValidIP(parsed[0]));
 
         try {
             cliSocket = new Socket(parsed[0], Integer.parseInt(parsed[1]));

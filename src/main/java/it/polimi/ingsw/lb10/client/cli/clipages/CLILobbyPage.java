@@ -36,6 +36,7 @@ public class CLILobbyPage implements CLIPage {
         @Override
         public void apply(String @NotNull [] args) {
             CLIString.replace(enterChoice, new CLIString(">> Invalid input <<", AnsiColor.RED, AnsiFormat.BOLD, 1, 35));
+
             CLICommand.restoreCursorPosition();
             CLICommand.clearUserInput(args[0]);
         }

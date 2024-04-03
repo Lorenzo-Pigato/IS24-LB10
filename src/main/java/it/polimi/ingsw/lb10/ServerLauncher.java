@@ -8,11 +8,9 @@ import java.net.ServerSocket;
 public class ServerLauncher {
     public static void main(String[] args) {
 
-        /// Check port validity
-        System.out.println(args[1]);
         try {
-            ServerSocket serverSocket = new ServerSocket(Integer.valueOf(args[1]));
-            Thread serverThread = new Thread(new Server(serverSocket, Integer.valueOf(args[1])));
+            ServerSocket serverSocket = new ServerSocket(Integer.parseInt(args[1]));
+            Thread serverThread = new Thread(new Server(serverSocket, Integer.parseInt(args[1])));
             serverThread.start();
             serverThread.join();
         } catch (Exception e) {

@@ -5,6 +5,7 @@ import it.polimi.ingsw.lb10.client.cli.CLICommand;
 import it.polimi.ingsw.lb10.client.cli.CLILine;
 import it.polimi.ingsw.lb10.client.cli.CLIString;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
+import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiString;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,7 +32,7 @@ public class CLIConnectionPage implements CLIPage{
             options.centerPrint();
 
             CLICommand.saveCursorPosition();
-            AnsiString.print("127.0.0.0:3773", AnsiColor.GREY);
+            AnsiString.print("127.0.0.1:3773", AnsiColor.GREY, AnsiFormat.LIGHT);
             CLICommand.restoreCursorPosition();
         }
     }
@@ -45,6 +46,8 @@ public class CLIConnectionPage implements CLIPage{
             CLICommand.restoreCursorPosition();
             CLICommand.clearUserInput(args[0]);
             CLIString.replace(welcome, invalidInput);
+
+            CLICommand.restoreCursorPosition();
         }
     }
 
@@ -57,6 +60,8 @@ public class CLIConnectionPage implements CLIPage{
             CLICommand.restoreCursorPosition();
             CLICommand.clearUserInput(args[0]);
             CLIString.replace(welcome, invalidIp);
+
+            CLICommand.restoreCursorPosition();
         }
     }
 
@@ -69,6 +74,8 @@ public class CLIConnectionPage implements CLIPage{
             CLICommand.restoreCursorPosition();
             CLICommand.clearUserInput(args[0]);
             CLIString.replace(welcome, invalidPort);
+
+            CLICommand.restoreCursorPosition();
         }
     }
 }
