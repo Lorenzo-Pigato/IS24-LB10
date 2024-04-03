@@ -9,7 +9,6 @@ import it.polimi.ingsw.lb10.server.view.RemoteView;
 import it.polimi.ingsw.lb10.server.visitors.requestDispatch.RequestVisitor;
 import org.jetbrains.annotations.NotNull;
 
-import java.net.Socket;
 import java.util.ArrayList;
 
 /**
@@ -60,11 +59,11 @@ public class LobbyController implements RequestVisitor{
     // -------- REQUEST HANDLING -------------//
     @Override
     public void visit(@NotNull LoginRequest lr) {
-        System.out.println(">>>Request type : LoginRequest");
+        Server.log(">> Received Login Request from: " + lr.getHashCode() + " - Requested username: " + lr.getUsername());
         boolean validated = validateUsername(lr.getUsername());
         if(validated) addSignedPlayer(lr.getUsername());
         getRemoteView(lr.getHashCode()).send(new BooleanResponse(validated));
-        System.out.println(">>>Sent new BooleanResponse to hashcode: " + lr.getHashCode() + "status : " + validated + " player " + (validated? "logged" : "not logged") + "\n\n");
+        Server.log(">> Sent boolean response to hashcode: " + lr.getHashCode() + "- status: " + validated);
     }
 
     public RemoteView getRemoteView(int hashCode){
