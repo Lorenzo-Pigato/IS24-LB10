@@ -14,7 +14,7 @@ import java.net.Socket;
 
 public class ClientConnection extends Observable<Request> implements Runnable {
 
-    private Socket socket;
+    private final Socket socket;
     private ObjectInputStream input;
     private Boolean active = true;
     private Server server;

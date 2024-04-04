@@ -8,9 +8,13 @@ import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiString;
 import it.polimi.ingsw.lb10.network.ClientConnection;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.time.LocalDateTime;
 import java.util.ArrayDeque;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -20,6 +24,7 @@ public class Server implements Runnable{
     private final int port;
     private final ExecutorService welcomeExecutor;
     private static final ArrayDeque<CLIString> logs = new ArrayDeque<>();
+    private static BufferedWriter bufferedWriter;
 
 
     public Server(ServerSocket serverSocket, int port){
@@ -35,6 +40,7 @@ public class Server implements Runnable{
     //starts the Server thread listening to all client connections, then sends socket client to connection handlers
     public void run(){
         setPage();
+        setLogFile();
         while(true){
             try {
                 Socket clientSocket = serverSocket.accept();
@@ -79,6 +85,7 @@ public class Server implements Runnable{
      * @param log is used to store the log string
      */
     public static void log(String log){
+        saveLog(log);
         if (logs.size() == 28){
             logs.removeFirst();
 
@@ -97,6 +104,28 @@ public class Server implements Runnable{
                     AnsiFormat.DEFAULT,
                     2, logs.size()+16, 73));
             logs.getLast().print();
+        }
+    }
+
+    private void setLogFile(){
+        String logPath =  "log_"+
+                LocalDateTime.now().getMonth() +
+                LocalDateTime.now().getDayOfMonth() +
+                ".txt";
+
+        try {
+            FileWriter fileWriter = new FileWriter(logPath, true);
+            bufferedWriter = new BufferedWriter(fileWriter);
+        } catch (IOException e) {
+            AnsiString.print(">> Error creating log file\n" + e.getMessage(), AnsiColor.RED);
+        }
+    }
+    private static void saveLog(String log){
+        try {
+            bufferedWriter.write(log);
+            bufferedWriter.flush();
+        } catch (IOException e) {
+            AnsiString.print(">> Error appending log to file\nAborting", AnsiColor.RED);
         }
     }
 
