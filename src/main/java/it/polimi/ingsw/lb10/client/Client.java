@@ -53,6 +53,9 @@ public class Client implements Runnable{
         //-------------- login ----------------//
         controller.login();
 
+        //--------------match join -----------//
+        controller.joinMatch();
+
 
     }
 

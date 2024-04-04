@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
  * Warning: cursor should be previously set where user input is expected
  */
 public abstract class InputVerifier {
+
     public static String verify(String[] expected, CLIString message, CLIString errorMessage, boolean atCenter) {
         CLICommand.saveCursorPosition();
 

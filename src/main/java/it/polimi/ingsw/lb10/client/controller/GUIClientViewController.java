@@ -76,6 +76,11 @@ public class GUIClientViewController implements ClientViewController {
 
     }
 
+    @Override
+    public void joinMatch() {
+
+    }
+
     public void setGuiClientView(GUIClientView guiClientView) {
         this.guiClientView = guiClientView;
     }

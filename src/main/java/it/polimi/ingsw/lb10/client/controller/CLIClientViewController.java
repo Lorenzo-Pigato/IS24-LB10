@@ -2,6 +2,7 @@ package it.polimi.ingsw.lb10.client.controller;
 
 import it.polimi.ingsw.lb10.client.Client;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIConnectionPage;
+import it.polimi.ingsw.lb10.client.cli.clipages.CLILobbyPage;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLILoginPage;
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
@@ -64,10 +65,6 @@ public class CLIClientViewController implements ClientViewController{
 
     // ------------------ METHODS ------------------ //
 
-    /**
-     * this method is the first to be run after instantiation of the controller,
-     * opening socket streams to communicate with the server
-     */
     @Override
     public void setUp(){
         try{
@@ -83,11 +80,6 @@ public class CLIClientViewController implements ClientViewController{
         }
     }
 
-    /**
-     * this method provides an input scanner for login requests, checking the string for the username
-     * and sending it to the Server.
-     * A Boolean Response is waited and handled , setting "logged" flag to true is response is positive
-     */
     @Override
     public void login() {
         view.setPage(new CLILoginPage());
@@ -107,6 +99,15 @@ public class CLIClientViewController implements ClientViewController{
             syncReceive().accept(responseHandler);
 
         }while(!client.isLogged());
+
+    }
+
+    @Override
+    public void joinMatch() {
+        view.setPage(new CLILobbyPage());
+        view.pageStateDisplay(new CLILobbyPage.Default(), null);
+
+
 
     }
 
@@ -248,6 +249,8 @@ public class CLIClientViewController implements ClientViewController{
             ExceptionHandler.handle(e,view);
         }
     }
+
+
 }
 
 

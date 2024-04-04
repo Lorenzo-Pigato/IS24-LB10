@@ -41,4 +41,14 @@ public class CLILobbyPage implements CLIPage {
             CLICommand.clearUserInput(args[0]);
         }
     }
+
+    @Override
+    public void changeState(@NotNull CLIState state) {
+
+    }
+
+    @Override
+    public void print(String[] args) {
+
+    }
 }

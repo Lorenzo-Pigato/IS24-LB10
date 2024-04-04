@@ -9,6 +9,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class CLIErrorPage implements CLIPage {
 
+
+
     public static class Default implements CLIState {
         @Override
         public void apply(String @NotNull [] args){
@@ -19,6 +21,16 @@ public class CLIErrorPage implements CLIPage {
 
             CLICommand.setPosition(1, 50);
         }
+    }
+
+    @Override
+    public void changeState(@NotNull CLIState state) {
+
+    }
+
+    @Override
+    public void print(String[] args) {
+
     }
 }
 
