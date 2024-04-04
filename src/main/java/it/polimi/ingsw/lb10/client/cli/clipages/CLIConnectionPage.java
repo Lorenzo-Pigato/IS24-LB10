@@ -16,6 +16,17 @@ public class CLIConnectionPage implements CLIPage{
     private static final CLIString invalidInput = new CLIString(">> Invalid input <<", AnsiColor.RED, 0, 36);
     private static final CLIString options = new CLIString(">> Insert your server IP and PORT as IP:PORT\n>> ", AnsiColor.YELLOW, 0, 37);
 
+    private CLIState state = new Default();
+    @Override
+    public void changeState(@NotNull CLIState state) {
+        this.state = state;
+    }
+
+    @Override
+    public void print(String[] args) {
+        this.state.apply(new String[0]);
+    }
+
     public static class Default implements CLIState {
         @Override
         public void apply(String[] args) {
@@ -77,17 +88,6 @@ public class CLIConnectionPage implements CLIPage{
             CLICommand.restoreCursorPosition();
         }
     }
-
-    @Override
-    public void changeState(@NotNull CLIState state) {
-
-    }
-
-    @Override
-    public void print(String[] args) {
-
-    }
-
 }
 
 

@@ -13,7 +13,7 @@ public class CLILoginPage implements CLIPage {
     private CLIState state = new Default();
 
     @Override
-    public void changeState(CLIState state) {
+    public void changeState(@NotNull CLIState state) {
         this.state = state;
     }
 

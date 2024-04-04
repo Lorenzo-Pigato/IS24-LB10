@@ -5,6 +5,7 @@ import it.polimi.ingsw.lb10.client.cli.CLICommand;
 import it.polimi.ingsw.lb10.client.cli.CLIString;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
+import org.jetbrains.annotations.NotNull;
 
 public class CLI404Page implements CLIPage {
     private static final CLIString notFound = new CLIString(">> Server couldn't be reached <<", AnsiColor.CYAN, AnsiFormat.BOLD, 1, 33);
@@ -12,7 +13,7 @@ public class CLI404Page implements CLIPage {
     private CLIState state = new Default();
 
     @Override
-    public void changeState(CLIState state) {
+    public void changeState(@NotNull CLIState state) {
         this.state = state;
     }
 
