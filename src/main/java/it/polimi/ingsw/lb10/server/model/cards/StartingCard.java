@@ -5,9 +5,9 @@ import it.polimi.ingsw.lb10.server.model.Resource;
 
 import java.util.ArrayList;
 
-/** When we define this card we want to know the middle's resource and the free corners
- *  We have to define a method that from the json get the car
- */
+    /** When we define this card we want to know the middle's resource and the free corners
+     *  We have to define a method that from the json get the car
+     */
 public class StartingCard extends Card {
     private ArrayList<Resource> resources=new ArrayList<>();
     /**

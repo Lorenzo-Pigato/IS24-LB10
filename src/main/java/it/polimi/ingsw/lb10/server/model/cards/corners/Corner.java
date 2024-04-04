@@ -16,6 +16,7 @@ public abstract class Corner {
     }
 
     // --------> GETTER <--------
+
     @JsonAlias("position")
     public Position getPosition() {
         return position;

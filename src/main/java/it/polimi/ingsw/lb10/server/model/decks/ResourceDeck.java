@@ -6,10 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import it.polimi.ingsw.lb10.server.model.cards.*;
 
 import it.polimi.ingsw.lb10.server.model.Resource;
-import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
-import it.polimi.ingsw.lb10.server.model.cards.corners.CornerAvailable;
-import it.polimi.ingsw.lb10.server.model.cards.corners.CornetNotAvailable;
-import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
+import it.polimi.ingsw.lb10.server.model.cards.corners.*;
 
 import java.io.File;
 
@@ -47,7 +44,7 @@ public class ResourceDeck implements Deck {
         corners.add(new CornerAvailable(Position.TOPLEFT,Resource.NULL));
 
         for(int i=0;i<3;i++){
-            cards.add(new ResourceCard(i, false, 1,corners, Resource.ANIMAL));
+            cards.add(new ResourceCard(i, false, 1,corners, Resource.ANIMAL, Color.BLUE));
         }
 
 //        for(Card card : cards)

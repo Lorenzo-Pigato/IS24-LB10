@@ -1,9 +1,11 @@
 package it.polimi.ingsw.lb10.server.model.cards;
 
 import it.polimi.ingsw.lb10.server.model.Resource;
+import it.polimi.ingsw.lb10.server.model.cards.corners.Color;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *     same reasoning as StartingCard, we need to define the "color" of the card
@@ -11,23 +13,34 @@ import java.util.ArrayList;
  */
 
 public class ResourceCard extends Card {
-//la resource della card se ne sta occupando simo
     private CardState cardState;
     public ResourceCard(){}
 
-    public ResourceCard(int id, boolean flipped, int points, ArrayList<Corner> corners, Resource resource){
+    public ResourceCard(int id, boolean flipped, int points, ArrayList<Corner> corners, Resource resource, Color color){
         this.setId(id);
         this.setPoints(points);
         this.setFlipped(flipped);
         this.setCorners(corners);
+        this.setColor(color);
 
             flippedCheck();
     }
-    public void flippedCheck(){
-        if(isFlipped())
-            setFlippedState();
-        else
-            setNotFlippedState();
+
+    // --------> SETTER <--------
+
+    @Override
+    public void setFlippedState() {
+        cardState = new FlippedCardState(getId());
+    }
+
+    public void setNotFlippedState() {
+        cardState = new NotFlippedCardState(getCorners(),getPoints(),getActivationCost());
+    }
+
+    // --------> GETTER <--------
+
+    public CardState getCardState() {
+        return cardState;
     }
 
     @Override
@@ -41,15 +54,8 @@ public class ResourceCard extends Card {
     }
 
     @Override
-    public void setFlippedState() {
-        cardState = new FlippedCardState(getId());
+    public HashMap<Resource, Integer> getStateActivationCost() {
+        return getCardState().getActivationCost();
     }
 
-    public void setNotFlippedState() {
-        cardState = new NotFlippedCardState(getCorners(),getPoints());
-    }
-
-    public CardState getCardState() {
-        return cardState;
-    }
 }

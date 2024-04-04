@@ -3,6 +3,7 @@ package it.polimi.ingsw.lb10.server.controller;
 import it.polimi.ingsw.lb10.server.model.MatchModel;
 import it.polimi.ingsw.lb10.server.model.Node;
 import it.polimi.ingsw.lb10.server.model.Player;
+import it.polimi.ingsw.lb10.server.model.Resource;
 import it.polimi.ingsw.lb10.server.model.cards.Card;
 import it.polimi.ingsw.lb10.server.model.cards.ResourceCard;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
@@ -68,7 +69,20 @@ public class MatchController implements Runnable {
             card.setNotFlippedState();
             player.getMatrix().setCard(card, row, column);
         }
+        if(!checkActivationCost(player,card))
+            return false;
+
         return checkInsertion(player, card, row, column);
+    }
+//Check if it's correct, check if the card works
+    public boolean checkActivationCost(Player player,Card card){
+        if(card.getStateActivationCost().isEmpty())
+            return true;
+        for (Map.Entry<Resource, Integer> entry : card.getStateActivationCost().entrySet()) {
+            if(player.getResourceQuantity(entry.getKey())< entry.getValue())
+                return false;
+            }
+        return true;
     }
 
     /**
@@ -82,14 +96,15 @@ public class MatchController implements Runnable {
      */
     public boolean checkInsertion(Player player,Card card,int row, int column){
 
-            if (verificationSetting(player, row, column)) {
-                setCardResourceOnPlayer(player, card);
-                deleteCoveredResource(player, row, column);
-                return true;
-            }
+        if (verificationSetting(player, row, column)) {
+            setCardResourceOnPlayer(player, card);
+            deleteCoveredResource(player, row, column);
+            player.addPoints(card.getStateCardPoints());
+            return true;
+        }
 
         player.getMatrix().deleteCard(row,column);
-        return  false;
+            return  false;
     }
 
 
