@@ -67,6 +67,7 @@ public class Server implements Runnable{
         CLIBanner.displayError(17,2);
 
         CLICommand.setPosition(2, 14);
+
         AnsiString.print("Status: ", AnsiColor.CYAN);
         AnsiString.print("OFFLINE", AnsiColor.RED, AnsiFormat.BOLD);
     }
