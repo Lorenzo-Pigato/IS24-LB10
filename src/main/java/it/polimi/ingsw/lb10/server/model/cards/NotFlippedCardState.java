@@ -10,23 +10,20 @@ public class NotFlippedCardState implements CardState{
     private final ArrayList<Corner> corners;
     private HashMap<Resource, Integer> activationCost=new HashMap<>();
     private final int points;
+    private final ArrayList<Resource> cardResources;
 
-    public NotFlippedCardState(ArrayList<Corner> corners,int points,HashMap<Resource, Integer> activationCost){
+    public NotFlippedCardState(ArrayList<Corner> corners,int points,HashMap<Resource, Integer> activationCost, ArrayList<Resource> cardResources){
         this.corners=corners;
         this.points=points;
-        // I don't know ho to work with the case that's empty, I think that'll be an error
         this.activationCost=activationCost;
+        this.cardResources=cardResources;
     }
-
-    // --------> SETTER <--------
-
-
 
     // --------> GETTER <--------
 
     @Override
-    public HashMap<Resource, Integer> getActivationCost() {
-        return activationCost;
+    public ArrayList<Corner> getCorners() {
+        return corners;
     }
 
     @Override
@@ -35,7 +32,12 @@ public class NotFlippedCardState implements CardState{
     }
 
     @Override
-    public ArrayList<Corner> getCorners() {
-        return corners;
+    public HashMap<Resource, Integer> getActivationCost() {
+        return activationCost;
+    }
+
+    @Override
+    public ArrayList<Resource> getCardResources() {
+        return cardResources;
     }
 }

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.lb10.server.model.cards;
 
 import it.polimi.ingsw.lb10.server.model.Resource;
-import it.polimi.ingsw.lb10.server.model.cards.corners.Color;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ public class ResourceCard extends Card {
     private CardState cardState;
     public ResourceCard(){}
 
-    public ResourceCard(int id, boolean flipped, int points, ArrayList<Corner> corners, Resource resource, Color color){
+    public ResourceCard(int id, boolean flipped, int points, ArrayList<Corner> corners, Resource resource, Color color,HashMap<Resource,Integer> activationCost, ArrayList<Resource> resources){
         this.setId(id);
         this.setPoints(points);
         this.setFlipped(flipped);
@@ -30,11 +29,11 @@ public class ResourceCard extends Card {
 
     @Override
     public void setFlippedState() {
-        cardState = new FlippedCardState(getId());
+        cardState = new FlippedCardState(getId(),getResources());
     }
 
     public void setNotFlippedState() {
-        cardState = new NotFlippedCardState(getCorners(),getPoints(),getActivationCost());
+        cardState = new NotFlippedCardState(getCorners(),getPoints(),getActivationCost(),getResources());
     }
 
     // --------> GETTER <--------
@@ -51,11 +50,6 @@ public class ResourceCard extends Card {
     @Override
     public int getStateCardPoints(){
         return getCardState().getPoints();
-    }
-
-    @Override
-    public HashMap<Resource, Integer> getStateActivationCost() {
-        return getCardState().getActivationCost();
     }
 
 }

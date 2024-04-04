@@ -60,26 +60,25 @@ public class MatchController implements Runnable {
      *      It's the method that the caller calls
      *  with the initialization of the card inside the matrix
      */
-    public boolean insertCorner(Player player,Card card,int row, int column){
-        if(card.isFlipped()) {
+    public boolean insertCard(Player player,Card card,int row, int column){
+        if(card.isFlipped())
             card.setFlippedState();
-            player.getMatrix().setCard(card, row, column);
-        }
-        else {
+        else
             card.setNotFlippedState();
-            player.getMatrix().setCard(card, row, column);
-        }
+
+        player.getMatrix().setCard(card, row, column);
+
         if(!checkActivationCost(player,card))
             return false;
 
         return checkInsertion(player, card, row, column);
     }
-//Check if it's correct, check if the card works
+
     public boolean checkActivationCost(Player player,Card card){
-        if(card.getStateActivationCost().isEmpty())
+        if(card.getStateCardActivationCost()==null)
             return true;
-        for (Map.Entry<Resource, Integer> entry : card.getStateActivationCost().entrySet()) {
-            if(player.getResourceQuantity(entry.getKey())< entry.getValue())
+        for (Map.Entry<Resource, Integer> entry : card.getStateCardActivationCost().entrySet()) {
+            if(player.getResourceQuantity(entry.getKey()) < entry.getValue())
                 return false;
             }
         return true;

@@ -1,9 +1,12 @@
-package it.polimi.ingsw.lb10.server.model.cards.corners;
+package it.polimi.ingsw.lb10.server.model.cards;
 
 public enum Color {
-        STARTING(),
+
+        STARTER(),
         RED(),
         BLUE(),
         GREEN(),
         PURPLE();
+
+
 }

@@ -12,9 +12,10 @@ import java.util.HashMap;
 public class FlippedCardState implements CardState{
 
     private static ArrayList<Corner> flippedCorners= new ArrayList<>(Arrays.asList(new CornerAvailable(Position.TOPLEFT,Resource.NULL),new CornerAvailable(Position.TOPRIGHT,Resource.NULL),new CornerAvailable(Position.BOTTOMLEFT,Resource.NULL),new CornerAvailable(Position.BOTTOMRIGHT,Resource.NULL)));
-
-    public FlippedCardState(int id){
+    private ArrayList<Resource> middleResource;
+    public FlippedCardState(int id,ArrayList<Resource> middleResource){
         setFlippedCorners(flippedCorners,id);
+        this.middleResource=middleResource;
     }
 
     public void setFlippedCorners(ArrayList<Corner> corners,int id) {
@@ -37,5 +38,10 @@ public class FlippedCardState implements CardState{
     @Override
     public HashMap<Resource, Integer> getActivationCost() {
         return null;
+    }
+
+    @Override
+    public ArrayList<Resource> getCardResources(){
+        return middleResource;
     }
 }

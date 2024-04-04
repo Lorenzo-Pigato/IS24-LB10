@@ -11,7 +11,7 @@ public interface CardState {
     ArrayList<Corner> getCorners();
     int getPoints();
     HashMap<Resource,Integer> getActivationCost();
-
+    ArrayList<Resource> getCardResources();
 }
 
 

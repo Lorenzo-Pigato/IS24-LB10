@@ -2,7 +2,6 @@ package it.polimi.ingsw.lb10.server.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import it.polimi.ingsw.lb10.server.model.Resource;
-import it.polimi.ingsw.lb10.server.model.cards.corners.Color;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ public abstract class Card {
     private boolean flipped;
     private int points;
     private Color color;
-    private final ArrayList<Resource> resources= new ArrayList<>();
+    private ArrayList<Resource> resources= new ArrayList<>();
     private ArrayList<Corner> corners = new ArrayList<>();
     private HashMap<Resource,Integer> activationCost= new HashMap<>();
 
@@ -42,6 +41,10 @@ public abstract class Card {
         return activationCost;
     }
 
+    public ArrayList<Resource> getResources() {
+        return resources;
+    }
+
     // --------> SETTER <--------
 
     public void setFlipped(boolean flipped) {
@@ -68,6 +71,10 @@ public abstract class Card {
         this.activationCost = activationCost;
     }
 
+   public void setResources(ArrayList<Resource> resources){
+        this.resources=resources;
+   }
+
     // --------> METHODS <--------
 
     public boolean flip(){
@@ -83,18 +90,22 @@ public abstract class Card {
     // --------> METHODS FOR THE STATE  <--------
 
     public ArrayList<Corner> getStateCardCorners(){
-        return corners;
+        return null;
     }
 
     public int getStateCardPoints() {
-        return points;
+        return 0;
     }
 
-    public HashMap<Resource, Integer> getStateActivationCost(){return activationCost;}
+    public HashMap<Resource, Integer> getStateCardActivationCost(){return null;}
+
+    public ArrayList<Resource> getStateCardResources(){return null;}
+
 
     public void setFlippedState(){}
 
     public void setNotFlippedState(){}
+
 
 
 }
