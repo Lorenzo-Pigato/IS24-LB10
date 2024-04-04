@@ -7,14 +7,14 @@ import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 
 public class CornetNotAvailable extends Corner {
 
-    public CornetNotAvailable(Position position) {
-        super(position);
+    public CornetNotAvailable(Position position,Resource resource) {
+        super(position,resource);
         setAvailable(false);
     }
 
     @Override
     public Resource getResource() {
-        return null;
+        return Resource.NULL;
     }
 
     @Override

@@ -59,11 +59,6 @@ public class MatchModel extends Observable<Request> {
 // I need time to dev the Quest!
     }
 
-    public boolean isNotPlayerIn(Player playerToCheck){
-        return this.getPlayers().stream()
-                                .noneMatch(player -> player.equals(playerToCheck));
-    }
-
     public void addResourceUncovered(){
         resourceUncovered.add(resourceDeck.draw());
     }

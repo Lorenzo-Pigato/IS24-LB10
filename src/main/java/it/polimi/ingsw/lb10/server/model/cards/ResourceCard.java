@@ -11,7 +11,8 @@ import java.util.ArrayList;
  */
 
 public class ResourceCard extends Card {
-    private Resource resource;
+//la resource della card se ne sta occupando simo
+    private CardState cardState;
     public ResourceCard(){}
 
     public ResourceCard(int id, boolean flipped, int points, ArrayList<Corner> corners, Resource resource){
@@ -19,14 +20,36 @@ public class ResourceCard extends Card {
         this.setPoints(points);
         this.setFlipped(flipped);
         this.setCorners(corners);
-        this.resource= resource;
+
+            flippedCheck();
+    }
+    public void flippedCheck(){
+        if(isFlipped())
+            setFlippedState();
+        else
+            setNotFlippedState();
     }
 
-//    with this method we know the "color" of the card, naturally it can't be with the number from 0 to 7
-    public Resource getResource(){return resource;}
-
-    public void setResource(Resource resource) {
-        this.resource = resource;
+    @Override
+    public ArrayList<Corner> getStateCardCorners() {
+        return getCardState().getCorners();
     }
 
+    @Override
+    public int getStateCardPoints(){
+        return getCardState().getPoints();
+    }
+
+    @Override
+    public void setFlippedState() {
+        cardState = new FlippedCardState(getId());
+    }
+
+    public void setNotFlippedState() {
+        cardState = new NotFlippedCardState(getCorners(),getPoints());
+    }
+
+    public CardState getCardState() {
+        return cardState;
+    }
 }

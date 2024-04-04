@@ -10,8 +10,9 @@ public abstract class Corner {
     private Resource resource;
     private int id;
 
-    public Corner(Position position){
+    public Corner(Position position,Resource resource){
         this.position=position;
+        this.resource=resource;
     }
 
     // --------> GETTER <--------

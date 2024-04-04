@@ -13,8 +13,8 @@ public abstract class Card {
     private ArrayList<Corner> corners = new ArrayList<Corner>();
 
     // --------> METHODS <--------
-    public void flip(){
-        flipped=!flipped;
+    public boolean flip(){
+        return flipped=!flipped;
     }
 
     // --------> GETTER <--------
@@ -26,11 +26,15 @@ public abstract class Card {
         return points;
     }
     public int getId(){return id;}
-
     public ArrayList<Corner> getCorners(){
         return corners;
     }
-
+    public ArrayList<Corner> getStateCardCorners(){
+        return corners;
+    }
+    public int getStateCardPoints() {
+        return points;
+    }
     // --------> SETTER <--------
     public void setFlipped(boolean flipped) {
         this.flipped = flipped;
@@ -48,5 +52,6 @@ public abstract class Card {
         this.corners = corners;
     }
 
-
+    public void setFlippedState(){}
+    public void setNotFlippedState(){}
 }

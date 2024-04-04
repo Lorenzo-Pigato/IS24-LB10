@@ -4,10 +4,13 @@ import it.polimi.ingsw.lb10.server.model.MatchModel;
 import it.polimi.ingsw.lb10.server.model.Node;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.cards.Card;
+import it.polimi.ingsw.lb10.server.model.cards.ResourceCard;
+import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.server.view.RemoteView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
@@ -33,6 +36,7 @@ public class MatchController implements Runnable {
     public MatchController(MatchModel model){
         this.model=model;
         possiblePosition= new Position[]{Position.TOPLEFT, Position.TOPRIGHT, Position.BOTTOMRIGHT, Position.BOTTOMLEFT};
+
     }
     private RemoteView remoteView;
 
@@ -46,37 +50,61 @@ public class MatchController implements Runnable {
     }
 
     /**
+     *  WIP
+     */
+    public void initGame() throws IOException {
+        model.initializeTable();
+    }
+    /**
+     *      It's the method that the caller calls
+     *  with the initialization of the card inside the matrix
+     */
+    public boolean insertCorner(Player player,Card card,int row, int column){
+        if(card.isFlipped()) {
+            card.setFlippedState();
+            player.getMatrix().setCard(card, row, column);
+        }
+        else {
+            card.setNotFlippedState();
+            player.getMatrix().setCard(card, row, column);
+        }
+        return checkInsertion(player, card, row, column);
+    }
+
+    /**
+     * @param player calls the method
+     * @param card to add
+     * @param row row
+     * @param column column
      * The method that starts the Insertion rules
-     *
+     * @return true if the card passed all the verification rules
+     *  if the card passes the tests, at the end he is correctly positioned inside the matrix
      */
     public boolean checkInsertion(Player player,Card card,int row, int column){
-        //if the player isn't in the MatchModel players List
-        if(getModel().isNotPlayerIn(player))
-            return false;
-        if(verificationSetting(player,card,row,column)){
-            setCardResourceOnPlayer(player,card);
-            deleteCoveredResource(player,row,column);
-            return true;
-        }
+
+            if (verificationSetting(player, row, column)) {
+                setCardResourceOnPlayer(player, card);
+                deleteCoveredResource(player, row, column);
+                return true;
+            }
+
         player.getMatrix().deleteCard(row,column);
         return  false;
     }
 
+
+
     /**
-     * @param player calls the method, we need the reference for the matrix
-     * @param card is to add
-     * @param row row
-     * @param column column
+     * @param row and column are the top left corner of the card
      * @return true if the card passed all the requirements
      */
-    public boolean verificationSetting(Player player,Card card,int row, int column){
-
+    public boolean verificationSetting(Player player,int row, int column){
         //if one corner isn't available
         if(checkNotAvailability(player,row,column))
             return false;
 
         ArrayList<Node> nodesVisited= new ArrayList<>();
-        Map<Position, int[]> setIncrement = player.getMatrix().parsingPositionCorners();
+        Map<Position, int[]> setIncrement=player.getMatrix().parsingPositionCorners();
         int[] delta= new int[]{0,0};
 
         for(Position position: getPossiblePosition()){
@@ -105,12 +133,13 @@ public class MatchController implements Runnable {
         }
         //turning to the starting position
         row-=delta[0]; column-=delta[1];
+
         //if the card doesn't cover at least one card, it's an error
         return !nodesVisited.isEmpty();
     }
 
     public boolean checkNotAvailability(Player player,int row, int column){
-        Map<Position, int[]> setIncrement = player.getMatrix().parsingPositionCorners();
+        Map<Position, int[]> setIncrement=player.getMatrix().parsingPositionCorners();
 
         for(Position position: getPossiblePosition()){
             int[] delta = setIncrement.get(position);
@@ -121,8 +150,9 @@ public class MatchController implements Runnable {
     }
 
     public void setCardResourceOnPlayer(Player player, Card card){
-        for(int i=0;i<4;i++)
-            player.addOnMapResources(card.getCorners().get(i).getResource());
+        for(Corner corner : card.getStateCardCorners()){
+            player.addOnMapResources(corner.getResource());
+        }
     }
 
     public void deleteCoveredResource(Player player,int row, int column){
@@ -133,10 +163,6 @@ public class MatchController implements Runnable {
             if (player.getMatrix().getNode(row + delta[0], column + delta[1]).getCorners().size()==2)
                 player.deleteOnMapResources(player.getMatrix().getNode(row + delta[0], column + delta[1]).getCorners().get(0).getResource());
         }
-    }
-
-    public void process(Request m){
-
     }
 
     // --------> GETTER <--------

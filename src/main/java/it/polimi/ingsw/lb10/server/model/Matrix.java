@@ -55,7 +55,7 @@ public class Matrix {
      */
     public void setCard(Card card,int row, int column){
         Map<Position, int[]> setIncrement = parsingPositionCorners();
-        for (Corner corner : card.getCorners()) {
+        for (Corner corner : card.getStateCardCorners()) {
             int[] delta = setIncrement.get(corner.getPosition());
             getNode(row + delta[0], column + delta[1]).addCorner(corner);
         }

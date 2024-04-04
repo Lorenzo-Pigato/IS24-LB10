@@ -6,11 +6,14 @@ import it.polimi.ingsw.lb10.server.model.cards.Card;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class QuestDeck implements Deck {
     private ArrayList<Quest> cards= new ArrayList<>();
     @Override
-    public void shuffle() {}
+    public void shuffle() {
+//        Collections.shuffle(getCards());
+    }
 
     @Override
     public Card draw() {

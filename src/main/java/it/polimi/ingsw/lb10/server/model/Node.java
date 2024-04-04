@@ -26,12 +26,16 @@ public class Node {
         corners.remove(corners.size()-1);
     }
 
+    /**
+     * In the first part of the algorithm we insert the card in any case
+     * @return false if there's only 1 card or both the cards have isAvailable-->true
+     * and @return true if one of them it's not available
+     */
     public boolean checkIsNotAvailable(){
         if(corners.size()==1)
             return false;
         if(!corners.get(0).isAvailable() || !corners.get(1).isAvailable() )
             return true;
-        System.out.println(">>> E R R O R <<< This method isn't call if the Node is empty!!!!!");
-        return true;
+        return false;
     }
 }
