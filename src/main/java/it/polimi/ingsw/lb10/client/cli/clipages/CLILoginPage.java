@@ -16,6 +16,17 @@ public class CLILoginPage implements CLIPage {
             AnsiColor.RED,
             1, 33);
     private static final CLIString alreadyTaken = new CLIString(">> Username already taken <<", AnsiColor.RED, 1, 33);
+    private CLIState state = new Default();
+
+    @Override
+    public void changeState(@NotNull CLIState state) {
+        this.state = state;
+    }
+
+    @Override
+    public void print(String[] args){
+        state.apply(args);
+    }
 
     public static class Default implements CLIState {
         @Override

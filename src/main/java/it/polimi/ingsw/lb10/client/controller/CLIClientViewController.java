@@ -2,36 +2,42 @@ package it.polimi.ingsw.lb10.client.controller;
 
 import it.polimi.ingsw.lb10.client.Client;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIConnectionPage;
+import it.polimi.ingsw.lb10.client.cli.clipages.CLILobbyPage;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLILoginPage;
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
+import it.polimi.ingsw.lb10.client.util.InputVerifier;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
 import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.network.requests.preMatch.LoginRequest;
 import it.polimi.ingsw.lb10.network.response.Response;
-
+import it.polimi.ingsw.lb10.network.response.*;
+import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class CLIClientViewController implements ClientViewController{
 
-    private final CLIClientView view;
+    private static CLIClientViewController instance;
+    private  CLIClientView view;
     private Socket socket;
     private Client client;
     private ObjectInputStream socketIn;
     private ObjectOutputStream socketOut;
+    private int hash;
+    private static final CLIResponseHandler responseHandler = CLIResponseHandler.instance();
 
-    // ---------------- CONSTRUCTOR ---------------- //
-    public CLIClientViewController(CLIClientView cliClientView) {
-        this.view = cliClientView;
-    }
+
+   public static CLIClientViewController instance(){
+       if(instance == null) instance = new CLIClientViewController();
+       return instance;
+   }
 
     // ------------------ SETTERS ------------------ //
+    public void setCliClientView(CLIClientView cliClientView){this.view = cliClientView;}
     @Override
     public void setSocket(Socket socket) {
         this.socket = socket;
@@ -41,8 +47,6 @@ public class CLIClientViewController implements ClientViewController{
     }
     public Socket getSocket() {return socket;}
     public Client getClient() {return client;}
-    public ObjectInputStream getSocketIn() {return socketIn;}
-    public ObjectOutputStream getSocketOut() {return socketOut;}
 
     // ------------------- UTILS ------------------- //
     @Override
@@ -56,31 +60,10 @@ public class CLIClientViewController implements ClientViewController{
         }finally{
             client.setActive(false);
         }
-
-    }
-
-    protected boolean isNotValidIP(String split){
-        String ipv4Pattern ="^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
-        Pattern pattern = Pattern.compile(ipv4Pattern);
-        Matcher matcher = pattern.matcher(split);
-        return !matcher.matches();
-    }
-
-    protected boolean isNotValidPort(String port){
-        try{
-            int portNumber = Integer.parseInt(port);
-            return portNumber < 1024 || portNumber > 65535;
-        }catch(NumberFormatException e){
-            return true;
-        }
     }
 
     // ------------------ METHODS ------------------ //
 
-    /**
-     * this method is the first to be run after instantiation of the controller,
-     * opening socket streams to communicate with the server
-     */
     @Override
     public void setUp(){
         try{
@@ -99,42 +82,59 @@ public class CLIClientViewController implements ClientViewController{
     @Override
     public void login() {
         view.setPage(new CLILoginPage());
-        view.pageStateDisplay(new CLILoginPage.Default(), null);
+        view.displayPage(null);
 
         Scanner in = new Scanner(System.in);
-        String input = in.nextLine();
-        boolean validUserName = false;
-
+        String username;
         do {
-            if (input.length() < 3 || input.length() > 15) {
-                view.pageStateDisplay(new CLILoginPage.invalidLength(), new String[]{input});
-            } else {
-                //send request
-                //read response
-                //if response is positive, set validUserName to true
-                //else, display error message
+            do {
+                username = in.nextLine();
+                if (username.length() < 2 || username.length() > 15)
+                    view.updatePageState(new CLILoginPage.invalidLength());
+
+                view.displayPage(new String[]{username});
+            } while (username.length() < 2 || username.length() > 15);
+
+            send(new LoginRequest(hash, username));
+
+            syncReceive().accept(responseHandler);
+
+            if (!client.isLogged()) {
+                view.updatePageState(new CLILoginPage.alreadyTaken());
+                view.displayPage(new String[]{username});
             }
-        } while (!validUserName);
+        }while(!client.isLogged());
     }
 
-    // ---------- PROCEDURAL IO HANDLING ------------ //
-    public void writeToSocket(Request r){
+    @Override
+    public void joinMatch() {
+        view.setPage(new CLILobbyPage());
+        view.displayPage(null);
+
+
+
+    }
+
+    public void send(Request request){
         try{
             socketOut.reset();
-            socketOut.writeObject(r);
+            socketOut.writeObject(request);
             socketOut.flush();
         }catch(IOException e){
             ExceptionHandler.handle(e, view);
+            close();
         }
     }
 
-    public void readFromSocket(){
+    public Response syncReceive(){
+        Response response = null;
         try{
-            Response input = (Response)socketIn.readObject();
-
-        }catch(Exception e){
+            response = (Response)socketIn.readObject();
+        }catch( Exception e){
             ExceptionHandler.handle(e, view);
+            close();
         }
+        return response;
     }
 
     // --------------- ASYNC IO HANDLING ------------- //
@@ -164,9 +164,6 @@ public class CLIClientViewController implements ClientViewController{
                     // REACTS!!!
                 }
             }catch(Exception e){
-                //handle
-            }
-            finally {
                 close();
             }
         });
@@ -179,17 +176,7 @@ public class CLIClientViewController implements ClientViewController{
      * @return the thread
      */
     public Thread asyncWriteToSocket(Request message){
-        return new Thread(() -> {
-            try{
-                socketOut.reset();
-                socketOut.writeObject(message);
-                socketOut.flush();
-            }catch(Exception e){
-                //handle
-            }finally{
-                close();
-            }
-        });
+        return new Thread(() -> send(message));
     }
 
     /**
@@ -224,35 +211,51 @@ public class CLIClientViewController implements ClientViewController{
     public void initializeConnection() throws ConnectionErrorException { //------> Tested | OK <------//
 
         Socket cliSocket;
-        view.setPage(new CLIConnectionPage());
         Scanner in = new Scanner(System.in);
         String input;
         String[] parsed;
         //x.y.z.w:k
 
-        view.pageStateDisplay(new CLIConnectionPage.Default(), null);
+        view.setPage(new CLIConnectionPage());
+        view.displayPage(null);
 
         do{
             input = in.nextLine();
             parsed = input.split(":");
+
             if(parsed.length != 2 ||
-                     isNotValidIP(parsed[0]) && isNotValidPort(parsed[1])){ //invalid input, none of the fields is correct (ip:port)
-                view.pageStateDisplay(new CLIConnectionPage.InvalidInput(), new String[] {input});
+                    InputVerifier.isNotValidIP(parsed[0]) && InputVerifier.isNotValidPort(parsed[1])){ //invalid input, none of the fields is correct (ip:port)
+                view.updatePageState(new CLIConnectionPage.InvalidInput());
 
-            } else if (isNotValidIP(parsed[0])) {
-                view.pageStateDisplay(new CLIConnectionPage.InvalidIP(), new String[] {input});
+            } else if (InputVerifier.isNotValidIP(parsed[0])) {
+                view.updatePageState(new CLIConnectionPage.InvalidIP());
 
-            } else if (isNotValidPort(parsed[1])) {
-                view.pageStateDisplay(new CLIConnectionPage.InvalidPort(), new String[] {input});
+            } else if (InputVerifier.isNotValidPort(parsed[1])) {
+                view.updatePageState(new CLIConnectionPage.InvalidPort());
             }
-        }while(parsed.length != 2 || isNotValidPort(parsed[1]) || isNotValidIP(parsed[0]));
+
+            view.displayPage(new String[] {input});
+        }while(parsed.length != 2 || InputVerifier.isNotValidPort(parsed[1]) || InputVerifier.isNotValidIP(parsed[0]));
 
         try {
             cliSocket = new Socket(parsed[0], Integer.parseInt(parsed[1]));
         } catch (Exception e) {
             throw new ConnectionErrorException();
         }
-
         setSocket(cliSocket);
     }
+
+    @Override
+    public void setHash() {
+        try{
+            HashResponse hashResponse = (HashResponse) socketIn.readObject();
+            this.hash = hashResponse.getHash();
+        }catch(Exception e){
+            ExceptionHandler.handle(e,view);
+        }
+    }
+
+
 }
+
+

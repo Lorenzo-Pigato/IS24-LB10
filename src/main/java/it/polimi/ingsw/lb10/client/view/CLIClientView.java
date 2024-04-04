@@ -19,13 +19,21 @@ public class CLIClientView implements ClientView {
     }
 
     /**
-     * This method displays the actual state of the page
+     * This method updates the state of the page
      * @param state to be displayed
-     * @param args to be passed to update a view, if needed
      */
     @Override
-    public void pageStateDisplay(State state, String[] args) {
-        page.display((CLIState) state, args);
+    public void updatePageState(State state) {
+        page.changeState((CLIState) state);
+    }
+
+    /**
+     * This method applies the state of the page, effectively printing the page or the updated elements
+     * @param args to provide to the state, when needed
+     */
+    @Override
+    public void displayPage(String[] args) {
+        page.print(args);
     }
 
     public CLIPage getPage() {

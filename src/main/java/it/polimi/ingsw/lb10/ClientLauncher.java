@@ -16,14 +16,18 @@ public class ClientLauncher {
 
     public static void main( String @NotNull [] args )
     {
-        Client client;
+        Client client = Client.instance();
         if(args[1].equals("cli")){
-            client = new Client(new CLIClientViewController(new CLIClientView()));
+            CLIClientViewController controller = CLIClientViewController.instance();
+            controller.setCliClientView(new CLIClientView());
+            client.setController(controller);
         }else{
-            client = new Client(new GUIClientViewController(new GUIClientView()));
+            GUIClientViewController controller = GUIClientViewController.instance();
+            controller.setGuiClientView(new GUIClientView());
+            client.setController(controller);
         }
 
-        final Thread clientThread = new Thread(client);
+        final Thread clientThread = new Thread(Client.instance());
         clientThread.start();
     }
 }

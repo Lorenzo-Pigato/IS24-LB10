@@ -7,6 +7,17 @@ import org.jetbrains.annotations.NotNull;
 
 public class CLILobbyPage implements CLIPage {
     private static final CLIString enterChoice = new CLIString(">> Enter your choice <<\n>> ", AnsiColor.CYAN, AnsiFormat.BOLD, 1, 38);
+    private CLIState state = new Default();
+
+    @Override
+    public void changeState(@NotNull CLIState state) {
+        this.state = state;
+    }
+
+    @Override
+    public void print(String[] args) {
+        state.apply(args);
+    }
 
     public static class Default implements CLIState {
         @Override
@@ -36,6 +47,7 @@ public class CLILobbyPage implements CLIPage {
         @Override
         public void apply(String @NotNull [] args) {
             CLIString.replace(enterChoice, new CLIString(">> Invalid input <<", AnsiColor.RED, AnsiFormat.BOLD, 1, 35));
+
             CLICommand.restoreCursorPosition();
             CLICommand.clearUserInput(args[0]);
         }

@@ -3,6 +3,7 @@ package it.polimi.ingsw.lb10.client.cli;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiString;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
@@ -87,18 +88,20 @@ public class CLIString {
     }
 
     /**
-     * This method replaces a string with another one, restoring old cursor position after the replacement
+     * This method replaces a string with another one.
+     * Cursor position has to be reset manually, if needed
      * @param oldString the string to be replaced
      * @param newString the string to replace the old one with
      */
-    public static void replace(CLIString oldString, CLIString newString){
+    public static void replace(@NotNull CLIString oldString,@NotNull CLIString newString){
         oldString.deleteString();
+
         if (oldString.centered) newString.centerPrint();
         else {
             newString.reposition(oldString.getPosition()[0], oldString.getPosition()[1]);
             newString.print();
         }
-        CLICommand.restoreCursorPosition();
+
     }
 
     public void reposition(int col, int row){
@@ -120,17 +123,18 @@ public class CLIString {
      * It sets the isVisible flag to false after
      */
     public void deleteString(){
-        CLICommand.setPosition(this.position[0], this.position[1]);
+        CLICommand.setPosition(position[0], position[1]);
         int row = position[1];
         Arrays.stream(string.split("\n")).forEach(
                 line -> {
                     System.out.print(" ".repeat(line.length()));
-                    CLICommand.setPosition(this.position[0], this.position[1]);
-                    this.position[1]++;
+                    CLICommand.setPosition(position[0], ++position[1]);
                 }
         );
         position[1] = row;
         this.visible = false;
+
+        CLICommand.restoreCursorPosition(); //Restoring cursor position to saved position before deletion
     }
     //------------------ String printing Methods ----------------------//
     public void print(){
