@@ -6,18 +6,13 @@ import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 
 public class CornerAvailable extends Corner {
-    private Resource resource;
 
-    public CornerAvailable(Position position) {
-        super(position);
+    public CornerAvailable(Position position,Resource resource) {
+        super(position,resource);
         setAvailable(true);
     }
-    @JsonAlias("resource")
-    public Resource getResource() {
-        return resource;
-    }
-    @JsonAlias("resource")
-    public void setResource(Resource resource) {
-        this.resource = resource;
+    @Override
+    public boolean isAvailable() {
+        return true;
     }
 }

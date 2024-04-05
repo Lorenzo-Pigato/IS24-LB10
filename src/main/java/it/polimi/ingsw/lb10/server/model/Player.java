@@ -30,18 +30,44 @@ public class Player {
         return matrix;
     }
 
+    // --------> METHODS <--------
+
     public void addOnMapResources(Resource resource) {
-        if (OnMapResources.containsKey(resource)) {
-            int currentQuantity = OnMapResources.get(resource);
-            OnMapResources.put(resource, currentQuantity+1);
-        }else
-            OnMapResources.put(resource, 1);
+        if(resource!=Resource.NULL) {
+            if (OnMapResources.containsKey(resource)) {
+                int currentQuantity = OnMapResources.get(resource);
+                OnMapResources.put(resource, currentQuantity + 1);
+            } else
+                OnMapResources.put(resource, 1);
+        }
     }
-    public void deleteOnMapResources(Resource resource){
-        if(OnMapResources.containsKey(resource)){
-            int currentQuantity = OnMapResources.get(resource);
-            OnMapResources.put(resource, currentQuantity-1);
-        }else
-            System.out.println(">>> E r r o r <<<");
+
+    public void deleteOnMapResources(Resource resource) {
+        if (resource != Resource.NULL) {
+            if (OnMapResources.containsKey(resource)) {
+                int currentQuantity = OnMapResources.get(resource);
+                OnMapResources.put(resource, currentQuantity - 1);
+            } else
+                System.out.println(">>> E r r o r <<<");
+        }
+    }
+
+    public int getResourceQuantity(Resource resource) {
+        return OnMapResources.getOrDefault(resource, 0);
+    }
+
+    public void addPoints(int point){
+        int tempPoints=getPoints()+point;
+        setPoints(tempPoints);
+    }
+    // --------> GETTER <--------
+    public int getPoints() {
+        return points;
+    }
+
+    // --------> SETTER <--------
+
+    public void setPoints(int points) {
+        this.points = points;
     }
 }

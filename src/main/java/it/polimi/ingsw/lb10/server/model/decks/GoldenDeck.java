@@ -7,11 +7,14 @@ import it.polimi.ingsw.lb10.server.model.cards.GoldenCard;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class GoldenDeck implements Deck {
 
     private ArrayList<GoldenCard> cards= new ArrayList<>();
-    public void shuffle(){}
+    public void shuffle(){
+        Collections.shuffle(getCards());
+    }
 
     public Card draw(){
         Card temp=cards.get(cards.size()-1);

@@ -4,6 +4,7 @@ import it.polimi.ingsw.lb10.server.model.Resource;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *     same reasoning as StartingCard, we need to define the "color" of the card
@@ -11,22 +12,44 @@ import java.util.ArrayList;
  */
 
 public class ResourceCard extends Card {
-    private Resource resource;
+    private CardState cardState;
     public ResourceCard(){}
 
-    public ResourceCard(int id, boolean flipped, int points, ArrayList<Corner> corners, Resource resource){
+    public ResourceCard(int id, boolean flipped, int points, ArrayList<Corner> corners, Resource resource, Color color,HashMap<Resource,Integer> activationCost, ArrayList<Resource> resources){
         this.setId(id);
         this.setPoints(points);
         this.setFlipped(flipped);
         this.setCorners(corners);
-        this.resource= resource;
+        this.setColor(color);
+
+            flippedCheck();
     }
 
-//    with this method we know the "color" of the card, naturally it can't be with the number from 0 to 7
-    public Resource getResource(){return resource;}
+    // --------> SETTER <--------
 
-    public void setResource(Resource resource) {
-        this.resource = resource;
+    @Override
+    public void setFlippedState() {
+        cardState = new FlippedCardState(getId(),getResources());
+    }
+
+    public void setNotFlippedState() {
+        cardState = new NotFlippedCardState(getCorners(),getPoints(),getActivationCost(),getResources());
+    }
+
+    // --------> GETTER <--------
+
+    public CardState getCardState() {
+        return cardState;
+    }
+
+    @Override
+    public ArrayList<Corner> getStateCardCorners() {
+        return getCardState().getCorners();
+    }
+
+    @Override
+    public int getStateCardPoints(){
+        return getCardState().getPoints();
     }
 
 }
