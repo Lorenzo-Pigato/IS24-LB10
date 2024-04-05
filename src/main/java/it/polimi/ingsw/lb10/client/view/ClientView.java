@@ -9,10 +9,16 @@ public interface ClientView {
     void setPage(Page page);
 
     /**
-     * Method to set a state for the page
-     * Setting a state is necessary to display the page
-     * @param state to display
-     * @param args to update a state if needed
+     * This method updates the state of the page
+     * @param state to be displayed
      */
-    void pageStateDisplay(State state, String[] args);
+    public void updatePageState(State state);
+
+    /**
+     * This method applies the state of the page, effectively printing the page or the updated elements
+     * @param args to provide to the state, when needed
+     */
+    public void displayPage(String[] args);
+
+    public Page getPage();
 }

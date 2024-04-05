@@ -8,7 +8,5 @@ import org.jetbrains.annotations.NotNull;
  * By default, it applies a CLIState to the page.
  */
 public interface CLIPage extends Page {
-    default void display(@NotNull CLIState state, String[] args){
-        state.apply(args);
-    }
+
 }

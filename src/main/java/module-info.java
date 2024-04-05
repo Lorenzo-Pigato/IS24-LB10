@@ -2,6 +2,7 @@ module it.polimi.ingsw.lb10 {
     requires javafx.controls;
     requires javafx.fxml;
     requires com.fasterxml.jackson.databind;
+    requires org.jetbrains.annotations;
 
 
     opens it.polimi.ingsw.lb10 to javafx.fxml;

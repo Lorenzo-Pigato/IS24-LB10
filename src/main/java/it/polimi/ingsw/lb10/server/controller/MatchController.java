@@ -7,7 +7,6 @@ import it.polimi.ingsw.lb10.server.model.cards.Card;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.server.view.RemoteView;
-
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
@@ -28,16 +27,16 @@ public class MatchController implements Runnable {
     private Boolean active = true;
     private MatchModel model;
     private BlockingQueue<Request> requests;
+    private ArrayList<RemoteView> remoteView;
+
     private final Position[] possiblePosition;
 
     public MatchController(MatchModel model){
         this.model=model;
         possiblePosition= new Position[]{Position.TOPLEFT, Position.TOPRIGHT, Position.BOTTOMRIGHT, Position.BOTTOMLEFT};
     }
-    private RemoteView remoteView;
 
     //Game Model fields
-
     @Override
     public void run() {
         while(active){
