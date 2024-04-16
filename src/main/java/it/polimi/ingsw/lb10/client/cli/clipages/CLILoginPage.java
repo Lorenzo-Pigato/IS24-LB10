@@ -24,13 +24,13 @@ public class CLILoginPage implements CLIPage {
     }
 
     @Override
-    public void print(String[] args){
+    public void print(Object[] args){
         state.apply(args);
     }
 
     public static class Default implements CLIState {
         @Override
-        public void apply(String[] args) {
+        public void apply(Object[] args) {
             CLICommand.initialize();
 
             CLIBanner.displayWolf(2,2);
@@ -47,25 +47,23 @@ public class CLILoginPage implements CLIPage {
 
     public static class invalidLength implements CLIState {
         @Override
-        public void apply(String @NotNull [] args) {
+        public void apply(Object @NotNull [] args) {
             if(alreadyTaken.isVisible()) CLIString.replace(alreadyTaken, invalidLength);
             else invalidLength.centerPrint();
 
             CLICommand.restoreCursorPosition();
-            CLICommand.clearUserInput(args[0]);
+            CLICommand.clearUserInput((String) args[0]);
         }
     }
 
     public static class alreadyTaken implements CLIState {
         @Override
-        public void apply(String @NotNull [] args) {
-            if(args[0] == null) throw new IllegalArgumentException();
-
+        public void apply(Object @NotNull [] args) {
             if(invalidLength.isVisible()) CLIString.replace(invalidLength, alreadyTaken);
             else alreadyTaken.centerPrint();
 
             CLICommand.restoreCursorPosition();
-            CLICommand.clearUserInput(args[0]);
+            CLICommand.clearUserInput((String) args[0]);
         }
     }
 

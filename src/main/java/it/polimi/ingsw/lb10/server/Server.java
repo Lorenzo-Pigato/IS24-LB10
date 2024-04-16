@@ -122,7 +122,7 @@ public class Server implements Runnable{
     }
     private static void saveLog(String log){
         try {
-            bufferedWriter.write(log);
+            bufferedWriter.write(log + "\n");
             bufferedWriter.flush();
         } catch (IOException e) {
             AnsiString.print(">> Error appending log to file\nAborting", AnsiColor.RED);

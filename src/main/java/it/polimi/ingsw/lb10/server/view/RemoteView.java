@@ -1,10 +1,10 @@
 package it.polimi.ingsw.lb10.server.view;
-
 import it.polimi.ingsw.lb10.network.response.Response;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+
 
 /**
  * This class is used to update the client-side view on controller's update

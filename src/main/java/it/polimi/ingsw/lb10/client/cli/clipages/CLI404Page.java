@@ -18,13 +18,13 @@ public class CLI404Page implements CLIPage {
     }
 
     @Override
-    public void print(String[] args) {
+    public void print(Object[] args) {
         state.apply(args);
     }
 
     public static class Default implements CLIState {
         @Override
-        public void apply(String[] args) {
+        public void apply(Object[] args) {
             CLICommand.initialize();
             CLIBanner.display404();
             notFound.centerPrint();
