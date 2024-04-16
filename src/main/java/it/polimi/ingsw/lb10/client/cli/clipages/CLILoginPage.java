@@ -66,8 +66,4 @@ public class CLILoginPage implements CLIPage {
             CLICommand.clearUserInput((String) args[0]);
         }
     }
-
-    public static void main(String[] args) {
-        new CLILoginPage.Default().apply(null);
-    }
 }

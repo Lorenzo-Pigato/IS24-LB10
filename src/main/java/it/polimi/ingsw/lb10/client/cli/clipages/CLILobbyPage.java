@@ -32,7 +32,7 @@ public class CLILobbyPage implements CLIPage {
                     AnsiColor.DEFAULT, AnsiColor.DEFAULT, AnsiFormat.BOLD);
 
 
-            CLIBox.draw(64, 29, 56, 3, "MENU",
+            CLIBox.draw(54, 29, 56, 3, "MENU",
                     AnsiColor.CYAN, AnsiColor.CYAN, AnsiFormat.BOLD);
 
             enterChoice.centerPrint();

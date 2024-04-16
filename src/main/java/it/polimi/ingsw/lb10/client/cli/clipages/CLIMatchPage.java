@@ -5,13 +5,15 @@ import it.polimi.ingsw.lb10.client.cli.CLICommand;
 import it.polimi.ingsw.lb10.client.cli.CLILine;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
+import it.polimi.ingsw.lb10.server.model.cards.Card;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import org.jetbrains.annotations.NotNull;
 
 public class CLIMatchPage implements CLIPage{
 
     private CLIState state = new Default();
-    private static final int[] HandUpLeftCornersPosition = {};
+    private static final int[][] handUpLeftCornersPosition = new int[2][3];
+
     @Override
     public void changeState(@NotNull CLIState state) {
         this.state = state;
@@ -56,16 +58,25 @@ public class CLIMatchPage implements CLIPage{
         }
     }
 
-    // ------------- TEST ---------------- //
-    public static void main(Object[] args) {
-        new CLIMatchPage().print(null);
-    }
-
     private static void drawCorner(Corner corner, int col, int row){
         CLICommand.setPosition(col, row);
         // ------ NOT IMPLEMENTED YET ------ //
 
     }
+
+    private static void addCardToHand(Card card, int inHandPosition){
+
+        CLIBox.draw(handUpLeftCornersPosition[0][inHandPosition],
+                    handUpLeftCornersPosition[1][inHandPosition],
+                20, 8, card.getColor().getAnsi());
+    }
+
+
+    // ------------- TEST ---------------- //
+    public static void main(Object[] args) {
+        new CLIMatchPage().print(null);
+    }
 }
+
 
 
