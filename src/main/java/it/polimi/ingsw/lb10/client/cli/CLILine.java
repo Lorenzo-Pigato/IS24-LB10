@@ -39,7 +39,7 @@ public abstract class CLILine {
     }
 
     public static void drawVertical(int col, int row, int finalRow){
-        drawHorizontal(col, row, finalRow, AnsiColor.DEFAULT);
+        drawVertical(col, row, finalRow, AnsiColor.DEFAULT);
     }
 
 }
