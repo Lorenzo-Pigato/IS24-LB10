@@ -16,9 +16,7 @@ public class CLIResponseHandler implements ResponseVisitor {
     }
 
     @Override
-    public void visit(JoinMatchResponse response){
-
-    }
+    public void visit(JoinMatchResponse response){ controller.getClient().setInMatch(response.getJoined());}
 
     @Override
     public void visit(BooleanResponse response) {

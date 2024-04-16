@@ -16,7 +16,8 @@ public class Client implements Runnable{
     private static Client instance;
     private  ClientViewController controller = CLIClientViewController.instance();
     private  boolean active = true;
-    private  Boolean logged = false;
+    private  boolean logged = false;
+    private  boolean inMatch = false;
 
     public static Client instance(){
         if(instance == null) instance =  new Client();
@@ -66,13 +67,19 @@ public class Client implements Runnable{
         return active;
     }
 
-    public  Boolean isLogged(){
+    public  boolean isLogged(){
         return logged;
     }
 
-    public  void setLogged(Boolean state){
+    public boolean isInMatch(){
+        return inMatch;
+    }
+
+    public void setLogged(Boolean state){
         logged = state;
     }
+    public void setInMatch(Boolean state){
+        System.out.println("gianluigi");inMatch = state; }
 
     /**
      * @param active sets the client state, which will be evaluated by communication threads

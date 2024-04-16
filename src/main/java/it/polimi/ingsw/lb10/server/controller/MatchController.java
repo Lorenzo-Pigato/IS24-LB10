@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lb10.server.controller;
 
 import it.polimi.ingsw.lb10.network.response.Response;
+import it.polimi.ingsw.lb10.server.Server;
 import it.polimi.ingsw.lb10.server.model.MatchModel;
 import it.polimi.ingsw.lb10.server.model.Node;
 import it.polimi.ingsw.lb10.server.model.Player;
@@ -40,13 +41,16 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     private ArrayList<Player> players;
 
     public MatchController(int numberOfPlayers) {
-        model = new MatchModel(numberOfPlayers, this);
+        //model = new MatchModel(numberOfPlayers, this);
         requests = new LinkedBlockingQueue<>();
         remoteViews = new ArrayList<>();
         players = new ArrayList<>();
     }
 
+    public boolean isActive(){return active;}
+
     public int getId(){return id;}
+
     public boolean isStarted(){return started;}
 
     private Position[] possiblePosition;
@@ -225,6 +229,8 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     public void visit(JoinMatchRequest jmr) {
         players.add(jmr.getPlayer());
         getRemoteView(jmr.getHashCode()).send(new JoinMatchResponse(true));
+        Server.log(">> Added player to match: " + jmr.getPlayer().getUsername() + " - Match ID: " + id);
+        Server.log(">> Sent positive response to hashcode: " + jmr.getHashCode() + " - Match ID: " + id);
         if(players.size() == model.getNumberOfPlayers()) start();
     }
 

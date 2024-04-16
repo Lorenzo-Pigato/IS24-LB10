@@ -46,20 +46,16 @@ public class CLILobbyPage implements CLIPage {
          */
         @Override
         public void apply(Object @NotNull [] args) {
-            if(args.length == 1){
-                CLIString.replace(enterChoice, new CLIString(">> Invalid input <<", AnsiColor.RED, AnsiFormat.BOLD, 1, 35));
 
-                CLICommand.restoreCursorPosition();
-                CLICommand.clearUserInput((String) args[0]);
-            }
-            else{
-                if(((String)args[0]).equals("new"))
-                    CLIString.replace(enterChoice, new CLIString(">> Invalid Players Number - [2 to 4] <<",
-                            AnsiColor.RED, AnsiFormat.BOLD, 1, 35));
-                else if(((String)args[0]).equals("join"))
+            if(((String)args[0]).split(" ")[0].equals("join"))
                     CLIString.replace(enterChoice, new CLIString(">> Match ID: " + args[1] + " doesn't exist <<",
                             AnsiColor.RED, AnsiFormat.BOLD, 1, 35));
-            }
+
+            else
+                CLIString.replace(enterChoice, new CLIString(">> Invalid input <<", AnsiColor.RED, AnsiFormat.BOLD, 1, 35));
+
+            CLICommand.restoreCursorPosition();
+            CLICommand.clearUserInput((String) args[0]);
         }
     }
 }

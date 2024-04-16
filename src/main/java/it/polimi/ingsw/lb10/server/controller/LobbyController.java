@@ -115,9 +115,11 @@ public class LobbyController implements LobbyRequestVisitor {
 
     @Override
     public void visit(NewMatchRequest newMatchRequest) {
+        Server.log(">> Received New Match Request from: " + newMatchRequest.getHashCode() + " - Number of players: " + newMatchRequest.getNumberOfPlayers());
         MatchController controller = new MatchController(newMatchRequest.getNumberOfPlayers()); //creates new controller
         controllersPool.submit(controller); //runs new controller thread
         controller.addRemoteView(getRemoteView(newMatchRequest.getHashCode())); //adds the view to the new controller
+        Server.log(">> New Match Controller created and view added to it");
         try {
             controller.submitRequest(new JoinMatchRequest(newMatchRequest.getHashCode(), controller.getMatchId(), signedPlayers.stream().filter(player -> player.getHashCode() == newMatchRequest.getHashCode()).findFirst().get()));  //submits the join request
         }catch (InterruptedException e) {
