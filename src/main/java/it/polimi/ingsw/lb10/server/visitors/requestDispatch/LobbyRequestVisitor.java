@@ -1,14 +1,15 @@
 package it.polimi.ingsw.lb10.server.visitors.requestDispatch;
 
 import it.polimi.ingsw.lb10.network.requests.match.MatchRequest;
-import it.polimi.ingsw.lb10.network.requests.preMatch.JoinMatchRequest;
+import it.polimi.ingsw.lb10.network.requests.match.JoinMatchRequest;
+import it.polimi.ingsw.lb10.network.requests.preMatch.LobbyToMatchRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.LoginRequest;
 
 public interface LobbyRequestVisitor {
 
     void visit(LoginRequest lr);
 
-    void visit(JoinMatchRequest jmr);
+    void visit(LobbyToMatchRequest jmr);
 
     /**
      * @param mr the match request received by the client controller

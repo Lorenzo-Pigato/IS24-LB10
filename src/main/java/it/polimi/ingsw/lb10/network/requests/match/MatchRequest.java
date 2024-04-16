@@ -24,10 +24,6 @@ public abstract class MatchRequest extends Request implements LobbyRequestVisita
         handler.visit(this);
     }
 
-    @Override
-    public void accept(MatchRequestVisitor handler) {
-        handler.visit(this);
-    }
 
 
 }

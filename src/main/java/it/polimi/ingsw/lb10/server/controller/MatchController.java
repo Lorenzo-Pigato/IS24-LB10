@@ -1,8 +1,7 @@
 package it.polimi.ingsw.lb10.server.controller;
 
-import it.polimi.ingsw.lb10.network.ClientConnection;
 import it.polimi.ingsw.lb10.network.requests.match.MatchRequest;
-import it.polimi.ingsw.lb10.network.requests.preMatch.JoinMatchRequest;
+import it.polimi.ingsw.lb10.network.requests.match.JoinMatchRequest;
 import it.polimi.ingsw.lb10.network.response.match.JoinMatchResponse;
 import it.polimi.ingsw.lb10.network.response.match.TerminatedMatchResponse;
 import it.polimi.ingsw.lb10.server.model.Player;
@@ -51,12 +50,15 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         return model.getId();
     }
 
+    /** this method is used to handle the "JoinMatchRequest" sent by the client to the LobbyController, and from the LobbyController to the MatchController
+     * in this method MatchController adds the player to his players, sends positive response and checks if the match can start. In case the match can start, sends a
+     * broadcast message to all the players waiting.
+     * @param jmr join match request
+     */
     @Override
     public void visit(JoinMatchRequest jmr) {
-        players.add(new Player(jmr.getHashCode(), jmr.getUsername()));
+        players.add(jmr.getPlayer());
         getRemoteView(jmr.getHashCode()).send(new JoinMatchResponse(true));
-
-
     }
 
     public void addRemoteView(RemoteView remoteView){
@@ -66,4 +68,8 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     public RemoteView getRemoteView(int hashCode){
         return remoteViews.stream().filter(remoteView -> remoteView.getSocket().hashCode() == hashCode).findFirst().get();
     }
+
+//    public Boolean startable(){
+//        if(players.size() == )
+//    }
 }

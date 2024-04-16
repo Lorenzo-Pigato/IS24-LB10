@@ -1,7 +1,8 @@
 package it.polimi.ingsw.lb10.server.controller;
 
 import it.polimi.ingsw.lb10.network.requests.match.MatchRequest;
-import it.polimi.ingsw.lb10.network.requests.preMatch.JoinMatchRequest;
+import it.polimi.ingsw.lb10.network.requests.match.JoinMatchRequest;
+import it.polimi.ingsw.lb10.network.requests.preMatch.LobbyToMatchRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.LoginRequest;
 import it.polimi.ingsw.lb10.network.response.lobby.BooleanResponse;
 import it.polimi.ingsw.lb10.network.response.match.JoinMatchResponse;
@@ -74,26 +75,30 @@ public class LobbyController implements LobbyRequestVisitor {
         Server.log(">> Sent boolean response to hashcode: " + lr.getHashCode() + "- status: " + validated);
     }
 
+    /**this method handles the request of a client which wants to join a specific match. First thing to do is check if the match is present in the waiting list
+     * then the client remoteview is submitted to the match controller and a new JoinMatchRequest is propagated to the specific match controller which will handle it.
+     * @param ltmr lobby to match request sent by the client
+     */
     @Override
-    public void visit(JoinMatchRequest jmr) {
+    public void visit(LobbyToMatchRequest ltmr) {
 
-        Server.log(">> Received Join Match Request from: " + jmr.getHashCode() + " - Match to be joined: " + jmr.getMatchId());
+        Server.log(">> Received Join Match Request from: " + ltmr.getHashCode() + " - Match to be joined: " + ltmr.getMatchId());
 
-        if (waitingMatches.stream().map(MatchController::getMatchId).noneMatch(id -> id == jmr.getMatchId())) { //Predicate : matchId contained in the request is an actual waiting match
-            getRemoteView(jmr.getHashCode()).send(new JoinMatchResponse(false)); //match already started or not existing
+        if (waitingMatches.stream().map(MatchController::getMatchId).noneMatch(id -> id == ltmr.getMatchId())) { //Predicate : matchId contained in the request is an actual waiting match
+            getRemoteView(ltmr.getHashCode()).send(new JoinMatchResponse(false)); //match already started or not existing
         } else {
-            jmr.setUsername(signedPlayers.stream().filter(player -> player.getHashCode() == jmr.getHashCode()).findFirst().get().getUsername()); //envelopes the username of the player to be passed to the controller
-            waitingMatches.stream().filter(matchController -> matchController.getMatchId() == jmr.getMatchId()).findFirst().ifPresent(matchController -> {
+            //envelopes the username of the player to be passed to the controller
+            waitingMatches.stream().filter(matchController -> matchController.getMatchId() == ltmr.getMatchId()).findFirst().ifPresent(matchController -> {
                 try {
-                    matchController.addRemoteView(getRemoteView(jmr.getHashCode())); //adds the remote view to Match controller
-                    matchController.submitRequest(jmr); //submits request
+                    matchController.addRemoteView(getRemoteView(ltmr.getHashCode())); //adds the remote view to Match controller
+                    matchController.submitRequest(new JoinMatchRequest(ltmr.getHashCode(), ltmr.getMatchId(), signedPlayers.stream().filter(player -> player.getHashCode() == ltmr.getHashCode()).findFirst().get())); //submits request
                 } catch (InterruptedException e) {
-                    getRemoteView(jmr.getHashCode()).send(new TerminatedMatchResponse());
-                    Server.log(">> Match " + jmr.getMatchId() + "interrupted");
+                    getRemoteView(ltmr.getHashCode()).send(new TerminatedMatchResponse());
+                    Server.log(">> Match " + ltmr.getMatchId() + "interrupted");
                 }
             }); //submit the request to the controller of the requested match
 
-            Server.log(">> Match " + jmr.getMatchId() + "found request has been submitted to match controller ");
+            Server.log(">> Match " + ltmr.getMatchId() + "found request has been submitted to match controller ");
         }
     }
 
@@ -107,7 +112,6 @@ public class LobbyController implements LobbyRequestVisitor {
             }
         });
     }
-
 
     public RemoteView getRemoteView(int hashCode){
         return remoteViews.stream().filter(remoteView -> remoteView.getSocket().hashCode() == hashCode).findFirst().get();
