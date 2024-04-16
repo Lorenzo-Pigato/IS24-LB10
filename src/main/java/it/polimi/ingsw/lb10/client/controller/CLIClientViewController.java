@@ -11,6 +11,7 @@ import it.polimi.ingsw.lb10.client.view.CLIClientView;
 import it.polimi.ingsw.lb10.network.requests.*;
 import it.polimi.ingsw.lb10.network.requests.preMatch.LoginRequest;
 import it.polimi.ingsw.lb10.network.response.*;
+import it.polimi.ingsw.lb10.network.response.lobby.HashResponse;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 import java.io.IOException;
 import java.io.ObjectInputStream;

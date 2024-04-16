@@ -8,13 +8,17 @@ import java.util.List;
 
 public class MatchModel extends Observable<Request> {
 
-    private final String id;
+    private final int id;
     private List<Player> players = new ArrayList<>();
     private final int numberOfPlayers;
 
-    public MatchModel(String id, int numberOfPlayers) {
+    public MatchModel(int id, int numberOfPlayers) {
         this.id = id;
         this.numberOfPlayers = numberOfPlayers;
+    }
+
+    public int getId() {
+        return id;
     }
 
     @Override
