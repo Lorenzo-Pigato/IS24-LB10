@@ -11,12 +11,13 @@ import java.net.Socket;
  * has the OutputStream to send out responses to the client, it is a ResponseSendingVisitor !!!!
  */
 public class RemoteView  {
-
+    private final int hashCode;
     private final Socket socket;
     private ObjectOutputStream outputStream;
 
     public RemoteView(Socket socket) {
         this.socket = socket;
+        this.hashCode = socket.hashCode();
     }
 
     public Socket getSocket() {

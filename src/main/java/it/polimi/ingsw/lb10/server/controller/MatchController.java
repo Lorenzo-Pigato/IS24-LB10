@@ -1,40 +1,55 @@
 package it.polimi.ingsw.lb10.server.controller;
 
+import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.server.model.MatchModel;
 import it.polimi.ingsw.lb10.server.model.Node;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.Resource;
 import it.polimi.ingsw.lb10.server.model.cards.Card;
-import it.polimi.ingsw.lb10.server.model.cards.ResourceCard;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
-import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.server.view.RemoteView;
-
 import java.io.IOException;
+import it.polimi.ingsw.lb10.network.requests.match.MatchRequest;
+import it.polimi.ingsw.lb10.network.requests.match.JoinMatchRequest;
+import it.polimi.ingsw.lb10.network.response.match.JoinMatchResponse;
+import it.polimi.ingsw.lb10.network.response.match.TerminatedMatchResponse;
+import it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitor;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
-/*@ this class is the single match controller, every match has one
-*@ the run() method takes continuously the requests (pushed by ClientConnection(s)) from the BlockingQueue snd processes
-*@ them by entering the model and updating the view
-*@ this implementation goes over the Observer implementation to optimize thread synchronization
-*@ In fact, using an Observer implementation, this class wouldn't be a Runnable istance, and ClientConnection
-*@ would access this object
-*@ with synchronized blocks to update the model and the view. Using this kind of implementation (BlockingQueue),
-*@ ClientConnection
-*@ won't have to wait for the model and view to be updated, they can get continuous request that will be submitted
-*@ to this queue and executed inside this separeted thread!*/
+/* this class is the single match controller, every match has one
+the run() method takes continuously the requests (pushed by ClientConnection(s)) from the BlockingQueue snd processes
+them by entering the model and updating the view
+this implementation goes over the Observer implementation to optimize thread synchronization
+In fact, using an Observer implementation, this class wouldn't be a Runnable instance, and ClientConnection
+would access this object with synchronized blocks to update the model and the view. Using this kind of implementation (BlockingQueue),
+ClientConnection won't have to wait for the model and view to be updated, they can get continuous request that will be submitted
+to this queue and executed inside this separated thread!*/
 
-public class MatchController implements Runnable {
+public class MatchController implements Runnable, MatchRequestVisitor {
 
+    private final int id = this.hashCode();
     private Boolean active = true;
     private MatchModel model;
-    private BlockingQueue<Request> requests;
-    private ArrayList<RemoteView> remoteView;
+    private BlockingQueue<MatchRequest> requests;
+    private ArrayList<RemoteView> remoteViews;
+    private boolean started = false;
+    private ArrayList<Player> players;
 
-    private final Position[] possiblePosition;
+    public MatchController(int numberOfPlayers) {
+        model = new MatchModel(numberOfPlayers, this);
+        requests = new LinkedBlockingQueue<>();
+        remoteViews = new ArrayList<>();
+        players = new ArrayList<>();
+    }
+
+    public int getId(){return id;}
+    public boolean isStarted(){return started;}
+
+    private Position[] possiblePosition;
 
     public MatchController(MatchModel model){
         this.model=model;
@@ -45,8 +60,13 @@ public class MatchController implements Runnable {
     //Game Model fields
     @Override
     public void run() {
-        while(active){
-
+        try{
+            while(active){
+                MatchRequest request = requests.take();
+                request.accept(this);
+            }
+        }catch(InterruptedException e){
+            remoteViews.forEach(remoteView -> remoteView.send(new TerminatedMatchResponse()));
         }
     }
 
@@ -186,6 +206,43 @@ public class MatchController implements Runnable {
 
     public Position[] getPossiblePosition() {
         return possiblePosition;
+    }
+
+    public synchronized void submitRequest(MatchRequest request) throws InterruptedException{
+        this.requests.put(request);
+    }
+
+    public synchronized int getMatchId(){
+        return id;
+    }
+
+    /** this method is used to handle the "JoinMatchRequest" sent by the client to the LobbyController, and from the LobbyController to the MatchController
+     * in this method MatchController adds the player to his players, sends positive response and checks if the match can start. In case the match can start, sends a
+     * broadcast message to all the players waiting.
+     * @param jmr join match request
+     */
+    @Override
+    public void visit(JoinMatchRequest jmr) {
+        players.add(jmr.getPlayer());
+        getRemoteView(jmr.getHashCode()).send(new JoinMatchResponse(true));
+        if(players.size() == model.getNumberOfPlayers()) start();
+    }
+
+    public void addRemoteView(RemoteView remoteView){
+        remoteViews.add(remoteView);
+    }
+
+    public RemoteView getRemoteView(int hashCode){
+        return remoteViews.stream().filter(remoteView -> remoteView.getSocket().hashCode() == hashCode).findFirst().get();
+    }
+
+    private void start(){
+        started = true;
+        //model. ????
+    }
+
+    public void broadcast(Response response){
+        remoteViews.forEach(remoteView -> remoteView.send(response));
     }
 
 }

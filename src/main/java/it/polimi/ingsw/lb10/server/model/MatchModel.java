@@ -1,5 +1,8 @@
 package it.polimi.ingsw.lb10.server.model;
 
+import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
+import it.polimi.ingsw.lb10.network.response.match.TerminatedMatchResponse;
+import it.polimi.ingsw.lb10.server.controller.MatchController;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import it.polimi.ingsw.lb10.server.model.cards.Card;
 import it.polimi.ingsw.lb10.server.model.decks.Deck;
@@ -15,11 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MatchModel extends Observable<Request> {
-
-    private final String id;
+    private final MatchController controller;
     private final List<Player> players = new ArrayList<>();
     private final int numberOfPlayers;
-    private int turn;
 
     private final Deck resourceDeck= new ResourceDeck();
     private final Deck goldenDeck = new GoldenDeck();
@@ -30,21 +31,32 @@ public class MatchModel extends Observable<Request> {
     private final List<Card> resourceUncovered= new ArrayList<>();
 
 
-    public MatchModel(String id, int numberOfPlayers) throws IOException {
-        this.id = id;
+    public MatchModel(int numberOfPlayers, MatchController controller) {
         this.numberOfPlayers = numberOfPlayers;
+        this.controller = controller;
         initializeTable();
     }
 
+
     /**
-     * Core of the game start, it's defined everything excepts the matrix that it's defined inside the Player's constructor
+     * Core of the game start, it defines everything except the matrix which is defined inside the Player's constructor
      */
-    public void initializeTable() throws IOException {
-        initializeDecks();
+    public void initializeTable() {
+        try {
+            initializeDecks();
+        } catch (IOException e) {
+            controller.broadcast(new TerminatedMatchResponse());
+        }
+
         startingUncoveredCards();
     }
 
-    private void initializeDecks() throws IOException {
+    @Override
+    public void notify(Request request) {
+        super.notify(request);
+    }
+
+    private void initializeDecks() throws IOException{
         resourceDeck.fillDeck();
         goldenDeck.fillDeck();
         questDeck.fillDeck();
@@ -85,5 +97,7 @@ public class MatchModel extends Observable<Request> {
         return players;
     }
 
-
+    public int getNumberOfPlayers() {
+        return numberOfPlayers;
+    }
 }

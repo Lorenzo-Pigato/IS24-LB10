@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Player {
+    private int hashCode;
     private String username;
     private Matrix matrix;
     private boolean inGame;
@@ -15,17 +16,15 @@ public class Player {
     private Quest privateQuest;
     private int points;
 
-    public Player(String username) {
+    public Player(int hashCode, String username) {
+        this.hashCode = hashCode;
         this.username = username;
         matrix=new Matrix(this);
         inGame=true;
         points=0;
     }
-
-
-    public String getUsername() {
-        return username;
-    }
+    
+            
     public Matrix getMatrix() {
         return matrix;
     }
@@ -70,4 +69,11 @@ public class Player {
     public void setPoints(int points) {
         this.points = points;
     }
+
+    public int getHashCode() {
+        return hashCode;
+    }
+
+    public String getUsername() { return username;}
+
 }

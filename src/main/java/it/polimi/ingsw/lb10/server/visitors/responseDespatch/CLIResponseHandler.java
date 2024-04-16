@@ -1,6 +1,8 @@
 package it.polimi.ingsw.lb10.server.visitors.responseDespatch;
 import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
-import it.polimi.ingsw.lb10.network.response.BooleanResponse;
+import it.polimi.ingsw.lb10.network.response.lobby.BooleanResponse;
+import it.polimi.ingsw.lb10.network.response.match.JoinMatchResponse;
+import it.polimi.ingsw.lb10.network.response.match.TerminatedMatchResponse;
 
 public class CLIResponseHandler implements ResponseVisitor {
 
@@ -14,8 +16,19 @@ public class CLIResponseHandler implements ResponseVisitor {
     }
 
     @Override
+    public void visit(JoinMatchResponse response){
+
+    }
+
+    @Override
     public void visit(BooleanResponse response) {
         controller.getClient().setLogged(response.getResponseState());
     }
+
+    @Override
+    public void visit(TerminatedMatchResponse response) {
+
+    }
+
 
 }

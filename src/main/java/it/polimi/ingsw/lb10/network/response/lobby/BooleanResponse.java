@@ -1,5 +1,6 @@
-package it.polimi.ingsw.lb10.network.response;
+package it.polimi.ingsw.lb10.network.response.lobby;
 
+import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 
 public class BooleanResponse extends Response {
