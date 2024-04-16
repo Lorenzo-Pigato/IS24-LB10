@@ -10,6 +10,7 @@ import it.polimi.ingsw.lb10.server.model.MatchModel;
 import it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitor;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /* this class is the single match controller, every match has one
 the run() method takes continuously the requests (pushed by ClientConnection(s)) from the BlockingQueue snd processes
@@ -22,13 +23,23 @@ to this queue and executed inside this separated thread!*/
 
 public class MatchController implements Runnable, MatchRequestVisitor {
 
+    private final int id = this.hashCode();
     private Boolean active = true;
     private MatchModel model;
     private BlockingQueue<MatchRequest> requests;
     private ArrayList<RemoteView> remoteViews;
     private boolean started = false;
-    private ArrayList<Player> players = new ArrayList<>();
-    //Game Model fields
+    private ArrayList<Player> players;
+
+    public MatchController(int numberOfPlayers) {
+        model = new MatchModel(id, numberOfPlayers);
+        requests = new LinkedBlockingQueue<>();
+        remoteViews = new ArrayList<>();
+        players = new ArrayList<>();
+    }
+
+    public int getId(){return id;}
+    public boolean isStarted(){return started;}
 
     @Override
     public void run() {
@@ -42,11 +53,11 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         }
     }
 
-    public void submitRequest(MatchRequest request) throws InterruptedException{
+    public synchronized void submitRequest(MatchRequest request) throws InterruptedException{
         this.requests.put(request);
     }
 
-    public int getMatchId(){
+    public synchronized int getMatchId(){
         return model.getId();
     }
 
@@ -59,6 +70,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     public void visit(JoinMatchRequest jmr) {
         players.add(jmr.getPlayer());
         getRemoteView(jmr.getHashCode()).send(new JoinMatchResponse(true));
+        if(players.size() == model.getNumberOfPlayers()) start();
     }
 
     public void addRemoteView(RemoteView remoteView){
@@ -69,7 +81,9 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         return remoteViews.stream().filter(remoteView -> remoteView.getSocket().hashCode() == hashCode).findFirst().get();
     }
 
-//    public Boolean startable(){
-//        if(players.size() == )
-//    }
+    private void start(){
+        started = true;
+        //model. ????
+    }
+
 }

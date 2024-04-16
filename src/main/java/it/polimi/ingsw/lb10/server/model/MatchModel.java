@@ -21,6 +21,10 @@ public class MatchModel extends Observable<Request> {
         return id;
     }
 
+    public int getNumberOfPlayers() {
+        return numberOfPlayers;
+    }
+
     @Override
     public void notify(Request request) {
         super.notify(request);

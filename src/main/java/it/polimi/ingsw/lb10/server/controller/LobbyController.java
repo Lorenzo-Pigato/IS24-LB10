@@ -4,6 +4,7 @@ import it.polimi.ingsw.lb10.network.requests.match.MatchRequest;
 import it.polimi.ingsw.lb10.network.requests.match.JoinMatchRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.LobbyToMatchRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.LoginRequest;
+import it.polimi.ingsw.lb10.network.requests.preMatch.NewMatchRequest;
 import it.polimi.ingsw.lb10.network.response.lobby.BooleanResponse;
 import it.polimi.ingsw.lb10.network.response.match.JoinMatchResponse;
 import it.polimi.ingsw.lb10.network.response.match.TerminatedMatchResponse;
@@ -26,8 +27,7 @@ import java.util.concurrent.Executors;
 public class LobbyController implements LobbyRequestVisitor {
 
     private static LobbyController instance;
-    private ArrayList<MatchController> waitingMatches;
-    private ArrayList<MatchController> startedMatches;
+    private ArrayList<MatchController> matches;
     private ArrayList<Player> signedPlayers;
     private static ArrayList<RemoteView> remoteViews;
     private static ExecutorService controllersPool = Executors.newCachedThreadPool();
@@ -35,8 +35,7 @@ public class LobbyController implements LobbyRequestVisitor {
 
     private LobbyController() {
         signedPlayers = new ArrayList<>();
-        waitingMatches = new ArrayList<>();
-        startedMatches = new ArrayList<>();
+        matches = new ArrayList<>();
         remoteViews = new ArrayList<>();
     }
 
@@ -84,14 +83,15 @@ public class LobbyController implements LobbyRequestVisitor {
 
         Server.log(">> Received Join Match Request from: " + ltmr.getHashCode() + " - Match to be joined: " + ltmr.getMatchId());
 
-        if (waitingMatches.stream().map(MatchController::getMatchId).noneMatch(id -> id == ltmr.getMatchId())) { //Predicate : matchId contained in the request is an actual waiting match
+        if (matches.stream().filter(matchController -> !matchController.isStarted()).map(MatchController::getMatchId).noneMatch(id -> id == ltmr.getMatchId())) { //Predicate : matchId contained in the request is an actual waiting match
             getRemoteView(ltmr.getHashCode()).send(new JoinMatchResponse(false)); //match already started or not existing
         } else {
             //envelopes the username of the player to be passed to the controller
-            waitingMatches.stream().filter(matchController -> matchController.getMatchId() == ltmr.getMatchId()).findFirst().ifPresent(matchController -> {
+            matches.stream().filter(matchController -> (!matchController.isStarted()) && matchController.getMatchId() == ltmr.getMatchId()).findFirst().ifPresent(matchController -> {
                 try {
                     matchController.addRemoteView(getRemoteView(ltmr.getHashCode())); //adds the remote view to Match controller
                     matchController.submitRequest(new JoinMatchRequest(ltmr.getHashCode(), ltmr.getMatchId(), signedPlayers.stream().filter(player -> player.getHashCode() == ltmr.getHashCode()).findFirst().get())); //submits request
+                    Server.log(">> Submitted request from " + ltmr.getHashCode() + " to match controller");
                 } catch (InterruptedException e) {
                     getRemoteView(ltmr.getHashCode()).send(new TerminatedMatchResponse());
                     Server.log(">> Match " + ltmr.getMatchId() + "interrupted");
@@ -104,13 +104,25 @@ public class LobbyController implements LobbyRequestVisitor {
 
 
     public void visit(MatchRequest mr /*A GENERAL*/) {
-        startedMatches.stream().filter(matchController -> matchController.hashCode() == mr.getMatchId()).findFirst().ifPresent(matchController -> {
+        matches.stream().filter(matchController -> matchController.getId() == mr.getMatchId()).findFirst().ifPresent(matchController -> {
             try {
                 matchController.submitRequest(mr);
             } catch (InterruptedException e) {
                 getRemoteView(mr.getHashCode()).send(new TerminatedMatchResponse());
             }
         });
+    }
+
+    @Override
+    public void visit(NewMatchRequest newMatchRequest) {
+        MatchController controller = new MatchController(newMatchRequest.getNumberOfPlayers()); //creates new controller
+        controllersPool.submit(controller); //runs new controller thread
+        controller.addRemoteView(getRemoteView(newMatchRequest.getHashCode())); //adds the view to the new controller
+        try {
+            controller.submitRequest(new JoinMatchRequest(newMatchRequest.getHashCode(), controller.getMatchId(), signedPlayers.stream().filter(player -> player.getHashCode() == newMatchRequest.getHashCode()).findFirst().get()));  //submits the join request
+        }catch (InterruptedException e) {
+            getRemoteView(newMatchRequest.getHashCode()).send(new TerminatedMatchResponse()); //match interrupted
+        }
     }
 
     public RemoteView getRemoteView(int hashCode){

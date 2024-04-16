@@ -4,6 +4,7 @@ import it.polimi.ingsw.lb10.network.requests.match.MatchRequest;
 import it.polimi.ingsw.lb10.network.requests.match.JoinMatchRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.LobbyToMatchRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.LoginRequest;
+import it.polimi.ingsw.lb10.network.requests.preMatch.NewMatchRequest;
 
 public interface LobbyRequestVisitor {
 
@@ -17,4 +18,6 @@ public interface LobbyRequestVisitor {
      * the request refers to and submits it to his BlockingQueue
      */
     void visit(MatchRequest mr);
+
+    void visit(NewMatchRequest newMatchRequest);
 }
