@@ -17,17 +17,8 @@ public class Player {
 
     public Player(String username) {
         this.username = username;
-        matrix=new Matrix(this);
         inGame=true;
         points=0;
-    }
-
-
-    public String getUsername() {
-        return username;
-    }
-    public Matrix getMatrix() {
-        return matrix;
     }
 
     // --------> METHODS <--------
@@ -52,22 +43,45 @@ public class Player {
         }
     }
 
-    public int getResourceQuantity(Resource resource) {
-        return OnMapResources.getOrDefault(resource, 0);
-    }
-
     public void addPoints(int point){
         int tempPoints=getPoints()+point;
         setPoints(tempPoints);
     }
+
+    public void addCardOnHand(Card card){
+        hand.add(card);
+    }
+
+    public void removeCardOnHand(Card cardToRemove){
+        getHand().remove(cardToRemove);
+    }
+
     // --------> GETTER <--------
+    public int getResourceQuantity(Resource resource) {
+        return OnMapResources.getOrDefault(resource, 0);
+    }
+
     public int getPoints() {
         return points;
     }
+    public String getUsername() {
+        return username;
+    }
+    public Matrix getMatrix() {
+        return matrix;
+    }
 
     // --------> SETTER <--------
+    public void setMatrix(Matrix matrix) {
+        this.matrix = matrix;
+    }
+
+    public ArrayList<Card> getHand() {
+        return hand;
+    }
 
     public void setPoints(int points) {
         this.points = points;
     }
+
 }

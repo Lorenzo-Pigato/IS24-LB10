@@ -1,9 +1,6 @@
 package it.polimi.ingsw.lb10.server.controller;
 
-import it.polimi.ingsw.lb10.server.model.MatchModel;
-import it.polimi.ingsw.lb10.server.model.Node;
-import it.polimi.ingsw.lb10.server.model.Player;
-import it.polimi.ingsw.lb10.server.model.Resource;
+import it.polimi.ingsw.lb10.server.model.*;
 import it.polimi.ingsw.lb10.server.model.cards.Card;
 import it.polimi.ingsw.lb10.server.model.cards.ResourceCard;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
@@ -56,9 +53,16 @@ public class MatchController implements Runnable {
     public void initGame() throws IOException {
         model.initializeTable();
     }
+
+    // --------> INSERTION <--------
+
     /**
      *      It's the method that the caller calls
      *  with the initialization of the card inside the matrix
+     *  --> At the beginning the algorithm checks the flipped status of the card, with the consequent update of the Card's state
+     *      the card is set inside the matrix,
+     *      it's checked if the card respects the activation cost (in any case),
+     *      after that it's called checkInsertion()
      */
     public boolean insertCard(Player player,Card card,int row, int column){
         if(card.isFlipped())
@@ -74,16 +78,6 @@ public class MatchController implements Runnable {
         return checkInsertion(player, card, row, column);
     }
 
-    public boolean checkActivationCost(Player player,Card card){
-        if(card.getStateCardActivationCost()==null)
-            return true;
-        for (Map.Entry<Resource, Integer> entry : card.getStateCardActivationCost().entrySet()) {
-            if(player.getResourceQuantity(entry.getKey()) < entry.getValue())
-                return false;
-            }
-        return true;
-    }
-
     /**
      * @param player calls the method
      * @param card to add
@@ -92,6 +86,7 @@ public class MatchController implements Runnable {
      * The method that starts the Insertion rules
      * @return true if the card passed all the verification rules
      *  if the card passes the tests, at the end he is correctly positioned inside the matrix
+     *  it's called all the
      */
     public boolean checkInsertion(Player player,Card card,int row, int column){
 
@@ -99,6 +94,7 @@ public class MatchController implements Runnable {
             setCardResourceOnPlayer(player, card);
             deleteCoveredResource(player, row, column);
             player.addPoints(card.getStateCardPoints());
+            player.removeCardOnHand(card);//the player chooses the next card, it's a request!
             return true;
         }
 
@@ -106,11 +102,10 @@ public class MatchController implements Runnable {
             return  false;
     }
 
-
-
     /**
      * @param row and column are the top left corner of the card
      * @return true if the card passed all the requirements
+     * it's important to remember that the card is already inserted!
      */
     public boolean verificationSetting(Player player,int row, int column){
         //if one corner isn't available
@@ -152,6 +147,16 @@ public class MatchController implements Runnable {
         return !nodesVisited.isEmpty();
     }
 
+    public boolean checkActivationCost(Player player,Card card){
+        if(card.getStateCardActivationCost()==null)
+            return true;
+        for (Map.Entry<Resource, Integer> entry : card.getStateCardActivationCost().entrySet()) {
+            if(player.getResourceQuantity(entry.getKey()) < entry.getValue())
+                return false;
+        }
+        return true;
+    }
+
     public boolean checkNotAvailability(Player player,int row, int column){
         Map<Position, int[]> setIncrement=player.getMatrix().parsingPositionCorners();
 
@@ -177,6 +182,23 @@ public class MatchController implements Runnable {
             if (player.getMatrix().getNode(row + delta[0], column + delta[1]).getCorners().size()==2)
                 player.deleteOnMapResources(player.getMatrix().getNode(row + delta[0], column + delta[1]).getCorners().get(0).getResource());
         }
+    }
+
+
+    /**
+     *                  it's a request
+     * @param player wants to add the card
+     * @param type the different types of draw that he wants to do
+     */
+    public void AddCardOnHand(Player player, DrawType type){
+        if(type.equals(DrawType.goldenCARD))
+            model.addGoldenUncoveredCardOnHand(player);
+        if(type.equals(DrawType.resourceCARD))
+            model.addResourceUncoveredCardOnHand(player);
+        if(type.equals(DrawType.resourceDECK))
+            model.addResourceDeckCardOnHand(player);
+        if(type.equals(DrawType.goldenDECK))
+            model.addGoldenDeckCardOnHand(player);
     }
 
     // --------> GETTER <--------

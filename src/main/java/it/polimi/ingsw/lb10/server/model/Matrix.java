@@ -13,11 +13,11 @@ import java.util.Map;
  */
 public class Matrix {
     private final ArrayList<ArrayList<Node>> matrix= new ArrayList<>();
-    Player player;
 
-    public Matrix(Player player){
+
+    public Matrix(){
         startingMatrix();
-        this.player=player;
+
     }
 
     /**
