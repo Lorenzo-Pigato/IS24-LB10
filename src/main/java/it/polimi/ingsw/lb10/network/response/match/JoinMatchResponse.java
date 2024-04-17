@@ -15,4 +15,6 @@ public class JoinMatchResponse extends Response {
     public void accept(CLIResponseHandler handler) {
         handler.visit(this);
     }
+
+    public boolean getJoined() {return joined;}
 }

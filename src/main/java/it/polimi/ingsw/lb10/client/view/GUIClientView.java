@@ -16,7 +16,7 @@ public class GUIClientView implements ClientView {
     }
 
     @Override
-    public void displayPage(String[] args) {
+    public void displayPage(Object[] args) {
 
     }
 

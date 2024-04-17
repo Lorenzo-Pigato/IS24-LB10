@@ -8,8 +8,12 @@ import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
 import it.polimi.ingsw.lb10.client.util.InputVerifier;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
-import it.polimi.ingsw.lb10.network.requests.*;
+import it.polimi.ingsw.lb10.network.requests.Request;
+import it.polimi.ingsw.lb10.network.requests.match.JoinMatchRequest;
+import it.polimi.ingsw.lb10.network.requests.preMatch.LobbyToMatchRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.LoginRequest;
+import it.polimi.ingsw.lb10.network.requests.preMatch.NewMatchRequest;
+import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.network.response.*;
 import it.polimi.ingsw.lb10.network.response.lobby.HashResponse;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
@@ -17,6 +21,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class CLIClientViewController implements ClientViewController{
@@ -110,6 +115,39 @@ public class CLIClientViewController implements ClientViewController{
     public void joinMatch() {
         view.setPage(new CLILobbyPage());
         view.displayPage(null);
+        Scanner in = new Scanner(System.in);
+        String input;
+
+        do {
+            input = in.nextLine();
+            String[] splitInput = input.split(" ");
+
+            if (splitInput[0].equals("join") && splitInput.length == 2) {
+                send(new LobbyToMatchRequest(hash, Integer.parseInt(splitInput[1])));
+                syncReceive().accept(responseHandler);
+
+                if (!client.isInMatch()) {
+                    view.updatePageState(new CLILobbyPage.InvalidInput());
+                    view.displayPage(new String[]{input});
+                }
+            }
+
+            else if (splitInput[0].equals("new") && splitInput.length == 2) {
+                if (Integer.parseInt(splitInput[1]) >= 2 && Integer.parseInt(splitInput[1]) <= 4) {
+                    send(new NewMatchRequest(hash, Integer.parseInt(splitInput[1])));
+                    syncReceive().accept(responseHandler);
+                }
+                else {
+                    view.updatePageState(new CLILobbyPage.InvalidInput());
+                    view.displayPage(new String[]{input});
+                }
+            }
+            
+            else {
+                view.updatePageState(new CLILobbyPage.InvalidInput());
+                view.displayPage(new String[]{input});
+            }
+        }while(!client.isInMatch());
     }
 
     public void send(Request request){

@@ -15,24 +15,24 @@ public class CLILobbyPage implements CLIPage {
     }
 
     @Override
-    public void print(String[] args) {
+    public void print(Object[] args) {
         state.apply(args);
     }
 
     public static class Default implements CLIState {
         @Override
-        public void apply(String[] args) {
+        public void apply(Object[] args) {
             CLICommand.initialize();
             CLIBanner.displayCodex(5);
 
-            CLIBox.draw(62, 31, 35, 6,
-                    ">> Create [NEW] game\n" +
-                            ">> [JOIN] an existing match\n" +
-                            ">> [QUIT] Codex\n",
+            CLIBox.draw(54, 31, 56, 6,
+                    ">> Create new game: new [players number (2 to 4)]\n" +
+                            ">> Join a match: join [match ID]\n" +
+                            ">> Quit Codex: quit\n",
                     AnsiColor.DEFAULT, AnsiColor.DEFAULT, AnsiFormat.BOLD);
 
 
-            CLIBox.draw(62, 29, 35, 3, "MENU",
+            CLIBox.draw(54, 29, 56, 3, "MENU",
                     AnsiColor.CYAN, AnsiColor.CYAN, AnsiFormat.BOLD);
 
             enterChoice.centerPrint();
@@ -45,11 +45,17 @@ public class CLILobbyPage implements CLIPage {
          * @param args user invalid input as args[0]
          */
         @Override
-        public void apply(String @NotNull [] args) {
-            CLIString.replace(enterChoice, new CLIString(">> Invalid input <<", AnsiColor.RED, AnsiFormat.BOLD, 1, 35));
+        public void apply(Object @NotNull [] args) {
+
+            if(((String)args[0]).split(" ")[0].equals("join"))
+                    CLIString.replace(enterChoice, new CLIString(">> Match ID: " + args[1] + " doesn't exist <<",
+                            AnsiColor.RED, AnsiFormat.BOLD, 1, 35));
+
+            else
+                CLIString.replace(enterChoice, new CLIString(">> Invalid input <<", AnsiColor.RED, AnsiFormat.BOLD, 1, 35));
 
             CLICommand.restoreCursorPosition();
-            CLICommand.clearUserInput(args[0]);
+            CLICommand.clearUserInput((String) args[0]);
         }
     }
 }

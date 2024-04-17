@@ -23,13 +23,13 @@ public class CLIConnectionPage implements CLIPage{
     }
 
     @Override
-    public void print(String[] args) {
-        this.state.apply(new String[0]);
+    public void print(Object[] args) {
+        this.state.apply(args);
     }
 
     public static class Default implements CLIState {
         @Override
-        public void apply(String[] args) {
+        public void apply(Object[] args) {
             CLICommand.clearScreen();
             CLICommand.home();
             CLIBanner.displayWolf(20,15);
@@ -52,9 +52,9 @@ public class CLIConnectionPage implements CLIPage{
          * @param args user invalid input as args[0]
          */
         @Override
-        public void apply(String @NotNull [] args) {
+        public void apply(Object @NotNull [] args) {
             CLICommand.restoreCursorPosition();
-            CLICommand.clearUserInput(args[0]);
+            CLICommand.clearUserInput((String)args[0]);
             CLIString.replace(welcome, invalidInput);
 
             CLICommand.restoreCursorPosition();
@@ -66,9 +66,9 @@ public class CLIConnectionPage implements CLIPage{
          * @param args user invalid input as args[0]
          */
         @Override
-        public void apply(String @NotNull [] args) {
+        public void apply(Object @NotNull [] args) {
             CLICommand.restoreCursorPosition();
-            CLICommand.clearUserInput(args[0]);
+            CLICommand.clearUserInput((String)args[0]);
             CLIString.replace(welcome, invalidIp);
 
             CLICommand.restoreCursorPosition();
@@ -80,9 +80,9 @@ public class CLIConnectionPage implements CLIPage{
          * @param args user invalid input as args[0]
          */
         @Override
-        public void apply(String[] args) {
+        public void apply(Object[] args) {
             CLICommand.restoreCursorPosition();
-            CLICommand.clearUserInput(args[0]);
+            CLICommand.clearUserInput((String)args[0]);
             CLIString.replace(welcome, invalidPort);
 
             CLICommand.restoreCursorPosition();

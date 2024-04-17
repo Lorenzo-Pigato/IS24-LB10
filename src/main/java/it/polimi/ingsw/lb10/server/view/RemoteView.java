@@ -1,14 +1,14 @@
 package it.polimi.ingsw.lb10.server.view;
-
 import it.polimi.ingsw.lb10.network.response.Response;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+
 /**
  * This class is used to update the client-side view on controller's update
- * has the OutputStream to send out responses to the client , is a ResponseSendingvisitor !!!!
+ * has the OutputStream to send out responses to the client, it is a ResponseSendingVisitor !!!!
  */
 public class RemoteView  {
     private final int hashCode;

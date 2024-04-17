@@ -18,7 +18,7 @@ public interface ClientView {
      * This method applies the state of the page, effectively printing the page or the updated elements
      * @param args to provide to the state, when needed
      */
-    public void displayPage(String[] args);
+    public void displayPage(Object[] args);
 
     public Page getPage();
 }
