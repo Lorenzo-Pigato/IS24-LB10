@@ -2,6 +2,7 @@ package it.polimi.ingsw.lb10.server.controller;
 
 import it.polimi.ingsw.lb10.network.requests.match.MatchRequest;
 import it.polimi.ingsw.lb10.network.requests.match.JoinMatchRequest;
+import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.network.response.match.JoinMatchResponse;
 import it.polimi.ingsw.lb10.network.response.match.TerminatedMatchResponse;
 import it.polimi.ingsw.lb10.server.model.Player;
@@ -32,7 +33,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     private ArrayList<Player> players;
 
     public MatchController(int numberOfPlayers) {
-        model = new MatchModel(id, numberOfPlayers);
+        model = new MatchModel(numberOfPlayers);
         requests = new LinkedBlockingQueue<>();
         remoteViews = new ArrayList<>();
         players = new ArrayList<>();
@@ -58,7 +59,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     }
 
     public synchronized int getMatchId(){
-        return model.getId();
+        return id;
     }
 
     /** this method is used to handle the "JoinMatchRequest" sent by the client to the LobbyController, and from the LobbyController to the MatchController
@@ -85,5 +86,10 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         started = true;
         //model. ????
     }
+
+    public void broadcast (Response response){
+        remoteViews.forEach(remoteView -> remoteView.send(response));
+    }
+
 
 }

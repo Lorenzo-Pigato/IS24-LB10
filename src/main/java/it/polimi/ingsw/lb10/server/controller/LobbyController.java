@@ -104,9 +104,11 @@ public class LobbyController implements LobbyRequestVisitor {
 
 
     public void visit(MatchRequest mr /*A GENERAL*/) {
+        Server.log(">> Received generic Match Request from " + mr.getHashCode());
         matches.stream().filter(matchController -> matchController.getId() == mr.getMatchId()).findFirst().ifPresent(matchController -> {
             try {
                 matchController.submitRequest(mr);
+                Server.log(">> Match " + mr.getMatchId() + "found request has been submitted to match controller ");
             } catch (InterruptedException e) {
                 getRemoteView(mr.getHashCode()).send(new TerminatedMatchResponse());
             }

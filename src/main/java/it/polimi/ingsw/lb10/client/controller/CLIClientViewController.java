@@ -110,9 +110,6 @@ public class CLIClientViewController implements ClientViewController{
     public void joinMatch() {
         view.setPage(new CLILobbyPage());
         view.displayPage(null);
-
-
-
     }
 
     public void send(Request request){
