@@ -6,6 +6,8 @@ import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
 
+import java.util.Scanner;
+
 
 //Singleton?!
 
@@ -56,7 +58,6 @@ public class Client implements Runnable{
 
         //--------------match join -----------//
         controller.joinMatch();
-
 
 
     }

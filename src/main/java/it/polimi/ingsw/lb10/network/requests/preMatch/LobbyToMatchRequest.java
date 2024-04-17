@@ -6,7 +6,7 @@ public class LobbyToMatchRequest extends LobbyRequest {
 
     private final int matchId;
 
-    public LobbyToMatchRequest(int hashCode, int matchId) {
+    public LobbyToMatchRequest(int hashCode, Integer matchId) {
         super(hashCode);
         this.matchId = matchId;
     }

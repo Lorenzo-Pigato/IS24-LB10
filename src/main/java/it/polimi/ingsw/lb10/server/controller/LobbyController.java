@@ -84,7 +84,8 @@ public class LobbyController implements LobbyRequestVisitor {
         Server.log(">> Received Join Match Request from: " + ltmr.getHashCode() + " - Match to be joined: " + ltmr.getMatchId());
 
         if (matches.stream().filter(matchController -> !matchController.isStarted()).map(MatchController::getMatchId).noneMatch(id -> id == ltmr.getMatchId())) { //Predicate : matchId contained in the request is an actual waiting match
-            getRemoteView(ltmr.getHashCode()).send(new JoinMatchResponse(false)); //match already started or not existing
+            getRemoteView(ltmr.getHashCode()).send(new JoinMatchResponse(false));
+            Server.log(">> Match id doesn't exist");
         } else {
             //envelopes the username of the player to be passed to the controller
             matches.stream().filter(matchController -> (!matchController.isStarted()) && matchController.getMatchId() == ltmr.getMatchId()).findFirst().ifPresent(matchController -> {
@@ -108,7 +109,7 @@ public class LobbyController implements LobbyRequestVisitor {
         matches.stream().filter(matchController -> matchController.getId() == mr.getMatchId()).findFirst().ifPresent(matchController -> {
             try {
                 matchController.submitRequest(mr);
-                Server.log(">> Match " + mr.getMatchId() + "found request has been submitted to match controller ");
+                Server.log(">> Match " + mr.getMatchId() + " found request has been submitted to match controller ");
             } catch (InterruptedException e) {
                 getRemoteView(mr.getHashCode()).send(new TerminatedMatchResponse());
             }
@@ -119,9 +120,13 @@ public class LobbyController implements LobbyRequestVisitor {
     public void visit(NewMatchRequest newMatchRequest) {
         Server.log(">> Received New Match Request from: " + newMatchRequest.getHashCode() + " - Number of players: " + newMatchRequest.getNumberOfPlayers());
         MatchController controller = new MatchController(newMatchRequest.getNumberOfPlayers()); //creates new controller
+
         controllersPool.submit(controller); //runs new controller thread
         controller.addRemoteView(getRemoteView(newMatchRequest.getHashCode())); //adds the view to the new controller
+        matches.add(controller); //adds the controller to the list of matches
+
         Server.log(">> New Match Controller created and view added to it");
+
         try {
             controller.submitRequest(new JoinMatchRequest(newMatchRequest.getHashCode(), controller.getMatchId(), signedPlayers.stream().filter(player -> player.getHashCode() == newMatchRequest.getHashCode()).findFirst().get()));  //submits the join request
         }catch (InterruptedException e) {
