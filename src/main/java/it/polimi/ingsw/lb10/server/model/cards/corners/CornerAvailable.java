@@ -11,6 +11,7 @@ public class CornerAvailable extends Corner {
         super(position,resource);
         setAvailable(true);
     }
+
     @Override
     public boolean isAvailable() {
         return true;

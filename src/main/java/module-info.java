@@ -14,4 +14,5 @@ module it.polimi.ingsw.lb10 {
     exports it.polimi.ingsw.lb10.server.model.cards.corners;
     exports it.polimi.ingsw.lb10.server.model.DrawType;
     exports it.polimi.ingsw.lb10.server.model.cards.CardState;
+    exports it.polimi.ingsw.lb10.server.model.quest.pattern;
 }
