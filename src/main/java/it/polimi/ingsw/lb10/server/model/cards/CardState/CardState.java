@@ -1,4 +1,4 @@
-package it.polimi.ingsw.lb10.server.model.cards;
+package it.polimi.ingsw.lb10.server.model.cards.CardState;
 
 
 import it.polimi.ingsw.lb10.server.model.Resource;

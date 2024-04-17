@@ -1,8 +1,11 @@
 package it.polimi.ingsw.lb10.server.controller;
 
 import it.polimi.ingsw.lb10.server.model.*;
+import it.polimi.ingsw.lb10.server.model.DrawType.DrawStrategy;
+import it.polimi.ingsw.lb10.server.model.DrawType.GoldenDeckDraw;
+import it.polimi.ingsw.lb10.server.model.DrawType.ResourceDeckDraw;
+import it.polimi.ingsw.lb10.server.model.DrawType.ResourceUncovered;
 import it.polimi.ingsw.lb10.server.model.cards.Card;
-import it.polimi.ingsw.lb10.server.model.cards.ResourceCard;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.network.requests.Request;
@@ -25,16 +28,16 @@ import java.util.concurrent.BlockingQueue;
 *@ to this queue and executed inside this separeted thread!*/
 
 public class MatchController implements Runnable {
-
+//set the condition fot the end of the game
     private Boolean active = true;
     private MatchModel model;
     private BlockingQueue<Request> requests;
     private final Position[] possiblePosition;
+    private DrawStrategy drawStrategy;
 
-    public MatchController(MatchModel model){
-        this.model=model;
+    public MatchController(){
         possiblePosition= new Position[]{Position.TOPLEFT, Position.TOPRIGHT, Position.BOTTOMRIGHT, Position.BOTTOMLEFT};
-
+        drawStrategy=null;
     }
     private RemoteView remoteView;
 
@@ -50,7 +53,8 @@ public class MatchController implements Runnable {
     /**
      *  WIP
      */
-    public void initGame() throws IOException {
+    public void initGame(String id ) throws IOException {
+        model= new MatchModel(id);
         model.initializeTable();
     }
 
@@ -59,7 +63,7 @@ public class MatchController implements Runnable {
     /**
      *      It's the method that the caller calls
      *  with the initialization of the card inside the matrix
-     *  --> At the beginning the algorithm checks the flipped status of the card, with the consequent update of the Card's state
+     *  --> At the beginning the algorithm checks the flipped status of the card, with the consequent update of the state of the card.
      *      the card is set inside the matrix,
      *      it's checked if the card respects the activation cost (in any case),
      *      after that it's called checkInsertion()
@@ -184,21 +188,37 @@ public class MatchController implements Runnable {
         }
     }
 
+    // --------> REQUESTS <--------
 
     /**
-     *                  it's a request
-     * @param player wants to add the card
-     * @param type the different types of draw that he wants to do
+     * @param player wants to add a card from the resource uncovered  to the cards on hand
+     * @param first means if th player wants to draw the first card, if it's false he'll draw th second card
      */
-    public void AddCardOnHand(Player player, DrawType type){
-        if(type.equals(DrawType.goldenCARD))
-            model.addGoldenUncoveredCardOnHand(player);
-        if(type.equals(DrawType.resourceCARD))
-            model.addResourceUncoveredCardOnHand(player);
-        if(type.equals(DrawType.resourceDECK))
-            model.addResourceDeckCardOnHand(player);
-        if(type.equals(DrawType.goldenDECK))
-            model.addGoldenDeckCardOnHand(player);
+    public void addResourceUncoveredCardOnHand (Player player,boolean first){
+        drawStrategy= new ResourceUncovered(player,getModel(), first);
+        drawStrategy.drawCard();
+    }
+    /**
+     * @param player wants to add a card from the golden uncovered to the cards on hand
+     * @param first means if th player wants to draw the first card, if it's false he'll draw th second card
+     */
+    public void addGoldenUncoveredCardOnHand (Player player, boolean first){
+        drawStrategy= new ResourceUncovered(player, getModel(),first);
+        drawStrategy.drawCard();
+    }
+    /**
+     * @param player wants to add a card from the golden deck to the cards on hand
+     */
+    public void addGoldenDeckCardOnHand (Player player) {
+        drawStrategy= new GoldenDeckDraw(player,getModel());
+        drawStrategy.drawCard();
+    }
+    /**
+     * @param player wants to add a card from the resource deck to the cards on hand
+     */
+    public void addResourceDeckCardOnHand (Player player) {
+        drawStrategy= new ResourceDeckDraw(player,getModel());
+        drawStrategy.drawCard();
     }
 
     // --------> GETTER <--------

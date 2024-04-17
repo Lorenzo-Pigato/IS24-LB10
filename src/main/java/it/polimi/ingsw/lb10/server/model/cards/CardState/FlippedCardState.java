@@ -1,4 +1,4 @@
-package it.polimi.ingsw.lb10.server.model.cards;
+package it.polimi.ingsw.lb10.server.model.cards.CardState;
 
 import it.polimi.ingsw.lb10.server.model.Resource;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class FlippedCardState implements CardState{
+public class FlippedCardState implements CardState {
 
     private static ArrayList<Corner> flippedCorners= new ArrayList<>(Arrays.asList(new CornerAvailable(Position.TOPLEFT,Resource.NULL),new CornerAvailable(Position.TOPRIGHT,Resource.NULL),new CornerAvailable(Position.BOTTOMLEFT,Resource.NULL),new CornerAvailable(Position.BOTTOMRIGHT,Resource.NULL)));
     private ArrayList<Resource> middleResource;

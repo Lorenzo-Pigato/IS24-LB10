@@ -38,7 +38,7 @@ public abstract class Card {
     }
 
     public HashMap<Resource, Integer> getActivationCost() {
-        return activationCost;
+        return null;
     }
 
     public ArrayList<Resource> getResources() {

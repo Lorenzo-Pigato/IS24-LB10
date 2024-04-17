@@ -1,12 +1,13 @@
-package it.polimi.ingsw.lb10.server.model.cards;
+package it.polimi.ingsw.lb10.server.model.cards.CardState;
 
 import it.polimi.ingsw.lb10.server.model.Resource;
+import it.polimi.ingsw.lb10.server.model.cards.CardState.CardState;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class NotFlippedCardState implements CardState{
+public class NotFlippedCardState implements CardState {
     private final ArrayList<Corner> corners;
     private HashMap<Resource, Integer> activationCost=new HashMap<>();
     private final int points;

@@ -17,7 +17,6 @@ public class Matrix {
 
     public Matrix(){
         startingMatrix();
-
     }
 
     /**

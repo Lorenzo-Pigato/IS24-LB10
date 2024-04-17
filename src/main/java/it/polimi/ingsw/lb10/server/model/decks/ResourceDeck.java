@@ -39,7 +39,7 @@ public class ResourceDeck implements Deck {
     }
 
     /**
-     * This method'll call the json with the complete resource cards' deck
+     * This method calls the json with the complete resource cards' deck
      */
     public void fillDeck() throws IOException {
         ObjectMapper mapper = new ObjectMapper();

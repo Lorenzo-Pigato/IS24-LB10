@@ -1,6 +1,9 @@
 package it.polimi.ingsw.lb10.server.model.cards;
 
 import it.polimi.ingsw.lb10.server.model.Resource;
+import it.polimi.ingsw.lb10.server.model.cards.CardState.CardState;
+import it.polimi.ingsw.lb10.server.model.cards.CardState.FlippedCardState;
+import it.polimi.ingsw.lb10.server.model.cards.CardState.NotFlippedCardState;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 
 
