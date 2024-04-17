@@ -1,14 +1,25 @@
 package it.polimi.ingsw.lb10.server.model;
 
+import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
+import it.polimi.ingsw.lb10.client.cli.ansi.AnsiString;
+
 public enum Resource {
-    NULL(),
-    MUSHROOM(),
-    ANIMAL(),
-    INSECT(),
-    PLANT(),
-    FEATHER(),
-    POTION(),
-    PERGAMENA();
+    NULL(AnsiColor.DEFAULT, null),
+    MUSHROOM(AnsiColor.RED, null),
+    ANIMAL(AnsiColor.BLUE, null),
+    INSECT(AnsiColor.PURPLE, null),
+    PLANT(AnsiColor.GREEN, null),
+    FEATHER(AnsiColor.YELLOW, "F"),
+    POTION(AnsiColor.YELLOW ,"P"),
+    PERGAMENA(AnsiColor.YELLOW, "S");
+
+    final private AnsiColor color;
+    final private String string;
+
+    Resource (AnsiColor color, String string){
+        this.color = color;
+        this.string = string;
+    }
 
 
 //  If the json works without these getter and setter then delete
