@@ -66,9 +66,9 @@ public class CLIMatchPage implements CLIPage{
             // Draw available objectives
             CLIBox.draw(118,32, 40, 12, AnsiColor.WHITE);
             CLIBox.draw(118,32, "Objectives", AnsiColor.WHITE);
-            CLILine.drawVertical(138, 33, 44);
+            CLILine.drawVertical(138, 33, 44, AnsiColor.WHITE);
 
-            CLILine.drawHorizontal(2, 44,158);
+            CLILine.drawHorizontal(2, 44,158, AnsiColor.WHITE);
 
             CLICommand.setPosition(3,47);
             CLICommand.saveCursorPosition();
