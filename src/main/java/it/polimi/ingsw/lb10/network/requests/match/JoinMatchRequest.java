@@ -6,8 +6,8 @@ public class JoinMatchRequest extends MatchRequest {
 
     private Player player;
 
-    public JoinMatchRequest(int hashCode, int matchId, Player player) {
-        super(hashCode , matchId);
+    public JoinMatchRequest(int matchId, Player player) {
+        super(matchId);
         this.player = player;
     }
 

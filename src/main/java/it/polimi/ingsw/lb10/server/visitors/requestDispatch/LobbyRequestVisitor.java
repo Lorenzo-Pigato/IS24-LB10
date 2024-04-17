@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lb10.server.visitors.requestDispatch;
 
+import it.polimi.ingsw.lb10.network.requests.QuitRequest;
 import it.polimi.ingsw.lb10.network.requests.match.MatchRequest;
 import it.polimi.ingsw.lb10.network.requests.match.JoinMatchRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.LobbyToMatchRequest;
@@ -20,4 +21,6 @@ public interface LobbyRequestVisitor {
     void visit(MatchRequest mr);
 
     void visit(NewMatchRequest newMatchRequest);
+
+    void visit(QuitRequest quitRequest);
 }

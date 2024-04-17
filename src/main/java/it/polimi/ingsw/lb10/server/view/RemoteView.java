@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lb10.server.view;
 import it.polimi.ingsw.lb10.network.response.Response;
+import it.polimi.ingsw.lb10.server.Server;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -30,7 +31,7 @@ public class RemoteView  {
             outputStream.writeObject(r);
             outputStream.flush();
         }catch(IOException e){
-            //System.out.println(">>>Server : error sending Response " + r.toString());
+            Server.log("Socket exception: " + e.getMessage());
         }
     }
 

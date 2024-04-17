@@ -8,20 +8,18 @@ import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
 import it.polimi.ingsw.lb10.client.util.InputVerifier;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
+import it.polimi.ingsw.lb10.network.requests.QuitRequest;
 import it.polimi.ingsw.lb10.network.requests.Request;
-import it.polimi.ingsw.lb10.network.requests.match.JoinMatchRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.LobbyToMatchRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.LoginRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.NewMatchRequest;
 import it.polimi.ingsw.lb10.network.response.Response;
-import it.polimi.ingsw.lb10.network.response.*;
 import it.polimi.ingsw.lb10.network.response.lobby.HashResponse;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class CLIClientViewController implements ClientViewController{
@@ -96,14 +94,10 @@ public class CLIClientViewController implements ClientViewController{
                 username = in.nextLine();
                 if (username.length() < 2 || username.length() > 15)
                     view.updatePageState(new CLILoginPage.invalidLength());
-
                 view.displayPage(new String[]{username});
             } while (username.length() < 2 || username.length() > 15);
-
-            send(new LoginRequest(hash, username));
-
+            send(new LoginRequest(username));
             syncReceive().accept(responseHandler);
-
             if (!client.isLogged()) {
                 view.updatePageState(new CLILoginPage.alreadyTaken());
                 view.displayPage(new String[]{username});
@@ -117,40 +111,35 @@ public class CLIClientViewController implements ClientViewController{
         view.displayPage(null);
         Scanner in = new Scanner(System.in);
         String input;
-
         do {
             input = in.nextLine();
             String[] splitInput = input.split(" ");
-
-            if (splitInput[0].equals("join") && splitInput.length == 2) {
-                send(new LobbyToMatchRequest(hash, Integer.parseInt(splitInput[1])));
+            if (splitInput[0].equalsIgnoreCase("join") && splitInput.length == 2) {
+                send(new LobbyToMatchRequest(Integer.parseInt(splitInput[1])));
                 syncReceive().accept(responseHandler);
 
-                if (!client.isInMatch()) {
-                    view.updatePageState(new CLILobbyPage.InvalidInput());
-                    view.displayPage(new String[]{input});
-                }
+                if (!client.isInMatch()) view.updatePageState(new CLILobbyPage.InvalidInput());
             }
-
-            else if (splitInput[0].equals("new") && splitInput.length == 2) {
+            else if (splitInput[0].equalsIgnoreCase("new") && splitInput.length == 2) {
                 if (Integer.parseInt(splitInput[1]) >= 2 && Integer.parseInt(splitInput[1]) <= 4) {
-                    send(new NewMatchRequest(hash, Integer.parseInt(splitInput[1])));
+                    send(new NewMatchRequest(Integer.parseInt(splitInput[1])));
                     syncReceive().accept(responseHandler);
                 }
-                else {
-                    view.updatePageState(new CLILobbyPage.InvalidInput());
-                    view.displayPage(new String[]{input});
+                else view.updatePageState(new CLILobbyPage.InvalidInput());
+            }
+            else if (splitInput[0].equalsIgnoreCase("quit")) {
+                    send(new QuitRequest());
+                    client.setActive(false);
+                    break;
                 }
-            }
-            
-            else {
-                view.updatePageState(new CLILobbyPage.InvalidInput());
-                view.displayPage(new String[]{input});
-            }
+            else view.updatePageState(new CLILobbyPage.InvalidInput());
+
+            view.displayPage(new String[]{input});
         }while(!client.isInMatch());
     }
 
     public void send(Request request){
+       request.setUserHash(hash); //wraps hashcode inside request, very important!!
         try{
             socketOut.reset();
             socketOut.writeObject(request);
@@ -211,6 +200,7 @@ public class CLIClientViewController implements ClientViewController{
      * @return the thread
      */
     public Thread asyncWriteToSocket(Request message){
+        message .setUserHash(hash);
         return new Thread(() -> send(message));
     }
 

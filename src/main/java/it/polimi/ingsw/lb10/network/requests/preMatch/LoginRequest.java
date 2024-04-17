@@ -7,8 +7,7 @@ public class LoginRequest extends LobbyRequest {
     private final String username;
     private static final long serialVersionUID = 1L;
 
-    public LoginRequest(int hashCode, String username) {
-        super(hashCode);
+    public LoginRequest(String username) {
         this.username = username;
     }
 

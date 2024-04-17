@@ -5,7 +5,4 @@ import it.polimi.ingsw.lb10.server.visitors.requestDispatch.LobbyRequestVisitabl
 
 public abstract class LobbyRequest extends Request implements LobbyRequestVisitable {
 
-    public LobbyRequest(int hashCode) {
-        super(hashCode);
-    }
 }

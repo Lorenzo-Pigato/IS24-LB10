@@ -47,7 +47,6 @@ public class MatchModel extends Observable<Request> {
         } catch (IOException e) {
             controller.broadcast(new TerminatedMatchResponse());
         }
-
         startingUncoveredCards();
     }
 

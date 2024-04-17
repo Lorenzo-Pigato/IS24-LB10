@@ -1,18 +1,16 @@
 package it.polimi.ingsw.lb10.network.requests;
 import it.polimi.ingsw.lb10.server.visitors.requestDispatch.LobbyRequestVisitable;
-import it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitable;
 
 import java.io.Serializable;
 
 public abstract class Request implements Serializable , LobbyRequestVisitable{
-    private int hashCode;
+    private static final long serialVersionUID = 3L;
+    private int userHash;
 
-    public Request(int hashCode) {
-        this.hashCode = hashCode;
+    public int getUserHash(){
+        return userHash;
     }
 
-    public int getHashCode(){
-        return hashCode;
-    }
+    public void setUserHash(int hash){this.userHash = hash;}
 
 }

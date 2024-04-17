@@ -1,0 +1,232 @@
+>> New client, assigned hashcode: 900753993
+>> 900753993: sent new request
+>> Received Login Request from: 900753993 - Requested username: gui
+>> Sent boolean response to hashcode: 900753993- status: true
+>> 900753993: sent new request
+>> Received New Match Request from: 900753993 - Number of players: 2
+
+match controller waiting for requests
+
+>> New Match Controller created and view added to it, MATCH ID : 1962502678
+>> Received JoinMatchRequest inside MatchController
+>> New client, assigned hashcode: 19292083
+>> 19292083: sent new request
+>> Received Login Request from: 19292083 - Requested username: gui
+>> Sent boolean response to hashcode: 19292083- status: true
+>> 19292083: sent new request
+>> Received New Match Request from: 19292083 - Number of players: 3
+
+match controller waiting for requests
+
+>> New Match Controller created and view added to it, MATCH ID : 915701054
+>> Received JoinMatchRequest inside MatchController
+>> New client, assigned hashcode: 900753993
+>> 900753993: sent new request
+>> Received Login Request from: 900753993 - Requested username: gui
+>> Sent boolean response to hashcode: 900753993- status: true
+>> 900753993: sent new request
+>> Received New Match Request from: 900753993 - Number of players: 2
+
+match controller waiting for requests
+
+>> New Match Controller created and view added to it, MATCH ID : 22353708
+>> Received JoinMatchRequest inside MatchController
+>> New client, assigned hashcode: 43801611
+>> 43801611: sent new request
+>> Received Login Request from: 43801611 - Requested username: gui
+>> Sent boolean response to hashcode: 43801611- status: true
+>> 43801611: sent new request
+>> Received New Match Request from: 43801611 - Number of players: 2
+
+match controller waiting for requests
+
+>> New Match Controller created and view added to it, MATCH ID : 289531028
+>> Received JoinMatchRequest inside MatchController
+>> New client, assigned hashcode: 1785101294
+>> Exception: java.io.InvalidClassException: it.polimi.ingsw.lb10.network.requests.Request; local class incompatible: stream classdesc serialVersionUID = 8691396066468557293, local class serialVersionUID = 3707171411461793398 occurred
+>> New client, assigned hashcode: 1676509002
+>> 1676509002: sent new request
+>> Received Login Request from: 1676509002 - Requested username: gui
+>> Sent boolean response to hashcode: 1676509002- status: true
+>> 1676509002: sent new request
+>> Received New Match Request from: 1676509002 - Number of players: 2
+
+match controller waiting for requests
+
+>> New Match Controller created and view added to it, MATCH ID : 1157278005
+>> Received JoinMatchRequest inside MatchController
+>> New client, assigned hashcode: 19292083
+>> 19292083: sent new request
+>> Received Login Request from: 19292083 - Requested username: gui
+>> Sent boolean response to hashcode: 19292083- status: true
+>> 19292083: sent new request
+>> Received New Match Request from: 19292083 - Number of players: 2
+
+match controller waiting for requests
+
+>> New Match Controller created and view added to it, MATCH ID : 1189312738
+>> Received JoinMatchRequest inside MatchController
+>> New client, assigned hashcode: 1785101294
+>> 1785101294: sent new request
+>> Received Login Request from: 1785101294 - Requested username: gui
+>> Sent boolean response to hashcode: 1785101294- status: true
+>> 1785101294: sent new request
+>> Received New Match Request from: 1785101294 - Number of players: 2
+
+match controller waiting for requests
+
+>> New Match Controller created and view added to it, MATCH ID : 1157278005
+>> Received JoinMatchRequest inside MatchController
+1785101294 1785101294
+>> Exception: java.io.EOFException occurred
+>> Added player to match: gui - Match ID: 1157278005
+>> Sent positive response to hashcode: 1785101294 - Match ID: 1157278005
+>> New client, assigned hashcode: 19292083
+>> 19292083: sent new request
+>> Received Login Request from: 19292083 - Requested username: gui
+>> Sent boolean response to hashcode: 19292083- status: true
+>> 19292083: sent new request
+>> Received New Match Request from: 19292083 - Number of players: 2
+>> New Match Controller created and view added to it, MATCH ID : 53423425
+
+match controller waiting for requests
+
+>> Received JoinMatchRequest inside MatchController
+>> Added player to match: gui - Match ID: 53423425
+>> Sent positive response to hashcode: 19292083 - Match ID: 53423425
+>> Exception: java.io.EOFException occurred
+>> New client, assigned hashcode: 734089877
+>> 734089877: sent new request
+>> Received Login Request from: 734089877 - Requested username: guido
+>> Sent boolean response to hashcode: 734089877- status: true
+>> 734089877: sent new request
+>> Received Join Match Request from: 734089877 - Match to be joined: 53423425
+>> Submitted request from 734089877 to match controller
+>> Match 53423425 found, request has been submitted to match controller 
+>> New client, assigned hashcode: 262122407
+>> 262122407: sent new request
+>> Received Login Request from: 262122407 - Requested username: guido
+>> Sent boolean response to hashcode: 262122407- status: true
+>> 262122407: sent new request
+>> Received New Match Request from: 262122407 - Number of players: 2
+
+match controller waiting for requests
+
+>> New Match Controller created and view added to it, MATCH ID : 2086471838
+>> Received JoinMatchRequest inside MatchController
+>> Added player to match: guido - Match ID: 2086471838
+>> Sent positive response to hashcode: 262122407 - Match ID: 2086471838
+>> Exception: java.io.EOFException occurred
+>> New client, assigned hashcode: 1973323285
+>> 1973323285: sent new request
+>> Received Login Request from: 1973323285 - Requested username: guidino
+>> Sent boolean response to hashcode: 1973323285- status: true
+>> 1973323285: sent new request
+>> Received Join Match Request from: 1973323285 - Match to be joined: 2086471838
+>> Submitted request from 1973323285 to match controller
+>> Match 2086471838 found, request has been submitted to match controller 
+>> New client, assigned hashcode: 1676509002
+>> 1676509002: sent new request
+>> Received Login Request from: 1676509002 - Requested username: guido
+>> Sent boolean response to hashcode: 1676509002- status: true
+>> 1676509002: sent new request
+>> Received New Match Request from: 1676509002 - Number of players: 4
+
+match controller waiting for requests
+
+>> New Match Controller created and view added to it, MATCH ID : 74254196
+>> Received JoinMatchRequest inside MatchController
+>> New client, assigned hashcode: 1054530774
+>> Exception: java.io.EOFException occurred
+Socket exception: Broken pipe (Write failed)
+>> New client, assigned hashcode: 513740677
+>> Exception: java.io.EOFException occurred
+Socket exception: Socket closed
+>> Added player to match: guido - Match ID: 74254196
+>> Sent positive response to hashcode: 1676509002 - Match ID: 74254196
+>> 1054530774: sent new request
+>> Received Login Request from: 1054530774 - Requested username: 127.0.0.1:1234
+>> Sent boolean response to hashcode: 1054530774- status: true
+>> 1054530774: sent new request
+>> Received Join Match Request from: 1054530774 - Match to be joined: 74254196
+>> Submitted request from 1054530774 to match controller
+>> Match 74254196 found, request has been submitted to match controller 
+>> New client, assigned hashcode: 1676509002
+>> 1676509002: sent new request
+>> Received Login Request from: 1676509002 - Requested username: guido
+>> Sent boolean response to hashcode: 1676509002- status: true
+>> 1676509002: sent new request
+>> Received New Match Request from: 1676509002 - Number of players: 2
+
+match controller waiting for requests
+
+>> New Match Controller created and view added to it, MATCH ID : 1157278005
+>> Received JoinMatchRequest inside MatchController
+>> Added player to match: guido - Match ID: 1157278005
+>> Sent positive response to hashcode: 1676509002 - Match ID: 1157278005
+>> Exception: java.io.EOFException occurred
+>> New client, assigned hashcode: 513740677
+>> 513740677: sent new request
+>> Received Login Request from: 513740677 - Requested username: guido
+>> Sent boolean response to hashcode: 513740677- status: false
+>> 513740677: sent new request
+>> Received Login Request from: 513740677 - Requested username: hi
+>> Sent boolean response to hashcode: 513740677- status: true
+>> 513740677: sent new request
+>> Received Join Match Request from: 513740677 - Match to be joined: 1157278005
+>> Submitted request from 513740677 to match controller
+>> Match 1157278005 found, request has been submitted to match controller 
+>> New client, assigned hashcode: 1676509002
+>> 1676509002: sent new request
+>> Received Login Request from: 1676509002 - Requested username: gguidp
+>> Sent boolean response to hashcode: 1676509002- status: true
+>> 1676509002: sent new request
+>> Received New Match Request from: 1676509002 - Number of players: 2
+
+match controller waiting for requests
+
+>> New Match Controller created and view added to it, MATCH ID : 1189312738
+>> Received JoinMatchRequest inside MatchController
+>> Exception: java.io.EOFException occurred
+>> Added player to match: gguidp - Match ID: 1189312738
+>> Sent positive response to hashcode: 1676509002 - Match ID: 1189312738
+>> New client, assigned hashcode: 513740677
+>> 513740677: sent new request
+>> Received Login Request from: 513740677 - Requested username: hi
+>> Sent boolean response to hashcode: 513740677- status: true
+>> 513740677: sent new request
+>> Received Join Match Request from: 513740677 - Match to be joined: 1189312738
+>> Submitted request from 513740677 to match controller
+>> Match 1189312738 found, request has been submitted to match controller 
+>> New client, assigned hashcode: 1676509002
+>> 1676509002: sent new request
+>> Received Login Request from: 1676509002 - Requested username: guido
+>> Sent boolean response to hashcode: 1676509002- status: true
+>> 1676509002: sent new request
+>> Received New Match Request from: 1676509002 - Number of players: 4
+
+match controller waiting for requests
+
+>> New Match Controller created and view added to it, MATCH ID : 180930436
+>> Received JoinMatchRequest inside MatchController
+>> Added player to match: guido - Match ID: 180930436
+>> Sent positive response to hashcode: 1676509002 - Match ID: 180930436
+
+match controller waiting for requests
+
+>> Exception: java.io.EOFException occurred
+>> New client, assigned hashcode: 513740677
+>> 513740677: sent new request
+>> Received Login Request from: 513740677 - Requested username: kevin
+>> Sent boolean response to hashcode: 513740677- status: true
+>> 513740677: sent new request
+>> Received Join Match Request from: 513740677 - Match to be joined: 180930436
+>> Received JoinMatchRequest inside MatchController
+>> Submitted request from 513740677 to match controller
+>> Match 180930436 found, request has been submitted to match controller 
+>> Exception: java.io.EOFException occurred
+>> Added player to match: kevin - Match ID: 180930436
+>> Sent positive response to hashcode: 513740677 - Match ID: 180930436
+
+match controller waiting for requests
+

@@ -21,6 +21,7 @@ public class ClientConnection extends Observable<Request> implements Runnable {
     private MatchController matchController;
     private final RemoteView remoteView;
     private final LobbyRequestVisitor requestHandler;
+    private final int userHash;
 
 
     public ClientConnection(Socket socket, Server server){
@@ -29,6 +30,7 @@ public class ClientConnection extends Observable<Request> implements Runnable {
         this.remoteView = new RemoteView(socket);
         this.requestHandler = LobbyController.instance();
         LobbyController.addRemoteView(remoteView);
+         userHash = socket.hashCode();
     }
 
     public void setActive(Boolean active) {
@@ -50,7 +52,9 @@ public class ClientConnection extends Observable<Request> implements Runnable {
     public void run(){
         setUp();//creates input Stream
         try{
+
             remoteView.setUp();  //sets up remote view opening output streams
+            LobbyController.addRemoteView(remoteView);
         }catch(IOException e){
             close(); //closes the socket, client will handle an IOException
         }
@@ -59,10 +63,10 @@ public class ClientConnection extends Observable<Request> implements Runnable {
         while(isActive()){
             try{
                 Request request = (Request) (input.readObject());
-                Server.log(">> " + request.getHashCode() + ": sent new request");
+                Server.log(">> " + request.getUserHash() + ": sent new request");
                 request.accept(requestHandler);
             }catch(Exception e){
-                Server.log(">> Exception: "+ e.toString() + " occurred");
+                Server.log(">> Client " + userHash + " closed connection");
                 setActive(false);
                 close();
             }

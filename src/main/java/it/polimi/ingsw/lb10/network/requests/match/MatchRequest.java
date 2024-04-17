@@ -10,8 +10,7 @@ public abstract class MatchRequest extends Request implements LobbyRequestVisita
 
     private final int matchId;
 
-    public MatchRequest(int hashCode, int matchId) {
-        super(hashCode);
+    public MatchRequest(int matchId) {
         this.matchId = matchId;
     }
 

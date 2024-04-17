@@ -48,7 +48,7 @@ public class CLILobbyPage implements CLIPage {
         public void apply(Object @NotNull [] args) {
 
             if(((String)args[0]).split(" ")[0].equals("join"))
-                    CLIString.replace(enterChoice, new CLIString(">> Match ID: " + args[1] + " doesn't exist <<",
+                    CLIString.replace(enterChoice, new CLIString(">> Match ID: " + ((String) args[0]).split(" ")[1] + " doesn't exist <<",
                             AnsiColor.RED, AnsiFormat.BOLD, 1, 35));
 
             else

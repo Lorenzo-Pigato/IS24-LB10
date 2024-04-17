@@ -13,7 +13,6 @@ import it.polimi.ingsw.lb10.server.view.RemoteView;
 import java.io.IOException;
 import it.polimi.ingsw.lb10.network.requests.match.MatchRequest;
 import it.polimi.ingsw.lb10.network.requests.match.JoinMatchRequest;
-import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.network.response.match.JoinMatchResponse;
 import it.polimi.ingsw.lb10.network.response.match.TerminatedMatchResponse;
 import it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitor;
@@ -51,7 +50,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     public boolean isActive(){return active;}
 
     public int getId(){return id;}
-
+    public ArrayList<Player> getPlayers() {return players;}
     public boolean isStarted(){return started;}
 
     private Position[] possiblePosition;
@@ -126,7 +125,6 @@ public class MatchController implements Runnable, MatchRequestVisitor {
             player.addPoints(card.getStateCardPoints());
             return true;
         }
-
         player.getMatrix().deleteCard(row,column);
             return  false;
     }
@@ -227,12 +225,11 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      * @param jmr join match request
      */
     @Override
-    public void visit(JoinMatchRequest jmr) {
+    public synchronized void visit(JoinMatchRequest jmr) {
         players.add(jmr.getPlayer());
-        getRemoteView(jmr.getHashCode()).send(new JoinMatchResponse(true));
+        getRemoteView(jmr.getUserHash()).send(new JoinMatchResponse(true));
         Server.log(">> Added player to match: " + jmr.getPlayer().getUsername() + " - Match ID: " + id);
-        Server.log(">> Sent positive response to hashcode: " + jmr.getHashCode() + " - Match ID: " + id);
-        if(players.size() == model.getNumberOfPlayers()) start();
+        //if(players.size() == model.getNumberOfPlayers()) start();
     }
 
     public void addRemoteView(RemoteView remoteView){
@@ -243,9 +240,20 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         return remoteViews.stream().filter(remoteView -> remoteView.getSocket().hashCode() == hashCode).findFirst().get();
     }
 
+    public void removePlayer(Player p){
+        players.remove(p);
+        try {
+            getRemoteView(p.getHashCode()).getSocket().close();
+        }catch(IOException e){
+            throw new RuntimeException();
+        }
+        remoteViews.remove(getRemoteView(p.getHashCode()));
+        //model. remove player!!!! ---------------------------------------------------
+    }
+
     private void start(){
         started = true;
-        //model. ????
+        //model. ...
     }
 
     public void broadcast (Response response){
