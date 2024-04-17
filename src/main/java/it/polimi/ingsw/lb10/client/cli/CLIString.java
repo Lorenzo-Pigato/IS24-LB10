@@ -96,11 +96,10 @@ public class CLIString {
     public static void replace(@NotNull CLIString oldString,@NotNull CLIString newString){
         oldString.deleteString();
 
+        newString.reposition(oldString.getPosition()[0], oldString.getPosition()[1]);
+
         if (oldString.centered) newString.centerPrint();
-        else {
-            newString.reposition(oldString.getPosition()[0], oldString.getPosition()[1]);
-            newString.print();
-        }
+        else newString.print();
 
     }
 

@@ -6,7 +6,7 @@ import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
 import org.jetbrains.annotations.NotNull;
 
 public class CLILobbyPage implements CLIPage {
-    private static final CLIString enterChoice = new CLIString(">> Enter your choice <<\n>> ", AnsiColor.CYAN, AnsiFormat.BOLD, 1, 38);
+    private static final CLIString enterChoice = new CLIString(">> Enter your choice <<\n>> ", AnsiColor.CYAN, AnsiFormat.BOLD, 1, 39);
     private CLIState state = new Default();
 
     @Override
@@ -46,13 +46,14 @@ public class CLILobbyPage implements CLIPage {
          */
         @Override
         public void apply(Object @NotNull [] args) {
+            CLICommand.setPosition(1, 38);
+            CLICommand.clearLine();
 
             if(((String)args[0]).split(" ")[0].equals("join"))
-                    CLIString.replace(enterChoice, new CLIString(">> Match ID: " + ((String) args[0]).split(" ")[1] + " doesn't exist <<",
-                            AnsiColor.RED, AnsiFormat.BOLD, 1, 35));
-
+                new CLIString(">> Match ID: " + ((String) args[0]).split(" ")[1] + " doesn't exist <<",
+                        AnsiColor.RED, AnsiFormat.BOLD, 1, 38).centerPrint();
             else
-                CLIString.replace(enterChoice, new CLIString(">> Invalid input <<", AnsiColor.RED, AnsiFormat.BOLD, 1, 35));
+                new CLIString(">> Invalid input <<", AnsiColor.RED, AnsiFormat.BOLD, 1, 38).centerPrint();
 
             CLICommand.restoreCursorPosition();
             CLICommand.clearUserInput((String) args[0]);

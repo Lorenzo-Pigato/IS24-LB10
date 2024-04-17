@@ -12,4 +12,5 @@ module it.polimi.ingsw.lb10 {
     exports it.polimi.ingsw.lb10.server.model.decks;
     exports it.polimi.ingsw.lb10.server.model.quest;
     exports it.polimi.ingsw.lb10.server.model.cards.corners;
+    exports it.polimi.ingsw.lb10.client.cli.ansi;
 }
