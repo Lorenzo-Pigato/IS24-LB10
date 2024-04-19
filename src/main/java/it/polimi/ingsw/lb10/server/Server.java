@@ -120,6 +120,7 @@ public class Server implements Runnable{
             AnsiString.print(">> Error creating log file\n" + e.getMessage(), AnsiColor.RED);
         }
     }
+
     private static void saveLog(String log){
         try {
             bufferedWriter.write(log + "\n");
