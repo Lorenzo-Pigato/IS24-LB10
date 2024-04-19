@@ -2,6 +2,8 @@ package it.polimi.ingsw.lb10.server.model.quest.Pattern.Diagonal;
 
 import it.polimi.ingsw.lb10.server.model.Matrix;
 import it.polimi.ingsw.lb10.server.model.cards.Color;
+import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
+import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.server.model.quest.Pattern.TypePatternStrategy;
 
 public class TopLeftDiagonal implements TypePatternStrategy {
@@ -17,19 +19,18 @@ public class TopLeftDiagonal implements TypePatternStrategy {
      */
     @Override
     public boolean isPattern(Matrix matrix, int row, int column) {
-
-        if(isOfTheSameColor(matrix,row-1,column-1)) {
-            if (isOfTheSameColor(matrix, row - 2, column - 2))
-                return true;
-            if(isOfTheSameColor(matrix, row + 1, column + 1))
-                return true;
-        }
-        else{
-            if(isOfTheSameColor(matrix,row+1,column+1))
-                if(isOfTheSameColor(matrix,row+2,column+2))
+        if(isOfTheSameColor(matrix,row,column))
+            if(isOfTheSameColor(matrix,row-1,column-1)) {
+                if (isOfTheSameColor(matrix, row - 2, column - 2))
                     return true;
-        }
-
+                if(isOfTheSameColor(matrix, row + 1, column + 1))
+                    return true;
+            }
+            else{
+                if(isOfTheSameColor(matrix,row+1,column+1))
+                    if(isOfTheSameColor(matrix,row+2,column+2))
+                        return true;
+            }
         return false;
     }
 
@@ -37,23 +38,19 @@ public class TopLeftDiagonal implements TypePatternStrategy {
      * @param matrix of the player
      * @param row and column are the top-left corner of the card!
      * @return true if the card above the one that we placed exists, it's not used for another pattern quest and if it's of the same color of the card that it's placed
-     * The problem is I don’t know which one to look at between the first and the second corner
+     * cornetToCheck can't be null because we pass the coordinate of the top left corner of the card
      */
     public boolean isOfTheSameColor(Matrix matrix, int row, int column){
-
-//        return Optional.ofNullable(matrix.getNode(row, column))
-//                .filter(node-> !node.getCorners().isEmpty())
-//                .filter(node-> !node.isUsedForQuest())
-//                .map(node-> node.getCorners().getFirst().getCardColor().equals(cardsColor))
-//                .orElse(false);
+        Corner cornerToCheck = null;
         if(matrix.getNode(row,column).getCorners().isEmpty())
             return false;
-        if(matrix.getNode(row,column).getCorners().get(0).isUsedForQuest())
-            return false;
-        if(matrix.getNode(row,column).getCorners().getLast().getCardColor().equals(cardsColor) )
-            return true;
-        return false;
-    }
 
+        for(Corner corner : matrix.getNode(row,column).getCorners())
+            if(corner.getPosition().equals(Position.TOPLEFT))
+                cornerToCheck=corner;
+
+        assert cornerToCheck != null;
+        return !cornerToCheck.isUsedForQuest() && cornerToCheck.getCardColor().equals(cardsColor);
+    }
 
 }
