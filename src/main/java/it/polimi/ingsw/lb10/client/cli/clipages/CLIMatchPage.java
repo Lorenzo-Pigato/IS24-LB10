@@ -3,8 +3,10 @@ package it.polimi.ingsw.lb10.client.cli.clipages;
 import it.polimi.ingsw.lb10.client.cli.CLIBox;
 import it.polimi.ingsw.lb10.client.cli.CLICommand;
 import it.polimi.ingsw.lb10.client.cli.CLILine;
+import it.polimi.ingsw.lb10.client.cli.CLIString;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
+import it.polimi.ingsw.lb10.client.cli.ansi.AnsiSpecial;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiString;
 import it.polimi.ingsw.lb10.server.model.Resource;
 import it.polimi.ingsw.lb10.server.model.cards.Card;
@@ -16,6 +18,7 @@ import it.polimi.ingsw.lb10.server.model.cards.corners.CornerAvailable;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,6 +32,18 @@ public class CLIMatchPage implements CLIPage{
             {50, 35}
     };
 
+    private static final int handCardHeight = 8;
+    private static final int handCardWidth = 20;
+
+    private static final int maxChatLength = 26;
+    private static final int maxMessageLength = 38;
+    private static final ArrayDeque<CLIString[]> messages = new ArrayDeque<>();     //This queue will contain player's name [0] and message sent [1]
+    private static final int[] currentChatPosition = new int[2];
+
+    public CLIMatchPage(){
+        currentChatPosition[0] = 119;
+        currentChatPosition[1] = 5;
+    }
 
     @Override
     public void changeState(@NotNull CLIState state) {
@@ -98,7 +113,7 @@ public class CLIMatchPage implements CLIPage{
         int col = handUpLeftCornersPosition[inHandPosition][0];
         int row = handUpLeftCornersPosition[inHandPosition][1];
 
-        CLIBox.draw(col, row, 20, 8, card.getColor().getAnsi());
+        CLIBox.draw(col, row, handCardWidth, handCardHeight, card.getColor().getAnsi());
 
         for (Corner corner : card.getStateCardCorners()){
             drawHandCorner(corner, col, row);
@@ -120,6 +135,52 @@ public class CLIMatchPage implements CLIPage{
         CLICommand.restoreCursorPosition();
     }
 
+    public static void removeCardFromHand(int inHandPosition){
+        int col = handUpLeftCornersPosition[inHandPosition][0];
+        int row = handUpLeftCornersPosition[inHandPosition][1];
+
+        for(int i = 0; i < handCardHeight; i++){
+            CLICommand.setPosition(col, row+i);
+            System.out.print(" ".repeat(handCardWidth));
+        }
+
+        CLICommand.restoreCursorPosition();
+    }
+
+    public static void chatLog(@NotNull String username, String message, AnsiColor playerColor){
+        messages.addLast(new CLIString[]{
+                new CLIString(username + ": ",
+                        playerColor,
+                        AnsiFormat.BOLD,
+                        currentChatPosition[0], currentChatPosition[1], maxMessageLength),
+
+                new CLIString(message.split("\n")[0],
+                        AnsiColor.WHITE,
+                        AnsiFormat.DEFAULT,
+                        currentChatPosition[0] + username.length() + 2,
+                        currentChatPosition[1],
+                        maxMessageLength - (username.length() + 2))}
+        );
+
+        if (messages.size() > maxChatLength){
+            messages.removeFirst();
+
+            messages.forEach(m -> {
+                m[0].reposition(m[0].getPosition()[0], m[0].getPosition()[1]-1);
+                m[1].reposition(m[1].getPosition()[0], m[1].getPosition()[1]-1);
+                m[0].print();
+                m[1].print();
+            });
+        } else {
+            messages.getLast()[0].print();
+            messages.getLast()[1].print();
+            currentChatPosition[1]++;
+        }
+
+
+        CLICommand.restoreCursorPosition();
+    }
+
 
     // ------------- TEST ---------------- //
     public static void main(String[] args) {
@@ -137,6 +198,28 @@ public class CLIMatchPage implements CLIPage{
         addCardToHand(new ResourceCard(1, false, 5, corners1, Resource.ANIMAL, Color.BLUE, null, null), 0);
         addCardToHand(new ResourceCard(2, false, 0, corners2, Resource.MUSHROOM, Color.RED, null, null), 1);
         addCardToHand(new ResourceCard(3, false, 1, corners3, Resource.PLANT, Color.GREEN, null, null), 2);
+
+
+        for (int i = 0; i < 3; i++) {
+            try {
+                Thread.sleep(700);
+            } catch (InterruptedException e) {
+                System.out.println(e.getMessage());
+            }
+
+            removeCardFromHand(i);
+        }
+
+        for (int i = 0; i < 60; i++) {
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                System.out.println(e.getMessage());
+            }
+
+            chatLog("Player" + i, "lorem ipsum sit amet consectetur adipiscing elit", AnsiColor.CYAN);
+        }
+
     }
 }
 
