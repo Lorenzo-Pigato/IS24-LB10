@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lb10.server.controller;
 
+import it.polimi.ingsw.lb10.network.response.match.StartedMatchResponse;
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.server.Server;
 import it.polimi.ingsw.lb10.server.model.MatchModel;
@@ -16,6 +17,8 @@ import it.polimi.ingsw.lb10.network.requests.match.JoinMatchRequest;
 import it.polimi.ingsw.lb10.network.response.match.JoinMatchResponse;
 import it.polimi.ingsw.lb10.network.response.match.TerminatedMatchResponse;
 import it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitor;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
@@ -39,12 +42,14 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     private ArrayList<RemoteView> remoteViews;
     private boolean started = false;
     private ArrayList<Player> players;
+    private int numberOfPlayers;
 
     public MatchController(int numberOfPlayers) {
         //model = new MatchModel(numberOfPlayers, this);
         requests = new LinkedBlockingQueue<>();
         remoteViews = new ArrayList<>();
         players = new ArrayList<>();
+        this.numberOfPlayers = numberOfPlayers;
     }
 
     public boolean isActive(){return active;}
@@ -52,14 +57,14 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     public int getId(){return id;}
     public ArrayList<Player> getPlayers() {return players;}
     public boolean isStarted(){return started;}
+    public void setActive(boolean status){this.active = status;}
 
     private Position[] possiblePosition;
 
-    public MatchController(MatchModel model){
-        this.model=model;
-        possiblePosition= new Position[]{Position.TOPLEFT, Position.TOPRIGHT, Position.BOTTOMRIGHT, Position.BOTTOMLEFT};
-
-    }
+//    public MatchController(MatchModel model){
+//        this.model=model;
+//        possiblePosition= new Position[]{Position.TOPLEFT, Position.TOPRIGHT, Position.BOTTOMRIGHT, Position.BOTTOMLEFT};
+//    }
 
     //Game Model fields
     @Override
@@ -70,6 +75,9 @@ public class MatchController implements Runnable, MatchRequestVisitor {
                 request.accept(this);
             }
         }catch(InterruptedException e){
+            //
+        }
+        finally {
             remoteViews.forEach(remoteView -> remoteView.send(new TerminatedMatchResponse()));
         }
     }
@@ -128,7 +136,6 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         player.getMatrix().deleteCard(row,column);
             return  false;
     }
-
 
 
     /**
@@ -211,10 +218,17 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         return possiblePosition;
     }
 
+    /** this method puts the request in the BlockinQueue object to be handled by the MatchController
+     * @param request request sent by the client, which is referred to the specific match.
+     * @throws InterruptedException in case MatchController thread terminates.
+     */
     public synchronized void submitRequest(MatchRequest request) throws InterruptedException{
         this.requests.put(request);
     }
 
+    /**
+     * @return match id
+     */
     public synchronized int getMatchId(){
         return id;
     }
@@ -225,13 +239,17 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      * @param jmr join match request
      */
     @Override
-    public synchronized void visit(JoinMatchRequest jmr) {
+    public synchronized void visit(@NotNull JoinMatchRequest jmr) {
         players.add(jmr.getPlayer());
+
         getRemoteView(jmr.getUserHash()).send(new JoinMatchResponse(true));
         Server.log(">> Added player to match: " + jmr.getPlayer().getUsername() + " - Match ID: " + id);
-        //if(players.size() == model.getNumberOfPlayers()) start();
+        if(players.size() == numberOfPlayers) start();
     }
 
+    /** this method adds the remote view to the MatchController whenever a new client joins the match
+     * @param remoteView the client remote view
+     */
     public void addRemoteView(RemoteView remoteView){
         remoteViews.add(remoteView);
     }
@@ -240,22 +258,42 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         return remoteViews.stream().filter(remoteView -> remoteView.getSocket().hashCode() == hashCode).findFirst().get();
     }
 
+    /** this method removes a player and his remote view from the match in case the client sends a QuitRequest or disconnects from the socket, in this case the method
+     * is triggered by an IOException in ClientConnection thread, who is the first thread to notice the disconnection, calling LobbyController static method *disconnectClient()*
+     * which will handle removing the client from his match, in case the player is in a started match.
+     * @param p the player to be removed
+     */
     public void removePlayer(Player p){
         players.remove(p);
         try {
-            getRemoteView(p.getHashCode()).getSocket().close();
+            getRemoteView(p.getUserHash()).getSocket().close();
         }catch(IOException e){
             throw new RuntimeException();
         }
-        remoteViews.remove(getRemoteView(p.getHashCode()));
+        remoteViews.remove(getRemoteView(p.getUserHash()));
         //model. remove player!!!! ---------------------------------------------------
+        Server.log(">> Player " + p.getUsername() + " removed from match " + getMatchId());
+        if((players.isEmpty() && !isStarted()) || (players.size() == 1 && isStarted())){
+            setActive(false);
+            Server.log(">> Match " + getMatchId() + " terminated");
+            //VINCITORE???????????????????????????????????????????????????????????????????????????????????????????????????????
+        }
     }
 
+    /**
+     * this method sets started state to true whenever the match reaches the prefixed number of players, sends a broadcast message
+     * to all clients in the starting match
+     */
     private void start(){
+        Server.log(" >> Match " +  id + " started");
         started = true;
         //model. ...
+        broadcast(new StartedMatchResponse());
     }
 
+    /** sends a specific response to all RemoteViews connected
+     * @param response response to be sent
+     */
     public void broadcast (Response response){
         remoteViews.forEach(remoteView -> remoteView.send(response));
     }

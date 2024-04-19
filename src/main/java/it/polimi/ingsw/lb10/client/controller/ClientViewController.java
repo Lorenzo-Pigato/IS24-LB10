@@ -58,20 +58,27 @@ public interface ClientViewController {
     public void initializeConnection() throws ConnectionErrorException;
 
     /**
-     * this method provides an input scanner for login requests, checking the string for the username
+     * Used to provide an input scanner for login requests, checking the string for the username
      * and sending it to the Server.
      * A Boolean Response is waited and handled , setting "logged" flag to true is response is positive
      */
     void login();
+
+    void joinMatch();
+
+    /**
+     * Used to set the layout of the waiting room, state in which the player has already joined the match but the match
+     * hasn't started yet.
+     */
+    void waitingRoom();
 
     /**
      * Used to get unique hashCode from server, this hashCode will be wrapped inside every request, so the Server controllers
      * can easily handle multiple requests from multiple clients.
      */
     void setHash();
-
-    void joinMatch();
 }
+
 
 
 

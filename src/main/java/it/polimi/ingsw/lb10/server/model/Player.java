@@ -70,7 +70,7 @@ public class Player {
         this.points = points;
     }
 
-    public int getHashCode() {
+    public int getUserHash() {
         return hashCode;
     }
 

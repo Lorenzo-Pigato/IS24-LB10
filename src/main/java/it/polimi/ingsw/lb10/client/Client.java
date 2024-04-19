@@ -20,6 +20,7 @@ public class Client implements Runnable{
     private  boolean active = true;
     private  boolean logged = false;
     private  boolean inMatch = false;
+    private boolean startedMatch = false;
 
     public static Client instance(){
         if(instance == null) instance =  new Client();
@@ -34,14 +35,14 @@ public class Client implements Runnable{
      * We then send, via controller, the login request to the server, and then we can proceed to the lobby.
      * all of these processes are procedural.
      */
-    public void run(){
+    public void run() {
         //we have instantiated both view and view controller
         //we set the client reference to our controller
         controller.setClient(this);
         //server connection
-        try{
+        try {
             controller.initializeConnection();
-        }catch(ConnectionErrorException e){
+        } catch (ConnectionErrorException e) {
             ExceptionHandler.handle(e, new CLIClientView());
             return;
         }
@@ -59,15 +60,18 @@ public class Client implements Runnable{
         //--------------match join -----------//
         controller.joinMatch();
 
-        //------wait start---------------------//
+        //--------------wait start------------//
+        if (active) {
+            controller.waitingRoom();
+        }
+        while(true){
 
-
+        }
     }
-
     /**
      * @return the client state
      */
-    public  synchronized boolean isActive() {
+    public synchronized boolean isActive() {
         return active;
     }
 
@@ -96,7 +100,8 @@ public class Client implements Runnable{
         this.controller = controller;
     }
 
-
+    public boolean isStartedMatch() {return startedMatch;}
+    public void setStartedMatch(boolean startedMatch) {this.startedMatch = startedMatch;}
 
 }
 
