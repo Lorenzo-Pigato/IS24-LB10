@@ -40,7 +40,7 @@ public class MatchModel extends Observable<Request> {
      */
     public void initializeTable() throws IOException {
         initializeDecks();
-        initializeCardOnHand();
+        initializeCardsOnHand();
         startingUncoveredCards();
         initializeMatrix();
     }
@@ -51,7 +51,7 @@ public class MatchModel extends Observable<Request> {
         questDeck.fillDeck();
     }
 
-    private void initializeCardOnHand(){
+    private void initializeCardsOnHand(){
         for( Player player : players) {
             player.addCardOnHand(getResourceCardFromDeck());
             player.addCardOnHand(getResourceCardFromDeck());

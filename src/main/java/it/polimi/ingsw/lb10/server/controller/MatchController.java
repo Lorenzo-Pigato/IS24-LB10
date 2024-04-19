@@ -13,6 +13,7 @@ import it.polimi.ingsw.lb10.server.view.RemoteView;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 
@@ -34,7 +35,7 @@ public class MatchController implements Runnable {
     private BlockingQueue<Request> requests;
     private final Position[] possiblePosition;
     private DrawStrategy drawStrategy;
-
+    private ArrayList<Player> players;
     public MatchController(){
         possiblePosition= new Position[]{Position.TOPLEFT, Position.TOPRIGHT, Position.BOTTOMRIGHT, Position.BOTTOMLEFT};
         drawStrategy=null;
@@ -188,6 +189,12 @@ public class MatchController implements Runnable {
         }
     }
 
+    public void addPlayer(Player player){
+        players.add(player);
+    }
+    public void removePlayer(Player player){
+        players.remove(player);
+    }
     // --------> REQUESTS <--------
 
     /**
@@ -230,4 +237,7 @@ public class MatchController implements Runnable {
         return possiblePosition;
     }
 
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
 }

@@ -23,7 +23,7 @@ public class Node {
         return corners;
     }
     public void deleteLastCorner(){
-        corners.remove(corners.size()-1);
+        corners.removeLast();
     }
 
     /**
