@@ -70,11 +70,6 @@ public class MatchController implements Runnable {
      *      after that it's called checkInsertion()
      */
     public boolean insertCard(Player player,Card card,int row, int column){
-        if(card.isFlipped())
-            card.setFlippedState();
-        else
-            card.setNotFlippedState();
-
         player.getMatrix().setCard(card, row, column);
 
         if(!checkActivationCost(player,card))

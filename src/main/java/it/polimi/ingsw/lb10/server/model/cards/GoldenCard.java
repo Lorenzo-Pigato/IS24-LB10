@@ -13,27 +13,25 @@ public class GoldenCard extends Card {
     private CardState cardState;
 
     public GoldenCard(){}
-    public GoldenCard(int id, boolean flipped, int points, ArrayList<Corner> corners, Color color,HashMap<Resource,Integer> activationCost){
+    public GoldenCard(int id, int points, ArrayList<Corner> corners, Color color,HashMap<Resource,Integer> activationCost){
         this.setId(id);
         this.setPoints(points);
-        this.setFlipped(flipped);
         this.setCorners(corners);
         this.setColor(color);
         this.setActivationCost(activationCost);
 
-            flippedCheck();
+        setNotFlippedState();
     }
 
     // --------> SETTER <--------
 
     @Override
     public void setFlippedState() {
-        cardState = new FlippedCardState(getId(),getResources());
+        cardState = new FlippedCardState(this);
     }
-
     @Override
     public void setNotFlippedState() {
-        cardState = new NotFlippedCardState(getCorners(),getPoints(),getActivationCost(),getResources());
+        cardState = new NotFlippedCardState(this);
     }
 
     // --------> GETTER <--------
@@ -46,7 +44,6 @@ public class GoldenCard extends Card {
     public ArrayList<Corner> getStateCardCorners() {
         return getCardState().getCorners();
     }
-
     @Override
     public int getStateCardPoints(){
         return getCardState().getPoints();

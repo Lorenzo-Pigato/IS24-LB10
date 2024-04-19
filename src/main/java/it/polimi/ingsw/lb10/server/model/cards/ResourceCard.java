@@ -18,25 +18,24 @@ public class ResourceCard extends Card {
     private CardState cardState;
     public ResourceCard(){}
 
-    public ResourceCard(int id, boolean flipped, int points, ArrayList<Corner> corners, Resource resource, Color color,HashMap<Resource,Integer> activationCost, ArrayList<Resource> resources){
+    public ResourceCard(int id, int points, ArrayList<Corner> corners, Resource resource, Color color,HashMap<Resource,Integer> activationCost, ArrayList<Resource> resources){
         this.setId(id);
         this.setPoints(points);
-        this.setFlipped(flipped);
         this.setCorners(corners);
         this.setColor(color);
 
-            flippedCheck();
+        setNotFlippedState();
     }
 
     // --------> SETTER <--------
 
     @Override
     public void setFlippedState() {
-        cardState = new FlippedCardState(getId(),getResources());
+        cardState = new FlippedCardState(this);
     }
 
     public void setNotFlippedState() {
-        cardState = new NotFlippedCardState(getCorners(),getPoints(),getActivationCost(),getResources());
+        cardState = new NotFlippedCardState(this);
     }
 
     // --------> GETTER <--------
@@ -54,5 +53,6 @@ public class ResourceCard extends Card {
     public int getStateCardPoints(){
         return getCardState().getPoints();
     }
+
 
 }
