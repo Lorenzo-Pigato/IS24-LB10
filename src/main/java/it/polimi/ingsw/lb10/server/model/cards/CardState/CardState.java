@@ -12,13 +12,5 @@ public interface CardState {
     int getPoints();
     HashMap<Resource,Integer> getActivationCost();
     ArrayList<Resource> getCardResources();
+    Resource getGoldenBuffResource();
 }
-
-
-
-
-
-// nuova classe che implemento private  pleasebleCard ...;
-
-//metodi comuni
-///getPoints, getActivationResource,getCorner

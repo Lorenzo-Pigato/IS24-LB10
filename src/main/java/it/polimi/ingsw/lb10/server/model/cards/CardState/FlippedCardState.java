@@ -12,9 +12,9 @@ import java.util.HashMap;
 
 public class FlippedCardState implements CardState {
 
-    private static final ArrayList<Corner> flippedCorners= new ArrayList<>(Arrays.asList(new CornerAvailable(Position.TOPLEFT,Resource.NULL),new CornerAvailable(Position.TOPRIGHT,Resource.NULL),new CornerAvailable(Position.BOTTOMLEFT,Resource.NULL),new CornerAvailable(Position.BOTTOMRIGHT,Resource.NULL)));
+    private static final ArrayList<Corner> flippedCorners= new ArrayList<>(Arrays.asList(new CornerAvailable(Position.TOPLEFT,Resource.EMPTY),new CornerAvailable(Position.TOPRIGHT,Resource.EMPTY),new CornerAvailable(Position.BOTTOMLEFT,Resource.EMPTY),new CornerAvailable(Position.BOTTOMRIGHT,Resource.EMPTY)));
     private Card card;
-    private final HashMap<Resource, Integer> empty = new HashMap<>();
+
     public FlippedCardState(Card card){
         this.card=card;
     }
@@ -31,11 +31,16 @@ public class FlippedCardState implements CardState {
 
     @Override
     public HashMap<Resource, Integer> getActivationCost() {
-        return empty;
+        return  new HashMap<>();
     }
 
     @Override
     public ArrayList<Resource> getCardResources(){
         return card.getResources();
+    }
+
+    @Override
+    public Resource getGoldenBuffResource() {
+        return Resource.NULL;
     }
 }

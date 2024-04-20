@@ -12,7 +12,7 @@ public class CornerNotAvailable extends Corner {
 
     @Override
     public Resource getResource() {
-        return Resource.NULL;
+        return Resource.EMPTY;
     }
 
     @Override

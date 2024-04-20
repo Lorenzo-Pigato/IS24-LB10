@@ -2,6 +2,7 @@ package it.polimi.ingsw.lb10.server.model.cards;
 
 import it.polimi.ingsw.lb10.server.model.Resource;
 import it.polimi.ingsw.lb10.server.model.cards.CardState.CardState;
+import it.polimi.ingsw.lb10.server.model.cards.CardState.FlippedCardState;
 import it.polimi.ingsw.lb10.server.model.cards.CardState.FlippedStartingCardState;
 import it.polimi.ingsw.lb10.server.model.cards.CardState.NotFlippedStartingCardState;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
@@ -16,18 +17,23 @@ import java.util.HashMap;
 public class StartingCard extends Card {
 
     private CardState cardState;
-    public StartingCard(int id, int points, ArrayList<Corner> corners,ArrayList<Corner> flippedCardCorners, Color color, ArrayList<Resource> resources){
+    public StartingCard(int id, ArrayList<Corner> corners,ArrayList<Corner> flippedCardCorners, Color color, ArrayList<Resource> resources){
         this.setId(id);
-        this.setPoints(points);
         this.setCorners(corners);
         this.setColor(color);
         this.setResources(resources);
         this.setFlippedCardCorners(flippedCardCorners);
-        setPoints(0);
 
         setNotFlippedState();
     }
 
+    @Override
+    public void swapState() {
+        if (getCardState() instanceof FlippedStartingCardState)
+            setNotFlippedState();
+        else
+            setFlippedState();
+    }
     // --------> SETTER <--------
 
     @Override
@@ -46,12 +52,27 @@ public class StartingCard extends Card {
     }
 
     @Override
+    public int getStateCardPoints() {
+        return 0;
+    }
+
+    @Override
     public ArrayList<Corner> getStateCardCorners() {
         return getCardState().getCorners();
     }
+
     @Override
     public ArrayList<Resource> getStateCardResources(){
         return getCardState().getCardResources();
     }
 
+    @Override
+    public HashMap<Resource, Integer> getStateCardActivationCost() {
+        return  new HashMap<>();
+    }
+
+    @Override
+    public Resource getStateCardGoldenBuffResource() {
+        return Resource.NULL;
+    }
 }

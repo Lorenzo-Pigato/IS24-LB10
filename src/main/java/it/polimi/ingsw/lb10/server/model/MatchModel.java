@@ -101,14 +101,14 @@ public class MatchModel extends Observable<Request> {
      * @return the resource card draw from the deck
      */
     public Card getResourceCardFromDeck(){
-        return getResourceDeck().draw();
+        return getResourceDeck().drawCard();
     }
 
     /**
      * @return the golden card draw from the deck
      */
     public Card getGoldenCardFromDeck(){
-        return getGoldenDeck().draw();
+        return getGoldenDeck().drawCard();
     }
 
     /**

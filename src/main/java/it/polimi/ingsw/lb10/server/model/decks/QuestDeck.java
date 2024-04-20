@@ -12,13 +12,20 @@ public class QuestDeck implements Deck {
     private ArrayList<Quest> cards= new ArrayList<>();
     @Override
     public void shuffle() {
-//        Collections.shuffle(getCards());
+        Collections.shuffle(getCards());
     }
 
     @Override
-    public Card draw() {
-        return null;
+    public Quest drawQuest() {
+        Quest temp=cards.getLast();
+        cards.removeLast();
+        return temp;
         }
+
+    public ArrayList<Quest> getCards() {
+        return cards;
+    }
+
     public void fillDeck(){
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -26,5 +33,9 @@ public class QuestDeck implements Deck {
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+    @Override
+    public Card drawCard() {
+        return null;
     }
 }

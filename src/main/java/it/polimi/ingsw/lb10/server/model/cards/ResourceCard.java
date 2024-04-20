@@ -28,6 +28,14 @@ public class ResourceCard extends Card {
         setNotFlippedState();
     }
 
+    @Override
+    public void swapState(){
+        if (getCardState() instanceof FlippedCardState)
+            setNotFlippedState();
+        else
+            setFlippedState();
+    }
+
     // --------> SETTER <--------
 
     @Override
@@ -38,8 +46,6 @@ public class ResourceCard extends Card {
     public void setNotFlippedState() {
         cardState = new NotFlippedCardState(this);
     }
-
-
     // --------> GETTER <--------
 
     public CardState getCardState() {
@@ -59,5 +65,12 @@ public class ResourceCard extends Card {
     @Override
     public ArrayList<Resource> getStateCardResources(){return getCardState().getCardResources();}
 
-
+    @Override
+    public HashMap<Resource, Integer> getStateCardActivationCost() {
+        return new HashMap<>();
+    }
+    @Override
+    public Resource getStateCardGoldenBuffResource() {
+        return Resource.NULL;
+    }
 }

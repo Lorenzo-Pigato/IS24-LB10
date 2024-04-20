@@ -11,6 +11,7 @@ public abstract class Card {
     private  int id;
     private int points;
     private Color color;
+    private Resource goldenBuffResource;
     private ArrayList<Resource> resources= new ArrayList<>();
     private ArrayList<Corner> flippedCardCorners= new ArrayList<>();
     private ArrayList<Corner> corners = new ArrayList<>();
@@ -28,8 +29,8 @@ public abstract class Card {
     public Color getColor() {
         return color;
     }
-    public HashMap<Resource, Integer> getActivationCost() {
-        return activationCost;
+    public Resource getGoldenBuffResource() {
+        return goldenBuffResource;
     }
     public ArrayList<Resource> getResources() {
         return resources;
@@ -37,6 +38,10 @@ public abstract class Card {
     public ArrayList<Corner> getFlippedCardCorners() {
         return flippedCardCorners;
     }
+    public HashMap<Resource, Integer> getActivationCost() {
+        return activationCost;
+    }
+
     // --------> SETTER <--------
 
     public void setId(int id) {
@@ -51,8 +56,8 @@ public abstract class Card {
     public void setColor(Color color) {
         this.color = color;
     }
-    public void setActivationCost(HashMap<Resource, Integer> activationCost) {
-        this.activationCost = activationCost;
+    public void setGoldenBuffResource(Resource goldenBuffResource) {
+        this.goldenBuffResource = goldenBuffResource;
     }
     public void setFlippedCardCorners(ArrayList<Corner> flippedCardCorners) {
         this.flippedCardCorners = flippedCardCorners;
@@ -60,19 +65,18 @@ public abstract class Card {
     public void setResources(ArrayList<Resource> resources){
         this.resources=resources;
    }
-
-    // --------> METHODS FOR THE STATE  <--------
-
-    public ArrayList<Corner> getStateCardCorners(){
-        return null;
+    public void setActivationCost(HashMap<Resource, Integer> activationCost) {
+        this.activationCost = activationCost;
     }
-    public int getStateCardPoints() {
-        return 0;
-    }
-    public HashMap<Resource, Integer> getStateCardActivationCost(){return null;}
 
-    public ArrayList<Resource> getStateCardResources(){return null;}
+// --------> METHODS FOR THE STATE  <--------
 
-    public void setFlippedState(){}
-    public void setNotFlippedState(){}
+    public abstract int getStateCardPoints();
+    public abstract Resource getStateCardGoldenBuffResource();
+    public abstract ArrayList<Corner> getStateCardCorners();
+    public abstract ArrayList<Resource> getStateCardResources();
+    public abstract HashMap<Resource, Integer> getStateCardActivationCost();
+    public abstract void swapState();
+    public abstract void setFlippedState();
+    public abstract void setNotFlippedState();
 }

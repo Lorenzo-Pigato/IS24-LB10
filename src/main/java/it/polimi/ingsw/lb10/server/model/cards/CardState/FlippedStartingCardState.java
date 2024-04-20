@@ -9,9 +9,6 @@ import java.util.HashMap;
 
 public class FlippedStartingCardState  implements CardState{
     private Card card;
-    private final HashMap<Resource,Integer> emptyActCost= new HashMap<>();
-    private final ArrayList<Resource> emptyResources= new ArrayList<>();
-
     public FlippedStartingCardState(Card card){
         this.card=card;
     }
@@ -27,11 +24,16 @@ public class FlippedStartingCardState  implements CardState{
 
     @Override
     public HashMap<Resource, Integer> getActivationCost() {
-        return emptyActCost;
+        return  new HashMap<>();
     }
 
     @Override
     public ArrayList<Resource> getCardResources() {
-        return emptyResources;
+        return new ArrayList<>();
+    }
+
+    @Override
+    public Resource getGoldenBuffResource() {
+        return Resource.NULL;
     }
 }

@@ -24,7 +24,7 @@ public class Player {
     // --------> METHODS <--------
 
     public void addOnMapResources(Resource resource) {
-        if(resource!=Resource.NULL) {
+        if(resource!=Resource.EMPTY && resource!=Resource.NULL) {
             if (OnMapResources.containsKey(resource)) {
                 int currentQuantity = OnMapResources.get(resource);
                 OnMapResources.put(resource, currentQuantity + 1);
@@ -34,7 +34,7 @@ public class Player {
     }
 
     public void deleteOnMapResources(Resource resource) {
-        if (resource != Resource.NULL) {
+        if (resource!=Resource.EMPTY && resource!=Resource.NULL) {
             if (OnMapResources.containsKey(resource)) {
                 int currentQuantity = OnMapResources.get(resource);
                 OnMapResources.put(resource, currentQuantity - 1);

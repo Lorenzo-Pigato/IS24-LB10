@@ -9,8 +9,6 @@ import it.polimi.ingsw.lb10.server.model.cards.corners.CornerAvailable;
 import it.polimi.ingsw.lb10.server.model.cards.corners.CornerNotAvailable;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Assertions;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -35,7 +33,7 @@ public class ResourceCardTest {
     public static void initialize() {
         middleResource = new ArrayList<>(List.of(Resource.ANIMAL));
         //activationCost = new HashMap<>();
-        corners = new ArrayList<>(Arrays.asList(new CornerAvailable(Position.TOPLEFT, Resource.ANIMAL), new CornerAvailable(Position.TOPRIGHT, Resource.PLANT), new CornerAvailable(Position.BOTTOMLEFT, Resource.FEATHER), new CornerNotAvailable(Position.BOTTOMRIGHT, Resource.NULL)));
+        corners = new ArrayList<>(Arrays.asList(new CornerAvailable(Position.TOPLEFT, Resource.ANIMAL), new CornerAvailable(Position.TOPRIGHT, Resource.PLANT), new CornerAvailable(Position.BOTTOMLEFT, Resource.FEATHER), new CornerNotAvailable(Position.BOTTOMRIGHT, Resource.EMPTY)));
         resourceCard = new ResourceCard(0, 1, corners, Color.BLUE, middleResource);
 
     }
@@ -45,9 +43,8 @@ public class ResourceCardTest {
         middleResource = new ArrayList<>(List.of(Resource.ANIMAL));
         activationCost = new HashMap<>();
         activationCost.put(Resource.ANIMAL,1);
-        corners = new ArrayList<>(Arrays.asList(new CornerAvailable(Position.TOPLEFT, Resource.ANIMAL), new CornerAvailable(Position.TOPRIGHT, Resource.PLANT), new CornerAvailable(Position.BOTTOMLEFT, Resource.FEATHER), new CornerNotAvailable(Position.BOTTOMRIGHT, Resource.NULL)));
-        goldenCard = new GoldenCard(0, 1, corners, Color.BLUE, activationCost,middleResource);
-
+        corners = new ArrayList<>(Arrays.asList(new CornerAvailable(Position.TOPLEFT, Resource.ANIMAL), new CornerAvailable(Position.TOPRIGHT, Resource.PLANT), new CornerAvailable(Position.BOTTOMLEFT, Resource.FEATHER), new CornerNotAvailable(Position.BOTTOMRIGHT, Resource.EMPTY)));
+        goldenCard = new GoldenCard(0, 1, corners, Color.BLUE, activationCost,middleResource,Resource.PATTERN);
     }
 
 
@@ -55,7 +52,7 @@ public class ResourceCardTest {
     public void testCornersFlipped() {
         resourceCard.setFlippedState();
         resourceCard.getStateCardCorners().forEach(corner -> {
-            assertEquals(Resource.NULL, corner.getResource(), "When flipped, all corner resources should be NULL.");
+            assertEquals(Resource.EMPTY, corner.getResource(), "When flipped, all corner resources should be EMPTY.");
         });
     }
 
@@ -65,7 +62,7 @@ public class ResourceCardTest {
         assertEquals(Resource.ANIMAL, resourceCard.getCorners().get(0).getResource());
         assertEquals(Resource.PLANT, resourceCard.getCorners().get(1).getResource());
         assertEquals(Resource.FEATHER, resourceCard.getCorners().get(2).getResource());
-        assertEquals(Resource.NULL, resourceCard.getCorners().get(3).getResource());
+        assertEquals(Resource.EMPTY, resourceCard.getCorners().get(3).getResource());
     }
     @Test
     public void testValuesFlipped(){

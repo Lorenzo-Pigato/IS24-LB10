@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.lb10.server.model.cards.Card;
 import it.polimi.ingsw.lb10.server.model.cards.GoldenCard;
+import it.polimi.ingsw.lb10.server.model.quest.Quest;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -16,9 +17,9 @@ public class GoldenDeck implements Deck {
         Collections.shuffle(getCards());
     }
 
-    public Card draw(){
-        Card temp=cards.get(cards.size()-1);
-        cards.remove(cards.size()-1);
+    public Card drawCard(){
+        Card temp=cards.getLast();
+        cards.removeLast();
         return temp;
     }
 
@@ -28,11 +29,14 @@ public class GoldenDeck implements Deck {
 
     public void fillDeck(){
         ObjectMapper mapper = new ObjectMapper();
-
         try {
             cards = mapper.readValue(new File("src/main/resources/it/polimi/ingsw/lb10/json/goldenDeck.json"),new TypeReference<ArrayList<GoldenCard>>() {});
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+    @Override
+    public Quest drawQuest() {
+        return null;
     }
 }
