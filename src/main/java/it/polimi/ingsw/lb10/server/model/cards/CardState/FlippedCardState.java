@@ -11,7 +11,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class FlippedCardState implements CardState {
-
     private static final ArrayList<Corner> flippedCorners= new ArrayList<>(Arrays.asList(new CornerAvailable(Position.TOPLEFT,Resource.NULL),new CornerAvailable(Position.TOPRIGHT,Resource.NULL),new CornerAvailable(Position.BOTTOMLEFT,Resource.NULL),new CornerAvailable(Position.BOTTOMRIGHT,Resource.NULL)));
     private Card card;
     public FlippedCardState(Card card){
@@ -30,9 +29,8 @@ public class FlippedCardState implements CardState {
 
     @Override
     public HashMap<Resource, Integer> getActivationCost() {
-        return null;
+        return card.getActivationCost();
     }
-
     @Override
     public ArrayList<Resource> getCardResources(){
         return card.getResources();

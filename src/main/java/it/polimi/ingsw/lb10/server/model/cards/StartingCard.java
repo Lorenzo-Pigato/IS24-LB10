@@ -2,8 +2,8 @@ package it.polimi.ingsw.lb10.server.model.cards;
 
 import it.polimi.ingsw.lb10.server.model.Resource;
 import it.polimi.ingsw.lb10.server.model.cards.CardState.CardState;
-import it.polimi.ingsw.lb10.server.model.cards.CardState.FlippedCardState;
-import it.polimi.ingsw.lb10.server.model.cards.CardState.NotFlippedCardState;
+import it.polimi.ingsw.lb10.server.model.cards.CardState.FlippedStartingCardState;
+import it.polimi.ingsw.lb10.server.model.cards.CardState.NotFlippedStartingCardState;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 
 
@@ -14,12 +14,16 @@ import java.util.HashMap;
      *  We have to define a method that from the json get the car
      */
 public class StartingCard extends Card {
+
     private CardState cardState;
-    public StartingCard(int id, boolean flipped, int points, ArrayList<Corner> corners, Resource resource, Color color, HashMap<Resource,Integer> activationCost, ArrayList<Resource> resources){
+    public StartingCard(int id, int points, ArrayList<Corner> corners,ArrayList<Corner> flippedCardCorners, Color color, ArrayList<Resource> resources){
         this.setId(id);
         this.setPoints(points);
         this.setCorners(corners);
         this.setColor(color);
+        this.setResources(resources);
+        this.setFlippedCardCorners(flippedCardCorners);
+        setPoints(0);
 
         setNotFlippedState();
     }
@@ -28,11 +32,11 @@ public class StartingCard extends Card {
 
     @Override
     public void setFlippedState() {
-        cardState = new FlippedCardState(this);
+        cardState = new FlippedStartingCardState(this);
     }
 
     public void setNotFlippedState() {
-        cardState = new NotFlippedCardState(this);
+        cardState = new NotFlippedStartingCardState(this);
     }
 
     // --------> GETTER <--------
@@ -45,9 +49,9 @@ public class StartingCard extends Card {
     public ArrayList<Corner> getStateCardCorners() {
         return getCardState().getCorners();
     }
-
     @Override
     public ArrayList<Resource> getStateCardResources(){
         return getCardState().getCardResources();
     }
+
 }
