@@ -31,8 +31,11 @@ public class NotFlippedCardState implements CardState {
         return card.getActivationCost();
     }
 
+    /**
+     * @return null because it's the resource on the back of the card!
+     */
     @Override
     public ArrayList<Resource> getCardResources() {
-        return card.getResources();
+        return null;
     }
 }

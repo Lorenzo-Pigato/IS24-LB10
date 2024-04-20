@@ -6,6 +6,7 @@ import it.polimi.ingsw.lb10.server.model.cards.CardState.FlippedCardState;
 import it.polimi.ingsw.lb10.server.model.cards.CardState.NotFlippedCardState;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -16,13 +17,13 @@ import java.util.HashMap;
 
 public class ResourceCard extends Card {
     private CardState cardState;
-    public ResourceCard(){}
 
-    public ResourceCard(int id, int points, ArrayList<Corner> corners, Resource resource, Color color,HashMap<Resource,Integer> activationCost, ArrayList<Resource> resources){
+    public ResourceCard(int id, int points, ArrayList<Corner> corners, Color color, ArrayList<Resource> resources){
         this.setId(id);
         this.setPoints(points);
         this.setCorners(corners);
         this.setColor(color);
+        this.setResources(resources);
 
         setNotFlippedState();
     }

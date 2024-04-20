@@ -33,7 +33,6 @@ public abstract class Card {
     public ArrayList<Resource> getResources() {
         return null;
     }
-
     // --------> SETTER <--------
 
     public void setId(int id) {

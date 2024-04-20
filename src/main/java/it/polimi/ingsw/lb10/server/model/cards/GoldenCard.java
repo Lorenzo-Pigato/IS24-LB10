@@ -12,13 +12,13 @@ import java.util.HashMap;
 public class GoldenCard extends Card {
     private CardState cardState;
 
-    public GoldenCard(){}
-    public GoldenCard(int id, int points, ArrayList<Corner> corners, Color color,HashMap<Resource,Integer> activationCost){
+    public GoldenCard(int id, int points, ArrayList<Corner> corners, Color color,HashMap<Resource,Integer> activationCost,ArrayList<Resource> resources){
         this.setId(id);
         this.setPoints(points);
         this.setCorners(corners);
         this.setColor(color);
         this.setActivationCost(activationCost);
+        this.setResources(resources);
 
         setNotFlippedState();
     }
@@ -39,7 +39,6 @@ public class GoldenCard extends Card {
     public CardState getCardState() {
         return cardState;
     }
-
     @Override
     public ArrayList<Corner> getStateCardCorners() {
         return getCardState().getCorners();

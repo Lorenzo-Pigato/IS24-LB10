@@ -12,17 +12,10 @@ import java.util.HashMap;
 
 public class FlippedCardState implements CardState {
 
-    private static ArrayList<Corner> flippedCorners= new ArrayList<>(Arrays.asList(new CornerAvailable(Position.TOPLEFT,Resource.NULL),new CornerAvailable(Position.TOPRIGHT,Resource.NULL),new CornerAvailable(Position.BOTTOMLEFT,Resource.NULL),new CornerAvailable(Position.BOTTOMRIGHT,Resource.NULL)));
+    private static final ArrayList<Corner> flippedCorners= new ArrayList<>(Arrays.asList(new CornerAvailable(Position.TOPLEFT,Resource.NULL),new CornerAvailable(Position.TOPRIGHT,Resource.NULL),new CornerAvailable(Position.BOTTOMLEFT,Resource.NULL),new CornerAvailable(Position.BOTTOMRIGHT,Resource.NULL)));
     private Card card;
     public FlippedCardState(Card card){
         this.card=card;
-    }
-
-    public void setFlippedCorners(ArrayList<Corner> corners,int id) {
-        for(Corner corner : corners){
-            corner.setResource(Resource.NULL);
-            corner.setId(id);
-        }
     }
 
     @Override
