@@ -2,7 +2,7 @@ package it.polimi.ingsw.lb10.server.model.DrawType;
 
 import it.polimi.ingsw.lb10.server.model.MatchModel;
 import it.polimi.ingsw.lb10.server.model.Player;
-import it.polimi.ingsw.lb10.server.model.cards.Card;
+import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
 
 
 public class GoldenUncovered implements DrawStrategy {
@@ -19,8 +19,8 @@ public class GoldenUncovered implements DrawStrategy {
         getPlayer().addCardOnHand(getGoldenUncovered(isFirst()));
     }
 
-    public Card getGoldenUncovered(boolean first){
-        Card temp;
+    public PlaceableCard getGoldenUncovered(boolean first){
+        PlaceableCard temp;
         int index = 0;
 
         if (!first)

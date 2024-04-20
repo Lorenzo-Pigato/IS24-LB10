@@ -5,7 +5,7 @@ import it.polimi.ingsw.lb10.server.model.DrawType.DrawStrategy;
 import it.polimi.ingsw.lb10.server.model.DrawType.GoldenDeckDraw;
 import it.polimi.ingsw.lb10.server.model.DrawType.ResourceDeckDraw;
 import it.polimi.ingsw.lb10.server.model.DrawType.ResourceUncovered;
-import it.polimi.ingsw.lb10.server.model.cards.Card;
+import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.network.requests.Request;
@@ -69,7 +69,7 @@ public class MatchController implements Runnable {
      *      it's checked if the card respects the activation cost (in any case),
      *      after that it's called checkInsertion()
      */
-    public boolean insertCard(Player player,Card card,int row, int column){
+    public boolean insertCard(Player player, PlaceableCard card, int row, int column){
         player.getMatrix().setCard(card, row, column);
 
         if(!checkActivationCost(player,card))
@@ -88,7 +88,7 @@ public class MatchController implements Runnable {
      *  if the card passes the tests, at the end he is correctly positioned inside the matrix
      *  it's called all the
      */
-    public boolean checkInsertion(Player player,Card card,int row, int column){
+    public boolean checkInsertion(Player player,PlaceableCard card,int row, int column){
 
         if (verificationSetting(player, row, column)) {
             setCardResourceOnPlayer(player, card);
@@ -133,7 +133,7 @@ public class MatchController implements Runnable {
                 if(nodesVisited.size()>1){
                     for(int x=0;x<nodesVisited.size()-1;x++){
                         for(int y=x+1;y<nodesVisited.size();y++){
-                            if(nodesVisited.get(x).getCorners().get(0).getId() == nodesVisited.get(y).getCorners().get(0).getId())
+                            if(nodesVisited.get(x).getCorners().getFirst().getId() == nodesVisited.get(y).getCorners().getFirst().getId())
                                 return false;
                         }
                     }
@@ -147,7 +147,7 @@ public class MatchController implements Runnable {
         return !nodesVisited.isEmpty();
     }
 
-    public boolean checkActivationCost(Player player,Card card){
+    public boolean checkActivationCost(Player player,PlaceableCard card){
         if(card.getStateCardActivationCost()==null)
             return true;
         for (Map.Entry<Resource, Integer> entry : card.getStateCardActivationCost().entrySet()) {
@@ -168,7 +168,7 @@ public class MatchController implements Runnable {
         return true;
     }
 
-    public void setCardResourceOnPlayer(Player player, Card card){
+    public void setCardResourceOnPlayer(Player player, PlaceableCard card){
         for(Corner corner : card.getStateCardCorners()){
             player.addOnMapResources(corner.getResource());
         }

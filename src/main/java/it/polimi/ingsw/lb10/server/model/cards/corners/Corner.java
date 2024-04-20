@@ -6,16 +6,20 @@ import it.polimi.ingsw.lb10.server.model.cards.Color;
 
 
 public abstract class Corner {
+    private int id;
     private boolean available;
     private boolean usedForQuest;
     private Position position;
     private Resource resource;
-    private int id;
     private Color cardColor;
 
-    public Corner(Position position,Resource resource){
+    public Corner( int id, boolean available, boolean usedForQuest, Position position, Resource resource, Color cardColor){
+        this.id=id;
+        this.available=available;
+        this.usedForQuest=usedForQuest;
         this.position=position;
         this.resource=resource;
+        this.cardColor=cardColor;
     }
 
     // --------> GETTER <--------

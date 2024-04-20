@@ -2,7 +2,7 @@ package it.polimi.ingsw.lb10.server.model.DrawType;
 
 import it.polimi.ingsw.lb10.server.model.MatchModel;
 import it.polimi.ingsw.lb10.server.model.Player;
-import it.polimi.ingsw.lb10.server.model.cards.Card;
+import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
 
 public class ResourceUncovered implements DrawStrategy {
     private final MatchModel model;
@@ -22,8 +22,8 @@ public class ResourceUncovered implements DrawStrategy {
      * @param first means if th player wants to draw the first card, if it's false he'll draw th second card
      * @return the first (second) uncovered card
      */
-    public Card getResourceUncovered(boolean first){
-        Card temp;
+    public PlaceableCard getResourceUncovered(boolean first){
+        PlaceableCard temp;
         int index = 0;
 
         if (!first)

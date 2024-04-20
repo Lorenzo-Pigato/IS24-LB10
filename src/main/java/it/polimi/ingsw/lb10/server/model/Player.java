@@ -1,7 +1,7 @@
 package it.polimi.ingsw.lb10.server.model;
 
+import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
-import it.polimi.ingsw.lb10.server.model.cards.Card;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,7 +10,7 @@ public class Player {
     private String username;
     private Matrix matrix;
     private boolean inGame;
-    private ArrayList<Card> hand= new ArrayList<>();
+    private ArrayList<PlaceableCard> hand= new ArrayList<>();
     private HashMap<Resource,Integer> OnMapResources= new HashMap<>();
     private Quest privateQuest;
     private int points;
@@ -48,11 +48,11 @@ public class Player {
         setPoints(tempPoints);
     }
 
-    public void addCardOnHand(Card card){
+    public void addCardOnHand(PlaceableCard card){
         hand.add(card);
     }
 
-    public void removeCardOnHand(Card cardToRemove){
+    public void removeCardOnHand(PlaceableCard cardToRemove){
         getHand().remove(cardToRemove);
     }
 
@@ -76,7 +76,7 @@ public class Player {
         this.matrix = matrix;
     }
 
-    public ArrayList<Card> getHand() {
+    public ArrayList<PlaceableCard> getHand() {
         return hand;
     }
 

@@ -2,14 +2,15 @@ package it.polimi.ingsw.lb10.server.model.cards.corners;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import it.polimi.ingsw.lb10.server.model.Resource;
+import it.polimi.ingsw.lb10.server.model.cards.Color;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 
 public class CornerAvailable extends Corner {
 
-    public CornerAvailable(Position position,Resource resource) {
-        super(position,resource);
-        setAvailable(true);
+
+    public CornerAvailable(int id, boolean available, boolean usedForQuest, Position position, Resource resource, Color cardColor) {
+        super(id, available, usedForQuest, position, resource, cardColor);
     }
 
     @Override
