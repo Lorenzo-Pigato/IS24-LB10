@@ -51,4 +51,6 @@ public class GoldenCard extends Card {
     public HashMap<Resource, Integer> getStateCardActivationCost() {
         return getCardState().getActivationCost();
     }
+    @Override
+    public ArrayList<Resource> getStateCardResources(){return getCardState().getCardResources();}
 }

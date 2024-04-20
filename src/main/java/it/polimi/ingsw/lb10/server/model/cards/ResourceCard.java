@@ -39,6 +39,7 @@ public class ResourceCard extends Card {
         cardState = new NotFlippedCardState(this);
     }
 
+
     // --------> GETTER <--------
 
     public CardState getCardState() {
@@ -54,6 +55,9 @@ public class ResourceCard extends Card {
     public int getStateCardPoints(){
         return getCardState().getPoints();
     }
+
+    @Override
+    public ArrayList<Resource> getStateCardResources(){return getCardState().getCardResources();}
 
 
 }

@@ -14,6 +14,7 @@ public class FlippedCardState implements CardState {
 
     private static final ArrayList<Corner> flippedCorners= new ArrayList<>(Arrays.asList(new CornerAvailable(Position.TOPLEFT,Resource.NULL),new CornerAvailable(Position.TOPRIGHT,Resource.NULL),new CornerAvailable(Position.BOTTOMLEFT,Resource.NULL),new CornerAvailable(Position.BOTTOMRIGHT,Resource.NULL)));
     private Card card;
+    private final HashMap<Resource, Integer> empty = new HashMap<>();
     public FlippedCardState(Card card){
         this.card=card;
     }
@@ -30,7 +31,7 @@ public class FlippedCardState implements CardState {
 
     @Override
     public HashMap<Resource, Integer> getActivationCost() {
-        return null;
+        return empty;
     }
 
     @Override

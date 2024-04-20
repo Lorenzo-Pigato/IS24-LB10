@@ -28,10 +28,10 @@ public abstract class Card {
         return color;
     }
     public HashMap<Resource, Integer> getActivationCost() {
-        return null;
+        return activationCost;
     }
     public ArrayList<Resource> getResources() {
-        return null;
+        return resources;
     }
     // --------> SETTER <--------
 

@@ -10,6 +10,8 @@ import java.util.HashMap;
 
 public class NotFlippedCardState implements CardState {
     private Card card;
+
+    final ArrayList<Resource> empty = new ArrayList<>() ;
     public NotFlippedCardState(Card card){
         this.card=card;
     }
@@ -36,6 +38,6 @@ public class NotFlippedCardState implements CardState {
      */
     @Override
     public ArrayList<Resource> getCardResources() {
-        return null;
+        return empty;
     }
 }

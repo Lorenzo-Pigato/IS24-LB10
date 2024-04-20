@@ -46,9 +46,9 @@ public class ResourceDeck implements Deck {
         corners.add(new CornerAvailable(Position.TOPRIGHT,Resource.MUSHROOM));
         corners.add(new CornerAvailable(Position.TOPLEFT,Resource.NULL));
 
-        for(int i=0;i<3;i++){
-            cards.add(new ResourceCard(i, 1,corners, Color.BLUE));
-        }
+//        for(int i=0;i<3;i++){
+//            cards.add(new ResourceCard(i, 1,corners, Color.BLUE));
+//        }
 
         for(Card card : cards)
             for(Corner corner:card.getStateCardCorners())
