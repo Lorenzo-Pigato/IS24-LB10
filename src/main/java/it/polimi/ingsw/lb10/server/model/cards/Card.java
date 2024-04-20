@@ -12,6 +12,7 @@ public abstract class Card {
     private int points;
     private Color color;
     private ArrayList<Resource> resources= new ArrayList<>();
+    private ArrayList<Corner> flippedCardCorners= new ArrayList<>();
     private ArrayList<Corner> corners = new ArrayList<>();
     private HashMap<Resource,Integer> activationCost= new HashMap<>();
 
@@ -33,6 +34,9 @@ public abstract class Card {
     public ArrayList<Resource> getResources() {
         return resources;
     }
+    public ArrayList<Corner> getFlippedCardCorners() {
+        return flippedCardCorners;
+    }
     // --------> SETTER <--------
 
     public void setId(int id) {
@@ -50,7 +54,10 @@ public abstract class Card {
     public void setActivationCost(HashMap<Resource, Integer> activationCost) {
         this.activationCost = activationCost;
     }
-   public void setResources(ArrayList<Resource> resources){
+    public void setFlippedCardCorners(ArrayList<Corner> flippedCardCorners) {
+        this.flippedCardCorners = flippedCardCorners;
+    }
+    public void setResources(ArrayList<Resource> resources){
         this.resources=resources;
    }
 

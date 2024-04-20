@@ -39,6 +39,7 @@ public class GoldenCard extends Card {
     public CardState getCardState() {
         return cardState;
     }
+
     @Override
     public ArrayList<Corner> getStateCardCorners() {
         return getCardState().getCorners();
