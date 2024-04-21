@@ -1,5 +1,7 @@
 package it.polimi.ingsw.lb10.server.model.cards;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.lb10.server.model.Resource;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 
@@ -7,10 +9,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ResourceCard_v1 extends PlaceableCard{
-
-    public ResourceCard_v1(int id, Color colorCard, ArrayList<Corner> corners, int points, Resource resource, Resource goldenBuffResource, HashMap<Resource, Integer> activationCost) {
-        super(id, colorCard, corners, points, resource, goldenBuffResource, activationCost);
+@JsonCreator
+    public ResourceCard_v1( @JsonProperty ("id") int id, @JsonProperty("color") Color colorCard, @JsonProperty("corners") ArrayList<Corner> corners, @JsonProperty("points") int points, @JsonProperty("resource") Resource resource, @JsonProperty("activationCost") HashMap<Resource, Integer> activationCost) {
+        super(id, colorCard, corners, points, resource, Resource.NULL, activationCost);
     }
+
 
     @Override
     public int getStateCardPoints() {

@@ -9,8 +9,8 @@ import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 public class CornerAvailable extends Corner {
 
 
-    public CornerAvailable(int id, boolean available, boolean usedForQuest, Position position, Resource resource, Color cardColor) {
-        super(id, available, usedForQuest, position, resource, cardColor);
+    public CornerAvailable(int id, boolean available,  Position position, Resource resource, Color cardColor) {
+        super(id, available, position, resource, cardColor);
     }
 
     @Override

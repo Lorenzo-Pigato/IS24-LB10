@@ -1,15 +1,20 @@
 package it.polimi.ingsw.lb10.server.model.cards;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 
 import java.util.ArrayList;
 
-public class BaseCard {
+public abstract class BaseCard {
+
     private int id;
     private Color colorCard;
     private ArrayList<Corner> corners;
 
-    public BaseCard(int id, Color colorCard, ArrayList<Corner> corners){
+    public BaseCard(){}
+@JsonCreator
+    public BaseCard(@JsonProperty("id") int id, @JsonProperty("color") Color colorCard, @JsonProperty("corners") ArrayList<Corner> corners){
         this.id=id;
         this.colorCard=colorCard;
         this.corners=corners;
