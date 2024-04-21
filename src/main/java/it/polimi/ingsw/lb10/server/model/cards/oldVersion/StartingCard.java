@@ -1,11 +1,12 @@
-package it.polimi.ingsw.lb10.server.model.cards;
+package it.polimi.ingsw.lb10.server.model.cards.oldVersion;
 
 import it.polimi.ingsw.lb10.server.model.Resource;
 import it.polimi.ingsw.lb10.server.model.cards.CardState.CardState;
-import it.polimi.ingsw.lb10.server.model.cards.CardState.FlippedCardState;
 import it.polimi.ingsw.lb10.server.model.cards.CardState.FlippedStartingCardState;
 import it.polimi.ingsw.lb10.server.model.cards.CardState.NotFlippedStartingCardState;
+import it.polimi.ingsw.lb10.server.model.cards.Color;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
+import it.polimi.ingsw.lb10.server.model.cards.oldVersion.Card;
 
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.HashMap;
 public class StartingCard extends Card {
 
     private CardState cardState;
-    public StartingCard(int id, ArrayList<Corner> corners,ArrayList<Corner> flippedCardCorners, Color color, ArrayList<Resource> resources){
+    public StartingCard(int id, ArrayList<Corner> corners, ArrayList<Corner> flippedCardCorners, Color color, ArrayList<Resource> resources){
         this.setId(id);
         this.setCorners(corners);
         this.setColor(color);

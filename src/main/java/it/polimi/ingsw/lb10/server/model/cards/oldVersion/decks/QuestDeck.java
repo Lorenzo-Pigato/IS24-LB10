@@ -1,8 +1,8 @@
-package it.polimi.ingsw.lb10.server.model.decks;
+package it.polimi.ingsw.lb10.server.model.cards.oldVersion.decks;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
-import it.polimi.ingsw.lb10.server.model.cards.Card;
+import it.polimi.ingsw.lb10.server.model.cards.oldVersion.Card;
 
 import java.io.File;
 import java.util.ArrayList;

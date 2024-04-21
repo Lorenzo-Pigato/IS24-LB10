@@ -1,6 +1,6 @@
-package it.polimi.ingsw.lb10.server.model.decks;
+package it.polimi.ingsw.lb10.server.model.cards.oldVersion.decks;
 
-import it.polimi.ingsw.lb10.server.model.cards.Card;
+import it.polimi.ingsw.lb10.server.model.cards.oldVersion.Card;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 
 import java.io.IOException;

@@ -60,7 +60,9 @@ public class Player {
     public int getResourceQuantity(Resource resource) {
         return OnMapResources.getOrDefault(resource, 0);
     }
-
+    public HashMap<Resource, Integer> getOnMapResources() {
+        return OnMapResources;
+    }
     public int getPoints() {
         return points;
     }
