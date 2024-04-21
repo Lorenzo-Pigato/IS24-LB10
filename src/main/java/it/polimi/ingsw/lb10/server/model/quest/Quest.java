@@ -4,6 +4,10 @@ public abstract class Quest {
     private int id;
     private int points;
 
+    public Quest(int id, int points){
+        this.id=id;
+        this.points=points;
+    }
 
     // --------> GETTER <--------
     public int getPoints() {
