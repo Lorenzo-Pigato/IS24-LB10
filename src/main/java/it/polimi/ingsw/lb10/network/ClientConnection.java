@@ -52,7 +52,6 @@ public class ClientConnection extends Observable<Request> implements Runnable {
     public void run(){
         setUp();//creates input Stream
         try{
-
             remoteView.setUp();  //sets up remote view opening output streams
             LobbyController.addRemoteView(remoteView);
         }catch(IOException e){
@@ -63,10 +62,11 @@ public class ClientConnection extends Observable<Request> implements Runnable {
         while(isActive()){
             try{
                 Request request = (Request) (input.readObject());
-                Server.log(">> " + request.getUserHash() + ": sent new request");
+                Server.log(">> " + request.getUserHash() + ": sent new Request");
                 request.accept(requestHandler);
             }catch(Exception e){
                 Server.log(">> Client " + userHash + " closed connection");
+                LobbyController.disconnectClient(userHash); //disconnects client from lobby, which deletes player from match too!
                 setActive(false);
                 close();
             }

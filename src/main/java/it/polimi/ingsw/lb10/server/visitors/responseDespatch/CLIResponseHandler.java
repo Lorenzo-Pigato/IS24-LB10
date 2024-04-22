@@ -3,6 +3,7 @@ import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
 import it.polimi.ingsw.lb10.network.requests.QuitRequest;
 import it.polimi.ingsw.lb10.network.response.lobby.BooleanResponse;
 import it.polimi.ingsw.lb10.network.response.match.JoinMatchResponse;
+import it.polimi.ingsw.lb10.network.response.match.StartedMatchResponse;
 import it.polimi.ingsw.lb10.network.response.match.TerminatedMatchResponse;
 
 public class CLIResponseHandler implements ResponseVisitor {
@@ -25,9 +26,9 @@ public class CLIResponseHandler implements ResponseVisitor {
     }
 
     @Override
-    public void visit(TerminatedMatchResponse response) {
-        controller.send(new QuitRequest());
-    }
+    public void visit(TerminatedMatchResponse response) {controller.send(new QuitRequest());}
 
+    @Override
+    public void visit(StartedMatchResponse response){controller.getClient().setStartedMatch(true);};
 
 }

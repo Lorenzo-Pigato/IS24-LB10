@@ -2,7 +2,9 @@ package it.polimi.ingsw.lb10.network.requests.preMatch;
 
 import it.polimi.ingsw.lb10.server.visitors.requestDispatch.LobbyRequestVisitor;
 
-public class LobbyToMatchRequest extends LobbyRequest {
+import java.io.Serializable;
+
+public class LobbyToMatchRequest extends LobbyRequest implements Serializable {
 
     private final int matchId;
 
