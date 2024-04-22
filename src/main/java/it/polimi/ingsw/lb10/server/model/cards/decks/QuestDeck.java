@@ -1,4 +1,4 @@
-package it.polimi.ingsw.lb10.server.model.cards.oldVersion.decks;
+package it.polimi.ingsw.lb10.server.model.cards.decks;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;

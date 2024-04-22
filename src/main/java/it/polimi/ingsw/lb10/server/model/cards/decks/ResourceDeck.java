@@ -1,10 +1,8 @@
-package it.polimi.ingsw.lb10.server.model.cards.oldVersion.decks;
+package it.polimi.ingsw.lb10.server.model.cards.decks;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.polimi.ingsw.lb10.server.model.cards.ResourceCard_v1;
-import it.polimi.ingsw.lb10.server.model.cards.corners.*;
-import it.polimi.ingsw.lb10.server.model.cards.oldVersion.Card;
+import it.polimi.ingsw.lb10.server.model.cards.ResourceCard;
 import it.polimi.ingsw.lb10.server.model.cards.oldVersion.ResourceCard;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 
@@ -15,7 +13,7 @@ import java.util.Collections;
 
 public class ResourceDeck {
 
-    private static ArrayList<ResourceCard_v1> cards ;
+    private static ArrayList<ResourceCard> cards ;
 
     // --------> METODI <--------
 
@@ -23,12 +21,12 @@ public class ResourceDeck {
         Collections.shuffle(getCards());
     }
 
-    public ResourceCard_v1 drawCard() {
-        ResourceCard_v1 temp=cards.getLast();
+    public ResourceCard drawCard() {
+        ResourceCard temp=cards.getLast();
         cards.removeLast();
         return temp;
     }
-    public ArrayList<ResourceCard_v1> getCards() {
+    public ArrayList<ResourceCard> getCards() {
         return cards;
     }
 
@@ -39,7 +37,7 @@ public class ResourceDeck {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             File file = new File("src/main/resources/resourceDeck.json");
-            cards = objectMapper.readValue(file, new TypeReference<ArrayList<ResourceCard_v1>>() {});
+            cards = objectMapper.readValue(file, new TypeReference<ArrayList<ResourceCard>>() {});
         }catch (IOException e){
 
         }

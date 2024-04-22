@@ -1,4 +1,4 @@
-package it.polimi.ingsw.lb10.server.model.cards.oldVersion.decks;
+package it.polimi.ingsw.lb10.server.model.cards.decks;
 
 import it.polimi.ingsw.lb10.server.model.cards.oldVersion.Card;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;

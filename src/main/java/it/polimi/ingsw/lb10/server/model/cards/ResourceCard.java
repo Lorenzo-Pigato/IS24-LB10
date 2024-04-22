@@ -8,10 +8,10 @@ import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class GoldenCard_v1 extends PlaceableCard {
+public class ResourceCard extends PlaceableCard{
 @JsonCreator
-    public GoldenCard_v1(@JsonProperty("id") int id, @JsonProperty("color") Color colorCard, @JsonProperty("corners") ArrayList<Corner> corners, @JsonProperty("points") int points, @JsonProperty("resource") Resource resource, @JsonProperty("goldenBuffResource") Resource goldenBuffResource, @JsonProperty("activationCost") HashMap<Resource, Integer> activationCost) {
-        super(id, colorCard, corners, points, resource, goldenBuffResource, activationCost);
+    public ResourceCard(@JsonProperty ("id") int id, @JsonProperty("color") Color colorCard, @JsonProperty("corners") ArrayList<Corner> corners, @JsonProperty("points") int points, @JsonProperty("resource") Resource resource, @JsonProperty("activationCost") HashMap<Resource, Integer> activationCost) {
+        super(id, colorCard, corners, points, resource, Resource.NULL, activationCost);
     }
 
 
@@ -22,7 +22,7 @@ public class GoldenCard_v1 extends PlaceableCard {
 
     @Override
     public Resource getStateCardGoldenBuffResource() {
-        return getCardState().goldenBuffResource();
+        return Resource.NULL;
     }
 
     @Override
@@ -37,7 +37,6 @@ public class GoldenCard_v1 extends PlaceableCard {
 
     @Override
     public HashMap<Resource, Integer> getStateCardActivationCost() {
-        return getCardState().activationCost();
+        return new HashMap<>();
     }
-
 }
