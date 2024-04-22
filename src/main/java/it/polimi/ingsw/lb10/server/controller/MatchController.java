@@ -40,6 +40,7 @@ public class MatchController implements Runnable {
         possiblePosition= new Position[]{Position.TOPLEFT, Position.TOPRIGHT, Position.BOTTOMRIGHT, Position.BOTTOMLEFT};
         drawStrategy= null;
         nodesVisited= new ArrayList<>();
+        players = new ArrayList<>();
     }
     private RemoteView remoteView;
 
