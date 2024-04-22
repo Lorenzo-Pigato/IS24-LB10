@@ -11,7 +11,7 @@ public class Player {
     private Matrix matrix;
     private boolean inGame;
     private ArrayList<PlaceableCard> hand= new ArrayList<>();
-    private HashMap<Resource,Integer> OnMapResources= new HashMap<>();
+    private HashMap<Resource,Integer> onMapResources = new HashMap<>();
     private Quest privateQuest;
     private int points;
 
@@ -25,19 +25,19 @@ public class Player {
 
     public void addOnMapResources(Resource resource) {
         if(resource!=Resource.EMPTY && resource!=Resource.NULL) {
-            if (OnMapResources.containsKey(resource)) {
-                int currentQuantity = OnMapResources.get(resource);
-                OnMapResources.put(resource, currentQuantity + 1);
+            if (onMapResources.containsKey(resource)) {
+                int currentQuantity = onMapResources.get(resource);
+                onMapResources.put(resource, currentQuantity + 1);
             } else
-                OnMapResources.put(resource, 1);
+                onMapResources.put(resource, 1);
         }
     }
 
     public void deleteOnMapResources(Resource resource) {
         if (resource!=Resource.EMPTY && resource!=Resource.NULL) {
-            if (OnMapResources.containsKey(resource)) {
-                int currentQuantity = OnMapResources.get(resource);
-                OnMapResources.put(resource, currentQuantity - 1);
+            if (onMapResources.containsKey(resource)) {
+                int currentQuantity = onMapResources.get(resource);
+                onMapResources.put(resource, currentQuantity - 1);
             } else
                 System.out.println(">>> E r r o r <<<");
         }
@@ -58,10 +58,10 @@ public class Player {
 
     // --------> GETTER <--------
     public int getResourceQuantity(Resource resource) {
-        return OnMapResources.getOrDefault(resource, 0);
+        return onMapResources.getOrDefault(resource, 0);
     }
     public HashMap<Resource, Integer> getOnMapResources() {
-        return OnMapResources;
+        return onMapResources;
     }
     public int getPoints() {
         return points;
@@ -85,5 +85,5 @@ public class Player {
     public void setPoints(int points) {
         this.points = points;
     }
-
+    
 }

@@ -11,9 +11,9 @@ import java.util.Map;
 public class QuestCounter extends Quest{
     private Map<Resource,Integer> activationCost = new HashMap<>();
 
-    public QuestCounter(int id, int points){
-        setId(id);
-        setPoints(points);
+    public QuestCounter(int id, int points,Map<Resource,Integer> activationCost) {
+        super(id, points);
+        this.activationCost=activationCost;
     }
 
     public Map<Resource, Integer> getActivationCost() {

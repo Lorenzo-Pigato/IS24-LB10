@@ -9,6 +9,7 @@ import it.polimi.ingsw.lb10.server.model.cards.Color;
 
 
 public class Corner {
+
     @JsonProperty("id")
     private int id;
     @JsonProperty("available")

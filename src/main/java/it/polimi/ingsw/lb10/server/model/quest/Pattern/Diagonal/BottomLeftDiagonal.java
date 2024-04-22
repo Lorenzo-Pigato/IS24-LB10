@@ -2,16 +2,10 @@ package it.polimi.ingsw.lb10.server.model.quest.Pattern.Diagonal;
 
 import it.polimi.ingsw.lb10.server.model.Matrix;
 import it.polimi.ingsw.lb10.server.model.cards.Color;
-import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
-import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
-import it.polimi.ingsw.lb10.server.model.quest.Pattern.TypePatternStrategy;
 
-import java.util.Optional;
-
-public class BottomLeftDiagonal implements TypePatternStrategy {
-    private final Color cardsColor;
-    public BottomLeftDiagonal(Color cardsColor){
-        this.cardsColor=cardsColor;
+public class BottomLeftDiagonal extends TypeDiagonal {
+    public BottomLeftDiagonal(int id, int points, Color color) {
+        super(id, points, color);
     }
 
     /**
@@ -35,19 +29,5 @@ public class BottomLeftDiagonal implements TypePatternStrategy {
                         return true;
             }
         return  false;
-    }
-
-    public boolean isOfTheSameColor(Matrix matrix, int row, int column){
-        Corner cornerToCheck = null;
-        if(matrix.getNode(row,column).getCorners().isEmpty())
-            return false;
-
-        for(Corner corner : matrix.getNode(row,column).getCorners())
-            if(corner.getPosition().equals(Position.TOPLEFT))
-                cornerToCheck=corner;
-
-        assert cornerToCheck != null;
-        return !cornerToCheck.isUsedForQuest() && cornerToCheck.getCardColor().equals(cardsColor);
-
     }
 }

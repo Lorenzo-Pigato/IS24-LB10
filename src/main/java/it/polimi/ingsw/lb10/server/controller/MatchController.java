@@ -13,7 +13,6 @@ import it.polimi.ingsw.lb10.server.view.RemoteView;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 
@@ -35,10 +34,12 @@ public class MatchController implements Runnable {
     private BlockingQueue<Request> requests;
     private final Position[] possiblePosition;
     private DrawStrategy drawStrategy;
+    ArrayList<Node> nodesVisited;
     private ArrayList<Player> players;
     public MatchController(){
         possiblePosition= new Position[]{Position.TOPLEFT, Position.TOPRIGHT, Position.BOTTOMRIGHT, Position.BOTTOMLEFT};
-        drawStrategy=null;
+        drawStrategy= null;
+        nodesVisited= new ArrayList<>();
     }
     private RemoteView remoteView;
 
@@ -70,10 +71,11 @@ public class MatchController implements Runnable {
      *      after that it's called checkInsertion()
      */
     public boolean insertCard(Player player, PlaceableCard card, int row, int column){
-        player.getMatrix().setCard(card, row, column);
 
         if(!checkActivationCost(player,card))
             return false;
+
+        player.getMatrix().setCard(card, row, column);
 
         return checkInsertion(player, card, row, column);
     }
@@ -93,8 +95,9 @@ public class MatchController implements Runnable {
         if (verificationSetting(player, row, column)) {
             setCardResourceOnPlayer(player, card);
             deleteCoveredResource(player, row, column);
-            player.addPoints(card.getStateCardPoints());
+            addCardPointsOnPlayer(player, card);
             player.removeCardOnHand(card);//the player chooses the next card, it's a request!
+
             return true;
         }
 
@@ -107,12 +110,11 @@ public class MatchController implements Runnable {
      * @return true if the card passed all the requirements
      * it's important to remember that the card is already inserted!
      */
-    public boolean verificationSetting(Player player,int row, int column){
+    public boolean verificationSetting(Player player, int row, int column){
         //if one corner isn't available
         if(checkNotAvailability(player,row,column))
             return false;
 
-        ArrayList<Node> nodesVisited= new ArrayList<>();
         Map<Position, int[]> setIncrement=player.getMatrix().parsingPositionCorners();
         int[] delta= new int[]{0,0};
 
@@ -142,18 +144,17 @@ public class MatchController implements Runnable {
         }
         //turning to the starting position
         row-=delta[0]; column-=delta[1];
-
         //if the card doesn't cover at least one card, it's an error
         return !nodesVisited.isEmpty();
     }
 
     public boolean checkActivationCost(Player player,PlaceableCard card){
-        if(card.getStateCardActivationCost()==null)
+        if(card.getStateCardActivationCost().isEmpty())
             return true;
-        for (Map.Entry<Resource, Integer> entry : card.getStateCardActivationCost().entrySet()) {
+        for (Map.Entry<Resource, Integer> entry : card.getStateCardActivationCost().entrySet())
             if(player.getResourceQuantity(entry.getKey()) < entry.getValue())
                 return false;
-        }
+
         return true;
     }
 
@@ -172,6 +173,7 @@ public class MatchController implements Runnable {
         for(Corner corner : card.getStateCardCorners()){
             player.addOnMapResources(corner.getResource());
         }
+        player.addOnMapResources(card.getStateCardMiddleResource());
     }
 
     public void deleteCoveredResource(Player player,int row, int column){
@@ -180,8 +182,21 @@ public class MatchController implements Runnable {
         for(Position position: getPossiblePosition()){
             int[] delta = setIncrement.get(position);
             if (player.getMatrix().getNode(row + delta[0], column + delta[1]).getCorners().size()==2)
-                player.deleteOnMapResources(player.getMatrix().getNode(row + delta[0], column + delta[1]).getCorners().get(0).getResource());
+                player.deleteOnMapResources(player.getMatrix().getNode(row + delta[0], column + delta[1]).getCorners().getFirst().getResource());
         }
+    }
+    public void addCardPointsOnPlayer(Player player,PlaceableCard card){
+        Resource goldenResource=card.getStateCardGoldenBuffResource();
+        if(goldenResource.equals(Resource.NULL))
+            player.addPoints(card.getStateCardPoints());
+        else if(goldenResource.equals(Resource.PATTERN))
+            player.addPoints(card.getStateCardPoints() * nodesVisited.size());
+        else if (goldenResource.equals(Resource.FEATHER) || goldenResource.equals(Resource.PERGAMENA) || goldenResource.equals(Resource.POTION) )
+            player.addPoints(card.getStateCardPoints()*player.getResourceQuantity(goldenResource));
+        else
+            player.addPoints(card.getStateCardPoints());
+
+        nodesVisited=new ArrayList<>();
     }
 
     public void addPlayer(Player player){

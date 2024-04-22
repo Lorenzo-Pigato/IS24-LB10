@@ -12,6 +12,7 @@ public class GoldenCard extends PlaceableCard {
 @JsonCreator
     public GoldenCard(@JsonProperty("id") int id, @JsonProperty("color") Color colorCard, @JsonProperty("corners") ArrayList<Corner> corners, @JsonProperty("points") int points, @JsonProperty("resource") Resource resource, @JsonProperty("goldenBuffResource") Resource goldenBuffResource, @JsonProperty("activationCost") HashMap<Resource, Integer> activationCost) {
         super(id, colorCard, corners, points, resource, goldenBuffResource, activationCost);
+        setNotFlippedState();
     }
 
 
