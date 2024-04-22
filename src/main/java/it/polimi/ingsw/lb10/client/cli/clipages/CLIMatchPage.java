@@ -18,14 +18,13 @@ import it.polimi.ingsw.lb10.server.model.cards.corners.CornerAvailable;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class CLIMatchPage implements CLIPage{
 
     private CLIState state = new Default();
+
+    // -------------- HAND DATA ---------------- //
     private static final int[][] handUpLeftCornersPosition = {
             {4, 35},
             {27, 35},
@@ -35,10 +34,22 @@ public class CLIMatchPage implements CLIPage{
     private static final int handCardHeight = 8;
     private static final int handCardWidth = 20;
 
+    // -------------- CHAT DATA ---------------- //
     private static final int maxChatLength = 26;
     private static final int maxMessageLength = 38;
     private static final ArrayDeque<CLIString[]> messages = new ArrayDeque<>();     //This queue will contain player's name [0] and message sent [1]
     private static final int[] currentChatPosition = new int[2];
+
+    // ------------ RESOURCE DATA -------------- //
+    private static final Map<Resource, int[]> resources = new HashMap<>(){
+        {
+            put(Resource.ANIMAL, new int[]{80, 35});
+            put(Resource.FEATHER, new int[]{80, 38});
+            put(Resource.MUSHROOM, new int[]{80, 41});
+            put(Resource.PLANT, new int[]{80, 44});
+            put(Resource.POTION, new int[]{80, 47});
+        }
+    };
 
     public CLIMatchPage(){
         currentChatPosition[0] = 119;
@@ -66,15 +77,15 @@ public class CLIMatchPage implements CLIPage{
                     AnsiColor.WHITE,
                     AnsiFormat.BOLD);
 
-            // Draw the chat
+            // Draw chat table
             CLIBox.draw(118,2, 40, 30, AnsiColor.PURPLE);
             CLIBox.draw(118,2, 40,3, "Chat", AnsiColor.PURPLE, AnsiColor.WHITE, AnsiFormat.BOLD);
 
-            // Draw the hand
+            // Draw hand
             CLIBox.draw(2,32, 70, 12, AnsiColor.WHITE);
             CLIBox.draw(2,32, "Hand", AnsiColor.WHITE);
 
-            // Draw available resources
+            // Draw resources board
             CLIBox.draw(75,32, 40, 12, AnsiColor.WHITE);
             CLIBox.draw(75,32, "Resources", AnsiColor.WHITE);
 
@@ -82,6 +93,7 @@ public class CLIMatchPage implements CLIPage{
             CLIBox.draw(118,32, 40, 12, AnsiColor.WHITE);
             CLIBox.draw(118,32, "Objectives", AnsiColor.WHITE);
             CLILine.drawVertical(138, 33, 44, AnsiColor.WHITE);
+            drawResourceTable();
 
             CLILine.drawHorizontal(2, 44,158, AnsiColor.WHITE);
 
@@ -89,6 +101,16 @@ public class CLIMatchPage implements CLIPage{
             CLICommand.saveCursorPosition();
         }
     }
+
+    // -------------- BOARD ---------------- //
+
+    private static void drawBoardCorner(Corner corner, int col, int row){
+        CLICommand.setPosition(col, row);
+        // ------ NOT IMPLEMENTED YET ------ //
+
+    }
+
+    // ---------------- HAND ---------------- //
 
     private static void drawHandCorner(Corner corner, int col, int row) {
         if(corner instanceof CornerAvailable) {
@@ -101,12 +123,6 @@ public class CLIMatchPage implements CLIPage{
                     AnsiFormat.BOLD
             );
         }
-    }
-
-    private static void drawBoardCorner(Corner corner, int col, int row){
-        CLICommand.setPosition(col, row);
-        // ------ NOT IMPLEMENTED YET ------ //
-
     }
 
     private static void addCardToHand(@NotNull Card card, int inHandPosition){
@@ -147,6 +163,20 @@ public class CLIMatchPage implements CLIPage{
         CLICommand.restoreCursorPosition();
     }
 
+    // ------------ RESOURCES -------------- //
+
+    private static void drawResourceTable(){
+        for (Resource resource : resources.keySet()){
+            CLICommand.setPosition(resources.get(resource)[0], resources.get(resource)[1]);
+            AnsiString.print(AnsiSpecial.BLOCK.getCode(), resource.getColor());
+        }
+    }
+
+    public static void drawResource(Resource resource, int col, int row){
+        CLIBox.draw(col, row, 5, 3, resource.getLetter(), resource.getColor(), resource.getColor(), AnsiFormat.BOLD);
+    }
+
+    // ---------------- CHAT ------------------- //
     public static void chatLog(@NotNull String username, String message, AnsiColor playerColor){
         messages.addLast(new CLIString[]{
                 new CLIString(username + ": ",
