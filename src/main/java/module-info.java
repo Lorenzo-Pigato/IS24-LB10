@@ -15,6 +15,6 @@ module it.polimi.ingsw.lb10 {
     exports it.polimi.ingsw.lb10.server.model.DrawType;
     exports it.polimi.ingsw.lb10.server.model.cards.CardState;
     exports it.polimi.ingsw.lb10.server.model.quest.Pattern.Diagonal;
-    exports it.polimi.ingsw.lb10.server.model.quest.Pattern;
     exports it.polimi.ingsw.lb10.server.model.cards.oldVersion;
+    exports it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ;
 }

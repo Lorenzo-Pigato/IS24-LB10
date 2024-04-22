@@ -1,11 +1,11 @@
 package it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ;
 
-import it.polimi.ingsw.lb10.server.model.Matrix;
-import it.polimi.ingsw.lb10.server.model.quest.Pattern.TypePatternStrategy;
+import it.polimi.ingsw.lb10.server.model.cards.Color;
 
-public class BottonRight implements TypePatternStrategy {
-    @Override
-    public boolean isPattern(Matrix matrix, int row, int column) {
-        return false;
+public class BottonRight extends LJPattern {
+    public BottonRight(int id, int points, Color bodyColor, Color toeColor) {
+        super(id, points, bodyColor, toeColor);
     }
+
+
 }

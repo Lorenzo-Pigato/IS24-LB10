@@ -2,10 +2,7 @@ package it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ;
 
 import it.polimi.ingsw.lb10.server.model.Matrix;
 import it.polimi.ingsw.lb10.server.model.cards.Color;
-import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
-import it.polimi.ingsw.lb10.server.model.quest.Pattern.LJPattern;
-import it.polimi.ingsw.lb10.server.model.quest.Pattern.TypePatternStrategy;
 
 public class BottonLeft extends LJPattern {
 
@@ -42,28 +39,4 @@ public class BottonLeft extends LJPattern {
     public boolean checkPatternBodyThree(Matrix matrix, int row, int column){
         return checkCorner(matrix, row, column-3, Position.TOPLEFT, true) && checkCorner(matrix, row, column -1 , Position.TOPLEFT, true) && checkCorner(matrix, row, column , Position.TOPRIGHT, false);
     }
-
-    public boolean checkCorner(Matrix matrix, int row,int column,Position position,boolean bodyOrToe){
-        Corner cornerToCheck = null;
-
-        for(Corner corner : matrix.getNode(row,column).getCorners())
-            if(corner.getPosition().equals(position))
-                cornerToCheck=corner;
-
-        assert cornerToCheck != null;
-        if(!cornerToCheck.isUsedForQuest()){
-            return checkColor(cornerToCheck, bodyOrToe);
-        }
-        return false;
-    }
-
-    public boolean checkColor(Corner cornerToCheck,boolean bodyOrToe){
-        if(bodyOrToe)
-            return cornerToCheck.getCardColor().equals(getBodyColor());
-        else
-            return cornerToCheck.getCardColor().equals(getToeColor());
-    }
-
-
-
 }

@@ -23,7 +23,6 @@ public abstract class PlaceableCard extends BaseCard {
         this.goldenBuffResource=goldenBuffResource;
         this.activationCost=activationCost;
 
-        setNotFlippedState();
     }
 
     public void swapState(){

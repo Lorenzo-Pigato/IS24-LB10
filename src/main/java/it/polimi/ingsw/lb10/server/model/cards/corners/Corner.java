@@ -5,7 +5,7 @@ import it.polimi.ingsw.lb10.server.model.Resource;
 import it.polimi.ingsw.lb10.server.model.cards.Color;
 
 
-public abstract class Corner {
+public class Corner {
     private int id;
     private boolean available;
     private boolean usedForQuest;

@@ -10,6 +10,7 @@ public class ResourceCard_v1 extends PlaceableCard{
 
     public ResourceCard_v1(int id, Color colorCard, ArrayList<Corner> corners, int points, Resource resource, Resource goldenBuffResource, HashMap<Resource, Integer> activationCost) {
         super(id, colorCard, corners, points, resource, goldenBuffResource, activationCost);
+        setNotFlippedState();
     }
 
     @Override

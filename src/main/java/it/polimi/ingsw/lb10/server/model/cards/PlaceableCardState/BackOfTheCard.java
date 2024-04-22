@@ -3,7 +3,6 @@ package it.polimi.ingsw.lb10.server.model.cards.PlaceableCardState;
 import it.polimi.ingsw.lb10.server.model.Resource;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
-import it.polimi.ingsw.lb10.server.model.cards.corners.CornerAvailable;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 
 import java.util.ArrayList;
@@ -14,12 +13,12 @@ public class BackOfTheCard implements StateOfTheCard{
     private static PlaceableCard placeableCard;
     private ArrayList<Corner> flippedCorners = new ArrayList<>();
     public BackOfTheCard(PlaceableCard placeableCard){
-        this.placeableCard=placeableCard;
+        BackOfTheCard.placeableCard =placeableCard;
 
-         flippedCorners= new ArrayList<>(Arrays.asList(new CornerAvailable(placeableCard.getId(),true,false,Position.TOPLEFT,Resource.EMPTY,placeableCard.getColorCard()),
-                new CornerAvailable(placeableCard.getId(),true,false,Position.TOPLEFT,Resource.EMPTY,placeableCard.getColorCard()),
-                new CornerAvailable(placeableCard.getId(),true,false,Position.TOPLEFT,Resource.EMPTY,placeableCard.getColorCard()),
-                new CornerAvailable(placeableCard.getId(),true,false,Position.TOPLEFT,Resource.EMPTY,placeableCard.getColorCard())));
+         flippedCorners= new ArrayList<>(Arrays.asList(new Corner(placeableCard.getId(),true,false,Position.TOPLEFT,Resource.EMPTY,placeableCard.getColorCard()),
+                new Corner(placeableCard.getId(),true,false,Position.TOPLEFT,Resource.EMPTY,placeableCard.getColorCard()),
+                new Corner(placeableCard.getId(),true,false,Position.TOPLEFT,Resource.EMPTY,placeableCard.getColorCard()),
+                new Corner(placeableCard.getId(),true,false,Position.TOPLEFT,Resource.EMPTY,placeableCard.getColorCard())));
     }
     @Override
     public ArrayList<Corner> getCorners() {

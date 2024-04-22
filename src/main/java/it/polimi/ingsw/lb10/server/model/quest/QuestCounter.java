@@ -16,7 +16,6 @@ public class QuestCounter extends Quest{
         this.activationCost=activationCost;
     }
 
-
     public Map<Resource, Integer> getActivationCost() {
         return activationCost;
     }
