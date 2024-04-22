@@ -44,9 +44,11 @@ public class CLIMatchPage implements CLIPage{
     private static final Map<Resource, int[]> resources = new HashMap<>(){
         {
             put(Resource.ANIMAL, new int[]{80, 35});
-            put(Resource.FEATHER, new int[]{80, 38});
             put(Resource.MUSHROOM, new int[]{80, 41});
             put(Resource.PLANT, new int[]{80, 44});
+            put(Resource.INSECT, new int[]{80, 47});
+            put(Resource.FEATHER, new int[]{80, 38});
+            put(Resource.PERGAMENA, new int[]{80, 44});
             put(Resource.POTION, new int[]{80, 47});
         }
     };
@@ -168,7 +170,7 @@ public class CLIMatchPage implements CLIPage{
     private static void drawResourceTable(){
         for (Resource resource : resources.keySet()){
             CLICommand.setPosition(resources.get(resource)[0], resources.get(resource)[1]);
-            AnsiString.print(AnsiSpecial.BLOCK.getCode(), resource.getColor());
+            AnsiString.print(AnsiSpecial.BLOCK.getCode() + ": ", resource.getColor());
         }
     }
 
