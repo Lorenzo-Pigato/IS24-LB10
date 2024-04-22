@@ -1,15 +1,18 @@
 package it.polimi.ingsw.lb10.server.model.quest;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public abstract class Quest {
     private int id;
     private int points;
 
-    public Quest(int id, int points){
-        this.id=id;
-        this.points=points;
+@JsonCreator
+    public Quest( @JsonProperty("id") int id, @JsonProperty("points") int points){
+        this.id = id;
+        this.points = points;
     }
 
-    // --------> GETTER <--------
     public int getPoints() {
         return points;
     }
@@ -18,7 +21,6 @@ public abstract class Quest {
         return id;
     }
 
-    // --------> SETTER <--------
     public void setPoints(int points) {
         this.points=points;
     }
