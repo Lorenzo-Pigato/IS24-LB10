@@ -1,17 +1,6 @@
 package it.polimi.ingsw.lb10.client.controller;
 
-import it.polimi.ingsw.lb10.server.model.Resource;
-import it.polimi.ingsw.lb10.server.model.cards.Color;
-
-import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
-import it.polimi.ingsw.lb10.server.model.cards.corners.CornerAvailable;
-import it.polimi.ingsw.lb10.server.model.cards.corners.CornerNotAvailable;
-import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import org.junit.jupiter.api.BeforeAll;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
