@@ -1,5 +1,8 @@
 package it.polimi.ingsw.lb10.server.model.cards;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.lb10.server.model.Resource;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCardState.FrontOfTheCard;
 import it.polimi.ingsw.lb10.server.model.cards.StartingCardState.BackStartingCard;
@@ -9,16 +12,19 @@ import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 
 import java.util.ArrayList;
 
-public class StartingCard_v2 extends BaseCard {
+public class StartingCard extends BaseCard {
 
     private ArrayList<Corner> flippedCardCorners;
     private ArrayList<Resource> middleResources;
+    @JsonIgnore
     private StateStartingCard stateStartingCard;
-    public StartingCard_v2(int id, Color colorCard, ArrayList<Corner> corners,ArrayList<Corner> flippedCardCorners,ArrayList<Resource> middleResources,StateStartingCard stateStartingCard) {
+
+    @JsonCreator
+    public StartingCard(@JsonProperty("id") int id,@JsonProperty("color") Color colorCard, @JsonProperty("corners") ArrayList<Corner> corners, @JsonProperty("flippedCardCorners") ArrayList<Corner> flippedCardCorners, @JsonProperty("middleResource") ArrayList<Resource> middleResources) {
         super(id, colorCard, corners);
-        this.flippedCardCorners=flippedCardCorners;
-        this.middleResources=middleResources;
-        this.stateStartingCard=stateStartingCard;
+        this.flippedCardCorners = flippedCardCorners;
+        this.middleResources = middleResources;
+        this.stateStartingCard = new FrontStartingCard(this);
     }
 
     public void swapState(){
@@ -29,13 +35,14 @@ public class StartingCard_v2 extends BaseCard {
     }
 
     // --------> SETTER <--------
-
     public void setFlippedState() {
         stateStartingCard = new FrontStartingCard(this);
     }
-
     public void setNotFlippedState() {
         stateStartingCard = new BackStartingCard(this);
+    }
+    public void setMiddleResources(ArrayList<Resource> middleResources) {
+        this.middleResources = middleResources;
     }
     // --------> GETTER <--------
 
@@ -49,11 +56,8 @@ public class StartingCard_v2 extends BaseCard {
         return stateStartingCard;
     }
     // --------> SETTER <--------
-
     public void setFlippedCardCorners(ArrayList<Corner> flippedCardCorners) {
         this.flippedCardCorners = flippedCardCorners;
     }
-    public void setMiddleResources(ArrayList<Resource> middleResources) {
-        this.middleResources = middleResources;
-    }
+
 }

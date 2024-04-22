@@ -1,26 +1,26 @@
-package it.polimi.ingsw.lb10.server.model.cards.oldVersion.decks;
+package it.polimi.ingsw.lb10.server.model.cards.decks;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
-import it.polimi.ingsw.lb10.server.model.cards.oldVersion.Card;
+import it.polimi.ingsw.lb10.server.model.quest.QuestCounter;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class QuestDeck implements Deck {
+public class QuestDeck {
+
     private ArrayList<Quest> cards= new ArrayList<>();
-    @Override
+
     public void shuffle() {
         Collections.shuffle(getCards());
     }
 
-    @Override
     public Quest drawQuest() {
-        Quest temp=cards.getLast();
+        Quest card = cards.getLast();
         cards.removeLast();
-        return temp;
-        }
+        return card;
+    }
 
     public ArrayList<Quest> getCards() {
         return cards;
@@ -28,14 +28,14 @@ public class QuestDeck implements Deck {
 
     public void fillDeck(){
         ObjectMapper mapper = new ObjectMapper();
+
+        ArrayList<QuestCounter> counterQuest = new ArrayList<QuestCounter>();
+
         try {
-            cards = mapper.readValue(new File("src/main/resources/it/polimi/ingsw/lb10/json/questDeck.json"),new TypeReference<ArrayList<Quest>>() {});
+            counterQuest = mapper.readValue(new File("src/main/resources/it/polimi/ingsw/lb10/json/counterQuestDeck.json"),new TypeReference<ArrayList<QuestCounter>>() {});
         } catch (Exception e) {
             System.out.println(e);
         }
     }
-    @Override
-    public Card drawCard() {
-        return null;
-    }
+
 }

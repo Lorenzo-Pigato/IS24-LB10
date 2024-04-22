@@ -1,8 +1,10 @@
 package it.polimi.ingsw.lb10.server.model;
 
 import it.polimi.ingsw.lb10.server.model.DrawType.DrawStrategy;
-import it.polimi.ingsw.lb10.server.model.cards.Deck;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
+import it.polimi.ingsw.lb10.server.model.cards.decks.GoldenDeck;
+import it.polimi.ingsw.lb10.server.model.cards.decks.QuestDeck;
+import it.polimi.ingsw.lb10.server.model.cards.decks.ResourceDeck;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import it.polimi.ingsw.lb10.network.requests.Request;
 
@@ -17,16 +19,16 @@ import java.util.List;
  */
 public class MatchModel extends Observable<Request> {
 
-    private final String id;
-    private final List<Player> players = new ArrayList<>();
-    private DrawStrategy drawStrategy;
-    private final Deck resourceDeck= new Deck();
-    private final Deck goldenDeck = new Deck();
-    private final Deck questDeck = new Deck();
+    private final   String id;
+    private final   List<Player> players = new ArrayList<>();
+    private         DrawStrategy drawStrategy;
+    private final   ResourceDeck resourceDeck= new ResourceDeck();
+    private final   GoldenDeck goldenDeck = new GoldenDeck();
+    private final   QuestDeck questDeck = new QuestDeck();
 
-    private final List<Quest> commonQuests = new ArrayList<>();
-    private final List<PlaceableCard> goldenUncovered = new ArrayList<>();
-    private final List<PlaceableCard> resourceUncovered= new ArrayList<>();
+    private final   List<Quest> commonQuests = new ArrayList<>();
+    private final   List<PlaceableCard> goldenUncovered = new ArrayList<>();
+    private final   List<PlaceableCard> resourceUncovered= new ArrayList<>();
 
 
     public MatchModel(String id) throws IOException {
@@ -63,8 +65,7 @@ public class MatchModel extends Observable<Request> {
             goldenUncovered.add(getGoldenCardFromDeck());
             resourceUncovered.add(getResourceCardFromDeck());
         }
-// commonQuests.add(questDeck.json.draw());
-// I need time to dev the Quest!
+
     }
 
     /**
@@ -105,10 +106,16 @@ public class MatchModel extends Observable<Request> {
         return commonQuests;
     }
 
-    public Deck getResourceDeck() {
+    /**
+     * @return the Resource Deck
+     */
+    public ResourceDeck getResourceDeck() {
         return resourceDeck;
     }
-    public Deck getGoldenDeck() {
+    /**
+     * @return the Golden Deck
+     */
+    public GoldenDeck getGoldenDeck() {
         return goldenDeck;
     }
 
