@@ -9,6 +9,8 @@ import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.network.requests.Request;
+import it.polimi.ingsw.lb10.server.model.quest.Quest;
+import it.polimi.ingsw.lb10.server.model.quest.QuestCounter;
 import it.polimi.ingsw.lb10.server.view.RemoteView;
 
 import java.io.IOException;
@@ -198,6 +200,18 @@ public class MatchController implements Runnable {
 
         nodesVisited=new ArrayList<>();
     }
+
+    /**
+     * @param player who has the turn
+     *  This method is to call at the end of the game!
+     */
+    public void checkCounterQuestPoints(Player player){
+        for(Quest quest : model.getCommonQuests()){
+            if(quest instanceof QuestCounter)
+                player.addQuestPoints(((QuestCounter) quest).questAlgorithm(player.getOnMapResources()));
+        }
+    }
+
 
     public void addPlayer(Player player){
         players.add(player);

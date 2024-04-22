@@ -1,7 +1,10 @@
 package it.polimi.ingsw.lb10.server.model.quest.Pattern.Diagonal;
 
 import it.polimi.ingsw.lb10.server.model.Matrix;
+import it.polimi.ingsw.lb10.server.model.Resource;
 import it.polimi.ingsw.lb10.server.model.cards.Color;
+
+import java.util.Map;
 
 public class BottomLeftDiagonal extends TypeDiagonal {
     public BottomLeftDiagonal(int id, int points, Color color) {
@@ -29,5 +32,10 @@ public class BottomLeftDiagonal extends TypeDiagonal {
                         return true;
             }
         return  false;
+    }
+
+    @Override
+    public int questAlgorithm(Map<Resource, Integer> onMapResources) {
+        return 0;
     }
 }

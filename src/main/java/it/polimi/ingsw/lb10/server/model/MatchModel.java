@@ -95,30 +95,19 @@ public class MatchModel extends Observable<Request> {
     public DrawStrategy getDrawState() {
         return drawStrategy;
     }
-
-    /**
-     * @return the resource card draw from the deck
-     */
     public PlaceableCard getResourceCardFromDeck(){
         return (PlaceableCard) getResourceDeck().drawCard();
     }
-
-    /**
-     * @return the golden card draw from the deck
-     */
     public PlaceableCard getGoldenCardFromDeck(){
         return (PlaceableCard) getGoldenDeck().drawCard();
     }
+    public List<Quest> getCommonQuests() {
+        return commonQuests;
+    }
 
-    /**
-     * @return the Resource Deck
-     */
     public Deck getResourceDeck() {
         return resourceDeck;
     }
-    /**
-     * @return the Golden Deck
-     */
     public Deck getGoldenDeck() {
         return goldenDeck;
     }
@@ -129,9 +118,6 @@ public class MatchModel extends Observable<Request> {
     public List<PlaceableCard> getGoldenUncovered() {
         return goldenUncovered;
     }
-    /**
-     * @return the List of players
-     */
     public List<Player> getPlayers() {
         return players;
     }

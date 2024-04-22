@@ -5,20 +5,24 @@ import it.polimi.ingsw.lb10.server.model.quest.Quest;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
 
 public class Player {
-    private String username;
-    private Matrix matrix;
-    private boolean inGame;
-    private ArrayList<PlaceableCard> hand= new ArrayList<>();
-    private HashMap<Resource,Integer> onMapResources = new HashMap<>();
-    private Quest privateQuest;
+    private int questPoints;
     private int points;
+    private boolean inGame;
+    private String username;
+    private Quest privateQuest;
+    private Matrix matrix;
+    private final ArrayList<PlaceableCard> hand= new ArrayList<>();
+    private final Map<Resource,Integer> onMapResources = new Hashtable<>();
 
     public Player(String username) {
         this.username = username;
         inGame=true;
         points=0;
+        questPoints=0;
     }
 
     // --------> METHODS <--------
@@ -42,16 +46,26 @@ public class Player {
                 System.out.println(">>> E r r o r <<<");
         }
     }
-
-    public void addPoints(int point){
-        int tempPoints=getPoints()+point;
-        setPoints(tempPoints);
+    public void maxScore(){
+        if(getPoints()>30)
+            setPoints(30);
     }
 
+    public void addPoints(int point){
+        setPoints(point+getPoints());
+    }
+
+    /**
+     * @param questPoints to add,
+     *                    It's important to manage the fact that the max score is 30!!!!
+     */
+    public void addQuestPoints(int questPoints){
+        setQuestPoints(questPoints+getQuestPoints());
+        maxScore();
+    }
     public void addCardOnHand(PlaceableCard card){
         hand.add(card);
     }
-
     public void removeCardOnHand(PlaceableCard cardToRemove){
         getHand().remove(cardToRemove);
     }
@@ -60,7 +74,7 @@ public class Player {
     public int getResourceQuantity(Resource resource) {
         return onMapResources.getOrDefault(resource, 0);
     }
-    public HashMap<Resource, Integer> getOnMapResources() {
+    public Map<Resource, Integer> getOnMapResources() {
         return onMapResources;
     }
     public int getPoints() {
@@ -71,6 +85,10 @@ public class Player {
     }
     public Matrix getMatrix() {
         return matrix;
+    }
+
+    public int getQuestPoints() {
+        return questPoints;
     }
 
     // --------> SETTER <--------
@@ -85,5 +103,8 @@ public class Player {
     public void setPoints(int points) {
         this.points = points;
     }
-    
+
+    public void setQuestPoints(int questPoints) {
+        this.questPoints = questPoints;
+    }
 }
