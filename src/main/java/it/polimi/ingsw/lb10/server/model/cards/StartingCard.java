@@ -1,51 +1,63 @@
 package it.polimi.ingsw.lb10.server.model.cards;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.lb10.server.model.Resource;
+import it.polimi.ingsw.lb10.server.model.cards.PlaceableCardState.FrontOfTheCard;
+import it.polimi.ingsw.lb10.server.model.cards.StartingCardState.BackStartingCard;
+import it.polimi.ingsw.lb10.server.model.cards.StartingCardState.FrontStartingCard;
+import it.polimi.ingsw.lb10.server.model.cards.StartingCardState.StateStartingCard;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 
-
 import java.util.ArrayList;
-import java.util.HashMap;
 
-/** When we define this card we want to know the middle's resource and the free corners
-     *  We have to define a method that from the json get the car
-     */
-public class StartingCard extends Card {
-    private CardState cardState;
-    public StartingCard(int id, boolean flipped, int points, ArrayList<Corner> corners, Resource resource, Color color, HashMap<Resource,Integer> activationCost, ArrayList<Resource> resources){
-        this.setId(id);
-        this.setPoints(points);
-        this.setFlipped(flipped);
-        this.setCorners(corners);
-        this.setColor(color);
+public class StartingCard extends BaseCard {
 
-        flippedCheck();
+    private ArrayList<Corner> flippedCardCorners;
+    private ArrayList<Resource> middleResources;
+    @JsonIgnore
+    private StateStartingCard stateStartingCard;
+
+    @JsonCreator
+    public StartingCard(@JsonProperty("id") int id,@JsonProperty("color") Color colorCard, @JsonProperty("corners") ArrayList<Corner> corners, @JsonProperty("flippedCardCorners") ArrayList<Corner> flippedCardCorners, @JsonProperty("middleResource") ArrayList<Resource> middleResources) {
+        super(id, colorCard, corners);
+        this.flippedCardCorners = flippedCardCorners;
+        this.middleResources = middleResources;
+        this.stateStartingCard = new FrontStartingCard(this);
+    }
+
+    public void swapState(){
+        if (getStateStartingCard() instanceof FrontOfTheCard)
+            setNotFlippedState();
+        else
+            setFlippedState();
     }
 
     // --------> SETTER <--------
-
-    @Override
     public void setFlippedState() {
-        cardState = new FlippedCardState(getId(),getResources());
+        stateStartingCard = new FrontStartingCard(this);
     }
-
     public void setNotFlippedState() {
-        cardState = new NotFlippedCardState(getCorners(),getPoints(),getActivationCost(),getResources());
+        stateStartingCard = new BackStartingCard(this);
     }
-
+    public void setMiddleResources(ArrayList<Resource> middleResources) {
+        this.middleResources = middleResources;
+    }
     // --------> GETTER <--------
 
-    public CardState getCardState() {
-        return cardState;
+    public ArrayList<Corner> getFlippedCardCorners() {
+        return flippedCardCorners;
+    }
+    public ArrayList<Resource> getMiddleResources() {
+        return middleResources;
+    }
+    public StateStartingCard getStateStartingCard() {
+        return stateStartingCard;
+    }
+    // --------> SETTER <--------
+    public void setFlippedCardCorners(ArrayList<Corner> flippedCardCorners) {
+        this.flippedCardCorners = flippedCardCorners;
     }
 
-    @Override
-    public ArrayList<Corner> getStateCardCorners() {
-        return getCardState().getCorners();
-    }
-
-    @Override
-    public ArrayList<Resource> getStateCardResources(){
-        return getCardState().getCardResources();
-    }
 }

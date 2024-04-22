@@ -1,6 +1,6 @@
 package it.polimi.ingsw.lb10.server.model;
 
-import it.polimi.ingsw.lb10.server.model.cards.Card;
+import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 
@@ -13,11 +13,10 @@ import java.util.Map;
  */
 public class Matrix {
     private final ArrayList<ArrayList<Node>> matrix= new ArrayList<>();
-    Player player;
 
-    public Matrix(Player player){
+
+    public Matrix(){
         startingMatrix();
-        this.player=player;
     }
 
     /**
@@ -45,7 +44,7 @@ public class Matrix {
     /**
      * @param card is the starting card!
      */
-    public void setCard(Card card){
+    public void setCard(PlaceableCard card){
         setCard(card,41,41);
     }
 
@@ -53,7 +52,7 @@ public class Matrix {
      * @param card to set inside the matrix, it's not the staring
      *      i and j are the top-left node.
      */
-    public void setCard(Card card,int row, int column){
+    public void setCard(PlaceableCard card, int row, int column){
         Map<Position, int[]> setIncrement = parsingPositionCorners();
         for (Corner corner : card.getStateCardCorners()) {
             int[] delta = setIncrement.get(corner.getPosition());

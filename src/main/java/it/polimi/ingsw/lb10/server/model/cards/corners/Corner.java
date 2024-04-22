@@ -1,33 +1,52 @@
 package it.polimi.ingsw.lb10.server.model.cards.corners;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.lb10.server.model.Resource;
+import it.polimi.ingsw.lb10.server.model.cards.Color;
 
 
-public abstract class Corner {
-    private boolean available;
-    private Position position;
-    private Resource resource;
+public class Corner {
+
+    @JsonProperty("id")
     private int id;
+    @JsonProperty("available")
+    private boolean available;
+    @JsonIgnore
+    private boolean usedForQuest;
+    @JsonProperty("position")
+    private Position position;
+    @JsonProperty("resource")
+    private Resource resource;
+    @JsonProperty("color")
+    private Color cardColor;
 
-    public Corner(Position position,Resource resource){
-        this.position=position;
-        this.resource=resource;
+@JsonCreator
+    public Corner( @JsonProperty("id") int id, @JsonProperty("available") boolean available, @JsonProperty("position") Position position, @JsonProperty("resource") Resource resource, @JsonProperty("color") Color cardColor){
+        this.id = id;
+        this.available = available;
+        this.usedForQuest = false;
+        this.position = position;
+        this.resource = resource;
+        this.cardColor = cardColor;
     }
 
     // --------> GETTER <--------
 
-    @JsonAlias("position")
     public Position getPosition() {
         return position;
     }
 
-    @JsonAlias("available")
     public boolean isAvailable() {
         return available;
     }
 
-    @JsonAlias("resource")
+    public boolean isUsedForQuest(){
+        return isUsedForQuest();
+    }
+
     public Resource getResource() {
         return resource;
     }
@@ -36,18 +55,20 @@ public abstract class Corner {
         return id;
     }
 
+    public Color getCardColor() {
+        return cardColor;
+    }
+
     // --------> SETTER <--------
-    @JsonAlias("position")
+
     public void setPosition(Position position) {
         this.position = position;
     }
 
-    @JsonAlias("available")
     public void setAvailable(boolean available) {
         this.available = available;
     }
 
-    @JsonAlias("resource")
     public void setResource(Resource resource) {
         this.resource = resource;
     }
@@ -55,4 +76,9 @@ public abstract class Corner {
     public void setId(int id) {
         this.id = id;
     }
+
+    public void setCardColor(Color cardColor) {
+        this.cardColor = cardColor;
+    }
+    private void setUsedForQuest(boolean usedForQuest){ this.usedForQuest=usedForQuest;}
 }

@@ -1,0 +1,412 @@
+[
+  {
+    "id" 			    : "41",
+    "corners"		    : [{"available" : false , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 41, "color" : "RED"}, {"available" : true, "position" : "TOPRIGHT" , "resource"  : "PERGAMENA" , "id" : 41, "color" : "RED"}, {"available" : false , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 41 , "color" : "RED"}, {"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 41,  "color" : "RED"}],
+    "resource"          : "MUSHROOM" ,
+    "points"            : 3,
+    "color"			    : "RED",
+    "goldenBuffResource": "EMPTY",
+    "activationCost" 	: {"MUSHROOM" :  3 , "PLANT" :  0 , "INSECT" :  0, "ANIMAL" : 0}
+
+  },
+  {
+    "id" 			    : "42",
+    "corners"		    : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "FEATHER" , "id" : 42, "color" : "RED"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "EMPTY", "id" : 42, "color" : "RED"},{"available" : false , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 42,  "color" : "RED"}, {"available" : false , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 42, "color" : "RED"}],
+    "resource"          : "MUSHROOM" ,
+    "points"            : 3 ,
+    "color"			    : "RED",
+    "goldenBuffResource": "EMPTY",
+    "activationCost" 	: {"MUSHROOM" :  3 , "PLANT" :  0 , "INSECT" :  0, "ANIMAL" : 0}
+
+  },
+  {
+    "id" 			    : "43",
+    "corners"		    : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 43, "color" : "RED"}, {"available" : false , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 43, "color" : "RED"}, {"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 43, "color" : "RED"}, {"available" : false , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 43, "color" : "RED"}],
+    "resource"          : "MUSHROOM" ,
+    "points"            : 5 ,
+    "color"			    : "RED",
+    "goldenBuffResource": "EMPTY",
+    "activationCost" 	: {"MUSHROOM" :  5 , "PLANT" :  0 , "INSECT" :  0, "ANIMAL" : 0}
+  },
+  {
+    "id" 			    : "44",
+    "corners"		    : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 44, "color" : "RED"}, {"available" : false , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 44, "color" : "RED"}, {"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "POTION" , "id" : 44, "color" : "RED"}, {"available" : false , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 44, "color" : "RED"}],
+    "resource"          : "MUSHROOM" ,
+    "points"            : 3 ,
+    "color"			    : "RED",
+    "goldenBuffResource": "EMPTY",
+    "activationCost" 	: {"MUSHROOM" :  3 , "PLANT" :  0 , "INSECT" :  0, "ANIMAL" : 0}
+  },
+
+  {
+    "id" 			    : "45",
+    "corners"		    : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 45, "color" : "RED"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "POTION" , "id" : 45, "color" : "RED"}, {"available" : false , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 45, "color" : "RED"}, {"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 45, "color" : "RED"}],
+    "resource"          : "MUSHROOM" ,
+    "points"            : 1 ,
+    "color"			    : "RED",
+    "goldenBuffResource": "POTION",
+    "activationCost" 	: {"MUSHROOM" :  2 , "PLANT" :  1 , "INSECT" :  0, "ANIMAL" : 0}
+  },
+
+  {
+    "id" 			    : "46",
+    "corners"		    : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "PERGAMENA" , "id" : 46, "color" : "RED"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 46, "color" : "RED"}, {"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 46, "color" : "RED"}, {"available" : false , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 46, "color" : "RED"}],
+    "resource"          : "MUSHROOM" ,
+    "points"            : 1 ,
+    "color"			    : "RED",
+    "goldenBuffResource": "PERGAMENA",
+    "activationCost" 	: {"MUSHROOM" :  2 , "PLANT" :  0 , "INSECT" :  1, "ANIMAL" : 0}
+  },
+
+  {
+    "id" 			    : "47",
+    "corners"		    : [{"available" : false , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 47, "color" : "RED"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 47, "color" : "RED"}, {"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 47, "color" : "RED"},{"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "FEATHER" , "id" : 47, "color" : "RED"}],
+    "resource"          : "MUSHROOM" ,
+    "points"            : 1 ,
+    "color"			    : "RED",
+    "goldenBuffResource": "FEATHER",
+    "activationCost" 	: {"MUSHROOM" :  2 , "PLANT" :  0 , "INSECT" :  0, "ANIMAL" : 1}
+  },
+
+  {
+    "id" 			    : "48",
+    "corners"		    : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 48, "color" : "RED"}, {"available" : false , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 48, "color" : "RED"},{"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 48, "color" : "RED"},{"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 48, "color" : "RED"}],
+    "resource"          : "MUSHROOM" ,
+    "points"            : 2 ,
+    "color"			    : "RED",
+    "goldenBuffResource": "PATTERN",
+    "activationCost" 	: {"MUSHROOM" :  2 , "PLANT" :  0 , "INSECT" :  0, "ANIMAL" : 1}
+  },
+
+  {
+    "id" 			    : "49",
+    "corners"		    : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 49, "color" : "RED"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 49, "color" : "RED"}, {"available" : false , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 49, "color" : "RED"},{"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 49, "color" : "RED"}],
+    "resource"          : "MUSHROOM" ,
+    "points"            : 2 ,
+    "color"			    : "RED",
+    "goldenBuffResource": "PATTERN",
+    "activationCost" 	: {"MUSHROOM" :  2 , "PLANT" :  0 , "INSECT" :  0, "ANIMAL" : 1}
+  },
+
+  {
+    "id" 			    : "50",
+    "corners"		    : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 50, "color" : "RED"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 50, "color" : "RED"}, {"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 50, "color" : "RED"}, {"available" : false , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 50, "color" : "RED"}],
+    "resource"          : "MUSHROOM" ,
+    "points"            : 2 ,
+    "color"			    : "RED",
+    "goldenBuffResource": "PATTERN",
+    "activationCost" 	: {"MUSHROOM" :  3 , "PLANT" :  1 , "INSECT" :  0, "ANIMAL" : 0}
+  },
+
+  {
+    "id" 			    : "51",
+    "corners"		    : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 51, "color" : "GREEN"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 51, "color" : "GREEN"},{"available" : false , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 51, "color" : "GREEN"}, {"available" : false, "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 51, "color" : "GREEN"}],
+    "resource"          : "PLANT" ,
+    "points"            : 5 ,
+    "color"			    : "GREEN",
+    "goldenBuffResource": "EMPTY",
+    "activationCost" 	: {"MUSHROOM" :  0 , "PLANT" :  5 , "INSECT" :  0, "ANIMAL" : 0}
+
+  },
+  {
+    "id" 			    : "52",
+    "corners"		    : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "PERGAMENA" , "id" : 52, "color" : "GREEN"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 52, "color" : "GREEN"},{"available" : false , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 52, "color" : "GREEN"},{"available" : false , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 52, "color" : "GREEN"}],
+    "resource"          : "PLANT" ,
+    "points"            : 3 ,
+    "color"			    : "GREEN",
+    "goldenBuffResource": "EMPTY",
+    "activationCost" 	: {"MUSHROOM" :  0 , "PLANT" :  3 , "INSECT" :  0, "ANIMAL" : 0}
+
+  },
+  {
+    "id" 			    : "53",
+    "corners"		    : [{"available" : false , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 53, "color" : "GREEN"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "POTION" , "id" : 53, "color" : "GREEN"},{"available" : false , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 53, "color" : "GREEN"}, {"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 53, "color" : "GREEN"}],
+    "resource"          : "PLANT" ,
+    "points"            : 3 ,
+    "color"			    : "GREEN",
+    "goldenBuffResource": "EMPTY",
+    "activationCost" 	: {"MUSHROOM" :  0, "PLANT" :  3 , "INSECT" :  0, "ANIMAL" : 0}
+
+  },
+  {
+    "id" 			    : "54",
+    "corners"		    : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 54, "color" : "GREEN"}, {"available" : false , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 54, "color" : "GREEN"},{"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "FEATHER" , "id" : 54, "color" : "GREEN"},{"available" : false, "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 54, "color" : "GREEN"}],
+    "resource"          : "PLANT" ,
+    "points"            : 3 ,
+    "color"			    : "GREEN",
+    "goldenBuffResource": "EMPTY",
+    "activationCost" 	: {"MUSHROOM" : 0 , "PLANT" :  3 , "INSECT" :  0, "ANIMAL" : 0}
+
+  },
+  {
+    "id" 			    : "55",
+    "corners"		    : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 55, "color" : "GREEN"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "PERGAMENA" , "id" : 55, "color" : "GREEN"}, {"available" : false , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 55, "color" : "GREEN"}, {"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 55, "color" : "GREEN"}],
+    "resource"          : "PLANT" ,
+    "points"            : 1 ,
+    "color"			    : "GREEN",
+    "goldenBuffResource": "PERGAMENA",
+    "activationCost" 	: {"MUSHROOM" :  1, "PLANT" :  2, "INSECT" :  0, "ANIMAL" : 0}
+  },
+  {
+    "id" 			    : "56",
+    "corners"		    : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "FEATHER" , "id" : 56, "color" : "GREEN"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 56, "color" : "GREEN"}, {"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 56, "color" : "GREEN"}, {"available" : false , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 56, "color" : "GREEN"}],
+    "resource"          : "PLANT" ,
+    "points"            : 1,
+    "color"			    : "GREEN",
+    "goldenBuffResource": "FEATHER",
+    "activationCost" 	: {"MUSHROOM" :  0 , "PLANT" :  2 , "INSECT" :  1, "ANIMAL" : 0}
+
+  },
+  {
+    "id" 			    : "57",
+    "corners"		    : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 57, "color" : "GREEN"}, {"available" : false , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 57, "color" : "GREEN"}, {"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "POTION" , "id" : 57, "color" : "GREEN"}, {"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 57, "color" : "GREEN"}],
+    "resource"          : "PLANT" ,
+    "points"            : 1 ,
+    "color"			    : "GREEN",
+    "goldenBuffResource": "POTION",
+    "activationCost" 	: {"MUSHROOM" :  0 , "PLANT" :  2, "INSECT" :  0, "ANIMAL" : 1}
+  },
+  {
+    "id" 			    : "58",
+    "corners"		    : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 58, "color" : "GREEN"}, {"available" : false , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 58, "color" : "GREEN"}, {"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 58, "color" : "GREEN"}, {"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 58, "color" : "GREEN"}],
+    "resource"          : "PLANT" ,
+    "points"            : 2 ,
+    "color"			    : "GREEN",
+    "goldenBuffResource": "PATTERN",
+    "activationCost" 	: {"MUSHROOM" :  1 , "PLANT" :  3 , "INSECT" :  0, "ANIMAL" : 0}
+
+  },
+  {
+    "id" 			    : "59",
+    "corners"	        : [{"available" : false , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 59, "color" : "GREEN"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 59, "color" : "GREEN"},{"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 59, "color" : "GREEN"},{"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 59, "color" : "GREEN"}],
+    "resource"          : "PLANT" ,
+    "points"            : 2,
+    "color"			    : "GREEN",
+    "goldenBuffResource": "PATTERN",
+    "activationCost" 	: {"MUSHROOM" :  0 , "PLANT" :  3, "INSECT" :  1, "ANIMAL" : 0}
+
+  },
+  {
+    "id" 			    : "60",
+    "corners"	        : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 59, "color" : "GREEN"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 60, "color" : "GREEN"},{"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 60, "color" : "GREEN"},{"available" : false , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 60, "color" : "GREEN"}],
+    "resource"          : "PLANT" ,
+    "points"            : 2 ,
+    "color"			    : "GREEN",
+    "goldenBuffResource": "PATTERN",
+    "activationCost" 	: {"MUSHROOM" :  0 , "PLANT" :  3 , "INSECT" :  0, "ANIMAL" : 1}
+
+  },
+
+  {
+    "id" 			    : "61",
+    "corners"	        : [{"available" : false , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 61, "color" : "PURPLE"}, {"available" : false , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 61, "color" : "PURPLE"},{"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "FEATHER" , "id" : 61, "color" : "PURPLE"},{"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 61, "color" : "PURPLE"}],
+    "resource"          : "INSECT" ,
+    "points"            : 3 ,
+    "color"			    : "PURPLE",
+    "goldenBuffResource": "EMPTY",
+    "activationCost" 	: {"MUSHROOM" :  0 , "PLANT" :  0 , "INSECT" :  3, "ANIMAL" : 0}
+
+  },
+  {
+    "id" 			    : "62",
+    "corners"	        : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 62, "color" : "PURPLE"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 62, "color" : "PURPLE"},{"available" : false , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 62, "color" : "PURPLE"},{"available" : false , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 62, "color" : "PURPLE"}],
+    "resource"          : "INSECT" ,
+    "points"            : 5 ,
+    "color"			    : "PURPLE",
+    "goldenBuffResource": "EMPTY",
+    "activationCost" 	: {"MUSHROOM" :  0 , "PLANT" :  0 , "INSECT" :  5, "ANIMAL" : 0}
+
+
+  },
+  {
+    "id" 			    : "63",
+    "corners"	        : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 63, "color" : "PURPLE"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "PERGAMENA" , "id" : 63, "color" : "PURPLE"},{"available" : false , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 63, "color" : "PURPLE"},{"available" : false , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 63, "color" : "PURPLE"}],
+    "resource"          : "INSECT" ,
+    "points"            : 3 ,
+    "color"			    : "PURPLE",
+    "goldenBuffResource": "EMPTY",
+    "activationCost" 	: {"MUSHROOM" :  0 , "PLANT" :  0 , "INSECT" :  3, "ANIMAL" : 0}
+  },
+
+  {
+    "id" 			    : "64",
+    "corners"	        : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "POTION" , "id" : 64, "color" : "PURPLE"}, {"available" : false , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 64, "color" : "PURPLE"},{"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 64, "color" : "PURPLE"},{"available" : false , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 64, "color" : "PURPLE"}],
+    "resource"          : "INSECT" ,
+    "points"            : 0 ,
+    "color"			    : "PURPLE",
+    "activationCost" 	: {"MUSHROOM" :  0 , "PLANT" :  0 , "INSECT" :  3, "ANIMAL" : 0}
+  },
+  {
+    "id" 			    : "65",
+    "corners"	        : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 65, "color" : "PURPLE"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "FEATHER" , "id" : 65, "color" : "PURPLE"},{"available" : false , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 65, "color" : "PURPLE"},{"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 65, "color" : "PURPLE"}],
+    "resource"          : "INSECT" ,
+    "points"            : 1,
+    "color"			    : "PURPLE",
+    "goldenBuffResource": "FEATHER",
+    "activationCost" 	: {"MUSHROOM" :  0 , "PLANT" :  1 , "INSECT" :  2, "ANIMAL" : 0}
+
+  },
+
+  {
+    "id" 			    : "66",
+    "corners"	        : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 66, "color" : "PURPLE"}, {"available" : false , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 66, "color" : "PURPLE"},{"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "PERGAMENA" , "id" : 66, "color" : "PURPLE"}, {"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 66, "color" : "PURPLE"}],
+    "resource"          : "INSECT" ,
+    "points"            : 1 ,
+    "color"			    : "PURPLE",
+    "goldenBuffResource": "PERGAMENA",
+    "activationCost" 	: {"MUSHROOM" :  0 , "PLANT" :  0 , "INSECT" :  2, "ANIMAL" : 1}
+
+  },
+
+  {
+    "id" 			    : "67",
+    "corners"	        : [{"available" : false , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 67, "color" : "PURPLE"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 67, "color" : "PURPLE"},{"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 67, "color" : "PURPLE"},{"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "POTION" , "id" : 67, "color" : "PURPLE"}],
+    "resource"          : "INSECT" ,
+    "points"            : 1 ,
+    "color"			    : "PURPLE",
+    "goldenBuffResource": "POTION",
+    "activationCost" 	: {"MUSHROOM" :  1 , "PLANT" :  0 , "INSECT" :  2, "ANIMAL" : 0}
+
+  },
+
+  {
+    "id" 			    : "68",
+    "corners"	        : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 68, "color" : "PURPLE"}, {"available" : false , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 68, "color" : "PURPLE"},{"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 68, "color" : "PURPLE"},{"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 68, "color" : "PURPLE"}],
+    "resource"          : "INSECT" ,
+    "points"            : 2 ,
+    "color"			    : "PURPLE",
+    "goldenBuffResource": "PATTERN",
+    "activationCost" 	: {"MUSHROOM" :  1 , "PLANT" :  0 , "INSECT" :  3, "ANIMAL" : 0}
+
+  },
+
+  {
+    "id" 			    : "69",
+    "corners"	        : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 69, "color" : "PURPLE"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 69, "color" : "PURPLE"},{"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 69, "color" : "PURPLE"},{"available" : false , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 69, "color" : "PURPLE"}],
+    "resource"          : "INSECT" ,
+    "points"            : 2 ,
+    "color"			    : "PURPLE",
+    "goldenBuffResource": "PATTERN",
+    "activationCost" 	: {"MUSHROOM" :  0 , "PLANT" :  1 , "INSECT" :  3, "ANIMAL" : 0}
+
+  },
+
+  {
+    "id" 			    : "70",
+    "corners"	        : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 70, "color" : "PURPLE"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 70, "color" : "PURPLE"},{"available" : false , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 70, "color" : "PURPLE"},{"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 70, "color" : "PURPLE"}],
+    "resource"          : "INSECT" ,
+    "points"            : 2 ,
+    "color"			    : "PURPLE",
+    "goldenBuffResource": "PATTERN",
+    "activationCost" 	: {"MUSHROOM" :  0 , "PLANT" :  0 , "INSECT" :  3, "ANIMAL" : 1}
+  },
+
+  {
+    "id" 			    : "71",
+    "corners"	        : [{"available" : false , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 71, "color" : "BLUE"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 71, "color" : "BLUE"}, {"available" : false , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 71, "color" : "BLUE"},{"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "FEATHER" , "id" : 71, "color" : "BLUE"}],
+    "resource"          : "ANIMAL" ,
+    "points"            : 3,
+    "color"			    : "BLUE",
+    "goldenBuffResource": "EMPTY",
+    "activationCost" 	: {"MUSHROOM" :  0 , "PLANT" :  0 , "INSECT" :  0, "ANIMAL" : 3}
+
+  },
+
+  {
+    "id" 			    : "72",
+    "corners"	        : [{"available" : false , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 72, "color" : "BLUE"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 72, "color" : "BLUE"}, {"available" : false , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 72, "color" : "BLUE"}, {"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 72, "color" : "BLUE"}],
+    "resource"          : "ANIMAL" ,
+    "points"            : 5 ,
+    "color"			    : "BLUE",
+    "goldenBuffResource": "EMPTY",
+    "activationCost" 	: {"MUSHROOM" :  0 , "PLANT" :  0 , "INSECT" :  0, "ANIMAL" : 5}
+
+  },
+
+  {
+    "id" 			    : "73",
+    "corners"	        : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 73, "color" : "BLUE"}, {"available" : false , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 73, "color" : "BLUE"}, {"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "PERGAMENA" , "id" : 73, "color" : "BLUE"}, {"available" : false , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 73, "color" : "BLUE"}],
+    "resource"          : "ANIMAL" ,
+    "points"            : 3 ,
+    "color"			    : "BLUE",
+    "goldenBuffResource": "EMPTY",
+    "activationCost" 	: {"MUSHROOM" :  0 , "PLANT" :  0 , "INSECT" :  0, "ANIMAL" : 3}
+
+  },
+
+  {
+    "id" 			    : "74",
+    "corners"	        : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 74, "color" : "BLUE"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "POTION" , "id" : 74, "color" : "BLUE"}, {"available" : false , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 74, "color" : "BLUE"}, {"available" : false , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 74, "color" : "BLUE"}],
+    "resource"          : "ANIMAL" ,
+    "points"            : 3,
+    "color"			    : "BLUE",
+    "goldenBuffResource": "EMPTY",
+    "activationCost" 	: {"MUSHROOM" :  0 , "PLANT" :  0 , "INSECT" :  0, "ANIMAL" : 3}
+
+  },
+
+  {
+    "id" 			    : "75",
+    "corners"	        : [{"available" : false , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 75, "color" : "BLUE"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 75, "color" : "BLUE"}, {"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 75, "color" : "BLUE"}, {"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "PERGAMENA" , "id" : 75, "color" : "BLUE"}],
+    "resource"          : "ANIMAL" ,
+    "points"            : 1 ,
+    "color"			    : "BLUE",
+    "goldenBuffResource": "PERGAMENA",
+    "activationCost" 	: {"MUSHROOM" :  0, "PLANT" :  1 , "INSECT" :  0, "ANIMAL" : 2}
+
+  },
+
+  {
+    "id" 			    : "76",
+    "corners"	        : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "POTION" , "id" : 76, "color" : "BLUE"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 76, "color" : "BLUE"},{"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 76, "color" : "BLUE"}, {"available" : false , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 75, "color" : "BLUE"}],
+    "resource"          : "ANIMAL" ,
+    "points"            : 1 ,
+    "color"			    : "BLUE",
+    "goldenBuffResource": "POTION",
+    "activationCost" 	: {"MUSHROOM" :  0 , "PLANT" :  0 , "INSECT" :  1, "ANIMAL" : 2}
+
+  },
+  {
+    "id" 			    : "77",
+    "corners"	        : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 77, "color" : "BLUE"}, {"available" : false , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 77, "color" : "BLUE"},{"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "POTION" , "id" : 77, "color" : "BLUE"}, {"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 77, "color" : "BLUE"}],
+    "resource"          : "ANIMAL",
+    "points"            : 1,
+    "color"			    : "BLUE",
+    "goldenBuffResource": "FEATHER",
+    "activationCost" 	: {"MUSHROOM" :  1 , "PLANT" :  0 , "INSECT" :  0, "ANIMAL" : 2}
+
+  },
+
+  {
+    "id" 			    : "78",
+    "corners"	        : [{"available" : false , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 78, "color" : "BLUE"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 78, "color" : "BLUE"}, {"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 78, "color" : "BLUE"}, {"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 78, "color" : "BLUE"}],
+    "resource"          : "ANIMAL" ,
+    "points"            : 2,
+    "color"			    : "BLUE",
+    "goldenBuffResource": "PATTERN",
+    "activationCost" 	: {"MUSHROOM" :  0 , "PLANT" :  1 , "INSECT" :  0, "ANIMAL" : 3}
+
+  },
+
+  {
+    "id" 			    : "79",
+    "corners"	        : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 79, "color" : "BLUE"}, {"available" : false , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 79, "color" : "BLUE"}, {"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 79, "color" : "BLUE"}, {"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 79, "color" : "BLUE"}],
+    "resource"          : "ANIMAL" ,
+    "points"            :  2,
+    "color"			    : "BLUE",
+    "goldenBuffResource": "PATTERN",
+    "activationCost" 	: {"MUSHROOM" :  1 , "PLANT" :  0 , "INSECT" :  0, "ANIMAL" : 3}
+
+  },
+
+  {
+    "id" 			    : "80",
+    "corners"	        : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 80, "color" : "BLUE"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 80, "color" : "BLUE"}, {"available" : false , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 80, "color" : "BLUE"}, {"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 80, "color" : "BLUE"}],
+    "resource"          : "ANIMAL",
+    "points"            : 2 ,
+    "color"	            : "BLUE",
+    "activationCost" 	: {"MUSHROOM" :  0 , "PLANT" :  0 , "INSECT" :  1, "ANIMAL" : 3}
+
+  }
+]
+

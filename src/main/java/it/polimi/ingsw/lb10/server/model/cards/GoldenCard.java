@@ -1,42 +1,29 @@
 package it.polimi.ingsw.lb10.server.model.cards;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.lb10.server.model.Resource;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class GoldenCard extends Card {
-    private CardState cardState;
-
-    public GoldenCard(){}
-    public GoldenCard(int id, boolean flipped, int points, ArrayList<Corner> corners, Color color,HashMap<Resource,Integer> activationCost){
-        this.setId(id);
-        this.setPoints(points);
-        this.setFlipped(flipped);
-        this.setCorners(corners);
-        this.setColor(color);
-        this.setActivationCost(activationCost);
-
-            flippedCheck();
+public class GoldenCard extends PlaceableCard {
+@JsonCreator
+    public GoldenCard(@JsonProperty("id") int id, @JsonProperty("color") Color colorCard, @JsonProperty("corners") ArrayList<Corner> corners, @JsonProperty("points") int points, @JsonProperty("resource") Resource resource, @JsonProperty("goldenBuffResource") Resource goldenBuffResource, @JsonProperty("activationCost") HashMap<Resource, Integer> activationCost) {
+        super(id, colorCard, corners, points, resource, goldenBuffResource, activationCost);
+        setNotFlippedState();
     }
 
-    // --------> SETTER <--------
 
     @Override
-    public void setFlippedState() {
-        cardState = new FlippedCardState(getId(),getResources());
+    public int getStateCardPoints() {
+        return getCardState().getPoints();
     }
 
     @Override
-    public void setNotFlippedState() {
-        cardState = new NotFlippedCardState(getCorners(),getPoints(),getActivationCost(),getResources());
-    }
-
-    // --------> GETTER <--------
-
-    public CardState getCardState() {
-        return cardState;
+    public Resource getStateCardGoldenBuffResource() {
+        return getCardState().goldenBuffResource();
     }
 
     @Override
@@ -45,11 +32,13 @@ public class GoldenCard extends Card {
     }
 
     @Override
-    public int getStateCardPoints(){
-        return getCardState().getPoints();
+    public Resource getStateCardMiddleResource() {
+        return getCardState().getMiddleResource();
     }
+
     @Override
     public HashMap<Resource, Integer> getStateCardActivationCost() {
-        return getCardState().getActivationCost();
+        return getCardState().activationCost();
     }
+
 }
