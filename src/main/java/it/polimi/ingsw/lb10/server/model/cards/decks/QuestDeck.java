@@ -2,25 +2,22 @@ package it.polimi.ingsw.lb10.server.model.cards.decks;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
-import it.polimi.ingsw.lb10.server.model.cards.oldVersion.Card;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class QuestDeck implements Deck {
+public class QuestDeck {
     private ArrayList<Quest> cards= new ArrayList<>();
-    @Override
+
     public void shuffle() {
         Collections.shuffle(getCards());
     }
 
-    @Override
     public Quest drawQuest() {
-        Quest temp=cards.getLast();
+        Quest card = cards.getLast();
         cards.removeLast();
-        return temp;
-        }
+        return card;
+    }
 
     public ArrayList<Quest> getCards() {
         return cards;
@@ -34,8 +31,8 @@ public class QuestDeck implements Deck {
             System.out.println(e);
         }
     }
-    @Override
-    public Card drawCard() {
+
+    public Quest drawCard() {
         return null;
     }
 }

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lb10.server.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.lb10.server.model.Resource;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCardState.FrontOfTheCard;
@@ -15,7 +16,9 @@ public class StartingCard extends BaseCard {
 
     private ArrayList<Corner> flippedCardCorners;
     private ArrayList<Resource> middleResources;
+    @JsonIgnore
     private StateStartingCard stateStartingCard;
+
     @JsonCreator
     public StartingCard(@JsonProperty("id") int id,@JsonProperty("color") Color colorCard, @JsonProperty("corners") ArrayList<Corner> corners, @JsonProperty("flippedCardCorners") ArrayList<Corner> flippedCardCorners, @JsonProperty("middleResource") ArrayList<Resource> middleResources) {
         super(id, colorCard, corners);

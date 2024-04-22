@@ -11,11 +11,6 @@ import java.util.Collections;
 public class GoldenDeck{
     private ArrayList<GoldenCard> cards= new ArrayList<>();
 
-    public static void main(String[] args){
-        GoldenDeck gd = new GoldenDeck();
-        gd.fillDeck();
-    }
-
     public void shuffle(){
         Collections.shuffle(getCards());
     }
