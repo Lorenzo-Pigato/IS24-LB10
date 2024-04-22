@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.NoSuchElementException;
 
 public class ResourceDeck {
 
@@ -18,10 +19,10 @@ public class ResourceDeck {
         Collections.shuffle(getCards());
     }
 
-    public ResourceCard drawCard() {
-        ResourceCard temp=cards.getLast();
-        cards.removeLast();
-        return temp;
+    public ResourceCard drawCard() throws NoSuchElementException {
+            ResourceCard card = cards.getLast();
+            cards.removeLast();
+        return card;
     }
 
     public ArrayList<ResourceCard> getCards() {

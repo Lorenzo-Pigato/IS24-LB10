@@ -32,7 +32,4 @@ public class QuestDeck {
         }
     }
 
-    public Quest drawCard() {
-        return null;
-    }
 }

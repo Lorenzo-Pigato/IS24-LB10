@@ -7,6 +7,7 @@ import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.NoSuchElementException;
 
 public class GoldenDeck{
     private ArrayList<GoldenCard> cards= new ArrayList<>();
@@ -15,10 +16,10 @@ public class GoldenDeck{
         Collections.shuffle(getCards());
     }
 
-    public GoldenCard drawCard(){
-        GoldenCard temp=cards.getLast();
+    public GoldenCard drawCard() throws NoSuchElementException {
+        GoldenCard card = cards.getLast();
         cards.removeLast();
-        return temp;
+        return card;
     }
 
     public ArrayList<GoldenCard> getCards() {
