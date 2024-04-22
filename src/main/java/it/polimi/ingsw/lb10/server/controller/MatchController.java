@@ -1,5 +1,4 @@
 package it.polimi.ingsw.lb10.server.controller;
-
 import it.polimi.ingsw.lb10.network.response.match.StartedMatchResponse;
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.server.Server;
@@ -7,9 +6,14 @@ import it.polimi.ingsw.lb10.server.model.MatchModel;
 import it.polimi.ingsw.lb10.server.model.Node;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.Resource;
-import it.polimi.ingsw.lb10.server.model.cards.Card;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
+import it.polimi.ingsw.lb10.server.model.DrawType.GoldenDeckDraw;
+import it.polimi.ingsw.lb10.server.model.DrawType.ResourceDeckDraw;
+import it.polimi.ingsw.lb10.server.model.DrawType.ResourceUncovered;
+import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
+import it.polimi.ingsw.lb10.server.model.quest.Quest;
+import it.polimi.ingsw.lb10.server.model.quest.QuestCounter;
 import it.polimi.ingsw.lb10.server.view.RemoteView;
 import java.io.IOException;
 import it.polimi.ingsw.lb10.network.requests.match.MatchRequest;
@@ -38,11 +42,11 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     private final int id = this.hashCode();
     private Boolean active = true;
     private MatchModel model;
-    private BlockingQueue<MatchRequest> requests;
-    private ArrayList<RemoteView> remoteViews;
+    private final BlockingQueue<MatchRequest> requests;
+    private final ArrayList<RemoteView> remoteViews;
     private boolean started = false;
-    private ArrayList<Player> players;
-    private int numberOfPlayers;
+    private final ArrayList<Player> players;
+    private final int numberOfPlayers;
 
     public MatchController(int numberOfPlayers) {
         //model = new MatchModel(numberOfPlayers, this);
@@ -55,16 +59,10 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     public boolean isActive(){return active;}
 
     public int getId(){return id;}
-    public ArrayList<Player> getPlayers() {return players;}
     public boolean isStarted(){return started;}
     public void setActive(boolean status){this.active = status;}
 
     private Position[] possiblePosition;
-
-//    public MatchController(MatchModel model){
-//        this.model=model;
-//        possiblePosition= new Position[]{Position.TOPLEFT, Position.TOPRIGHT, Position.BOTTOMRIGHT, Position.BOTTOMLEFT};
-//    }
 
     //Game Model fields
     @Override
@@ -83,37 +81,19 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     }
 
     /**
-     *  WIP
+     *  This method is called to insert a Card
+     *  A boolean is returned to verify if the card is placeable
+     *  --> At the beginning the algorithm checks if the card is flipped, with a consequent update of the state of the card.
+     *      the card is placed inside the matrix if the activation cost is matched
      */
-    public void initGame() throws IOException {
-        model.initializeTable();
-    }
-    /**
-     *      It's the method that the caller calls
-     *  with the initialization of the card inside the matrix
-     */
-    public boolean insertCard(Player player,Card card,int row, int column){
-        if(card.isFlipped())
-            card.setFlippedState();
-        else
-            card.setNotFlippedState();
-
-        player.getMatrix().setCard(card, row, column);
+    public boolean insertCard(Player player, PlaceableCard card, int row, int column){
 
         if(!checkActivationCost(player,card))
             return false;
 
-        return checkInsertion(player, card, row, column);
-    }
+        player.getMatrix().setCard(card, row, column);
 
-    public boolean checkActivationCost(Player player,Card card){
-        if(card.getStateCardActivationCost()==null)
-            return true;
-        for (Map.Entry<Resource, Integer> entry : card.getStateCardActivationCost().entrySet()) {
-            if(player.getResourceQuantity(entry.getKey()) < entry.getValue())
-                return false;
-            }
-        return true;
+        return checkInsertion(player, card, row, column);
     }
 
     /**
@@ -124,30 +104,34 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      * The method that starts the Insertion rules
      * @return true if the card passed all the verification rules
      *  if the card passes the tests, at the end he is correctly positioned inside the matrix
+     *  it's called all the
      */
-    public boolean checkInsertion(Player player,Card card,int row, int column){
+    public boolean checkInsertion(Player player,PlaceableCard card,int row, int column){
 
-        if (verificationSetting(player, row, column)) {
+        ArrayList<Node> visitedNodes = new ArrayList<>();
+
+        if (verificationSetting(player, row, column, visitedNodes)) {
             setCardResourceOnPlayer(player, card);
             deleteCoveredResource(player, row, column);
-            player.addPoints(card.getStateCardPoints());
+            addCardPointsOnPlayer(player, card, visitedNodes);
+            player.removeCardOnHand(card);//the player chooses the next card, it's a request!
+
             return true;
         }
         player.getMatrix().deleteCard(row,column);
             return  false;
     }
 
-
     /**
      * @param row and column are the top left corner of the card
      * @return true if the card passed all the requirements
+     * it's important to remember that the card is already inserted!
      */
-    public boolean verificationSetting(Player player,int row, int column){
+    public boolean verificationSetting(Player player, int row, int column, ArrayList<Node> visitedNodes){
         //if one corner isn't available
         if(checkNotAvailability(player,row,column))
             return false;
 
-        ArrayList<Node> nodesVisited= new ArrayList<>();
         Map<Position, int[]> setIncrement=player.getMatrix().parsingPositionCorners();
         int[] delta= new int[]{0,0};
 
@@ -163,12 +147,12 @@ public class MatchController implements Runnable, MatchRequestVisitor {
                 if(player.getMatrix().getNode(row,column).getCorners().size()==3)
                     return false;
                 // I added the node that I visited inside the arraylist, because it has 2 corners in the node
-                nodesVisited.add(player.getMatrix().getNode(row,column));
+                visitedNodes.add(player.getMatrix().getNode(row,column));
                 // If I visited more than 1 node with 2 corners
-                if(nodesVisited.size()>1){
-                    for(int x=0;x<nodesVisited.size()-1;x++){
-                        for(int y=x+1;y<nodesVisited.size();y++){
-                            if(nodesVisited.get(x).getCorners().get(0).getId() == nodesVisited.get(y).getCorners().get(0).getId())
+                if(visitedNodes.size()>1){
+                    for(int x = 0; x< visitedNodes.size()-1; x++){
+                        for(int y = x+1; y< visitedNodes.size(); y++){
+                            if(visitedNodes.get(x).getCorners().getFirst().getId() == visitedNodes.get(y).getCorners().getFirst().getId())
                                 return false;
                         }
                     }
@@ -177,9 +161,18 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         }
         //turning to the starting position
         row-=delta[0]; column-=delta[1];
-
         //if the card doesn't cover at least one card, it's an error
-        return !nodesVisited.isEmpty();
+        return !visitedNodes.isEmpty();
+    }
+
+    public boolean checkActivationCost(Player player,PlaceableCard card){
+        if(card.getStateCardActivationCost().isEmpty())
+            return true;
+        for (Map.Entry<Resource, Integer> entry : card.getStateCardActivationCost().entrySet())
+            if(player.getResourceQuantity(entry.getKey()) < entry.getValue())
+                return false;
+
+        return true;
     }
 
     public boolean checkNotAvailability(Player player,int row, int column){
@@ -193,10 +186,11 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         return true;
     }
 
-    public void setCardResourceOnPlayer(Player player, Card card){
+    public void setCardResourceOnPlayer(Player player, PlaceableCard card){
         for(Corner corner : card.getStateCardCorners()){
             player.addOnMapResources(corner.getResource());
         }
+        player.addOnMapResources(card.getStateCardMiddleResource());
     }
 
     public void deleteCoveredResource(Player player,int row, int column){
@@ -205,20 +199,53 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         for(Position position: getPossiblePosition()){
             int[] delta = setIncrement.get(position);
             if (player.getMatrix().getNode(row + delta[0], column + delta[1]).getCorners().size()==2)
-                player.deleteOnMapResources(player.getMatrix().getNode(row + delta[0], column + delta[1]).getCorners().get(0).getResource());
+                player.deleteOnMapResources(player.getMatrix().getNode(row + delta[0], column + delta[1]).getCorners().getFirst().getResource());
+        }
+    }
+    public void addCardPointsOnPlayer(Player player,PlaceableCard card, ArrayList<Node> visitedNodes) {
+        Resource goldenResource=card.getStateCardGoldenBuffResource();
+        if(goldenResource.equals(Resource.NULL))
+            player.addPoints(card.getStateCardPoints());
+        else if(goldenResource.equals(Resource.PATTERN))
+            player.addPoints(card.getStateCardPoints() * visitedNodes.size());
+        else if (goldenResource.equals(Resource.FEATHER) || goldenResource.equals(Resource.PERGAMENA) || goldenResource.equals(Resource.POTION) )
+            player.addPoints(card.getStateCardPoints()*player.getResourceQuantity(goldenResource));
+        else
+            player.addPoints(card.getStateCardPoints());
+
+        visitedNodes =new ArrayList<>();
+    }
+
+    /**
+     * @param player who has the turn
+     *  This method is to call at the end of the game!
+     */
+    public void checkCounterQuestPoints(Player player){
+        for(Quest quest : model.getCommonQuests()){
+            if(quest instanceof QuestCounter)
+                player.addQuestPoints(((QuestCounter) quest).questAlgorithm(player.getOnMapResources()));
         }
     }
 
+
+    public void addPlayer(Player player){
+        players.add(player);
+    }
+
+    // --------> REQUESTS <--------
+
+
+
+
+
+
+
     // --------> GETTER <--------
-    public MatchModel getModel() {
-        return model;
-    }
-
     public Position[] getPossiblePosition() {
-        return possiblePosition;
+        return new Position[]{Position.TOPLEFT, Position.TOPRIGHT, Position.BOTTOMRIGHT, Position.BOTTOMLEFT};
     }
 
-    /** this method puts the request in the BlockinQueue object to be handled by the MatchController
+    /** this method puts the request in the BlockingQueue object to be handled by the MatchController
      * @param request request sent by the client, which is referred to the specific match.
      * @throws InterruptedException in case MatchController thread terminates.
      */
@@ -279,7 +306,6 @@ public class MatchController implements Runnable, MatchRequestVisitor {
             //VINCITORE???????????????????????????????????????????????????????????????????????????????????????????????????????
         }
     }
-
     /**
      * this method sets started state to true whenever the match reaches the prefixed number of players, sends a broadcast message
      * to all clients in the starting match
@@ -298,4 +324,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         remoteViews.forEach(remoteView -> remoteView.send(response));
     }
 
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
 }

@@ -1,70 +1,109 @@
 package it.polimi.ingsw.lb10.server.model;
 
+import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
-import it.polimi.ingsw.lb10.server.model.cards.Card;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
 
 public class Player {
+
     private int hashCode;
     private String username;
+
     private Matrix matrix;
-    private boolean inGame;
-    private ArrayList<Card> hand= new ArrayList<>();
+
     private HashMap<Resource,Integer> OnMapResources= new HashMap<>();
+    private int points = 0;
+
     private Quest privateQuest;
-    private int points;
+    private int questPoints = 0;
+
+
+
+
+
+    private final ArrayList<PlaceableCard> hand= new ArrayList<>();
+    private final Map<Resource,Integer> onMapResources = new Hashtable<>();
 
     public Player(int hashCode, String username) {
         this.hashCode = hashCode;
         this.username = username;
-        matrix=new Matrix(this);
-        inGame=true;
-        points=0;
-    }
-    
-            
-    public Matrix getMatrix() {
-        return matrix;
     }
 
     // --------> METHODS <--------
 
     public void addOnMapResources(Resource resource) {
-        if(resource!=Resource.NULL) {
-            if (OnMapResources.containsKey(resource)) {
-                int currentQuantity = OnMapResources.get(resource);
-                OnMapResources.put(resource, currentQuantity + 1);
+        if(resource!=Resource.EMPTY && resource!=Resource.NULL) {
+            if (onMapResources.containsKey(resource)) {
+                onMapResources.compute(resource, (k, currentQuantity) -> currentQuantity + 1);
             } else
-                OnMapResources.put(resource, 1);
+                onMapResources.put(resource, 1);
         }
     }
 
     public void deleteOnMapResources(Resource resource) {
-        if (resource != Resource.NULL) {
-            if (OnMapResources.containsKey(resource)) {
-                int currentQuantity = OnMapResources.get(resource);
-                OnMapResources.put(resource, currentQuantity - 1);
-            } else
-                System.out.println(">>> E r r o r <<<");
+        if (resource!=Resource.EMPTY && resource!=Resource.NULL) {
+            if (onMapResources.containsKey(resource)) {
+                onMapResources.compute(resource, (k, currentQuantity) -> currentQuantity - 1);
+            } else {
+                // Tira un errore
+            }
         }
     }
 
-    public int getResourceQuantity(Resource resource) {
-        return OnMapResources.getOrDefault(resource, 0);
+    public void maxScore(){
+        if(getPoints()>30)
+            setPoints(30);
     }
 
     public void addPoints(int point){
-        int tempPoints=getPoints()+point;
-        setPoints(tempPoints);
+        setPoints(point+getPoints());
     }
+
+    /**
+     * @param questPoints to add,
+     *                    It's important to manage the fact that the max score is 30!!!!
+     */
+    public void addQuestPoints(int questPoints){
+        setQuestPoints(questPoints+getQuestPoints());
+        maxScore();
+    }
+    public void addCardOnHand(PlaceableCard card){
+        hand.add(card);
+    }
+    public void removeCardOnHand(PlaceableCard cardToRemove){
+        getHand().remove(cardToRemove);
+    }
+
     // --------> GETTER <--------
+    public int getResourceQuantity(Resource resource) {
+        return onMapResources.getOrDefault(resource, 0);
+    }
+    public Map<Resource, Integer> getOnMapResources() {
+        return onMapResources;
+    }
     public int getPoints() {
         return points;
     }
+    public Matrix getMatrix() {
+        return matrix;
+    }
+
+    public int getQuestPoints() {
+        return questPoints;
+    }
 
     // --------> SETTER <--------
+    public void setMatrix(Matrix matrix) {
+        this.matrix = matrix;
+    }
+
+    public ArrayList<PlaceableCard> getHand() {
+        return hand;
+    }
 
     public void setPoints(int points) {
         this.points = points;
@@ -76,4 +115,7 @@ public class Player {
 
     public String getUsername() { return username;}
 
+    public void setQuestPoints(int questPoints) {
+        this.questPoints = questPoints;
+    }
 }

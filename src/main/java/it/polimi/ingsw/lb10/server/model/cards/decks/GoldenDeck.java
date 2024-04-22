@@ -1,25 +1,25 @@
-package it.polimi.ingsw.lb10.server.model.decks;
+package it.polimi.ingsw.lb10.server.model.cards.decks;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.polimi.ingsw.lb10.server.model.cards.Card;
 import it.polimi.ingsw.lb10.server.model.cards.GoldenCard;
-
+import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.NoSuchElementException;
 
-public class GoldenDeck implements Deck {
-
+public class GoldenDeck{
     private ArrayList<GoldenCard> cards= new ArrayList<>();
+
     public void shuffle(){
         Collections.shuffle(getCards());
     }
 
-    public Card draw(){
-        Card temp=cards.get(cards.size()-1);
-        cards.remove(cards.size()-1);
-        return temp;
+    public GoldenCard drawCard() throws NoSuchElementException {
+        GoldenCard card = cards.getLast();
+        cards.removeLast();
+        return card;
     }
 
     public ArrayList<GoldenCard> getCards() {
@@ -28,11 +28,14 @@ public class GoldenDeck implements Deck {
 
     public void fillDeck(){
         ObjectMapper mapper = new ObjectMapper();
-
         try {
-            cards = mapper.readValue(new File("src/main/resources/it/polimi/ingsw/lb10/json/goldenDeck.json"),new TypeReference<ArrayList<GoldenCard>>() {});
+            cards = mapper.readValue(new File("src/main/resources/goldenDeck.json"),new TypeReference<ArrayList<GoldenCard>>() {});
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+
+    public Quest drawQuest() {
+        return null;
     }
 }

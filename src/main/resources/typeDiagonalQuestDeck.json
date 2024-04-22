@@ -1,0 +1,22 @@
+[
+  {
+    "id"      : 95 ,
+    "points"  : 2 ,
+    "color"   : "GREEN"
+  },
+  {
+    "id"      : 96 ,
+    "points"  : 2 ,
+    "color"   : "RED"
+  },
+  {
+    "id"      : 97 ,
+    "points"  : 2 ,
+    "color"   : "BLUE"
+  },
+  {
+    "id"      : 98 ,
+    "points"  : 2 ,
+    "color"   : "PURPLE"
+  }
+]

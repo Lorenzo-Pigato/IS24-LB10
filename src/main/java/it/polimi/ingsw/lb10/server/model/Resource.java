@@ -1,10 +1,11 @@
 package it.polimi.ingsw.lb10.server.model;
-
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
-import it.polimi.ingsw.lb10.client.cli.ansi.AnsiString;
 
 public enum Resource {
-    NULL(AnsiColor.DEFAULT, null),
+    NULL(null, null),
+    PATTERN(AnsiColor.YELLOW, null),
+
+    EMPTY(AnsiColor.DEFAULT, null),
     MUSHROOM(AnsiColor.RED, null),
     ANIMAL(AnsiColor.CYAN, null),
     INSECT(AnsiColor.PURPLE, null),
@@ -28,19 +29,4 @@ public enum Resource {
     public String getLetter() {
         return letter;
     }
-
-    //  If the json works without these getter and setter then delete
-
-//    final private int id;
-//    final private String typeString;
-//    Resource (String type, int id){
-//        this.typeString = type;
-//        this.id = id;
-//    }
-//
-//    public int getId(){return id;}
-//
-//    public String getTypeString(){return typeString;}
-
-
 }
