@@ -28,6 +28,7 @@ public class CLIWaitingPage implements CLIPage{
             CLIBanner.displayWaitingRoom();
 
             new CLIString(">> Waiting for other players to join <<", AnsiColor.CYAN, AnsiFormat.BOLD, 1, 33).centerPrint();
+            new CLIString(">> Match ID: " + args[0] + " <<" , AnsiColor.CYAN, 1, 35).centerPrint();
         }
     }
 }
