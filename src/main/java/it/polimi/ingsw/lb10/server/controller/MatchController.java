@@ -125,7 +125,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     public boolean verificationSetting(Player player, int row, int column, ArrayList<Node> visitedNodes){
         //if one corner isn't available
-        if(checkNotAvailability(player,row,column))
+        if(!checkNotAvailability(player,row,column))
             return false;
 
         Map<Position, int[]> setIncrement=player.getMatrix().parsingPositionCorners();
@@ -138,6 +138,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
             row+=delta[0]; column+=delta[1];
 
             //if in the matrix node there's only the corner of the card that I want to add, there's nothing to check
+
             if(player.getMatrix().getNode(row, column).getCorners().size()!=1){
                 //Can't be more than 2 cards on a corner!
                 if(player.getMatrix().getNode(row,column).getCorners().size()==3)
@@ -154,6 +155,8 @@ public class MatchController implements Runnable, MatchRequestVisitor {
                     }
                 }
             }
+
+
         }
         //turning to the starting position
         row-=delta[0]; column-=delta[1];

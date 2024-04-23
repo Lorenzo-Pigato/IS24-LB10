@@ -67,9 +67,9 @@ public class Matrix {
      */
     public void deleteCard(int row , int column){
         getNode(row,column).deleteLastCorner();
-        getNode(row++,column).deleteLastCorner();
-        getNode(row,column++).deleteLastCorner();
-        getNode(row++,column++).deleteLastCorner();
+        getNode(row+1,column).deleteLastCorner();
+        getNode(row,column+1).deleteLastCorner();
+        getNode(row+1,column+1).deleteLastCorner();
     }
 
 
