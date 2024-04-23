@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lb10.server.model;
 
+import it.polimi.ingsw.lb10.server.model.cards.Color;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 
@@ -19,11 +20,10 @@ public class Player {
     private int points = 0;
 
     private Quest privateQuest;
+    private ArrayList<Quest> privateQuests = new ArrayList<>();
     private int questPoints = 0;
 
-
-
-
+    private Color color;
 
     private final ArrayList<PlaceableCard> hand= new ArrayList<>();
     private final Map<Resource,Integer> onMapResources = new Hashtable<>();
@@ -96,6 +96,10 @@ public class Player {
         return questPoints;
     }
 
+    public Color getColor() {return color;}
+    public int getUserHash() {return hashCode;}
+    public String getUsername() { return username;}
+
     // --------> SETTER <--------
     public void setMatrix(Matrix matrix) {
         this.matrix = matrix;
@@ -109,11 +113,6 @@ public class Player {
         this.points = points;
     }
 
-    public int getUserHash() {
-        return hashCode;
-    }
-
-    public String getUsername() { return username;}
 
     public void setQuestPoints(int questPoints) {
         this.questPoints = questPoints;
