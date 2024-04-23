@@ -40,4 +40,11 @@ public class Node {
             return true;
         return false;
     }
+
+    public void setFlagCLI(){
+        if(corners.size()==1)
+            flagCLI=true;
+        if(corners.size()==2)
+            flagCLI=false;
+    }
 }

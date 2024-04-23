@@ -58,6 +58,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     public int getId(){return id;}
     public boolean isStarted(){return started;}
     public void setActive(boolean status){this.active = status;}
+
     //Game Model fields
     @Override
     public void run() {
@@ -107,6 +108,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
             setCardResourceOnPlayer(player, card);
             deleteCoveredResource(player, row, column);
             addCardPointsOnPlayer(player, card, visitedNodes);
+            setFlagCLI(player,row,column);
             player.removeCardOnHand(card);//the player chooses the next card, it's a request!
 
             return true;
@@ -198,6 +200,16 @@ public class MatchController implements Runnable, MatchRequestVisitor {
                 player.deleteOnMapResources(player.getMatrix().getNode(row + delta[0], column + delta[1]).getCorners().getFirst().getResource());
         }
     }
+
+    public void setFlagCLI(Player player, int row, int column){
+        Map<Position, int[]> setIncrement = player.getMatrix().parsingPositionCorners();
+
+        for(Position position: getPossiblePosition()){
+            int[] delta = setIncrement.get(position);
+            player.getMatrix().getNode(row + delta[0], column + delta[1]).setFlagCLI();
+        }
+    }
+
     public void addCardPointsOnPlayer(Player player,PlaceableCard card, ArrayList<Node> visitedNodes) {
         Resource goldenResource=card.getStateCardGoldenBuffResource();
         if(goldenResource.equals(Resource.NULL))
