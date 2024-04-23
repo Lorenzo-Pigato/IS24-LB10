@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class GoldenDeckTest {
 
     private static GoldenDeck goldenDeck;
-
+    @Test
     public void fillDeckTest(){
         goldenDeck = new GoldenDeck();
         goldenDeck.fillDeck();

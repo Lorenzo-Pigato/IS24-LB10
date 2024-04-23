@@ -13,7 +13,6 @@ import java.util.Map;
  * The Quest card which task it's to achieve points by the numbers of resources
  */
 public class QuestCounter extends Quest{
-
     private Map<Resource,Integer> activationCost = new HashMap<>();
 
 

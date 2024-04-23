@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class StartingDeckTest {
 
     private static StartingDeck startingDeck;
-
+    @Test
     public void fillDeckTest(){
         startingDeck = new StartingDeck();
         startingDeck.fillDeck();

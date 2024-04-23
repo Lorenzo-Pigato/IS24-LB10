@@ -33,7 +33,7 @@ public class GoldenDeck{
         } catch (Exception e) {
             System.out.println(e);
         }
-        shuffle();
+        //shuffle();
     }
 
     public Quest drawQuest() {

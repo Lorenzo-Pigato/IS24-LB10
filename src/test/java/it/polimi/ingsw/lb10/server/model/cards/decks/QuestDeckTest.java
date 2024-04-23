@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class QuestDeckTest {
 
     private static QuestDeck questDeck;
-
+    @Test
     public void fillDeckTest(){
         questDeck = new QuestDeck();
         questDeck.fillDeck();

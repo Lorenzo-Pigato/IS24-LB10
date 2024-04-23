@@ -51,8 +51,19 @@ class QuestCounterTest {
      */
     @Test
     void algorithmsDifferentResources(){
-        counterQuest=questDeck.getCards().get(7);
+        onMapResources.put(Resource.FEATHER,3);
+        onMapResources.put(Resource.POTION,2);
+        onMapResources.put(Resource.PERGAMENA,3);
 
+        for(int i=0;i<onMapResources.get(Resource.FEATHER);i++)
+            player.addOnMapResources(Resource.FEATHER);
+        for(int i=0;i<onMapResources.get(Resource.POTION);i++)
+            player.addOnMapResources(Resource.POTION);
+        for(int i=0;i<onMapResources.get(Resource.PERGAMENA);i++)
+            player.addOnMapResources(Resource.PERGAMENA);
+
+        counterQuest=questDeck.getCards().get(7);
+        Assertions.assertEquals(4, counterQuest.questAlgorithm(player.getOnMapResources()));
     }
 
 

@@ -44,7 +44,7 @@ public class Corner {
     }
 
     public boolean isUsedForQuest(){
-        return isUsedForQuest();
+        return usedForQuest;
     }
 
     public Resource getResource() {

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lb10.server.model;
 
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
+import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 
@@ -44,8 +45,13 @@ public class Matrix {
     /**
      * @param card is the starting card!
      */
-    public void setCard(PlaceableCard card){
-        setCard(card,41,41);
+    public void setCard(StartingCard card){
+
+        Map<Position, int[]> setIncrement = parsingPositionCorners();
+        for (Corner corner : card.getFlippedCardCorners()) {
+            int[] delta = setIncrement.get(corner.getPosition());
+            getNode(41 + delta[0], 41 + delta[1]).addCorner(corner);
+        }
     }
 
     /**
@@ -53,6 +59,9 @@ public class Matrix {
      *      i and j are the top-left node.
      */
     public void setCard(PlaceableCard card, int row, int column){
+        if(row >82 || column > 82){
+            return;
+        }
         Map<Position, int[]> setIncrement = parsingPositionCorners();
         for (Corner corner : card.getStateCardCorners()) {
             int[] delta = setIncrement.get(corner.getPosition());

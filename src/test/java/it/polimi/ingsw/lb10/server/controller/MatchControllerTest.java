@@ -4,19 +4,18 @@ import it.polimi.ingsw.lb10.server.model.Matrix;
 import it.polimi.ingsw.lb10.server.model.Node;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.Resource;
-import it.polimi.ingsw.lb10.server.model.cards.Color;
-import it.polimi.ingsw.lb10.server.model.cards.GoldenCard;
-import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
-import it.polimi.ingsw.lb10.server.model.cards.ResourceCard;
+import it.polimi.ingsw.lb10.server.model.cards.*;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
+import it.polimi.ingsw.lb10.server.model.cards.decks.GoldenDeck;
+import it.polimi.ingsw.lb10.server.model.cards.decks.ResourceDeck;
+import it.polimi.ingsw.lb10.server.model.cards.decks.StartingDeck;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class MatchControllerTest {
@@ -24,6 +23,7 @@ class MatchControllerTest {
     private static ResourceCard secondCard;
     private static ResourceCard thirdCard;
     private static GoldenCard golden1;
+    private static StartingDeck starting;
 
 
     private static int points = 0;
@@ -66,6 +66,10 @@ class MatchControllerTest {
 
     static ArrayList<Node> nodesVisited = new ArrayList<>();
 
+    static ResourceDeck resourceDeck = new ResourceDeck();
+
+    static GoldenDeck goldenDeck = new GoldenDeck();
+    static StartingDeck startingDeck= new StartingDeck();
     static Position[] positions = new Position[]{Position.TOPLEFT, Position.TOPRIGHT, Position.BOTTOMRIGHT, Position.BOTTOMLEFT};
     @BeforeEach
     void setUp() {
@@ -80,8 +84,17 @@ class MatchControllerTest {
         controller.addPlayer(player);
         activationCost = new HashMap<>();
         onMapResources = new HashMap<>();
+        onMapResources.put(Resource.MUSHROOM,5);
+        for( int i=0; i<onMapResources.get(Resource.MUSHROOM); i++){
+            player.addOnMapResources(Resource.MUSHROOM);
+        }
         hand= new ArrayList<>();
         hand.add(firstCard);
+        resourceDeck.fillDeck();
+        goldenDeck.fillDeck();
+        startingDeck.fillDeck();
+
+
 
     }
 
@@ -113,7 +126,7 @@ class MatchControllerTest {
         matrix.setCard(firstCard, 41,41);
         matrix.setCard(secondCard,43,43);
 
-        assertFalse(controller.insertCard(player, thirdCard, 42,42));
+        assertFalse(controller.insertCard(player, thirdCard, 41,42));
 
     }
 
@@ -139,6 +152,67 @@ class MatchControllerTest {
 
         assertTrue(controller.insertCard(player, golden1,41,42));
         assertEquals(4,player.getPoints());
+
+
+    }
+
+    //Adding test with Deck created from Json
+
+    @Test
+    void setFromDeckTest(){
+        matrix.setCard(resourceDeck.getCards().get(20), 41,41);
+        matrix.setCard(resourceDeck.getCards().get(3), 43,41);
+        ResourceCard resourceCard = resourceDeck.getCards().get(15);
+        resourceCard.setFlippedState();
+        assertTrue(controller.insertCard(player, resourceCard, 42,42));
+
+    }
+
+    @Test
+    void setPointsTest1(){
+        matrix.setCard(resourceDeck.getCards().get(20), 41,41);
+        GoldenCard goldenCard = goldenDeck.getCards().get(2);
+        assertTrue(controller.insertCard(player, goldenCard, 42,42));
+        assertEquals(5,player.getPoints());
+
+    }
+
+    @Test
+    void setPointTest2(){
+        //Flipped goldenCard has activationCost NULL and 0 points
+        matrix.setCard(resourceDeck.getCards().get(20), 41,41);
+        GoldenCard goldenCard = goldenDeck.getCards().get(2);
+        goldenCard.setFlippedState();
+        assertTrue(controller.insertCard(player, goldenCard, 42,42));
+        assertEquals(0,player.getPoints());
+
+    }
+
+    /**
+     * Using every time the same card to assure the presence of the upleft and downright corner, this shouldn't be a problem for the id-corner
+     * because only the down corner is checked
+     * in the worst case, when the players are two, each of them can place 40 cards.
+     */
+
+    @Test
+    void limitPlacement() {
+        int row = 42;
+        int column = 42;
+
+        matrix.setCard(resourceDeck.getCards().get(20), 41, 41);
+        for (int i = 0; i < 40; i++) {
+
+            assertTrue(controller.insertCard(player, resourceDeck.getCards().get(20), row, column));
+            row++;
+            column++;
+
+        }
+
+    }
+    @Test
+    void startingMatch(){
+        matrix.setCard(startingDeck.getCards().getFirst());
+
 
 
     }

@@ -37,11 +37,11 @@ public class ResourceDeck {
             ObjectMapper objectMapper = new ObjectMapper();
             File file = new File("src/main/resources/resourceDeck.json");
             cards = objectMapper.readValue(file, new TypeReference<ArrayList<ResourceCard>>() {});
-        }catch (IOException e){
+        }catch (IOException e) {
 
         }
 
-        shuffle();
+        //shuffle();
     }
 
 }

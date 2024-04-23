@@ -6,13 +6,15 @@ import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import java.util.ArrayList;
 
 /**
- * It's the node of the Matrix! It may contain 2 cards, every node is a corner(free/occupied) of the card!
+ * It's the node of the Matrix! It may contain two cards, every node is a corner(free/occupied) of the card!
  */
 public class Node {
     private ArrayList<Corner> corners;
+    private boolean flagCLI;
 
     public Node(){
         corners=new ArrayList<>();
+        flagCLI=false;
     }
 
     public void addCorner(Corner corner){
