@@ -6,13 +6,15 @@ import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import java.util.ArrayList;
 
 /**
- * It's the node of the Matrix! It may contain 2 cards, every node is a corner(free/occupied) of the card!
+ * It's the node of the Matrix! It may contain two cards, every node is a corner (free/occupied) of the card!
  */
 public class Node {
     private ArrayList<Corner> corners;
+    private boolean flagCLI;
 
     public Node(){
         corners=new ArrayList<>();
+        flagCLI=false;
     }
 
     public void addCorner(Corner corner){
@@ -27,8 +29,8 @@ public class Node {
     }
 
     /**
-     * In the first part of the algorithm we insert the card in any case
-     * @return false if there's only 1 card or both the cards have isAvailable-->true
+     * In the first part of the algorithm, we insert the card in any case
+     * @return false if there's only one card or both the cards have isAvailable-->true
      * and @return true if one of them it's not available
      */
     public boolean checkIsNotAvailable(){
@@ -37,5 +39,12 @@ public class Node {
         if(!corners.get(0).isAvailable() || !corners.get(1).isAvailable() )
             return true;
         return false;
+    }
+
+    public void setFlagCLI(){
+        if(corners.size()==1)
+            flagCLI=true;
+        if(corners.size()==2)
+            flagCLI=false;
     }
 }
