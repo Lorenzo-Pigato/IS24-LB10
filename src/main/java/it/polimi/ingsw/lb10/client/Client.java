@@ -64,6 +64,8 @@ public class Client implements Runnable{
         if (active) {
             controller.waitingRoom();
         }
+
+
         while(true){
 
         }

@@ -33,12 +33,12 @@ public class ResourceDeck {
      * This method calls the json with the complete resource cards' deck
      */
     public void fillDeck(){
+        cards.removeAll(cards);
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             File file = new File("src/main/resources/resourceDeck.json");
             cards = objectMapper.readValue(file, new TypeReference<ArrayList<ResourceCard>>() {});
         }catch (IOException e){
-
         }
     }
 

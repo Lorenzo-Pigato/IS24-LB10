@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lb10.server.model;
 
+import it.polimi.ingsw.lb10.server.model.cards.Color;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 
@@ -12,21 +13,16 @@ public class Player {
 
     private int hashCode;
     private String username;
-
     private Matrix matrix;
-
-    private HashMap<Resource,Integer> OnMapResources= new HashMap<>();
+    private HashMap<Resource,Integer> onMapResources= new HashMap<>();
     private int points = 0;
-
     private Quest privateQuest;
+
+    private ArrayList<Quest> privateQuests = new ArrayList<>();
     private int questPoints = 0;
-
-
-
-
-
+    private Color color;
     private final ArrayList<PlaceableCard> hand= new ArrayList<>();
-    private final Map<Resource,Integer> onMapResources = new Hashtable<>();
+
 
     public Player(int hashCode, String username) {
         this.hashCode = hashCode;
@@ -91,31 +87,30 @@ public class Player {
     public Matrix getMatrix() {
         return matrix;
     }
-
+    public int getUserHash() {
+        return hashCode;
+    }
+    public String getUsername() { return username;}
+    public void setQuestPoints(int questPoints) {
+        this.questPoints = questPoints;
+    }
     public int getQuestPoints() {
         return questPoints;
     }
+    public ArrayList<Quest> getPrivateQuests () {return privateQuests;}
+    public Color getColor(){return color;}
 
     // --------> SETTER <--------
     public void setMatrix(Matrix matrix) {
         this.matrix = matrix;
     }
-
     public ArrayList<PlaceableCard> getHand() {
         return hand;
     }
-
     public void setPoints(int points) {
         this.points = points;
     }
+    public void setColor(Color color) {this.color = color;}
+    public void setPrivateQuests(Quest privateQuest1, Quest privateQuest2) {privateQuests.add(privateQuest1);privateQuests.add(privateQuest2);}
 
-    public int getUserHash() {
-        return hashCode;
-    }
-
-    public String getUsername() { return username;}
-
-    public void setQuestPoints(int questPoints) {
-        this.questPoints = questPoints;
-    }
 }

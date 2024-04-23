@@ -1,4 +1,6 @@
 package it.polimi.ingsw.lb10.server.controller;
+import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestsRequest;
+import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
 import it.polimi.ingsw.lb10.network.response.match.StartedMatchResponse;
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.server.Server;
@@ -46,7 +48,6 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     private final int numberOfPlayers;
 
     public MatchController(int numberOfPlayers) {
-        //model = new MatchModel(numberOfPlayers, this);
         requests = new LinkedBlockingQueue<>();
         remoteViews = new ArrayList<>();
         players = new ArrayList<>();
@@ -56,8 +57,8 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     public boolean isActive(){return active;}
 
     public int getId(){return id;}
-    public boolean isStarted(){return started;}
-    public void setActive(boolean status){this.active = status;}
+    public synchronized boolean isStarted(){return started;}
+    public synchronized void setActive(boolean status){this.active = status;}
 
     private Position[] possiblePosition;
 
@@ -264,11 +265,18 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     @Override
     public synchronized void visit(@NotNull JoinMatchRequest jmr) {
-        players.add(jmr.getPlayer());
-
-        getRemoteView(jmr.getUserHash()).send(new JoinMatchResponse(true));
+        players.add(jmr.getPlayer()); //adds new player, safe because LobbyController checked if it's possible
+        getRemoteView(jmr.getUserHash()).send(new JoinMatchResponse(true, getMatchId())); //sends response
         Server.log(">> Added player to match: " + jmr.getPlayer().getUsername() + " - Match ID: " + id);
         if(players.size() == numberOfPlayers) start();
+    }
+
+    /**
+     * @param privateQuestsRequest requests sent by the client to view and choose his private quests
+     */
+    @Override
+    public void visit(PrivateQuestsRequest privateQuestsRequest) {
+        getRemoteView(privateQuestsRequest.getUserHash()).send(new PrivateQuestsResponse(getPlayer(privateQuestsRequest.getUserHash()).getPrivateQuests()));
     }
 
     /** this method adds the remote view to the MatchController whenever a new client joins the match
@@ -310,8 +318,9 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     private void start(){
         Server.log(" >> Match " +  id + " started");
         started = true;
-        //model. ...
-        broadcast(new StartedMatchResponse());
+        model = new MatchModel(numberOfPlayers, this);
+        model.gameSetup(); //initializer for decks, table cards , players hand and colors.
+        broadcast(new StartedMatchResponse(id));
     }
 
     /** sends a specific response to all RemoteViews connected
@@ -323,5 +332,8 @@ public class MatchController implements Runnable, MatchRequestVisitor {
 
     public ArrayList<Player> getPlayers() {
         return players;
+    }
+    public Player getPlayer(int userHash){
+        return players.stream().filter(player -> player.getUserHash() == userHash).findFirst().get();
     }
 }

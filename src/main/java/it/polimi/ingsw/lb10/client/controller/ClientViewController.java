@@ -4,6 +4,7 @@ import it.polimi.ingsw.lb10.client.Client;
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
 import it.polimi.ingsw.lb10.network.requests.Request;
+import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
 
 import java.net.Socket;
 
@@ -77,6 +78,12 @@ public interface ClientViewController {
      * can easily handle multiple requests from multiple clients.
      */
     void setHash();
+
+    int getMatchId();
+
+    void setMatchId(int id);
+
+    void privateQuestSelection(PrivateQuestsResponse response);
 }
 
 

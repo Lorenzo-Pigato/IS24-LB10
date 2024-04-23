@@ -5,11 +5,17 @@ import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.ResponseVisitable;
 
 public class StartedMatchResponse extends Response implements ResponseVisitable {
+    private int matchId;
+    public StartedMatchResponse(int matchId) {this.matchId = matchId;}
     /**
      * @param handler
      */
     @Override
     public void accept(CLIResponseHandler handler) {
         handler.visit(this);
+    }
+
+    public int getMatchId(){
+        return matchId;
     }
 }

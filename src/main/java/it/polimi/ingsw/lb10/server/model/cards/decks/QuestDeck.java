@@ -36,6 +36,7 @@ public class QuestDeck {
 
     public void fillDeck(){
 
+        cards.removeAll(cards);
         ObjectMapper mapper = new ObjectMapper();
         ArrayList<QuestCounter> counterQuest = new ArrayList<QuestCounter>();
         try {
