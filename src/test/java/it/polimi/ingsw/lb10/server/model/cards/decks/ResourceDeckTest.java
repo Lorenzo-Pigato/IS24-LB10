@@ -15,8 +15,8 @@ public class ResourceDeckTest {
     public void fillDeckTest(){
         resourceDeck = new ResourceDeck();
         resourceDeck.fillDeck();
-        assertTrue(!resourceDeck.getCards().isEmpty());
-        assertTrue(resourceDeck.getCards().size() == 40);
+        assertFalse(resourceDeck.getCards().isEmpty());
+        assertEquals(40, resourceDeck.getCards().size());
     }
 
     @Test
@@ -26,7 +26,7 @@ public class ResourceDeckTest {
         ResourceCard oracle = resourceDeck.getCards().getLast();
         ResourceCard first = resourceDeck.drawCard();
         assertEquals(first, oracle);
-        assertTrue(resourceDeck.getCards().size() == 39);
+        assertEquals(39, resourceDeck.getCards().size());
     }
 @Test
     public void shuffleTest(){

@@ -12,24 +12,24 @@ import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class goldenCardV1Test {
+class GoldenCardTest {
 
-    private static GoldenCard_v1 goldenCardV1;
+    private static GoldenCard goldenCardV1;
     private static int points=2;
     static Resource middleResource=Resource.PLANT;
     static HashMap<Resource, Integer> activationCost= new HashMap<>();
 
     static ArrayList<Corner> corners = new ArrayList<>(Arrays.asList(
-            new Corner(0,true,false, Position.TOPLEFT, Resource.ANIMAL,Color.GREEN),
-            new Corner(0,true,false,Position.TOPLEFT,Resource.PLANT,Color.GREEN),
-            new Corner(0,true,false,Position.TOPLEFT,Resource.FEATHER,Color.GREEN),
-            new Corner(0,true,false,Position.TOPLEFT,Resource.EMPTY,Color.GREEN)
+            new Corner(0,true, Position.TOPLEFT, Resource.ANIMAL,Color.GREEN),
+            new Corner(0,true,Position.TOPLEFT,Resource.PLANT,Color.GREEN),
+            new Corner(0,true,Position.TOPLEFT,Resource.FEATHER,Color.GREEN),
+            new Corner(0,true,Position.TOPLEFT,Resource.EMPTY,Color.GREEN)
     ));
 
     @BeforeAll
     static void setUp() {
         activationCost.put(Resource.PLANT, 3 );
-        goldenCardV1=new GoldenCard_v1(0,Color.GREEN,corners,points,middleResource,Resource.PATTERN,activationCost);
+        goldenCardV1=new GoldenCard(0,Color.GREEN,corners,points,middleResource,Resource.PATTERN,activationCost);
     }
 
     /**

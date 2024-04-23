@@ -13,21 +13,20 @@ import java.util.HashMap;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ResourceCardTest {
-    private static ResourceCard_v1 resourceCardV1;
-    private static int points=1;
+    private static ResourceCard resourceCardV1;
+    private static final int points=1;
 
     static ArrayList<Corner> corners = new ArrayList<>(Arrays.asList(
-            new Corner(0,true,false,Position.TOPLEFT,Resource.ANIMAL,Color.GREEN),
-            new Corner(0,true,false,Position.TOPLEFT,Resource.PLANT,Color.GREEN),
-            new Corner(0,true,false,Position.TOPLEFT,Resource.FEATHER,Color.GREEN),
-            new Corner(0,true,false,Position.TOPLEFT,Resource.EMPTY,Color.GREEN)
+            new Corner(0,true,Position.TOPLEFT,Resource.ANIMAL,Color.GREEN),
+            new Corner(0,true,Position.TOPLEFT,Resource.PLANT,Color.GREEN),
+            new Corner(0,true,Position.TOPLEFT,Resource.FEATHER,Color.GREEN),
+            new Corner(0,true,Position.TOPLEFT,Resource.EMPTY,Color.GREEN)
     ));
 
-    static Resource middleResource=Resource.PLANT;
     static HashMap<Resource, Integer> activationCost;
     @BeforeAll
     static void setUp() {
-        resourceCardV1=new ResourceCard_v1(0,Color.GREEN,corners,points,middleResource,Resource.NULL,new HashMap<>());
+        resourceCardV1=new ResourceCard(0,Color.GREEN,corners,points,Resource.NULL,new HashMap<>());
     }
 
     /**
@@ -77,11 +76,6 @@ class ResourceCardTest {
     /**
      * Resources tests
      */
-    @Test
-    void getStateCardMiddleResourceFlipped() {
-        resourceCardV1.setFlippedState();
-        assertEquals( middleResource, resourceCardV1.getStateCardMiddleResource());
-    }
     @Test
     void getStateCardMiddleResourceNotFlipped() {
         resourceCardV1.setNotFlippedState();

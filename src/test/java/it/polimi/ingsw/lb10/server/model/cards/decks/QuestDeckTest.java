@@ -14,7 +14,7 @@ public class QuestDeckTest {
         questDeck = new QuestDeck();
         questDeck.fillDeck();
         assertTrue(!questDeck.getCards().isEmpty());
-        assertTrue(questDeck.getCards().size() == 40);
+        assertTrue(questDeck.getCards().size() == 16);
     }
 
     @Test

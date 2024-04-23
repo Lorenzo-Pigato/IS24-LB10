@@ -32,6 +32,7 @@ public class GoldenDeckTest {
         goldenDeck = new GoldenDeck();
         goldenDeck.fillDeck();
         GoldenCard oracle = goldenDeck.getCards().getLast();
+        goldenDeck.shuffle();
         assertNotEquals(goldenDeck.getCards().getLast(), oracle);
     }
 
