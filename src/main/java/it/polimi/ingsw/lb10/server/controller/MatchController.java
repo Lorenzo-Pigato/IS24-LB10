@@ -81,7 +81,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      *  This method is called to insert a Card
      *  A boolean is returned to verify if the card is placeable
      *  --> At the beginning the algorithm checks if the card is flipped, with a consequent update of the state of the card.
-     *      the card is placed inside the matrix if the activation cost is matched
+     *      The card is placed inside the matrix if the activation cost is matched
      */
     public boolean insertCard(Player player, PlaceableCard card, int row, int column){
 
@@ -99,9 +99,8 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      * @param row row
      * @param column column
      * The method that starts the Insertion rules
-     * @return true if the card passed all the verification rules
+     * @return true, if the card passed all the verification rules,
      *  if the card passes the tests, at the end he is correctly positioned inside the matrix
-     *  it's called all the
      */
     public boolean checkInsertion(Player player,PlaceableCard card,int row, int column){
 
@@ -120,8 +119,8 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     }
 
     /**
-     * @param row and column are the top left corner of the card
-     * @return true if the card passed all the requirements
+     * @param row and the column is the top left corner of the card
+     * @return true, if the card passed all the requirements,
      * it's important to remember that the card is already inserted!
      */
     public boolean verificationSetting(Player player, int row, int column, ArrayList<Node> visitedNodes){
@@ -139,7 +138,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
             row+=delta[0]; column+=delta[1];
 
             //if in the matrix node there's only the corner of the card that I want to add, there's nothing to check
-            if(player.getMatrix().getNode(row, column).getCorners().size()==1){
+            if(player.getMatrix().getNode(row, column).getCorners().size()!=1){
                 //Can't be more than 2 cards on a corner!
                 if(player.getMatrix().getNode(row,column).getCorners().size()==3)
                     return false;
@@ -229,14 +228,6 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         players.add(player);
     }
 
-    // --------> REQUESTS <--------
-
-
-
-
-
-
-
     // --------> GETTER <--------
     public Position[] getPossiblePosition() {
         return new Position[]{Position.TOPLEFT, Position.TOPRIGHT, Position.BOTTOMRIGHT, Position.BOTTOMLEFT};
@@ -257,7 +248,8 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         return id;
     }
 
-    /** this method is used to handle the "JoinMatchRequest" sent by the client to the LobbyController, and from the LobbyController to the MatchController
+    /** This method is used to handle the "JoinMatchRequest"
+     *  sent by the client to the LobbyController, and from the LobbyController to the MatchController
      * in this method MatchController adds the player to his players, sends positive response and checks if the match can start. In case the match can start, sends a
      * broadcast message to all the players waiting.
      * @param jmr join match request

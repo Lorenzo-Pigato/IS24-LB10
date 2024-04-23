@@ -2,10 +2,13 @@ package it.polimi.ingsw.lb10.server.model;
 
 import it.polimi.ingsw.lb10.network.response.match.TerminatedMatchResponse;
 import it.polimi.ingsw.lb10.server.controller.MatchController;
+import it.polimi.ingsw.lb10.server.model.cards.GoldenCard;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
+import it.polimi.ingsw.lb10.server.model.cards.ResourceCard;
 import it.polimi.ingsw.lb10.server.model.cards.decks.GoldenDeck;
 import it.polimi.ingsw.lb10.server.model.cards.decks.QuestDeck;
 import it.polimi.ingsw.lb10.server.model.cards.decks.ResourceDeck;
+import it.polimi.ingsw.lb10.server.model.cards.decks.StartingDeck;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.util.Observable;
@@ -22,15 +25,15 @@ public class MatchModel extends Observable<Request> {
     private int numberOfPlayers;
     private MatchController controller;
     private String id;
-    private final List<Player> players = new ArrayList<>();
+    private List<Player> players = new ArrayList<>();
     private final ResourceDeck resourceDeck= new ResourceDeck();
     private final GoldenDeck goldenDeck = new GoldenDeck();
+    private final StartingDeck startingDeck = new StartingDeck();
     private final QuestDeck questDeck = new QuestDeck();
 
-    private final   List<Quest> commonQuests = new ArrayList<>();
-    private final   List<PlaceableCard> goldenUncovered = new ArrayList<>();
-    private final   List<PlaceableCard> resourceUncovered= new ArrayList<>();
-
+    private final ArrayList<Quest> commonQuests = new ArrayList<>();
+    private final ArrayList<PlaceableCard> goldenUncovered = new ArrayList<>();
+    private final ArrayList<PlaceableCard> resourceUncovered= new ArrayList<>();
 
     public MatchModel(int numberOfPlayers, MatchController controller) {
         this.numberOfPlayers = numberOfPlayers;
@@ -51,13 +54,14 @@ public class MatchModel extends Observable<Request> {
         super.notify(request);
     }
 
-    private void initializeDecks() throws IOException{
-        resourceDeck.fillDeck();
+    public void initializeDecks() throws IOException{
+        resourceDeck.fillDeck(); ;
         goldenDeck.fillDeck();
         questDeck.fillDeck();
+        startingDeck.fillDeck();
     }
 
-    private void initializeCardsOnHand(){
+    public void initializeCardsOnHand(){
         for( Player player : players) {
             player.addCardOnHand(getResourceCardFromDeck());
             player.addCardOnHand(getResourceCardFromDeck());
@@ -65,12 +69,12 @@ public class MatchModel extends Observable<Request> {
         }
     }
 
-    private void startingUncoveredCards(){
+    public void startingUncoveredCards(){
         for(int i=0;i<2;i++) {
             goldenUncovered.add(getGoldenCardFromDeck());
             resourceUncovered.add(getResourceCardFromDeck());
+            commonQuests.add(getQuestCardFromDeck());
         }
-
     }
 
     /**
@@ -96,17 +100,27 @@ public class MatchModel extends Observable<Request> {
 
     }
 
+    public void setPlayers(List<Player> players){
+        this.players=players;
+    }
     // --------> GETTER <--------
     public PlaceableCard getResourceCardFromDeck(){
-        return (PlaceableCard) getResourceDeck().drawCard();
+        return (ResourceCard) getResourceDeck().drawCard();
     }
 
     public PlaceableCard getGoldenCardFromDeck(){
-        return (PlaceableCard) getGoldenDeck().drawCard();
+        return (GoldenCard) getGoldenDeck().drawCard();
+    }
+    public Quest getQuestCardFromDeck(){
+        return getQuestDeck().drawCard();
     }
 
     public List<Quest> getCommonQuests() {
         return commonQuests;
+    }
+
+    public StartingDeck getStartingDeck() {
+        return startingDeck;
     }
 
     /**
@@ -127,6 +141,9 @@ public class MatchModel extends Observable<Request> {
     }
     public List<PlaceableCard> getGoldenUncovered() {
         return goldenUncovered;
+    }
+    public QuestDeck getQuestDeck() {
+        return questDeck;
     }
     public List<Player> getPlayers() {
         return players;

@@ -35,5 +35,6 @@ public class StartingDeck {
         }catch (Exception e){
             e.printStackTrace();
         }
+        shuffle();
     }
 }

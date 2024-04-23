@@ -40,6 +40,8 @@ public class ResourceDeck {
         }catch (IOException e){
 
         }
+
+        shuffle();
     }
 
 }

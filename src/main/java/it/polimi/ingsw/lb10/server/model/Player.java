@@ -14,19 +14,14 @@ public class Player {
     private String username;
 
     private Matrix matrix;
-
-    private HashMap<Resource,Integer> OnMapResources= new HashMap<>();
     private int points = 0;
 
     private Quest privateQuest;
     private int questPoints = 0;
 
 
-
-
-
     private final ArrayList<PlaceableCard> hand= new ArrayList<>();
-    private final Map<Resource,Integer> onMapResources = new Hashtable<>();
+    private final Map<Resource,Integer> onMapResources = new HashMap<>();
 
     public Player(int hashCode, String username) {
         this.hashCode = hashCode;
@@ -55,8 +50,8 @@ public class Player {
     }
 
     public void maxScore(){
-        if(getPoints()>30)
-            setPoints(30);
+        if(getPoints()>29)
+            setPoints(29);
     }
 
     public void addPoints(int point){
