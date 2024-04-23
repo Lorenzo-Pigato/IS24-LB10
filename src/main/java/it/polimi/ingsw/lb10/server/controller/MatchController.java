@@ -113,7 +113,7 @@ public class MatchController implements Runnable {
      */
     public boolean verificationSetting(Player player, int row, int column){
         //if one corner isn't available
-        if(checkNotAvailability(player,row,column))
+        if(!checkNotAvailability(player,row,column))
             return false;
 
         Map<Position, int[]> setIncrement=player.getMatrix().parsingPositionCorners();
@@ -126,22 +126,25 @@ public class MatchController implements Runnable {
             row+=delta[0]; column+=delta[1];
 
             //if in the matrix node there's only the corner of the card that I want to add, there's nothing to check
-            if(player.getMatrix().getNode(row, column).getCorners().size()==1){
-                //Can't be more than 2 cards on a corner!
-                if(player.getMatrix().getNode(row,column).getCorners().size()==3)
-                    return false;
+            if(player.getMatrix().getNode(row, column).getCorners().size()==3)
+                return false;
+            else if(player.getMatrix().getNode(row, column).getCorners().size()==2) {
+
+
                 // I added the node that I visited inside the arraylist, because it has 2 corners in the node
-                nodesVisited.add(player.getMatrix().getNode(row,column));
+                nodesVisited.add(player.getMatrix().getNode(row, column));
                 // If I visited more than 1 node with 2 corners
-                if(nodesVisited.size()>1){
-                    for(int x=0;x<nodesVisited.size()-1;x++){
-                        for(int y=x+1;y<nodesVisited.size();y++){
-                            if(nodesVisited.get(x).getCorners().getFirst().getId() == nodesVisited.get(y).getCorners().getFirst().getId())
+                if (nodesVisited.size() > 1) {
+                    for (int x = 0; x < nodesVisited.size() - 1; x++) {
+                        for (int y = x + 1; y < nodesVisited.size(); y++) {
+                            if (nodesVisited.get(x).getCorners().getFirst().getId() == nodesVisited.get(y).getCorners().getFirst().getId())
                                 return false;
                         }
                     }
                 }
             }
+
+
         }
         //turning to the starting position
         row-=delta[0]; column-=delta[1];
