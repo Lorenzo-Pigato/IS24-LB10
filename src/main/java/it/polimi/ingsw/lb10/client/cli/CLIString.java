@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lb10.client.cli;
 
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
+import it.polimi.ingsw.lb10.client.cli.ansi.AnsiSpecial;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiString;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
 import org.jetbrains.annotations.NotNull;
@@ -23,7 +24,8 @@ public class CLIString {
 
     //-------------------------- Builders -----------------------------//
     public CLIString(String string, AnsiColor color, AnsiFormat format, int col, int row, int widthLimit){
-        this.string = string.length() > widthLimit ? string.substring(0, widthLimit-3)+ "..." : string;
+        int clutterLength = 5 + color.getCode().length() + format.getCode().length();
+        this.string = string.length() - clutterLength > widthLimit ? string.substring(0, widthLimit-3)+ "..." + AnsiSpecial.RESET.getCode() : string;
         this.color = color;
         this.format = format;
 
@@ -96,11 +98,10 @@ public class CLIString {
     public static void replace(@NotNull CLIString oldString,@NotNull CLIString newString){
         oldString.deleteString();
 
+        newString.reposition(oldString.getPosition()[0], oldString.getPosition()[1]);
+
         if (oldString.centered) newString.centerPrint();
-        else {
-            newString.reposition(oldString.getPosition()[0], oldString.getPosition()[1]);
-            newString.print();
-        }
+        else newString.print();
 
     }
 
@@ -127,7 +128,13 @@ public class CLIString {
         int row = position[1];
         Arrays.stream(string.split("\n")).forEach(
                 line -> {
-                    System.out.print(" ".repeat(line.length()));
+                    int lineSize = line.length();
+
+                    if(line.contains(AnsiSpecial.RESET.getCode())) lineSize -= 5;
+                    if(line.contains(color.getCode())) lineSize -= color.getCode().length();
+                    if(line.contains(format.getCode())) lineSize -= format.getCode().length();
+
+                    System.out.print(" ".repeat(lineSize));
                     CLICommand.setPosition(position[0], ++position[1]);
                 }
         );

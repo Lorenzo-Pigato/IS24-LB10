@@ -15,17 +15,17 @@ public class CLIErrorPage implements CLIPage {
     }
 
     @Override
-    public void print(String[] args) {
+    public void print(Object[] args) {
         state.apply(args);
     }
 
     public static class Default implements CLIState {
         @Override
-        public void apply(String @NotNull [] args){
+        public void apply(Object @NotNull [] args){
             CLICommand.initialize();
             CLIBanner.displayError();
-            new CLIString(args[0], AnsiColor.RED, AnsiFormat.BOLD, 1, 33).centerPrint();
-            new CLIString(args[1] + "\n>> Quitting", AnsiColor.RED, 1, 35).centerPrint();
+           new CLIString((String)args[0], AnsiColor.RED, AnsiFormat.BOLD, 1, 33).centerPrint();
+           new CLIString((String)args[1] , AnsiColor.RED, 1, 35).centerPrint();
 
             CLICommand.setPosition(1, 50);
         }

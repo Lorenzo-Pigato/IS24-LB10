@@ -7,9 +7,8 @@ import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
 import org.jetbrains.annotations.NotNull;
 
-public class CLI404Page implements CLIPage {
-    private static final CLIString notFound = new CLIString(">> Server couldn't be reached <<", AnsiColor.CYAN, AnsiFormat.BOLD, 1, 33);
-    private static final CLIString reconnect = new CLIString(">> Quitting <<", AnsiColor.CYAN, 1, 35);
+public class CLIWaitingPage implements CLIPage{
+
     private CLIState state = new Default();
 
     @Override
@@ -26,13 +25,9 @@ public class CLI404Page implements CLIPage {
         @Override
         public void apply(Object[] args) {
             CLICommand.initialize();
-            CLIBanner.display404();
-            notFound.centerPrint();
-            reconnect.centerPrint();
+            CLIBanner.displayWaitingRoom();
 
-            CLICommand.setPosition(1, 50);
+            new CLIString(">> Waiting for other players to join <<", AnsiColor.CYAN, AnsiFormat.BOLD, 1, 33).centerPrint();
         }
-
     }
-
 }

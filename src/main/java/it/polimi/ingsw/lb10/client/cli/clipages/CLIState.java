@@ -7,5 +7,5 @@ import it.polimi.ingsw.lb10.client.view.State;
  * be displayed on screen, optionally updated with args from the view controller.
  */
 public interface CLIState extends State {
-    void apply(String[] args);
+    void apply(Object[] args);
 }

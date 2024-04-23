@@ -4,13 +4,18 @@ import it.polimi.ingsw.lb10.client.Client;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIConnectionPage;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLILobbyPage;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLILoginPage;
+import it.polimi.ingsw.lb10.client.cli.clipages.CLIWaitingPage;
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
 import it.polimi.ingsw.lb10.client.util.InputVerifier;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
-import it.polimi.ingsw.lb10.network.requests.*;
+import it.polimi.ingsw.lb10.network.requests.QuitRequest;
+import it.polimi.ingsw.lb10.network.requests.Request;
+import it.polimi.ingsw.lb10.network.requests.preMatch.LobbyToMatchRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.LoginRequest;
-import it.polimi.ingsw.lb10.network.response.*;
+import it.polimi.ingsw.lb10.network.requests.preMatch.NewMatchRequest;
+import it.polimi.ingsw.lb10.network.response.Response;
+import it.polimi.ingsw.lb10.network.response.lobby.HashResponse;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -50,15 +55,17 @@ public class CLIClientViewController implements ClientViewController{
     // ------------------- UTILS ------------------- //
     @Override
     public void close() {
-        try{
-            socketIn.close();
-            socketOut.close();
-            socket.close();
-        }catch(IOException e){
-            ExceptionHandler.handle(e, view);
-        }finally{
-            client.setActive(false);
-        }
+       if(!socket.isClosed()) {
+           try {
+               socketIn.close();
+               socketOut.close();
+               socket.close();
+           } catch (IOException e) {
+               ExceptionHandler.handle(e, view);
+           } finally {
+               client.setActive(false);
+           }
+       }
     }
 
     // ------------------ METHODS ------------------ //
@@ -80,41 +87,80 @@ public class CLIClientViewController implements ClientViewController{
 
     @Override
     public void login() {
-        view.setPage(new CLILoginPage());
-        view.displayPage(null);
+       if(client.isActive()) {
+           view.setPage(new CLILoginPage());
+           view.displayPage(null);
 
-        Scanner in = new Scanner(System.in);
-        String username;
-        do {
-            do {
-                username = in.nextLine();
-                if (username.length() < 2 || username.length() > 15)
-                    view.updatePageState(new CLILoginPage.invalidLength());
-
-                view.displayPage(new String[]{username});
-            } while (username.length() < 2 || username.length() > 15);
-
-            send(new LoginRequest(hash, username));
-
-            syncReceive().accept(responseHandler);
-
-            if (!client.isLogged()) {
-                view.updatePageState(new CLILoginPage.alreadyTaken());
-                view.displayPage(new String[]{username});
-            }
-        }while(!client.isLogged());
+           Scanner in = new Scanner(System.in);
+           String username;
+           try {
+               do {
+                   do {
+                       username = in.nextLine();
+                       if (username.length() < 2 || username.length() > 15)
+                           view.updatePageState(new CLILoginPage.invalidLength());
+                       view.displayPage(new String[]{username});
+                   } while (username.length() < 2 || username.length() > 15);
+                   send(new LoginRequest(username));
+                   syncReceive().accept(responseHandler);
+                   if (!client.isLogged()) {
+                       view.updatePageState(new CLILoginPage.alreadyTaken());
+                       view.displayPage(new String[]{username});
+                   }
+               } while (!client.isLogged());
+           } catch (NullPointerException e) {
+               close();
+           }
+       }
     }
 
     @Override
     public void joinMatch() {
-        view.setPage(new CLILobbyPage());
-        view.displayPage(null);
+       if(client.isActive()) {
+           view.setPage(new CLILobbyPage());
+           view.displayPage(null);
+           Scanner in = new Scanner(System.in);
+           String input;
+           try {
+               do {
+                   input = in.nextLine();
+                   String[] splitInput = input.split(" ");
+                   if (splitInput[0].equalsIgnoreCase("join") && splitInput.length == 2) {
+                       send(new LobbyToMatchRequest(Integer.parseInt(splitInput[1])));
+                       syncReceive().accept(responseHandler);
+                       if (!client.isInMatch()) view.updatePageState(new CLILobbyPage.InvalidInput());
+                   } else if (splitInput[0].equalsIgnoreCase("new") && splitInput.length == 2) {
+                       if (Integer.parseInt(splitInput[1]) >= 2 && Integer.parseInt(splitInput[1]) <= 4) {
+                           send(new NewMatchRequest(Integer.parseInt(splitInput[1])));
+                           syncReceive().accept(responseHandler);
+                       } else view.updatePageState(new CLILobbyPage.InvalidInput());
+                   } else if (splitInput[0].equalsIgnoreCase("quit")) {
+                       send(new QuitRequest());
+                       client.setActive(false);
+                       break;
+                   } else view.updatePageState(new CLILobbyPage.InvalidInput());
+                   view.displayPage(new String[]{input});
+               } while (!client.isInMatch());
+           } catch (NullPointerException e) {
+               close();
+           }
+       }
+    }
 
-
-
+    public void waitingRoom(){
+       if(client.isActive()) {
+           view.setPage(new CLIWaitingPage());
+           view.displayPage(null);
+           try {
+               syncReceive().accept(responseHandler); //either StartedMatchResponse or TerminatedMatchResponse
+           } catch (NullPointerException e) { //socket has been closed, response is null => close communication with error
+               close();
+           }
+       }
     }
 
     public void send(Request request){
+       request.setUserHash(hash); //wraps hashcode inside request, very important!!
         try{
             socketOut.reset();
             socketOut.writeObject(request);
@@ -129,7 +175,7 @@ public class CLIClientViewController implements ClientViewController{
         Response response = null;
         try{
             response = (Response)socketIn.readObject();
-        }catch( Exception e){
+        }catch(Exception e){
             ExceptionHandler.handle(e, view);
             close();
         }
@@ -175,6 +221,7 @@ public class CLIClientViewController implements ClientViewController{
      * @return the thread
      */
     public Thread asyncWriteToSocket(Request message){
+        message .setUserHash(hash);
         return new Thread(() -> send(message));
     }
 
@@ -208,7 +255,6 @@ public class CLIClientViewController implements ClientViewController{
 
     @Override
     public void initializeConnection() throws ConnectionErrorException { //------> Tested | OK <------//
-
         Socket cliSocket;
         Scanner in = new Scanner(System.in);
         String input;
@@ -225,17 +271,13 @@ public class CLIClientViewController implements ClientViewController{
             if(parsed.length != 2 ||
                     InputVerifier.isNotValidIP(parsed[0]) && InputVerifier.isNotValidPort(parsed[1])){ //invalid input, none of the fields is correct (ip:port)
                 view.updatePageState(new CLIConnectionPage.InvalidInput());
-
             } else if (InputVerifier.isNotValidIP(parsed[0])) {
                 view.updatePageState(new CLIConnectionPage.InvalidIP());
-
             } else if (InputVerifier.isNotValidPort(parsed[1])) {
                 view.updatePageState(new CLIConnectionPage.InvalidPort());
             }
-
             view.displayPage(new String[] {input});
         }while(parsed.length != 2 || InputVerifier.isNotValidPort(parsed[1]) || InputVerifier.isNotValidIP(parsed[0]));
-
         try {
             cliSocket = new Socket(parsed[0], Integer.parseInt(parsed[1]));
         } catch (Exception e) {
@@ -251,6 +293,7 @@ public class CLIClientViewController implements ClientViewController{
             this.hash = hashResponse.getHash();
         }catch(Exception e){
             ExceptionHandler.handle(e,view);
+            close();
         }
     }
 

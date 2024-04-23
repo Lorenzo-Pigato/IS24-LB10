@@ -1,10 +1,10 @@
 package it.polimi.ingsw.lb10.network;
 
 import it.polimi.ingsw.lb10.network.requests.Request;
-import it.polimi.ingsw.lb10.network.response.HashResponse;
+import it.polimi.ingsw.lb10.network.response.lobby.HashResponse;
 import it.polimi.ingsw.lb10.server.controller.LobbyController;
 import it.polimi.ingsw.lb10.server.view.RemoteView;
-import it.polimi.ingsw.lb10.server.visitors.requestDispatch.RequestVisitor;
+import it.polimi.ingsw.lb10.server.visitors.requestDispatch.LobbyRequestVisitor;
 import it.polimi.ingsw.lb10.util.Observable;
 import it.polimi.ingsw.lb10.server.Server;
 import it.polimi.ingsw.lb10.server.controller.MatchController;
@@ -20,7 +20,8 @@ public class ClientConnection extends Observable<Request> implements Runnable {
     private Server server;
     private MatchController matchController;
     private final RemoteView remoteView;
-    private final RequestVisitor requestHandler;
+    private final LobbyRequestVisitor requestHandler;
+    private final int userHash;
 
 
     public ClientConnection(Socket socket, Server server){
@@ -29,6 +30,7 @@ public class ClientConnection extends Observable<Request> implements Runnable {
         this.remoteView = new RemoteView(socket);
         this.requestHandler = LobbyController.instance();
         LobbyController.addRemoteView(remoteView);
+         userHash = socket.hashCode();
     }
 
     public void setActive(Boolean active) {
@@ -48,25 +50,23 @@ public class ClientConnection extends Observable<Request> implements Runnable {
     }
 
     public void run(){
-
         setUp();//creates input Stream
         try{
             remoteView.setUp();  //sets up remote view opening output streams
+            LobbyController.addRemoteView(remoteView);
         }catch(IOException e){
             close(); //closes the socket, client will handle an IOException
         }
-
         remoteView.send(new HashResponse(socket.hashCode()));
         Server.log(">> New client, assigned hashcode: " + socket.hashCode());
-
         while(isActive()){
             try{
                 Request request = (Request) (input.readObject());
-                Server.log(">> " + request.getHashCode() + ": sent new request");
+                Server.log(">> " + request.getUserHash() + ": sent new Request");
                 request.accept(requestHandler);
-
             }catch(Exception e){
-                Server.log(">> Exception: "+ e.toString() + " occurred");
+                Server.log(">> Client " + userHash + " closed connection");
+                LobbyController.disconnectClient(userHash); //disconnects client from lobby, which deletes player from match too!
                 setActive(false);
                 close();
             }

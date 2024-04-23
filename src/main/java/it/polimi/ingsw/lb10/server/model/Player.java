@@ -9,20 +9,28 @@ import java.util.Hashtable;
 import java.util.Map;
 
 public class Player {
-    private int questPoints;
-    private int points;
-    private boolean inGame;
+
+    private int hashCode;
     private String username;
-    private Quest privateQuest;
+
     private Matrix matrix;
+
+    private HashMap<Resource,Integer> OnMapResources= new HashMap<>();
+    private int points = 0;
+
+    private Quest privateQuest;
+    private int questPoints = 0;
+
+
+
+
+
     private final ArrayList<PlaceableCard> hand= new ArrayList<>();
     private final Map<Resource,Integer> onMapResources = new Hashtable<>();
 
-    public Player(String username) {
+    public Player(int hashCode, String username) {
+        this.hashCode = hashCode;
         this.username = username;
-        inGame=true;
-        points=0;
-        questPoints=0;
     }
 
     // --------> METHODS <--------
@@ -30,8 +38,7 @@ public class Player {
     public void addOnMapResources(Resource resource) {
         if(resource!=Resource.EMPTY && resource!=Resource.NULL) {
             if (onMapResources.containsKey(resource)) {
-                int currentQuantity = onMapResources.get(resource);
-                onMapResources.put(resource, currentQuantity + 1);
+                onMapResources.compute(resource, (k, currentQuantity) -> currentQuantity + 1);
             } else
                 onMapResources.put(resource, 1);
         }
@@ -40,12 +47,13 @@ public class Player {
     public void deleteOnMapResources(Resource resource) {
         if (resource!=Resource.EMPTY && resource!=Resource.NULL) {
             if (onMapResources.containsKey(resource)) {
-                int currentQuantity = onMapResources.get(resource);
-                onMapResources.put(resource, currentQuantity - 1);
-            } else
-                System.out.println(">>> E r r o r <<<");
+                onMapResources.compute(resource, (k, currentQuantity) -> currentQuantity - 1);
+            } else {
+                // Tira un errore
+            }
         }
     }
+
     public void maxScore(){
         if(getPoints()>30)
             setPoints(30);
@@ -80,9 +88,6 @@ public class Player {
     public int getPoints() {
         return points;
     }
-    public String getUsername() {
-        return username;
-    }
     public Matrix getMatrix() {
         return matrix;
     }
@@ -103,6 +108,12 @@ public class Player {
     public void setPoints(int points) {
         this.points = points;
     }
+
+    public int getUserHash() {
+        return hashCode;
+    }
+
+    public String getUsername() { return username;}
 
     public void setQuestPoints(int questPoints) {
         this.questPoints = questPoints;

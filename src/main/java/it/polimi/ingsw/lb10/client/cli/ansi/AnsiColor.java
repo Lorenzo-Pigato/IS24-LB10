@@ -9,8 +9,7 @@ public enum AnsiColor {
     CYAN("\u001B[36m"),
     WHITE("\u001B[37m"),
     YELLOW("\u001B[33m"),
-    GREY("\u001B[90m"),
-    YELLOWBG("\033[35;47m");
+    GREY("\u001B[90m");
 
     private final String code;
 

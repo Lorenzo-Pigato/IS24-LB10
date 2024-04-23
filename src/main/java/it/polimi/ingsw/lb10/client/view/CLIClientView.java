@@ -32,7 +32,7 @@ public class CLIClientView implements ClientView {
      * @param args to provide to the state, when needed
      */
     @Override
-    public void displayPage(String[] args) {
+    public void displayPage(Object[] args) {
         page.print(args);
     }
 

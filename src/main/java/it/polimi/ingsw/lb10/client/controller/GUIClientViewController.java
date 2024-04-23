@@ -81,6 +81,9 @@ public class GUIClientViewController implements ClientViewController {
 
     }
 
+    @Override
+    public void waitingRoom(){}
+
     public void setGuiClientView(GUIClientView guiClientView) {
         this.guiClientView = guiClientView;
     }
