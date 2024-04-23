@@ -4,6 +4,7 @@ import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.view.GUIClientView;
 import it.polimi.ingsw.lb10.client.Client;
 import it.polimi.ingsw.lb10.network.requests.Request;
+import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -17,6 +18,7 @@ public class GUIClientViewController implements ClientViewController {
     private Client client;
     private ObjectInputStream socketIn;
     private ObjectOutputStream socketOut;
+    private int matchId;
 
     public static GUIClientViewController instance (){
         if(instance == null) return new GUIClientViewController();
@@ -73,6 +75,30 @@ public class GUIClientViewController implements ClientViewController {
 
     @Override
     public void setHash() {
+
+    }
+
+    /**
+     * @return 
+     */
+    @Override
+    public int getMatchId() {
+        return matchId;
+    }
+
+    /**
+     * @param id 
+     */
+    @Override
+    public void setMatchId(int id) {
+        this.matchId = matchId;
+    }
+
+    /**
+     * @param response 
+     */
+    @Override
+    public void privateQuestSelection(PrivateQuestsResponse response) {
 
     }
 

@@ -11,7 +11,7 @@ import java.net.Socket;
  * This class is used to update the client-side view on controller's update
  * has the OutputStream to send out responses to the client, it is a ResponseSendingVisitor !!!!
  */
-public class RemoteView  {
+public class RemoteView {
     private final int hashCode;
     private final Socket socket;
     private ObjectOutputStream outputStream;

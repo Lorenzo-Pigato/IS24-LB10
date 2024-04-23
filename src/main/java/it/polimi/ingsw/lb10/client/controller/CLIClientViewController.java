@@ -11,11 +11,13 @@ import it.polimi.ingsw.lb10.client.util.InputVerifier;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
 import it.polimi.ingsw.lb10.network.requests.QuitRequest;
 import it.polimi.ingsw.lb10.network.requests.Request;
+import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestSelectedRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.LobbyToMatchRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.LoginRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.NewMatchRequest;
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.network.response.lobby.HashResponse;
+import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -33,6 +35,7 @@ public class CLIClientViewController implements ClientViewController{
     private ObjectOutputStream socketOut;
     private int hash;
     private static final CLIResponseHandler responseHandler = CLIResponseHandler.instance();
+    private int matchId;
 
 
    public static CLIClientViewController instance(){
@@ -150,13 +153,19 @@ public class CLIClientViewController implements ClientViewController{
     public void waitingRoom(){
        if(client.isActive()) {
            view.setPage(new CLIWaitingPage());
-           view.displayPage(null);
+           view.displayPage(new Object[]{matchId});
            try {
                syncReceive().accept(responseHandler); //either StartedMatchResponse or TerminatedMatchResponse
            } catch (NullPointerException e) { //socket has been closed, response is null => close communication with error
                close();
            }
        }
+    }
+
+    @Override
+    public void privateQuestSelection(PrivateQuestsResponse response){
+
+       //send(new PrivateQuestSelectedRequest(Quest selected));
     }
 
     public void send(Request request){
@@ -295,6 +304,16 @@ public class CLIClientViewController implements ClientViewController{
             ExceptionHandler.handle(e,view);
             close();
         }
+    }
+
+    @Override
+    public void setMatchId(int  matchId){
+        this.matchId = matchId;
+    }
+
+    @Override
+    public int getMatchId(){
+        return matchId;
     }
 
 

@@ -1,8 +1,10 @@
 package it.polimi.ingsw.lb10.server.visitors.responseDespatch;
 import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
 import it.polimi.ingsw.lb10.network.requests.QuitRequest;
+import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestsRequest;
 import it.polimi.ingsw.lb10.network.response.lobby.BooleanResponse;
 import it.polimi.ingsw.lb10.network.response.match.JoinMatchResponse;
+import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
 import it.polimi.ingsw.lb10.network.response.match.StartedMatchResponse;
 import it.polimi.ingsw.lb10.network.response.match.TerminatedMatchResponse;
 
@@ -18,7 +20,10 @@ public class CLIResponseHandler implements ResponseVisitor {
     }
 
     @Override
-    public void visit(JoinMatchResponse response){ controller.getClient().setInMatch(response.getJoined());}
+    public void visit(JoinMatchResponse response){
+        controller.getClient().setInMatch(response.getJoined());
+        controller.setMatchId(response.getMatchId());
+    }
 
     @Override
     public void visit(BooleanResponse response) {
@@ -29,6 +34,19 @@ public class CLIResponseHandler implements ResponseVisitor {
     public void visit(TerminatedMatchResponse response) {controller.send(new QuitRequest());}
 
     @Override
-    public void visit(StartedMatchResponse response){controller.getClient().setStartedMatch(true);};
+    public void visit(StartedMatchResponse response){
+        controller.getClient().setStartedMatch(true);
+        controller.setMatchId(response.getMatchId());
+        controller.send(new PrivateQuestsRequest(controller.getMatchId()));
+        controller.syncReceive().accept(this);
+    }
+
+    @Override
+    public void visit(PrivateQuestsResponse response) {
+        controller.privateQuestSelection(response);
+
+    }
+
+
 
 }

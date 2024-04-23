@@ -20,7 +20,7 @@ private static Map<Resource,Integer> activationCost = new Hashtable<>();
         activationCost.put(Resource.MUSHROOM,3);
         onMapResources.put(Resource.MUSHROOM,10);
         counterQuest = new QuestCounter(0,3,activationCost);
-        player=new Player("Tony");
+        player=new Player(0, "tony");
         for(int i=0;i<activationCost.get(Resource.MUSHROOM);i++)
             player.addOnMapResources(Resource.MUSHROOM);
     }

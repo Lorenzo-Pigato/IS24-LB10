@@ -27,6 +27,7 @@ public class GoldenDeck{
     }
 
     public void fillDeck(){
+        cards.removeAll(cards);
         ObjectMapper mapper = new ObjectMapper();
         try {
             cards = mapper.readValue(new File("src/main/resources/goldenDeck.json"),new TypeReference<ArrayList<GoldenCard>>() {});

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lb10.server.controller;
 
+import it.polimi.ingsw.lb10.network.ClientConnection;
 import it.polimi.ingsw.lb10.network.requests.QuitRequest;
 import it.polimi.ingsw.lb10.network.requests.match.MatchRequest;
 import it.polimi.ingsw.lb10.network.requests.match.JoinMatchRequest;
@@ -49,7 +50,6 @@ public class LobbyController implements LobbyRequestVisitor {
     public synchronized static void addRemoteView(RemoteView remoteView) {
         remoteViews.add(remoteView);
     }
-
     public synchronized static void removeRemoteView(RemoteView remoteView) {
         remoteViews.remove(remoteView);
     }
@@ -84,13 +84,13 @@ public class LobbyController implements LobbyRequestVisitor {
      * @param ltmr lobby to match request sent by the client
      */
     @Override
-    public synchronized void visit(@NotNull LobbyToMatchRequest ltmr) {
+    public void visit(@NotNull LobbyToMatchRequest ltmr) {
         Server.log(">> Received new Join Match Request from: " + ltmr.getUserHash());
         Server.log(">> Match to be joined: " + ltmr.getMatchId());
 
         if (matches.stream().filter(matchController -> !matchController.isStarted()).map(MatchController::getMatchId).noneMatch(id -> id == ltmr.getMatchId())){
             //Predicate : matchId contained in the request is an actual waiting match
-            getRemoteView(ltmr.getUserHash()).send(new JoinMatchResponse(false)); //match already started or not existing
+            getRemoteView(ltmr.getUserHash()).send(new JoinMatchResponse(false, 0)); //match already started or not existing
             Server.log(">> No such match existing, sent new JoinMatchResponse to " + ltmr.getUserHash() + " status : false");
         }else{
             //envelopes the username of the player to be passed to the controller

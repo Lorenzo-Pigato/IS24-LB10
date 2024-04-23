@@ -18,9 +18,8 @@ public class ClientConnection extends Observable<Request> implements Runnable {
     private ObjectInputStream input;
     private Boolean active = true;
     private Server server;
-    private MatchController matchController;
     private final RemoteView remoteView;
-    private final LobbyRequestVisitor requestHandler;
+    private LobbyRequestVisitor requestHandler;
     private final int userHash;
 
 
@@ -82,6 +81,10 @@ public class ClientConnection extends Observable<Request> implements Runnable {
         }catch(IOException e){
             close();
         }
+    }
+
+    public int getUserHash() {
+        return userHash;
     }
 
 }

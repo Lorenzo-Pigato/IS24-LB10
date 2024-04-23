@@ -6,9 +6,11 @@ import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 public class JoinMatchResponse extends Response {
 
     private final boolean joined;
+    private int matchId;
 
-    public JoinMatchResponse(boolean joined) {
+    public JoinMatchResponse(boolean joined, int matchId) {
         this.joined = joined;
+        this.matchId = matchId;
     }
 
     @Override
@@ -17,4 +19,5 @@ public class JoinMatchResponse extends Response {
     }
 
     public boolean getJoined() {return joined;}
+    public int getMatchId() {return matchId;}
 }
