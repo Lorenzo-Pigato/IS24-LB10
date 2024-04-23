@@ -34,6 +34,8 @@ public class MatchController implements Runnable {
     private Boolean active = true;
     private MatchModel model;
     private BlockingQueue<Request> requests;
+    private ArrayList<RemoteView> remoteView;
+
     private final Position[] possiblePosition;
     private DrawStrategy drawStrategy;
     ArrayList<Node> nodesVisited;
@@ -43,10 +45,8 @@ public class MatchController implements Runnable {
         drawStrategy= null;
         nodesVisited= new ArrayList<>();
     }
-    private RemoteView remoteView;
 
     //Game Model fields
-
     @Override
     public void run() {
         while(active){

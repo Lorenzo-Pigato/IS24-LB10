@@ -54,6 +54,8 @@ public abstract class CLICommand {
         CLICommand.restoreCursorPosition();     //Pushing back cursor to the beginning of the input
 
         for (int i = 0; i < input.length(); i++) System.out.print(" ");     //Overwriting input with spaces
+
+        CLICommand.restoreCursorPosition();     //Pushing back cursor to the beginning of the input
     }
 
 
@@ -67,14 +69,22 @@ public abstract class CLICommand {
     }
 
     /**
+     * Set terminal window's size
+     * clear window, cursor in (1,1)
+     */
+    public static void initialize(int width, int height) {
+        setScreenSize(width,height);
+        home();
+        clearScreen();
+    }
+
+    /**
      * Set terminal window's default state:
-     * window size of 80x40 - default system size
+     * window size of 160x50
      * clear window, cursor in (1,1)
      */
     public static void initialize() {
-        setScreenSize(160,50);
-        home();
-        clearScreen();
+        initialize(defaultWidth, defaultHeight);
     }
 
     /**
@@ -107,7 +117,7 @@ public abstract class CLICommand {
         return defaultWidth;
     }
 
-/*
+
     public static void setInvisibleInput(){
         System.out.print("\u001B[8m");
         System.out.flush();
@@ -121,5 +131,5 @@ public abstract class CLICommand {
         System.out.print("\u001b[?25h");
         System.out.flush();
     }
-*/
+
 }

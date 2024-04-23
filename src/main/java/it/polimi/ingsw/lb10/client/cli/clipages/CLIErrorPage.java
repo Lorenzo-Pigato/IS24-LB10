@@ -8,6 +8,16 @@ import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
 import org.jetbrains.annotations.NotNull;
 
 public class CLIErrorPage implements CLIPage {
+    private CLIState state = new Default();
+    @Override
+    public void changeState(@NotNull CLIState state) {
+        this.state = state;
+    }
+
+    @Override
+    public void print(String[] args) {
+        state.apply(args);
+    }
 
     public static class Default implements CLIState {
         @Override

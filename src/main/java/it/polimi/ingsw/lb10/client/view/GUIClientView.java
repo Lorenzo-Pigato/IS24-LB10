@@ -11,7 +11,18 @@ public class GUIClientView implements ClientView {
     }
 
     @Override
-    public void pageStateDisplay(State state, String[] args){
+    public void updatePageState(State state) {
 
     }
+
+    @Override
+    public void displayPage(String[] args) {
+
+    }
+
+    @Override
+    public Page getPage() {
+        return null;
+    }
+
 }

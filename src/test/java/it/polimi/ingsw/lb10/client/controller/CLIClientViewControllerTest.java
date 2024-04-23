@@ -3,6 +3,7 @@ package it.polimi.ingsw.lb10.client.controller;
 import it.polimi.ingsw.lb10.client.Client;
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
+import it.polimi.ingsw.lb10.client.util.InputVerifier;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
 import org.junit.jupiter.api.AfterAll;
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,12 +19,13 @@ import java.nio.charset.StandardCharsets;
 
 public class CLIClientViewControllerTest {
 
-     static CLIClientViewController controller;
+     static CLIClientViewController controller = CLIClientViewController.instance();
      static ServerSocket serverSocket;
      static Socket localSocket;
      static ObjectOutputStream outputStream;
+     static Client client = Client.instance();
 
-     @AfterAll
+     //@AfterAll
      static void close(){
          try{
              outputStream.close();
@@ -38,9 +40,8 @@ public class CLIClientViewControllerTest {
 
     @BeforeAll
     static void initialize() {
-        controller = new CLIClientViewController(new CLIClientView());
-        controller.setClient(new Client(new CLIClientViewController(new CLIClientView())));
-
+        controller = CLIClientViewController.instance();
+        controller.setCliClientView(new CLIClientView());
         try {
             serverSocket = new ServerSocket(3557);
             Thread listener = new Thread(new Runnable() {
@@ -71,7 +72,7 @@ public class CLIClientViewControllerTest {
 
     public void testNotValidIp(String ip){
 
-        assertTrue(controller.isNotValidIP(ip));
+        assertTrue(InputVerifier.isNotValidIP(ip));
     }
 
     @ParameterizedTest
@@ -79,14 +80,14 @@ public class CLIClientViewControllerTest {
 
     public void testValidIp(String ip){
 
-        assertFalse(controller.isNotValidIP(ip));
+        assertFalse(InputVerifier.isNotValidIP(ip));
 
     }
     @ParameterizedTest
     @ValueSource(strings = {"1025", "2004", "65535"})
     public void testValidPort(String port){
 
-        assertFalse(controller.isNotValidPort(port));
+        assertFalse(InputVerifier.isNotValidPort(port));
 
     }
 
@@ -94,7 +95,7 @@ public class CLIClientViewControllerTest {
     @ValueSource(strings = {"1020", "0", "65536", "-1"})
     public void testNotValidPort(String port){
 
-        assertTrue(controller.isNotValidPort(port));
+        assertTrue(InputVerifier.isNotValidPort(port));
 
     }
 
@@ -111,6 +112,7 @@ public class CLIClientViewControllerTest {
     @ValueSource(strings = "127.0.0.1:3557\n")
     public void testSuccessfulInitializeConnection(String input) throws ConnectionErrorException {
         System.setIn(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8)));
+        controller.setClient(client);
 
         //localhost server listening
 

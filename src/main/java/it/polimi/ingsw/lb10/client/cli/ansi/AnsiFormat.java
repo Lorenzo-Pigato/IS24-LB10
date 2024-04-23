@@ -5,7 +5,8 @@ public enum AnsiFormat {
     UNDERLINE("\u001B[4m"),
     BOLD("\u001B[1m"),
     CROSSED("\u001B[9m"),
-    ITALIC("\u001B[3m");
+    ITALIC("\u001B[3m"),
+    LIGHT("\u001B[2m");
 
     private final String code;
 

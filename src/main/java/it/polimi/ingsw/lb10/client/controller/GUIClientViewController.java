@@ -11,16 +11,17 @@ import java.net.Socket;
 
 public class GUIClientViewController implements ClientViewController {
 
+    private static GUIClientViewController instance;
     private GUIClientView guiClientView;
     private Socket socket;
     private Client client;
     private ObjectInputStream socketIn;
     private ObjectOutputStream socketOut;
 
-    public GUIClientViewController(GUIClientView cliClientView) {
-        this.guiClientView = cliClientView;
+    public static GUIClientViewController instance (){
+        if(instance == null) return new GUIClientViewController();
+        return instance;
     }
-
 
     @Override
     public void setSocket(Socket socket) {
@@ -68,5 +69,19 @@ public class GUIClientViewController implements ClientViewController {
     @Override
     public void login() {
 
+    }
+
+    @Override
+    public void setHash() {
+
+    }
+
+    @Override
+    public void joinMatch() {
+
+    }
+
+    public void setGuiClientView(GUIClientView guiClientView) {
+        this.guiClientView = guiClientView;
     }
 }

@@ -5,6 +5,7 @@ import it.polimi.ingsw.lb10.client.cli.CLICommand;
 import it.polimi.ingsw.lb10.client.cli.CLILine;
 import it.polimi.ingsw.lb10.client.cli.CLIString;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
+import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiString;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,6 +16,16 @@ public class CLIConnectionPage implements CLIPage{
     private static final CLIString invalidInput = new CLIString(">> Invalid input <<", AnsiColor.RED, 0, 36);
     private static final CLIString options = new CLIString(">> Insert your server IP and PORT as IP:PORT\n>> ", AnsiColor.YELLOW, 0, 37);
 
+    private CLIState state = new Default();
+    @Override
+    public void changeState(@NotNull CLIState state) {
+        this.state = state;
+    }
+
+    @Override
+    public void print(String[] args) {
+        this.state.apply(args);
+    }
 
     public static class Default implements CLIState {
         @Override
@@ -31,7 +42,7 @@ public class CLIConnectionPage implements CLIPage{
             options.centerPrint();
 
             CLICommand.saveCursorPosition();
-            AnsiString.print("127.0.0.0:3773", AnsiColor.GREY);
+            AnsiString.print("127.0.0.1:3773", AnsiColor.GREY, AnsiFormat.LIGHT);
             CLICommand.restoreCursorPosition();
         }
     }
@@ -45,6 +56,8 @@ public class CLIConnectionPage implements CLIPage{
             CLICommand.restoreCursorPosition();
             CLICommand.clearUserInput(args[0]);
             CLIString.replace(welcome, invalidInput);
+
+            CLICommand.restoreCursorPosition();
         }
     }
 
@@ -57,6 +70,8 @@ public class CLIConnectionPage implements CLIPage{
             CLICommand.restoreCursorPosition();
             CLICommand.clearUserInput(args[0]);
             CLIString.replace(welcome, invalidIp);
+
+            CLICommand.restoreCursorPosition();
         }
     }
 
@@ -69,6 +84,8 @@ public class CLIConnectionPage implements CLIPage{
             CLICommand.restoreCursorPosition();
             CLICommand.clearUserInput(args[0]);
             CLIString.replace(welcome, invalidPort);
+
+            CLICommand.restoreCursorPosition();
         }
     }
 }
