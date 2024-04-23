@@ -59,8 +59,6 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     public boolean isStarted(){return started;}
     public void setActive(boolean status){this.active = status;}
 
-    private Position[] possiblePosition;
-
     //Game Model fields
     @Override
     public void run() {

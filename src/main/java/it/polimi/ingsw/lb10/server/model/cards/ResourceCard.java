@@ -13,6 +13,7 @@ public class ResourceCard extends PlaceableCard{
 @JsonCreator
     public ResourceCard(@JsonProperty ("id") int id, @JsonProperty("color") Color colorCard, @JsonProperty("corners") ArrayList<Corner> corners, @JsonProperty("points") int points, @JsonProperty("resource") Resource resource, @JsonProperty("activationCost") HashMap<Resource, Integer> activationCost) {
         super(id, colorCard, corners, points, resource, Resource.NULL, activationCost);
+            setNotFlippedState();
     }
 
     @Override

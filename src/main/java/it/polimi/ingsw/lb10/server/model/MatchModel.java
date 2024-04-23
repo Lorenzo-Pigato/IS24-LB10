@@ -17,9 +17,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * If the Decks create problem it's possible to change with 4 different decks as before
- */
 public class MatchModel extends Observable<Request> {
 
     private int numberOfPlayers;
