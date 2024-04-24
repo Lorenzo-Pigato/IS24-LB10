@@ -165,6 +165,7 @@ public class CLIClientViewController implements ClientViewController{
     @Override
     public void privateQuestSelection(PrivateQuestsResponse response){
 
+
        //send(new PrivateQuestSelectedRequest(Quest selected));
     }
 
@@ -288,7 +289,7 @@ public class CLIClientViewController implements ClientViewController{
             view.displayPage(new String[] {input});
         }while(parsed.length != 2 || InputVerifier.isNotValidPort(parsed[1]) || InputVerifier.isNotValidIP(parsed[0]));
         try {
-            cliSocket = new Socket(parsed[0], Integer.parseInt(parsed[1]));
+            cliSocket = new Socket(parsed[0],Integer.parseInt(parsed[1]));
         } catch (Exception e) {
             throw new ConnectionErrorException();
         }

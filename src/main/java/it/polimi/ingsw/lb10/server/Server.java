@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayDeque;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 public class Server implements Runnable{
     private final ServerSocket serverSocket;
@@ -85,26 +86,26 @@ public class Server implements Runnable{
      * @param log is used to store the log string
      */
     public static void log(String log){
-        saveLog(log);
-        if (logs.size() == 28){
-            logs.removeFirst();
-
-            logs.addLast(new CLIString(log.split("\n")[0],
-                    AnsiColor.DEFAULT,
-                    AnsiFormat.DEFAULT,
-                    2, 44, 73)); //add last log entry on line 44
-
-            logs.forEach(l -> {
-                l.reposition(2,l.getPosition()[1]-1);
-                l.print();
-            });
-        } else {
-            logs.addLast(new CLIString(log.split("\n")[0],
-                    AnsiColor.DEFAULT,
-                    AnsiFormat.DEFAULT,
-                    2, logs.size()+16, 73));
-            logs.getLast().print();
-        }
+//        saveLog(log);
+//        if (logs.size() == 28){
+//            logs.removeFirst();
+//
+//            logs.addLast(new CLIString(log.split("\n")[0],
+//                    AnsiColor.DEFAULT,
+//                    AnsiFormat.DEFAULT,
+//                    2, 44, 73)); //add last log entry on line 44
+//
+//            logs.forEach(l -> {
+//                l.reposition(2,l.getPosition()[1]-1);
+//                l.print();
+//            });
+//        } else {
+//            logs.addLast(new CLIString(log.split("\n")[0],
+//                    AnsiColor.DEFAULT,
+//                    AnsiFormat.DEFAULT,
+//                    2, logs.size()+16, 73));
+//            logs.getLast().print();
+//        }
     }
 
     private void setLogFile(){

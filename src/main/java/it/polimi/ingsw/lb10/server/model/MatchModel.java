@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lb10.server.model;
 
+import it.polimi.ingsw.lb10.server.Server;
 import it.polimi.ingsw.lb10.server.controller.MatchController;
 import it.polimi.ingsw.lb10.server.model.cards.Color;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
@@ -21,11 +22,11 @@ public class MatchModel extends Observable<Request> {
 
     private int     numberOfPlayers;
     private         MatchController controller;
-    private         String id;
-    private final   List<Player> players = new ArrayList<>();
-    private final   ResourceDeck resourceDeck= new ResourceDeck();
-    private final   GoldenDeck goldenDeck = new GoldenDeck();
-    private final   QuestDeck questDeck = new QuestDeck();
+    private int id;
+    private     List<Player> players;
+    private     ResourceDeck resourceDeck;
+    private     GoldenDeck goldenDeck;
+    private     QuestDeck questDeck;
 
     private final   List<Quest> commonQuests = new ArrayList<>();
     private final   List<PlaceableCard> goldenUncovered = new ArrayList<>();
@@ -33,8 +34,13 @@ public class MatchModel extends Observable<Request> {
 
 
     public MatchModel(int numberOfPlayers, MatchController controller) {
-        this.numberOfPlayers = numberOfPlayers;
+        resourceDeck = new ResourceDeck(new ArrayList<>());
+        goldenDeck = new GoldenDeck(new ArrayList<>());
+        questDeck = new QuestDeck(new ArrayList<>());
         this.controller = controller;
+        players = new ArrayList<Player>();
+        numberOfPlayers = numberOfPlayers;
+        id = controller.getMatchId();
     }
 
 

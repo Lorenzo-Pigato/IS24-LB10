@@ -65,10 +65,9 @@ public class Client implements Runnable{
             controller.waitingRoom();
         }
 
-
         while(true){
-
         }
+
     }
     /**
      * @return the client state
@@ -89,7 +88,8 @@ public class Client implements Runnable{
         logged = state;
     }
     public void setInMatch(Boolean state){
-        System.out.println("gianluigi");inMatch = state; }
+        inMatch = state;
+    }
 
     /**
      * @param active sets the client state, which will be evaluated by communication threads
@@ -103,6 +103,7 @@ public class Client implements Runnable{
     }
 
     public boolean isStartedMatch() {return startedMatch;}
+
     public void setStartedMatch(boolean startedMatch) {this.startedMatch = startedMatch;}
 
 }

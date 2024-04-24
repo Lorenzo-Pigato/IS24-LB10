@@ -31,10 +31,14 @@ public class CLIResponseHandler implements ResponseVisitor {
     }
 
     @Override
-    public void visit(TerminatedMatchResponse response) {controller.send(new QuitRequest());}
+    public void visit(TerminatedMatchResponse response) {
+        controller.send(new QuitRequest());
+        controller.close();
+    }
 
     @Override
     public void visit(StartedMatchResponse response){
+        System.out.println("QUI");
         controller.getClient().setStartedMatch(true);
         controller.setMatchId(response.getMatchId());
         controller.send(new PrivateQuestsRequest(controller.getMatchId()));

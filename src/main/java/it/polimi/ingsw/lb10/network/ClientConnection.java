@@ -7,7 +7,6 @@ import it.polimi.ingsw.lb10.server.view.RemoteView;
 import it.polimi.ingsw.lb10.server.visitors.requestDispatch.LobbyRequestVisitor;
 import it.polimi.ingsw.lb10.util.Observable;
 import it.polimi.ingsw.lb10.server.Server;
-import it.polimi.ingsw.lb10.server.controller.MatchController;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
@@ -45,6 +44,7 @@ public class ClientConnection extends Observable<Request> implements Runnable {
             input.close();
         }catch(IOException e){
             close();
+            e.printStackTrace();
         }
     }
 
@@ -61,9 +61,11 @@ public class ClientConnection extends Observable<Request> implements Runnable {
         while(isActive()){
             try{
                 Request request = (Request) (input.readObject());
+                System.out.println(">> " + request.getUserHash() + ": sent new Request " + request.getClass());
                 Server.log(">> " + request.getUserHash() + ": sent new Request");
                 request.accept(requestHandler);
             }catch(Exception e){
+                e.printStackTrace();
                 Server.log(">> Client " + userHash + " closed connection");
                 LobbyController.disconnectClient(userHash); //disconnects client from lobby, which deletes player from match too!
                 setActive(false);

@@ -25,7 +25,8 @@ public class RemoteView {
         return socket;
     }
 
-    public void send(Response r){
+    public synchronized void send(Response r){
+        System.out.println("SENDING " + r.getClass());
         try{
             outputStream.reset();
             outputStream.writeObject(r);

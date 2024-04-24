@@ -57,23 +57,25 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     public boolean isActive(){return active;}
 
     public int getId(){return id;}
-    public synchronized boolean isStarted(){return started;}
-    public synchronized void setActive(boolean status){this.active = status;}
+    public boolean isStarted(){return started;}
+    public void setActive(boolean status){this.active = status;}
 
-    private Position[] possiblePosition;
 
     //Game Model fields
     @Override
     public void run() {
         try{
-            while(active){
+            while(isActive()){
                 MatchRequest request = requests.take();
                 request.accept(this);
             }
-        }catch(InterruptedException e){
-            //
+        }catch(Exception e){
+            e.printStackTrace();
+            Server.log(">> " + e.getMessage());
+            System.out.println("ECCEZIONE");
         }
         finally {
+            System.out.println(">> Match terminated, active : " + isActive());
             remoteViews.forEach(remoteView -> remoteView.send(new TerminatedMatchResponse()));
         }
     }
@@ -84,7 +86,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      *  --> At the beginning the algorithm checks if the card is flipped, with a consequent update of the state of the card.
      *      the card is placed inside the matrix if the activation cost is matched
      */
-    public boolean insertCard(Player player, PlaceableCard card, int row, int column){
+    public synchronized boolean insertCard(Player player, PlaceableCard card, int row, int column){
 
         if(!checkActivationCost(player,card))
             return false;
@@ -104,7 +106,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      *  if the card passes the tests, at the end he is correctly positioned inside the matrix
      *  it's called all the
      */
-    public boolean checkInsertion(Player player,PlaceableCard card,int row, int column){
+    public synchronized boolean checkInsertion(Player player,PlaceableCard card,int row, int column){
 
         ArrayList<Node> visitedNodes = new ArrayList<>();
 
@@ -125,7 +127,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      * @return true if the card passed all the requirements
      * it's important to remember that the card is already inserted!
      */
-    public boolean verificationSetting(Player player, int row, int column, ArrayList<Node> visitedNodes){
+    public synchronized  boolean verificationSetting(Player player, int row, int column, ArrayList<Node> visitedNodes){
         //if one corner isn't available
         if(checkNotAvailability(player,row,column))
             return false;
@@ -163,7 +165,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         return !visitedNodes.isEmpty();
     }
 
-    public boolean checkActivationCost(Player player,PlaceableCard card){
+    public synchronized  boolean checkActivationCost(Player player,PlaceableCard card){
         if(card.getStateCardActivationCost().isEmpty())
             return true;
         for (Map.Entry<Resource, Integer> entry : card.getStateCardActivationCost().entrySet())
@@ -173,7 +175,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         return true;
     }
 
-    public boolean checkNotAvailability(Player player,int row, int column){
+    public synchronized boolean checkNotAvailability(Player player,int row, int column){
         Map<Position, int[]> setIncrement=player.getMatrix().parsingPositionCorners();
 
         for(Position position: getPossiblePosition()){
@@ -184,14 +186,14 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         return true;
     }
 
-    public void setCardResourceOnPlayer(Player player, PlaceableCard card){
+    public synchronized void setCardResourceOnPlayer(Player player, PlaceableCard card){
         for(Corner corner : card.getStateCardCorners()){
             player.addOnMapResources(corner.getResource());
         }
         player.addOnMapResources(card.getStateCardMiddleResource());
     }
 
-    public void deleteCoveredResource(Player player,int row, int column){
+    public synchronized void deleteCoveredResource(Player player,int row, int column){
         Map<Position, int[]> setIncrement = player.getMatrix().parsingPositionCorners();
 
         for(Position position: getPossiblePosition()){
@@ -200,7 +202,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
                 player.deleteOnMapResources(player.getMatrix().getNode(row + delta[0], column + delta[1]).getCorners().getFirst().getResource());
         }
     }
-    public void addCardPointsOnPlayer(Player player,PlaceableCard card, ArrayList<Node> visitedNodes) {
+    public synchronized void addCardPointsOnPlayer(Player player,PlaceableCard card, ArrayList<Node> visitedNodes) {
         Resource goldenResource=card.getStateCardGoldenBuffResource();
         if(goldenResource.equals(Resource.NULL))
             player.addPoints(card.getStateCardPoints());
@@ -218,7 +220,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      * @param player who has the turn
      *  This method is to call at the end of the game!
      */
-    public void checkCounterQuestPoints(Player player){
+    public synchronized void checkCounterQuestPoints(Player player){
         for(Quest quest : model.getCommonQuests()){
             if(quest instanceof QuestCounter)
                 player.addQuestPoints(((QuestCounter) quest).questAlgorithm(player.getOnMapResources()));
@@ -226,7 +228,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     }
 
 
-    public void addPlayer(Player player){
+    public synchronized void addPlayer(Player player){
         players.add(player);
     }
 
@@ -239,7 +241,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
 
 
     // --------> GETTER <--------
-    public Position[] getPossiblePosition() {
+    private Position[] getPossiblePosition() {
         return new Position[]{Position.TOPLEFT, Position.TOPRIGHT, Position.BOTTOMRIGHT, Position.BOTTOMLEFT};
     }
 
@@ -248,13 +250,13 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      * @throws InterruptedException in case MatchController thread terminates.
      */
     public synchronized void submitRequest(MatchRequest request) throws InterruptedException{
-        this.requests.put(request);
+        requests.put(request);
     }
 
     /**
      * @return match id
      */
-    public synchronized int getMatchId(){
+    public int getMatchId(){
         return id;
     }
 
@@ -264,7 +266,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      * @param jmr join match request
      */
     @Override
-    public synchronized void visit(@NotNull JoinMatchRequest jmr) {
+    public synchronized  void visit(@NotNull JoinMatchRequest jmr) {
         players.add(jmr.getPlayer()); //adds new player, safe because LobbyController checked if it's possible
         getRemoteView(jmr.getUserHash()).send(new JoinMatchResponse(true, getMatchId())); //sends response
         Server.log(">> Added player to match: " + jmr.getPlayer().getUsername() + " - Match ID: " + id);
@@ -272,21 +274,21 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     }
 
     /**
-     * @param privateQuestsRequest requests sent by the client to view and choose his private quests
+     * @param privateQuestsRequest request sent by the client to view and choose his private quests
      */
     @Override
-    public void visit(PrivateQuestsRequest privateQuestsRequest) {
+    public synchronized  void visit(PrivateQuestsRequest privateQuestsRequest) {
         getRemoteView(privateQuestsRequest.getUserHash()).send(new PrivateQuestsResponse(getPlayer(privateQuestsRequest.getUserHash()).getPrivateQuests()));
     }
 
     /** this method adds the remote view to the MatchController whenever a new client joins the match
      * @param remoteView the client remote view
      */
-    public void addRemoteView(RemoteView remoteView){
+    public synchronized void addRemoteView(RemoteView remoteView){
         remoteViews.add(remoteView);
     }
 
-    public RemoteView getRemoteView(int hashCode){
+    public synchronized RemoteView getRemoteView(int hashCode){
         return remoteViews.stream().filter(remoteView -> remoteView.getSocket().hashCode() == hashCode).findFirst().get();
     }
 
@@ -295,19 +297,20 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      * which will handle removing the client from his match, in case the player is in a started match.
      * @param p the player to be removed
      */
-    public void removePlayer(Player p){
+    public synchronized void removePlayer(Player p){
+        System.out.println("removing player " + p.getUserHash());
         players.remove(p);
         try {
             getRemoteView(p.getUserHash()).getSocket().close();
         }catch(IOException e){
-            throw new RuntimeException();
+            e.printStackTrace();
         }
         remoteViews.remove(getRemoteView(p.getUserHash()));
         //model. remove player!!!! ---------------------------------------------------
-        Server.log(">> Player " + p.getUsername() + " removed from match " + getMatchId());
+        System.out.println(">> Player " + p.getUsername() + " removed from match " + getMatchId());
         if((players.isEmpty() && !isStarted()) || (players.size() == 1 && isStarted())){
             setActive(false);
-            Server.log(">> Match " + getMatchId() + " terminated");
+            System.out.println(">> Match " + getMatchId() + " terminated");
             //VINCITORE???????????????????????????????????????????????????????????????????????????????????????????????????????
         }
     }
@@ -315,25 +318,25 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      * this method sets started state to true whenever the match reaches the prefixed number of players, sends a broadcast message
      * to all clients in the starting match
      */
-    private void start(){
+    private synchronized void start(){
         Server.log(" >> Match " +  id + " started");
-        started = true;
-        model = new MatchModel(numberOfPlayers, this);
-        model.gameSetup(); //initializer for decks, table cards , players hand and colors.
-        broadcast(new StartedMatchResponse(id));
+            started = true;
+            model = new MatchModel(numberOfPlayers, this);
+            //model.gameSetup(); //initializer for decks, table cards , players hand and colors.
+            //broadcast(new StartedMatchResponse(id));
     }
 
     /** sends a specific response to all RemoteViews connected
      * @param response response to be sent
      */
-    public void broadcast (Response response){
-        remoteViews.forEach(remoteView -> remoteView.send(response));
+    public synchronized void broadcast (Response response){
+            remoteViews.forEach(remoteView -> remoteView.send(response));
     }
 
-    public ArrayList<Player> getPlayers() {
+    public synchronized ArrayList<Player> getPlayers() {
         return players;
     }
-    public Player getPlayer(int userHash){
+    public synchronized Player getPlayer(int userHash){
         return players.stream().filter(player -> player.getUserHash() == userHash).findFirst().get();
     }
 }

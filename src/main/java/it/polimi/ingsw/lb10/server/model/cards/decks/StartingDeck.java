@@ -5,12 +5,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class StartingDeck {
 
-    private ArrayList<StartingCard> cards;
+    private ArrayList<StartingCard> cards ;
+
+    public StartingDeck(ArrayList<StartingCard> cards) {
+        this.cards = cards;
+    }
 
     public void shuffle() {
         Collections.shuffle(getCards());
@@ -29,9 +34,10 @@ public class StartingDeck {
      * This method calls the json with the complete resource cards' deck
      */
     public void fillDeck(){
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("startingDeck.json");
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            cards = objectMapper.readValue(new File("src/main/resources/startingDeck.json"), new TypeReference<ArrayList<StartingCard>>() {});
+            cards = objectMapper.readValue(inputStream, new TypeReference<ArrayList<StartingCard>>() {});
         }catch (Exception e){
             e.printStackTrace();
         }

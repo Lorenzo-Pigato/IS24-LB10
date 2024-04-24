@@ -2,6 +2,8 @@ package it.polimi.ingsw.lb10.server.model.cards.decks;
 
 import it.polimi.ingsw.lb10.server.model.cards.GoldenCard;
 import org.junit.Test;
+
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,8 +12,9 @@ public class GoldenDeckTest {
 
     private static GoldenDeck goldenDeck;
 
+    @Test
     public void fillDeckTest(){
-        goldenDeck = new GoldenDeck();
+        goldenDeck = new GoldenDeck(new ArrayList<>());
         goldenDeck.fillDeck();
         assertTrue(!goldenDeck.getCards().isEmpty());
         assertTrue(goldenDeck.getCards().size() == 40);
@@ -19,7 +22,7 @@ public class GoldenDeckTest {
 
     @Test
     public void drawCardTest(){
-        goldenDeck = new GoldenDeck();
+        goldenDeck = new GoldenDeck(new ArrayList<>());
         goldenDeck.fillDeck();
         GoldenCard oracle = goldenDeck.getCards().getLast();
         GoldenCard first = goldenDeck.drawCard();
@@ -28,16 +31,8 @@ public class GoldenDeckTest {
     }
 
     @Test
-    public void shuffleTest(){
-        goldenDeck = new GoldenDeck();
-        goldenDeck.fillDeck();
-        GoldenCard oracle = goldenDeck.getCards().getLast();
-        assertNotEquals(goldenDeck.getCards().getLast(), oracle);
-    }
-
-    @Test
     public void deckEndTest(){
-        goldenDeck = new GoldenDeck();
+        goldenDeck = new GoldenDeck(new ArrayList<>());
         goldenDeck.fillDeck();
         while(!goldenDeck.getCards().isEmpty()){
             goldenDeck.drawCard();

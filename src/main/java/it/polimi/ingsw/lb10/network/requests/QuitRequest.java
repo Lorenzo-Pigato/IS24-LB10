@@ -6,6 +6,8 @@ public class QuitRequest extends Request{
 
     @Override
     public void accept(LobbyRequestVisitor handler) {
-        handler.visit(this);
+        synchronized (handler){
+            handler.visit(this);
+        }
     }
 }

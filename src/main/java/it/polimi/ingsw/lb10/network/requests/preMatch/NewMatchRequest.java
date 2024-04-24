@@ -12,6 +12,8 @@ public class NewMatchRequest extends LobbyRequest {
 
     @Override
     public void accept(LobbyRequestVisitor handler) {
-        handler.visit(this);
+        synchronized (handler){
+            handler.visit(this);
+        }
     }
 }

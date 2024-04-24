@@ -13,7 +13,7 @@ public class JoinMatchRequest extends MatchRequest {
 
     @Override
     public void accept(MatchRequestVisitor visitor) {
-        visitor.visit(this);
+            visitor.visit(this);
     }
 
     public Player getPlayer() {

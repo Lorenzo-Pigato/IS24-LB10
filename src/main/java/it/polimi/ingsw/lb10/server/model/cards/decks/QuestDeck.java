@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lb10.server.model.cards.decks;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import it.polimi.ingsw.lb10.server.Server;
 import it.polimi.ingsw.lb10.server.model.cards.Color;
 import it.polimi.ingsw.lb10.server.model.quest.Pattern.Diagonal.BottomLeftDiagonal;
 import it.polimi.ingsw.lb10.server.model.quest.Pattern.Diagonal.TopLeftDiagonal;
@@ -12,13 +13,18 @@ import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import it.polimi.ingsw.lb10.server.model.quest.QuestCounter;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.NoSuchElementException;
 
 public class QuestDeck {
 
-    private ArrayList<Quest> cards= new ArrayList<>();
+    private ArrayList<Quest> cards ;
+
+    public QuestDeck(ArrayList<Quest> cards) {
+        this.cards = cards;
+    }
 
     public void shuffle() {
         Collections.shuffle(getCards());
@@ -35,19 +41,19 @@ public class QuestDeck {
     }
 
     public void fillDeck(){
-
         cards.removeAll(cards);
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper();
         ArrayList<QuestCounter> counterQuest = new ArrayList<QuestCounter>();
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("counterQuestDeck.json");
         try {
-            counterQuest = mapper.readValue(new File("src/main/resources/counterQuestDeck.json"),new TypeReference<ArrayList<QuestCounter>>() {});
+            counterQuest = objectMapper.readValue(inputStream,new TypeReference<ArrayList<QuestCounter>>() {});
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
 
         cards.addAll(counterQuest);
         cards.add(new BottomLeftDiagonal(95, 2, Color.RED));
-        cards.add(new  BottomLeftDiagonal(96, 2, Color.BLUE));
+        cards.add(new BottomLeftDiagonal(96, 2, Color.BLUE));
         cards.add(new TopLeftDiagonal(97, 2, Color.GREEN));
         cards.add(new TopLeftDiagonal(98, 2, Color.PURPLE));
         cards.add(new BottomLeft(99,3,Color.BLUE, Color.RED));

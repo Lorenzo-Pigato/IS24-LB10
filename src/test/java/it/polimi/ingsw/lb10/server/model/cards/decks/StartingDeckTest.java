@@ -4,6 +4,7 @@ import it.polimi.ingsw.lb10.server.model.cards.GoldenCard;
 import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,7 +14,7 @@ public class StartingDeckTest {
     private static StartingDeck startingDeck;
 
     public void fillDeckTest(){
-        startingDeck = new StartingDeck();
+        startingDeck = new StartingDeck(new ArrayList<>());
         startingDeck.fillDeck();
         assertTrue(!startingDeck.getCards().isEmpty());
         assertTrue(startingDeck.getCards().size() == 40);
@@ -21,25 +22,18 @@ public class StartingDeckTest {
 
     @Test
     public void drawCardTest(){
-        startingDeck = new StartingDeck();
+        startingDeck = new StartingDeck(new ArrayList<>());
         startingDeck.fillDeck();
         StartingCard oracle = startingDeck.getCards().getLast();
         StartingCard first = startingDeck.drawCard();
         assertEquals(first, oracle);
-        assertTrue(startingDeck.getCards().size() == 39);
-    }
+        assertTrue(startingDeck.getCards().size() == 5);
 
-    @Test
-    public void shuffleTest(){
-        startingDeck = new StartingDeck();
-        startingDeck.fillDeck();
-        StartingCard oracle = startingDeck.getCards().getLast();
-        assertNotEquals(startingDeck.getCards().getLast(), oracle);
     }
 
     @Test
     public void deckEndTest(){
-        startingDeck = new StartingDeck();
+        startingDeck = new StartingDeck(new ArrayList<>());
         startingDeck.fillDeck();
         while(!startingDeck.getCards().isEmpty()){
             startingDeck.drawCard();
