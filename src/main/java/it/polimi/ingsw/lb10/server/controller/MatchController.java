@@ -8,6 +8,7 @@ import it.polimi.ingsw.lb10.server.model.MatchModel;
 import it.polimi.ingsw.lb10.server.model.Node;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.Resource;
+import it.polimi.ingsw.lb10.server.model.cards.ResourceCard;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
@@ -61,7 +62,6 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     public void setActive(boolean status){this.active = status;}
 
 
-    //Game Model fields
     @Override
     public void run() {
         try{
@@ -72,10 +72,8 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         }catch(Exception e){
             e.printStackTrace();
             Server.log(">> " + e.getMessage());
-            System.out.println("ECCEZIONE");
         }
         finally {
-            System.out.println(">> Match terminated, active : " + isActive());
             remoteViews.forEach(remoteView -> remoteView.send(new TerminatedMatchResponse()));
         }
     }
@@ -298,7 +296,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      * @param p the player to be removed
      */
     public synchronized void removePlayer(Player p){
-        System.out.println("removing player " + p.getUserHash());
+        n("removing player " + p.getUserHash());
         players.remove(p);
         try {
             getRemoteView(p.getUserHash()).getSocket().close();
@@ -307,10 +305,10 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         }
         remoteViews.remove(getRemoteView(p.getUserHash()));
         //model. remove player!!!! ---------------------------------------------------
-        System.out.println(">> Player " + p.getUsername() + " removed from match " + getMatchId());
+        n(">> Player " + p.getUsername() + " removed from match " + getMatchId());
         if((players.isEmpty() && !isStarted()) || (players.size() == 1 && isStarted())){
             setActive(false);
-            System.out.println(">> Match " + getMatchId() + " terminated");
+            n(">> Match " + getMatchId() + " terminated");
             //VINCITORE???????????????????????????????????????????????????????????????????????????????????????????????????????
         }
     }
@@ -320,11 +318,14 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     private synchronized void start(){
         Server.log(" >> Match " +  id + " started");
+        try {
             started = true;
-            model = new MatchModel(numberOfPlayers, this);
-            //model.gameSetup(); //initializer for decks, table cards , players hand and colors.
+            model = new MatchModel(numberOfPlayers);
+            model.gameSetup(); //initializer for decks, table cards , players hand and colors.
             //broadcast(new StartedMatchResponse(id));
+        }catch(Exception e){e.printStackTrace();}
     }
+
 
     /** sends a specific response to all RemoteViews connected
      * @param response response to be sent

@@ -13,7 +13,7 @@ public class QuestDeckTest {
 
     @Test
     public void fillDeckTest(){
-        questDeck = new QuestDeck(new ArrayList<>());
+        questDeck = new QuestDeck();
         questDeck.fillDeck();
         assertTrue(!questDeck.getCards().isEmpty());
         assertTrue(questDeck.getCards().size() == 16);
@@ -21,7 +21,7 @@ public class QuestDeckTest {
 
     @Test
     public void drawCardTest(){
-        questDeck = new QuestDeck(new ArrayList<>());
+        questDeck = new QuestDeck();
         questDeck.fillDeck();
         Quest oracle = questDeck.getCards().getLast();
         Quest first = questDeck.drawCard();
@@ -31,7 +31,7 @@ public class QuestDeckTest {
 
     @Test
     public void deckEndTest(){
-        questDeck = new QuestDeck(new ArrayList<>());
+        questDeck = new QuestDeck();
         questDeck.fillDeck();
         while(!questDeck.getCards().isEmpty()){
             questDeck.drawCard();

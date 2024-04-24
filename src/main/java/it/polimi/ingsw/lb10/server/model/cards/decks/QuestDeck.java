@@ -22,8 +22,9 @@ public class QuestDeck {
 
     private ArrayList<Quest> cards ;
 
-    public QuestDeck(ArrayList<Quest> cards) {
-        this.cards = cards;
+    public QuestDeck(){
+        System.out.println("building quest");
+        cards = new ArrayList<>();
     }
 
     public void shuffle() {
@@ -41,7 +42,6 @@ public class QuestDeck {
     }
 
     public void fillDeck(){
-        cards.removeAll(cards);
         ObjectMapper objectMapper = new ObjectMapper();
         ArrayList<QuestCounter> counterQuest = new ArrayList<QuestCounter>();
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("counterQuestDeck.json");

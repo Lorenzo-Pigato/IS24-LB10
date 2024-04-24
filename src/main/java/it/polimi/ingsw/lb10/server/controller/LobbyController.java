@@ -141,7 +141,6 @@ public class LobbyController implements LobbyRequestVisitor {
 
     @Override
     public synchronized void visit(@NotNull QuitRequest quitRequest) {
-        System.out.println(quitRequest.getUserHash() + " quit req");
         Server.log(">> Received new Quit Request from: " + quitRequest.getUserHash());
        disconnectClient(quitRequest.getUserHash());
     }
@@ -171,7 +170,6 @@ public class LobbyController implements LobbyRequestVisitor {
     }
     public static synchronized void disconnectClient(int userHash){
         try {
-            System.out.println("removing from lobby player " + userHash);
             getController(userHash).removePlayer(getPlayer(userHash));
         }catch (NoSuchElementException e){
             //ok

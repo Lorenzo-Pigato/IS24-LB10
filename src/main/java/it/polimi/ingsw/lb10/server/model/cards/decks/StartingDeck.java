@@ -11,10 +11,11 @@ import java.util.Collections;
 
 public class StartingDeck {
 
-    private ArrayList<StartingCard> cards ;
+    private ArrayList<StartingCard> cards;
 
-    public StartingDeck(ArrayList<StartingCard> cards) {
-        this.cards = cards;
+    public StartingDeck(){
+        System.out.println("building start");
+        cards = new ArrayList<>();
     }
 
     public void shuffle() {
@@ -26,6 +27,7 @@ public class StartingDeck {
         cards.removeLast();
         return card;
     }
+
     public ArrayList<StartingCard> getCards() {
         return cards;
     }

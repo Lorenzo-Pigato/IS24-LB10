@@ -14,7 +14,7 @@ public class ResourceDeckTest {
 
     @Test
     public void fillDeckTest(){
-        resourceDeck = new ResourceDeck(new ArrayList<>());
+        resourceDeck = new ResourceDeck();
         resourceDeck.fillDeck();
         assertTrue(!resourceDeck.getCards().isEmpty());
         assertTrue(resourceDeck.getCards().size() == 40);
@@ -22,7 +22,7 @@ public class ResourceDeckTest {
 
     @Test
     public void drawCardTest(){
-        resourceDeck = new ResourceDeck(new ArrayList<>());
+        resourceDeck = new ResourceDeck();
         resourceDeck.fillDeck();
         ResourceCard oracle = resourceDeck.getCards().getLast();
         ResourceCard first = resourceDeck.drawCard();
@@ -32,7 +32,7 @@ public class ResourceDeckTest {
 
     @Test
     public void deckEndTest(){
-        resourceDeck = new ResourceDeck(new ArrayList<>());
+        resourceDeck = new ResourceDeck();
         resourceDeck.fillDeck();
         while(!resourceDeck.getCards().isEmpty()){
             resourceDeck.drawCard();

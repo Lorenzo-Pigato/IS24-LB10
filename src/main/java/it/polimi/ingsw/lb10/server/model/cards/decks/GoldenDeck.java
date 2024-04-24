@@ -14,11 +14,13 @@ import java.util.NoSuchElementException;
 
 public class GoldenDeck{
 
-    private ArrayList<GoldenCard> cards;
+    private  ArrayList<GoldenCard> cards ;
 
-    public GoldenDeck(ArrayList<GoldenCard> cards) {
-        this.cards = cards;
+    public GoldenDeck(){
+        System.out.println("Building gold");
+        cards = new ArrayList<>();
     }
+
 
     public void shuffle(){
         Collections.shuffle(getCards());
@@ -35,7 +37,6 @@ public class GoldenDeck{
     }
 
     public void fillDeck(){
-        cards.removeAll(cards);
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream("resourceDeck.json");

@@ -14,7 +14,7 @@ public class GoldenDeckTest {
 
     @Test
     public void fillDeckTest(){
-        goldenDeck = new GoldenDeck(new ArrayList<>());
+        goldenDeck = new GoldenDeck();
         goldenDeck.fillDeck();
         assertTrue(!goldenDeck.getCards().isEmpty());
         assertTrue(goldenDeck.getCards().size() == 40);
@@ -22,7 +22,7 @@ public class GoldenDeckTest {
 
     @Test
     public void drawCardTest(){
-        goldenDeck = new GoldenDeck(new ArrayList<>());
+        goldenDeck = new GoldenDeck();
         goldenDeck.fillDeck();
         GoldenCard oracle = goldenDeck.getCards().getLast();
         GoldenCard first = goldenDeck.drawCard();
@@ -32,7 +32,7 @@ public class GoldenDeckTest {
 
     @Test
     public void deckEndTest(){
-        goldenDeck = new GoldenDeck(new ArrayList<>());
+        goldenDeck = new GoldenDeck();
         goldenDeck.fillDeck();
         while(!goldenDeck.getCards().isEmpty()){
             goldenDeck.drawCard();

@@ -4,9 +4,11 @@ import it.polimi.ingsw.lb10.server.Server;
 import it.polimi.ingsw.lb10.server.controller.MatchController;
 import it.polimi.ingsw.lb10.server.model.cards.Color;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
+import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
 import it.polimi.ingsw.lb10.server.model.cards.decks.GoldenDeck;
 import it.polimi.ingsw.lb10.server.model.cards.decks.QuestDeck;
 import it.polimi.ingsw.lb10.server.model.cards.decks.ResourceDeck;
+import it.polimi.ingsw.lb10.server.model.cards.decks.StartingDeck;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.util.Observable;
@@ -15,32 +17,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/**
- * If the Decks create problem it's possible to change with 4 different decks as before
- */
-public class MatchModel extends Observable<Request> {
+public class MatchModel {
 
-    private int     numberOfPlayers;
-    private         MatchController controller;
+    private int numberOfPlayers;
     private int id;
-    private     List<Player> players;
-    private     ResourceDeck resourceDeck;
-    private     GoldenDeck goldenDeck;
-    private     QuestDeck questDeck;
+    private List<Player> players;
+    private ResourceDeck resourceDeck;
+    private GoldenDeck goldenDeck;
+    private QuestDeck questDeck;
+    private StartingDeck startingDeck;
 
     private final   List<Quest> commonQuests = new ArrayList<>();
     private final   List<PlaceableCard> goldenUncovered = new ArrayList<>();
     private final   List<PlaceableCard> resourceUncovered= new ArrayList<>();
 
 
-    public MatchModel(int numberOfPlayers, MatchController controller) {
-        resourceDeck = new ResourceDeck(new ArrayList<>());
-        goldenDeck = new GoldenDeck(new ArrayList<>());
-        questDeck = new QuestDeck(new ArrayList<>());
-        this.controller = controller;
+    public MatchModel(int numberOfPlayers) {
+        resourceDeck = new ResourceDeck();
+        goldenDeck = new GoldenDeck();
+        questDeck = new QuestDeck();
+        startingDeck = new StartingDeck();
         players = new ArrayList<Player>();
-        numberOfPlayers = numberOfPlayers;
-        id = controller.getMatchId();
+        this.numberOfPlayers = numberOfPlayers;
     }
 
 
@@ -98,6 +96,9 @@ public class MatchModel extends Observable<Request> {
 
         questDeck.fillDeck();
         questDeck.shuffle();
+
+        startingDeck.fillDeck();
+        startingDeck.shuffle();
     }
 
     /**
