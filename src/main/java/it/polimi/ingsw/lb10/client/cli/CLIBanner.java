@@ -364,11 +364,11 @@ public abstract class CLIBanner {
         else if(quest instanceof BottomRight){
             new CLIString(
                     """
-                             ▒▒█████╗\s
-                            ╗███████║\s
-                            ╚═══════╝\s
+                            ▒▒█████╗\s
+                            ███████║\s
+                            ╚══════╝\s
                             """,
-                    ((BottomRight) quest).getToeColor().getAnsi(), col+6, row+4).print();
+                    ((BottomRight) quest).getToeColor().getAnsi(), col+7, row+4).print();
             new CLIString(
                     """
                             ███████╗
@@ -376,7 +376,7 @@ public abstract class CLIBanner {
                             ╚══════╝
                             ███████╗
                             █████
-                            ╚═══
+                            ╚════
                             """,
                     ((BottomRight) quest).getBodyColor().getAnsi(), col+2, row).print();
         }
