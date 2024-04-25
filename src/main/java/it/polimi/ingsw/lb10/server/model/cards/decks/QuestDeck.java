@@ -23,7 +23,6 @@ public class QuestDeck {
     private ArrayList<Quest> cards ;
 
     public QuestDeck(){
-        System.out.println("building quest");
         cards = new ArrayList<>();
     }
 
@@ -44,7 +43,8 @@ public class QuestDeck {
     public void fillDeck(){
         ObjectMapper objectMapper = new ObjectMapper();
         ArrayList<QuestCounter> counterQuest = new ArrayList<QuestCounter>();
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("counterQuestDeck.json");
+
+        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("counterQuestDeck.json");
         try {
             counterQuest = objectMapper.readValue(inputStream,new TypeReference<ArrayList<QuestCounter>>() {});
         } catch (Exception e) {

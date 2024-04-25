@@ -36,7 +36,7 @@ public class StartingDeck {
      * This method calls the json with the complete resource cards' deck
      */
     public void fillDeck(){
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("startingDeck.json");
+        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("startingDeck.json");
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             cards = objectMapper.readValue(inputStream, new TypeReference<ArrayList<StartingCard>>() {});

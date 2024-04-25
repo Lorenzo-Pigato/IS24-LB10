@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lb10.server.view;
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.server.Server;
+import it.polimi.ingsw.lb10.util.Observer;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -9,9 +10,10 @@ import java.net.Socket;
 
 /**
  * This class is used to update the client-side view on controller's update
- * has the OutputStream to send out responses to the client, it is a ResponseSendingVisitor !!!!
+ * has the OutputStream to send out responses to the client.
  */
-public class RemoteView {
+public class RemoteView implements Observer<Response> {
+
     private final int hashCode;
     private final Socket socket;
     private ObjectOutputStream outputStream;
@@ -26,7 +28,6 @@ public class RemoteView {
     }
 
     public synchronized void send(Response r){
-        System.out.println("SENDING " + r.getClass());
         try{
             outputStream.reset();
             outputStream.writeObject(r);
@@ -47,8 +48,14 @@ public class RemoteView {
 
     public void setUp() throws IOException{
         outputStream = new ObjectOutputStream(socket.getOutputStream());
-       // outputStream.flush();
     }
 
 
+    /**
+     * @param response
+     */
+    @Override
+    public void update(Response response) {
+
+    }
 }

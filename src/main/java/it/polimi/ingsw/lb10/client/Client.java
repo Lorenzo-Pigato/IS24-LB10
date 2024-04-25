@@ -61,9 +61,7 @@ public class Client implements Runnable{
         controller.joinMatch();
 
         //--------------wait start------------//
-        if (active) {
-            controller.waitingRoom();
-        }
+        controller.waitingRoom();
 
         while(true){
         }

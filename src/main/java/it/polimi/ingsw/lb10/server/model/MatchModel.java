@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lb10.server.model;
 
+import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.server.Server;
 import it.polimi.ingsw.lb10.server.controller.MatchController;
 import it.polimi.ingsw.lb10.server.model.cards.Color;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class MatchModel {
+public class MatchModel extends Observable<Response> {
 
     private int numberOfPlayers;
     private int id;
@@ -26,6 +27,7 @@ public class MatchModel {
     private GoldenDeck goldenDeck;
     private QuestDeck questDeck;
     private StartingDeck startingDeck;
+    private Player onTurnPlayer;
 
     private final   List<Quest> commonQuests = new ArrayList<>();
     private final   List<PlaceableCard> goldenUncovered = new ArrayList<>();
@@ -79,6 +81,7 @@ public class MatchModel {
             colors.remove(pickedColor);
             p.setColor(pickedColor);
         }
+        onTurnPlayer = players.get(0);
 
     }
 
@@ -109,6 +112,9 @@ public class MatchModel {
         player.addCardOnHand(resourceDeck.drawCard());
         player.addCardOnHand(goldenDeck.drawCard());
         player.setPrivateQuests(questDeck.drawCard(), questDeck.drawCard());
+    }
+    private void endTurn(){
+        onTurnPlayer = players.get((players.indexOf(onTurnPlayer) + 1) % players.size());
     }
 
     /**

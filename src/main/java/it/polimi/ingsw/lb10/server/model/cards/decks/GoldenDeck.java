@@ -39,7 +39,7 @@ public class GoldenDeck{
     public void fillDeck(){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("resourceDeck.json");
+            InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("goldenDeck.json");
             cards = objectMapper.readValue(inputStream , new TypeReference<ArrayList<GoldenCard>>() {});
         } catch (Exception e) {
             e.printStackTrace();

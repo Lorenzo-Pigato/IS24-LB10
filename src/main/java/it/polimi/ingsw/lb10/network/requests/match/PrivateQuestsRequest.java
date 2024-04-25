@@ -14,6 +14,7 @@ public class PrivateQuestsRequest extends MatchRequest {
      */
     @Override
     public void accept(LobbyRequestVisitor handler) {
+        handler.visit(this);
 
     }
 
@@ -22,6 +23,6 @@ public class PrivateQuestsRequest extends MatchRequest {
      */
     @Override
     public void accept(MatchRequestVisitor visitor) {
-
+        visitor.visit(this);
     }
 }

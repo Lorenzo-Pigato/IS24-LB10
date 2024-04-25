@@ -1,10 +1,7 @@
 package it.polimi.ingsw.lb10.client.controller;
 
 import it.polimi.ingsw.lb10.client.Client;
-import it.polimi.ingsw.lb10.client.cli.clipages.CLIConnectionPage;
-import it.polimi.ingsw.lb10.client.cli.clipages.CLILobbyPage;
-import it.polimi.ingsw.lb10.client.cli.clipages.CLILoginPage;
-import it.polimi.ingsw.lb10.client.cli.clipages.CLIWaitingPage;
+import it.polimi.ingsw.lb10.client.cli.clipages.*;
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
 import it.polimi.ingsw.lb10.client.util.InputVerifier;
@@ -164,8 +161,8 @@ public class CLIClientViewController implements ClientViewController{
 
     @Override
     public void privateQuestSelection(PrivateQuestsResponse response){
-
-
+        view.setPage(new CLIStartMatchPage());
+        view.displayPage(null);
        //send(new PrivateQuestSelectedRequest(Quest selected));
     }
 

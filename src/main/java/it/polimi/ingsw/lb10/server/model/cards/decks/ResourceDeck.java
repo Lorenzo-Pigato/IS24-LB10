@@ -14,7 +14,6 @@ public class ResourceDeck {
     private ArrayList<ResourceCard> cards ;
 
     public ResourceDeck(){
-        System.out.println("Building res");
         cards = new ArrayList<>();
     }
 
@@ -39,8 +38,7 @@ public class ResourceDeck {
     public void fillDeck(){
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("resourceDeck.json");
-            System.out.println("ResourceDeck fillDeck " + inputStream.available());
+            InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("resourceDeck.json");
             cards = objectMapper.readValue(inputStream , new TypeReference<ArrayList<ResourceCard>>() {});
         }catch (Exception e){
             e.printStackTrace();

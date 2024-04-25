@@ -1,4 +1,5 @@
 package it.polimi.ingsw.lb10.server.controller;
+import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestSelectedRequest;
 import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestsRequest;
 import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
 import it.polimi.ingsw.lb10.network.response.match.StartedMatchResponse;
@@ -8,7 +9,6 @@ import it.polimi.ingsw.lb10.server.model.MatchModel;
 import it.polimi.ingsw.lb10.server.model.Node;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.Resource;
-import it.polimi.ingsw.lb10.server.model.cards.ResourceCard;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
@@ -69,8 +69,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
                 MatchRequest request = requests.take();
                 request.accept(this);
             }
-        }catch(Exception e){
-            e.printStackTrace();
+        }catch(Throwable e){
             Server.log(">> " + e.getMessage());
         }
         finally {
@@ -225,7 +224,6 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         }
     }
 
-
     public synchronized void addPlayer(Player player){
         players.add(player);
     }
@@ -275,8 +273,17 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      * @param privateQuestsRequest request sent by the client to view and choose his private quests
      */
     @Override
-    public synchronized  void visit(PrivateQuestsRequest privateQuestsRequest) {
+    public synchronized  void visit(@NotNull PrivateQuestsRequest privateQuestsRequest) {
         getRemoteView(privateQuestsRequest.getUserHash()).send(new PrivateQuestsResponse(getPlayer(privateQuestsRequest.getUserHash()).getPrivateQuests()));
+    }
+
+    /**
+     * @param privateQuestSelectedRequest
+     */
+    @Override
+    public void visit(@NotNull PrivateQuestSelectedRequest privateQuestSelectedRequest) {
+        getPlayer(privateQuestSelectedRequest.getUserHash()).setPrivateQuest(privateQuestSelectedRequest.getSelectedQuest());
+        //getRemoteView(privateQuestSelectedRequest.getUserHash()).send(Player);
     }
 
     /** this method adds the remote view to the MatchController whenever a new client joins the match
@@ -296,7 +303,6 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      * @param p the player to be removed
      */
     public synchronized void removePlayer(Player p){
-        n("removing player " + p.getUserHash());
         players.remove(p);
         try {
             getRemoteView(p.getUserHash()).getSocket().close();
@@ -305,10 +311,8 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         }
         remoteViews.remove(getRemoteView(p.getUserHash()));
         //model. remove player!!!! ---------------------------------------------------
-        n(">> Player " + p.getUsername() + " removed from match " + getMatchId());
         if((players.isEmpty() && !isStarted()) || (players.size() == 1 && isStarted())){
             setActive(false);
-            n(">> Match " + getMatchId() + " terminated");
             //VINCITORE???????????????????????????????????????????????????????????????????????????????????????????????????????
         }
     }
@@ -321,9 +325,10 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         try {
             started = true;
             model = new MatchModel(numberOfPlayers);
+            remoteViews.forEach(r -> model.addObserver(r));
             model.gameSetup(); //initializer for decks, table cards , players hand and colors.
-            //broadcast(new StartedMatchResponse(id));
-        }catch(Exception e){e.printStackTrace();}
+            //broadcast(new StartedMatchResponse(id)); use rems
+        }catch(Exception e){Server.log(e.getMessage());}
     }
 
 

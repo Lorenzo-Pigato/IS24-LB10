@@ -20,9 +20,7 @@ public abstract class MatchRequest extends Request implements LobbyRequestVisita
 
     @Override
     public void accept(LobbyRequestVisitor handler) {
-        synchronized (handler){
-            handler.visit(this);
-        }
+        handler.visit(this);
     }
 
 
