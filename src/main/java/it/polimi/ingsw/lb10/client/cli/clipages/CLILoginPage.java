@@ -33,11 +33,6 @@ public class CLILoginPage implements CLIPage {
         public void apply(Object[] args) {
             CLICommand.initialize();
 
-            CLIBanner.displayWolf(2,2);
-            CLIBanner.displayMushroom(136,2);
-            CLIBanner.displayButterfly(2, 36);
-            CLIBanner.displayLeaf(136, 36);
-
             CLIBanner.displayLogin();
 
             insertUsername.centerPrint();

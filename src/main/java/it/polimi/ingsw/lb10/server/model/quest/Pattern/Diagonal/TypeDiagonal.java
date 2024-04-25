@@ -7,7 +7,7 @@ import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 
 public abstract class TypeDiagonal extends Quest {
-    private Color color;
+    private final Color color;
     public TypeDiagonal(int id, int points, Color color) {
         super(id, points);
         this.color=color;
@@ -36,5 +36,10 @@ public abstract class TypeDiagonal extends Quest {
 
     }
 
-
+    /**
+     * @return color attribute. Used for graphics purpose.
+     */
+    public Color getColor() {
+        return color;
+    }
 }

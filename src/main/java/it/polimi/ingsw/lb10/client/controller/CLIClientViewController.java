@@ -122,24 +122,35 @@ public class CLIClientViewController implements ClientViewController{
            view.displayPage(null);
            Scanner in = new Scanner(System.in);
            String input;
+
            try {
                do {
                    input = in.nextLine();
                    String[] splitInput = input.split(" ");
+
                    if (splitInput[0].equalsIgnoreCase("join") && splitInput.length == 2) {
                        send(new LobbyToMatchRequest(Integer.parseInt(splitInput[1])));
                        syncReceive().accept(responseHandler);
+
                        if (!client.isInMatch()) view.updatePageState(new CLILobbyPage.InvalidInput());
+
                    } else if (splitInput[0].equalsIgnoreCase("new") && splitInput.length == 2) {
-                       if (Integer.parseInt(splitInput[1]) >= 2 && Integer.parseInt(splitInput[1]) <= 4) {
-                           send(new NewMatchRequest(Integer.parseInt(splitInput[1])));
-                           syncReceive().accept(responseHandler);
-                       } else view.updatePageState(new CLILobbyPage.InvalidInput());
+                       try{
+                           if (Integer.parseInt(splitInput[1]) >= 2 && Integer.parseInt(splitInput[1]) <= 4) {
+                               send(new NewMatchRequest(Integer.parseInt(splitInput[1])));
+                               syncReceive().accept(responseHandler);
+                           } else view.updatePageState(new CLILobbyPage.InvalidInput());
+                       } catch (NumberFormatException nan){
+                           view.updatePageState(new CLILobbyPage.InvalidInput());
+                       }
+
                    } else if (splitInput[0].equalsIgnoreCase("quit")) {
                        send(new QuitRequest());
                        client.setActive(false);
                        break;
+
                    } else view.updatePageState(new CLILobbyPage.InvalidInput());
+
                    view.displayPage(new String[]{input});
                } while (!client.isInMatch());
            } catch (NullPointerException e) {

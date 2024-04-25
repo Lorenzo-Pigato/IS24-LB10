@@ -265,7 +265,9 @@ public class CLIMatchPage implements CLIPage{
                 System.out.println(e.getMessage());
             }
 
-            chatLog("Player" + i, "lorem ipsum sit amet consectetur adipiscing elit", new Player(0, "AYO-GUIDO"));
+            Player player = new Player(0, "AYO-GUIDO");
+            player.setColor(Color.PURPLE);
+            chatLog("Player" + i, "lorem ipsum sit amet consectetur adipiscing elit", player);
         }
 
     }

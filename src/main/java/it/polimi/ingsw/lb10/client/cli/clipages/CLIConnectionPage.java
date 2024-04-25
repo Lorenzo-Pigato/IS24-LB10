@@ -32,11 +32,7 @@ public class CLIConnectionPage implements CLIPage{
         public void apply(Object[] args) {
             CLICommand.clearScreen();
             CLICommand.home();
-            CLIBanner.displayWolf(20,15);
-            CLIBanner.displayMushroom(50, 15);
-            CLIBanner.displayButterfly(80, 15);
-            CLIBanner.displayLeaf(110,15);
-            CLILine.drawHorizontal(20,33, 160-20, AnsiColor.YELLOW);
+            CLIBanner.displayConnection();
 
             welcome.centerPrint();
             options.centerPrint();
