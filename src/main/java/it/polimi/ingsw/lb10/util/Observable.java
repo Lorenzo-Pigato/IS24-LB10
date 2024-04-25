@@ -4,12 +4,16 @@ import java.util.List;
 
 public abstract class Observable <T>{
 
-    private List<Observer<T>> observers = new ArrayList<Observer<T>>();
+    private final List<Observer<T>> observers = new ArrayList<Observer<T>>();
 
-    public void notify(T request){
+    public void notifyAll(T response){
         for(Observer observer : observers){
-            observer.update(request);
+            observer.update(response);
         }
+    }
+
+    public void notify(T response, int userHash){
+        observers.forEach(o -> o.updateConditional(response, userHash));
     }
 
     public void addObserver(Observer<T> observer){

@@ -41,15 +41,6 @@ public interface ClientViewController {
      */
     void showUserOutput(Object o);
 
-
-
-    /**
-     * This method provides the asynchronous functions to get the input in the UI
-     */
-    void getUserInput();
-
-
-
     /** This method provides a thread to read asynchronously from the Socket
      * @return the thread to be run
      */
@@ -84,6 +75,10 @@ public interface ClientViewController {
     void setMatchId(int id);
 
     void privateQuestSelection(PrivateQuestsResponse response);
+
+    void gameStart();
+
+    void game();
 }
 
 

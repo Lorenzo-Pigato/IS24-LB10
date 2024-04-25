@@ -1,22 +1,18 @@
 package it.polimi.ingsw.lb10.server.model;
 
 import it.polimi.ingsw.lb10.network.response.Response;
-import it.polimi.ingsw.lb10.server.Server;
-import it.polimi.ingsw.lb10.server.controller.MatchController;
+import it.polimi.ingsw.lb10.network.response.match.StartedMatchResponse;
 import it.polimi.ingsw.lb10.server.model.cards.Color;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
-import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
 import it.polimi.ingsw.lb10.server.model.cards.decks.GoldenDeck;
 import it.polimi.ingsw.lb10.server.model.cards.decks.QuestDeck;
 import it.polimi.ingsw.lb10.server.model.cards.decks.ResourceDeck;
 import it.polimi.ingsw.lb10.server.model.cards.decks.StartingDeck;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
-import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.util.Observable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class MatchModel extends Observable<Response> {
 
@@ -82,7 +78,7 @@ public class MatchModel extends Observable<Response> {
             p.setColor(pickedColor);
         }
         onTurnPlayer = players.get(0);
-
+        notifyAll(new StartedMatchResponse(id));
     }
 
 
@@ -161,5 +157,9 @@ public class MatchModel extends Observable<Response> {
 
     public int getNumberOfPlayers() {
         return numberOfPlayers;
+    }
+
+    public void setId(int id){
+        this.id=id;
     }
 }

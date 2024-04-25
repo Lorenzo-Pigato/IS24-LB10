@@ -63,8 +63,9 @@ public class Client implements Runnable{
         //--------------wait start------------//
         controller.waitingRoom();
 
-        while(true){
-        }
+        controller.gameStart();
+
+        controller.game();
 
     }
     /**

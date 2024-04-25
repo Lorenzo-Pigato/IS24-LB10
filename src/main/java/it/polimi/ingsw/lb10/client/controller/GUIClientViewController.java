@@ -53,11 +53,6 @@ public class GUIClientViewController implements ClientViewController {
     }
 
     @Override
-    public void getUserInput() {
-
-    }
-
-    @Override
     public Thread asyncReadFromSocket() {
         return null;
     }
@@ -99,6 +94,22 @@ public class GUIClientViewController implements ClientViewController {
      */
     @Override
     public void privateQuestSelection(PrivateQuestsResponse response) {
+
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void gameStart() {
+
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void game() {
 
     }
 

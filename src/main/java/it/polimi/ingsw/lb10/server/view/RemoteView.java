@@ -56,6 +56,16 @@ public class RemoteView implements Observer<Response> {
      */
     @Override
     public void update(Response response) {
+        send(response);
+    }
+
+    /**
+     * @param response
+     * @param userHash
+     */
+    @Override
+    public void updateConditional(Response response, int userHash) {
+        if(hashCode == userHash) send(response);
 
     }
 }

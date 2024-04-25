@@ -13,6 +13,7 @@ public class Player {
 
     private int hashCode;
     private String username;
+    private boolean inMatch = false;
     private Matrix matrix;
     private HashMap<Resource,Integer> onMapResources= new HashMap<>();
     private int points = 0;
@@ -54,9 +55,7 @@ public class Player {
             setPoints(30);
     }
 
-    public void addPoints(int point){
-        setPoints(point+getPoints());
-    }
+    public void addPoints(int point){setPoints(point+getPoints());}
 
     /**
      * @param questPoints to add,
@@ -67,49 +66,30 @@ public class Player {
         maxScore();
     }
 
-    public void addCardOnHand(PlaceableCard card){
-        hand.add(card);
-    }
-    public void removeCardOnHand(PlaceableCard cardToRemove){
-        getHand().remove(cardToRemove);
-    }
+    public void addCardOnHand(PlaceableCard card){hand.add(card);}
+    public void removeCardOnHand(PlaceableCard cardToRemove){getHand().remove(cardToRemove);}
 
 
     // --------> GETTER <--------
-    public int getResourceQuantity(Resource resource) {
-        return onMapResources.getOrDefault(resource, 0);
-    }
-    public Map<Resource, Integer> getOnMapResources() {
-        return onMapResources;
-    }
-    public int getPoints() {
-        return points;
-    }
-    public Matrix getMatrix() {
-        return matrix;
-    }
-    public int getQuestPoints() {
-        return questPoints;
-    }
+    public int getResourceQuantity(Resource resource) {return onMapResources.getOrDefault(resource, 0);}
+    public Map<Resource, Integer> getOnMapResources() {return onMapResources;}
+    public int getPoints() {return points;}
+    public Matrix getMatrix() {return matrix;}
+    public int getQuestPoints() {return questPoints;}
     public ArrayList<Quest> getPrivateQuests () {return privateQuests;}
     public Color getColor() {return color;}
     public int getUserHash() {return hashCode;}
     public String getUsername() { return username;}
-
+    public boolean isInMatch() {return inMatch;}
+    public ArrayList<PlaceableCard> getHand() {return hand;}
 
     // --------> SETTER <--------
-    public void setMatrix(Matrix matrix) {
-        this.matrix = matrix;
-    }
-    public ArrayList<PlaceableCard> getHand() {
-        return hand;
-    }
-    public void setPoints(int points) {
-        this.points = points;
-    }
+    public void setMatrix(Matrix matrix) {this.matrix = matrix;}
+    public void setPoints(int points) {this.points = points;}
     public void setColor(Color color) {this.color = color;}
     public void setPrivateQuests(Quest privateQuest1, Quest privateQuest2) {privateQuests.add(privateQuest1);privateQuests.add(privateQuest2);}
     public void setQuestPoints(int questPoints) {this.questPoints = questPoints;}
     public void setPrivateQuest(Quest quest){this.privateQuest = quest;}
+    public void setInMatch(boolean status){inMatch = status}
 
 }

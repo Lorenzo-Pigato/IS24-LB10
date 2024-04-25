@@ -22,7 +22,6 @@ import it.polimi.ingsw.lb10.network.response.match.JoinMatchResponse;
 import it.polimi.ingsw.lb10.network.response.match.TerminatedMatchResponse;
 import it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitor;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
@@ -73,7 +72,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
             Server.log(">> " + e.getMessage());
         }
         finally {
-            remoteViews.forEach(remoteView -> remoteView.send(new TerminatedMatchResponse()));
+            remoteViews.forEach(remoteView -> remoteView.send(new TerminatedMatchResponse())); //either match model or match controller send this, better matchmodel via obs
         }
     }
 
@@ -265,7 +264,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     public synchronized  void visit(@NotNull JoinMatchRequest jmr) {
         players.add(jmr.getPlayer()); //adds new player, safe because LobbyController checked if it's possible
         getRemoteView(jmr.getUserHash()).send(new JoinMatchResponse(true, getMatchId())); //sends response
-        Server.log(">> Added player to match: " + jmr.getPlayer().getUsername() + " - Match ID: " + id);
+        Server.log(">>match joined [username : " + getPlayer(jmr.getUserHash()) + ", match : " + id);
         if(players.size() == numberOfPlayers) start();
     }
 
@@ -307,7 +306,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         try {
             getRemoteView(p.getUserHash()).getSocket().close();
         }catch(IOException e){
-            e.printStackTrace();
+
         }
         remoteViews.remove(getRemoteView(p.getUserHash()));
         //model. remove player!!!! ---------------------------------------------------
@@ -321,13 +320,14 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      * to all clients in the starting match
      */
     private synchronized void start(){
-        Server.log(" >> Match " +  id + " started");
+        Server.log(">>match started [id : " + id + "]");
         try {
             started = true;
             model = new MatchModel(numberOfPlayers);
             remoteViews.forEach(r -> model.addObserver(r));
+            model.setId(id);
             model.gameSetup(); //initializer for decks, table cards , players hand and colors.
-            //broadcast(new StartedMatchResponse(id)); use rems
+
         }catch(Exception e){Server.log(e.getMessage());}
     }
 

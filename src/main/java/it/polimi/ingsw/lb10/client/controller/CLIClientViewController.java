@@ -15,6 +15,7 @@ import it.polimi.ingsw.lb10.network.requests.preMatch.NewMatchRequest;
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.network.response.lobby.HashResponse;
 import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
+import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -163,7 +164,35 @@ public class CLIClientViewController implements ClientViewController{
     public void privateQuestSelection(PrivateQuestsResponse response){
         view.setPage(new CLIStartMatchPage());
         view.displayPage(null);
-       //send(new PrivateQuestSelectedRequest(Quest selected));
+        //shows view with two quest card to choose from, gets input, parse send
+        // ......
+        //send(new PrivateQuestSelectedRequest(Quest selected));
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void gameStart() {
+        syncReceive().accept(responseHandler); //PlayerSetUpResponse
+    }
+
+    @Override
+    public void game(){
+        Thread terminalReader = asyncReadFromTerminal();
+        Thread socketReader = asyncReadFromSocket();
+        terminalReader.start();
+        socketReader.start();
+        try{
+            terminalReader.join();
+            socketReader.join();
+        }catch(InterruptedException e){
+            client.setActive(false);
+            close();
+            //match is Terminated
+        }
+
+
     }
 
     public void send(Request request){
@@ -182,6 +211,7 @@ public class CLIClientViewController implements ClientViewController{
         Response response = null;
         try{
             response = (Response)socketIn.readObject();
+            response.accept(responseHandler);
         }catch(Exception e){
             ExceptionHandler.handle(e, view);
             close();
@@ -197,11 +227,6 @@ public class CLIClientViewController implements ClientViewController{
         viewChanger.start();
     }
 
-    @Override
-    public void getUserInput() {
-        Thread userListener = asyncReadFromTerminal();
-        userListener.start();
-    }
 
     /**
      * This asynchronous method is run by a separated thread to receive asynchronous requests from user command line (commands)
