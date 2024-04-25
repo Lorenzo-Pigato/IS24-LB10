@@ -90,6 +90,6 @@ public class Player {
     public void setPrivateQuests(Quest privateQuest1, Quest privateQuest2) {privateQuests.add(privateQuest1);privateQuests.add(privateQuest2);}
     public void setQuestPoints(int questPoints) {this.questPoints = questPoints;}
     public void setPrivateQuest(Quest quest){this.privateQuest = quest;}
-    public void setInMatch(boolean status){inMatch = status}
+    public void setInMatch(boolean status){inMatch = status;}
 
 }

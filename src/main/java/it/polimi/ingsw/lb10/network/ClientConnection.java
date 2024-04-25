@@ -61,11 +61,9 @@ public class ClientConnection extends Observable<Request> implements Runnable {
         while(isActive()){
             try{
                 Request request = (Request) (input.readObject());
-                System.out.println(">> " + request.getUserHash() + ": sent new Request " + request.getClass());
                 Server.log(">> " + request.getUserHash() + ": sent new Request");
                 request.accept(requestHandler);
             }catch(Exception e){
-                e.printStackTrace();
                 Server.log(">> Client " + userHash + " closed connection");
                 LobbyController.disconnectClient(userHash); //disconnects client from lobby, which deletes player from match too!
                 setActive(false);

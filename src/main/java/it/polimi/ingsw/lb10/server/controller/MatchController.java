@@ -264,7 +264,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     public synchronized  void visit(@NotNull JoinMatchRequest jmr) {
         players.add(jmr.getPlayer()); //adds new player, safe because LobbyController checked if it's possible
         getRemoteView(jmr.getUserHash()).send(new JoinMatchResponse(true, getMatchId())); //sends response
-        Server.log(">>match joined [username : " + getPlayer(jmr.getUserHash()) + ", match : " + id);
+        Server.log(">> Match joined [username : " + getPlayer(jmr.getUserHash()) + ", match : " + getMatchId());
         if(players.size() == numberOfPlayers) start();
     }
 
@@ -320,7 +320,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      * to all clients in the starting match
      */
     private synchronized void start(){
-        Server.log(">>match started [id : " + id + "]");
+        Server.log(">> Match started [id : " + getMatchId() + "]");
         try {
             started = true;
             model = new MatchModel(numberOfPlayers);

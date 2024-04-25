@@ -6,7 +6,7 @@ import it.polimi.ingsw.lb10.server.visitors.requestDispatch.LobbyRequestVisitor;
 import it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitor;
 
 public class PrivateQuestSelectedRequest extends MatchRequest{
-    private Quest selectedQuest
+    private Quest selectedQuest;
 
     public PrivateQuestSelectedRequest(int matchId, Quest selectedQuest) {
         super(matchId);
