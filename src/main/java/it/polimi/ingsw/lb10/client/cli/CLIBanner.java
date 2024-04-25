@@ -2,6 +2,13 @@ package it.polimi.ingsw.lb10.client.cli;
 
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
+import it.polimi.ingsw.lb10.server.model.quest.Pattern.Diagonal.BottomLeftDiagonal;
+import it.polimi.ingsw.lb10.server.model.quest.Pattern.Diagonal.TopLeftDiagonal;
+import it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ.BottomLeft;
+import it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ.BottomRight;
+import it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ.TopLeft;
+import it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ.TopRight;
+import it.polimi.ingsw.lb10.server.model.quest.Quest;
 
 /**
  * This class contains the ASCII art for the game's banners
@@ -328,6 +335,107 @@ public abstract class CLIBanner {
                                 """,
                 AnsiColor.WHITE, col, row).print();
                 break;
+        }
+    }
+
+    public static void displayQuest(Object quest, int col, int row) {
+        if (quest instanceof BottomLeftDiagonal) {
+            new CLIString(
+                    """
+                                      ███████╗\s
+                                 █████▒▒█████║\s
+                            █████▒▒█████╔════╝\s
+                            ███████╔════╝     \s
+                            ╚══════╝
+                            """,
+                    ((BottomLeftDiagonal) quest).getColor().getAnsi(), col, row).print();
+        }
+        else if(quest instanceof TopLeftDiagonal) {
+            new CLIString(
+                    """
+                            ███████           \s
+                            █████▒▒█████      \s
+                            ╚═══╗█████▒▒█████╗\s
+                                ╚════╗███████║\s
+                                     ╚═══════╝\s
+                            """,
+                    ((TopLeftDiagonal) quest).getColor().getAnsi(), col, row).print();
+        }
+        else if(quest instanceof BottomRight){
+            new CLIString(
+                    """
+                             ▒▒█████╗\s
+                            ╗███████║\s
+                            ╚═══════╝\s
+                            """,
+                    ((BottomRight) quest).getToeColor().getAnsi(), col+6, row+4).print();
+            new CLIString(
+                    """
+                            ███████╗
+                            ███████║
+                            ╚══════╝
+                            ███████╗
+                            █████
+                            ╚═══
+                            """,
+                    ((BottomRight) quest).getBodyColor().getAnsi(), col+2, row).print();
+        }
+        else if(quest instanceof BottomLeft){
+            new CLIString(
+                    """
+                            ███████╗
+                            ███████║
+                            ╚══════╝
+                            ███████╗
+                              █████║
+                              ╔════╝
+                            """,
+                    ((BottomLeft) quest).getBodyColor().getAnsi(), col+7, row).print();
+            new CLIString(
+                    """
+                            █████▒▒
+                            ███████
+                            ╚══════╝
+                            """,
+                    ((BottomLeft) quest).getToeColor().getAnsi(), col+2, row+4).print();
+        }
+        else if(quest instanceof TopLeft){
+            new CLIString(
+                    """
+                            ▒▒█████╗
+                            ███████║
+                            ╚══════╝
+                            ███████╗
+                            ███████║
+                            ╚══════╝
+                            """,
+                    ((TopLeft) quest).getBodyColor().getAnsi(), col+7, row+1).print();
+            new CLIString(
+                    """
+                            ███████
+                            █████
+                            ╚════
+                            """,
+                    ((TopLeft) quest).getToeColor().getAnsi(), col+2, row).print();
+        }
+        else if(quest instanceof TopRight){
+            new CLIString(
+                    """
+                            ███████╗
+                              █████║
+                               ════╝
+                            """,
+                    ((TopRight) quest).getToeColor().getAnsi(), col+7, row).print();
+            new CLIString(
+                    """
+                            █████▒▒
+                            ███████╔
+                            ╚══════╝
+                            ███████╗
+                            ███████║
+                            ╚══════╝
+                            """,
+                    ((TopRight) quest).getBodyColor().getAnsi(), col+2, row+1).print();
         }
     }
 }

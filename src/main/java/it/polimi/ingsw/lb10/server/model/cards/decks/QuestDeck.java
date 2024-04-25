@@ -5,8 +5,7 @@ import it.polimi.ingsw.lb10.server.model.cards.Color;
 import it.polimi.ingsw.lb10.server.model.quest.Pattern.Diagonal.BottomLeftDiagonal;
 import it.polimi.ingsw.lb10.server.model.quest.Pattern.Diagonal.TopLeftDiagonal;
 import it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ.BottomLeft;
-import it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ.BottonRight;
-import it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ.TopLeft;
+import it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ.BottomRight;
 import it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ.TopRight;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import it.polimi.ingsw.lb10.server.model.quest.QuestCounter;
@@ -52,7 +51,7 @@ public class QuestDeck {
         cards.add(new TopLeftDiagonal(98, 2, Color.PURPLE));
         cards.add(new BottomLeft(99,3,Color.BLUE, Color.RED));
         cards.add(new BottomLeft(100,3,Color.PURPLE, Color.BLUE));
-        cards.add(new BottonRight(101,3,Color.RED, Color.GREEN));
+        cards.add(new BottomRight(101,3,Color.RED, Color.GREEN));
         cards.add(new TopRight(102,3,Color.GREEN,Color.PURPLE));
     }
 
