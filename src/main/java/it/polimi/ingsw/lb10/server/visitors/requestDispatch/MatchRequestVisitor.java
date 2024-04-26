@@ -1,9 +1,8 @@
 package it.polimi.ingsw.lb10.server.visitors.requestDispatch;
 
 
-import it.polimi.ingsw.lb10.network.requests.match.JoinMatchRequest;
-import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestSelectedRequest;
-import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestsRequest;
+import it.polimi.ingsw.lb10.network.requests.match.*;
+import it.polimi.ingsw.lb10.network.requests.match.DrawGoldenFromDeckRequest;
 
 public interface MatchRequestVisitor {
 
@@ -13,4 +12,15 @@ public interface MatchRequestVisitor {
 
     void visit(PrivateQuestSelectedRequest privateQuestSelectedRequest);
 
+    void visit(ChatRequest chatRequest);
+
+    void visit(ShowPlayerRequest showPlayerRequest);
+
+    void visit(DrawGoldenFromTableRequest drawGoldenFromTableRequest);
+
+    void visit(DrawResourceFromTableRequest drawResourceFromTableRequest);
+
+    void visit(DrawResourceFromDeckRequest drawResourceFromDeckRequest);
+
+    void visit(DrawGoldenFromDeckRequest drawGoldenFromDeckRequest);
 }

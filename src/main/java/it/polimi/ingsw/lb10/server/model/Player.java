@@ -4,21 +4,21 @@ import it.polimi.ingsw.lb10.server.model.cards.Color;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
 
-public class Player {
+public class Player implements Serializable {
 
-    private int hashCode;
-    private String username;
+    private final int hashCode;
+    private final String username;
     private boolean inMatch = false;
     private Matrix matrix;
-    private HashMap<Resource,Integer> onMapResources= new HashMap<>();
+    private final HashMap<Resource,Integer> onMapResources= new HashMap<>();
     private int points = 0;
     private Quest privateQuest;
-    private ArrayList<Quest> privateQuests = new ArrayList<>();
+    private final ArrayList<Quest> privateQuests = new ArrayList<>();
     private int questPoints = 0;
     private Color color;
     private final ArrayList<PlaceableCard> hand= new ArrayList<>();

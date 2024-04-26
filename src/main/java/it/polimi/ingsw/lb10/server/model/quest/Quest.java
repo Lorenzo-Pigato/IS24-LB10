@@ -4,12 +4,13 @@ package it.polimi.ingsw.lb10.server.model.quest;
 import it.polimi.ingsw.lb10.server.model.Matrix;
 import it.polimi.ingsw.lb10.server.model.Resource;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public abstract class Quest {
+public abstract class Quest implements Serializable {
     private int id;
     private int points;
 

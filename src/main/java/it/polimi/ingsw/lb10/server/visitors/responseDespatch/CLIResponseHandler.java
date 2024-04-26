@@ -1,17 +1,16 @@
 package it.polimi.ingsw.lb10.server.visitors.responseDespatch;
+import it.polimi.ingsw.lb10.client.cli.clipages.CLIMatchPage;
 import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
 import it.polimi.ingsw.lb10.network.requests.QuitRequest;
 import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestsRequest;
+import it.polimi.ingsw.lb10.network.response.ChatMessageResponse;
 import it.polimi.ingsw.lb10.network.response.lobby.BooleanResponse;
-import it.polimi.ingsw.lb10.network.response.match.JoinMatchResponse;
-import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
-import it.polimi.ingsw.lb10.network.response.match.StartedMatchResponse;
-import it.polimi.ingsw.lb10.network.response.match.TerminatedMatchResponse;
+import it.polimi.ingsw.lb10.network.response.match.*;
 
 public class CLIResponseHandler implements ResponseVisitor {
 
     private static CLIResponseHandler instance;
-    private static CLIClientViewController controller = CLIClientViewController.instance();
+    private static final CLIClientViewController controller = CLIClientViewController.instance();
 
 
     public static CLIResponseHandler instance(){
@@ -47,6 +46,18 @@ public class CLIResponseHandler implements ResponseVisitor {
     @Override
     public void visit(PrivateQuestsResponse response) {
         controller.privateQuestSelection(response);
+        controller.syncReceive().accept(this); //GameSetUp response
+    }
+
+    @Override
+    public void visit(GameSetupResponse response){
+
+
+    }
+
+    @Override
+    public void visit(ChatMessageResponse chatMessageResponse){
+
 
     }
 

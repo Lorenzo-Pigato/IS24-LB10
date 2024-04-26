@@ -3,10 +3,10 @@ package it.polimi.ingsw.lb10.server.model.cards;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class BaseCard {
+public abstract class BaseCard implements Serializable {
 
     private int id;
     private Color colorCard;

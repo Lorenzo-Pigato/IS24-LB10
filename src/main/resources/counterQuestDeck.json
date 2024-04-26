@@ -2,37 +2,37 @@
   {
     "id"              : 87 ,
     "points"          : 2 ,
-    "activationCost"  : {"MUSHROOM" :  0, "PLANT" :  0, "INSECT" :  3, "ANIMAL" : 0}
+    "activationCost"  : {"MUSHROOM" :  0, "PLANT" :  0, "INSECT" :  3, "ANIMAL" : 0, "POTION" :  0, "FEATHER" :  0, "PERGAMENA" :  0}
   },
   {
     "id"              : 88 ,
     "points"          : 2 ,
-    "activationCost"  : {"MUSHROOM" :  0, "PLANT" :  0, "INSECT" :  0, "ANIMAL" : 3}
+    "activationCost"  : {"MUSHROOM" :  0, "PLANT" :  0, "INSECT" :  0, "ANIMAL" : 3, "POTION" :  0, "FEATHER" :  0, "PERGAMENA" :  0}
   },
   {
     "id"              : 89 ,
     "points"          : 2 ,
-    "activationCost"  : {"MUSHROOM" :  3, "PLANT" :  0, "INSECT" :  0, "ANIMAL" : 0}
+    "activationCost"  : {"MUSHROOM" :  3, "PLANT" :  0, "INSECT" :  0, "ANIMAL" : 0, "POTION" :  0, "FEATHER" :  0, "PERGAMENA" :  0}
   },
   {
     "id"              : 90 ,
     "points"          : 2 ,
-    "activationCost"  : {"MUSHROOM" :  0, "PLANT" :  3, "INSECT" :  0, "ANIMAL" : 0}
+    "activationCost"  : {"MUSHROOM" :  0, "PLANT" :  3, "INSECT" :  0, "ANIMAL" : 0, "POTION" :  0, "FEATHER" :  0, "PERGAMENA" :  0}
   },
   {
     "id"              : 91 ,
     "points"          : 2 ,
-    "activationCost"  : {"MUSHROOM" :  0, "PLANT" :  0, "INSECT" :  0, "ANIMAL" : 0, "POTION" :  2}
+    "activationCost"  : {"MUSHROOM" :  0, "PLANT" :  0, "INSECT" :  0, "ANIMAL" : 0, "POTION" :  2, "FEATHER" :  0, "PERGAMENA" :  0}
   },
   {
     "id"              : 92 ,
     "points"          : 2 ,
-    "activationCost"  : {"MUSHROOM" :  0, "PLANT" :  0, "INSECT" :  0, "ANIMAL" : 0, "PERGAMENA" :  2}
+    "activationCost"  : {"MUSHROOM" :  0, "PLANT" :  0, "INSECT" :  0, "ANIMAL" : 0, "PERGAMENA" :  2, "POTION" :  0, "FEATHER" :  0}
   },
   {
     "id"              : 93 ,
     "points"          : 2 ,
-    "activationCost"  : {"MUSHROOM" :  0, "PLANT" :  0, "INSECT" :  0, "ANIMAL" : 0, "FEATHER" :  2}
+    "activationCost"  : {"MUSHROOM" :  0, "PLANT" :  0, "INSECT" :  0, "ANIMAL" : 0, "FEATHER" :  2, "POTION" :  0, "PERGAMENA" :  0}
   },
   {
     "id"              : 94 ,

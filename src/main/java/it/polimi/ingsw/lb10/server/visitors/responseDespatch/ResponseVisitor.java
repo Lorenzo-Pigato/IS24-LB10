@@ -1,10 +1,8 @@
 package it.polimi.ingsw.lb10.server.visitors.responseDespatch;
 
+import it.polimi.ingsw.lb10.network.response.ChatMessageResponse;
 import it.polimi.ingsw.lb10.network.response.lobby.BooleanResponse;
-import it.polimi.ingsw.lb10.network.response.match.JoinMatchResponse;
-import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
-import it.polimi.ingsw.lb10.network.response.match.StartedMatchResponse;
-import it.polimi.ingsw.lb10.network.response.match.TerminatedMatchResponse;
+import it.polimi.ingsw.lb10.network.response.match.*;
 
 public interface ResponseVisitor {
 
@@ -17,4 +15,8 @@ public interface ResponseVisitor {
     void visit(StartedMatchResponse response);
 
     void visit(PrivateQuestsResponse response);
+
+    void visit(GameSetupResponse response);
+
+    void visit(ChatMessageResponse response);
 }

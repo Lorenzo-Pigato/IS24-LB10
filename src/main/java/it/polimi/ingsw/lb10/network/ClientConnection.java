@@ -57,14 +57,13 @@ public class ClientConnection extends Observable<Request> implements Runnable {
             close(); //closes the socket, client will handle an IOException
         }
         remoteView.send(new HashResponse(socket.hashCode()));
-        Server.log(">> New client, assigned hashcode: " + socket.hashCode());
+        Server.log(">>new client, assigned hashcode: " + socket.hashCode());
         while(isActive()){
             try{
                 Request request = (Request) (input.readObject());
-                Server.log(">> " + request.getUserHash() + ": sent new Request");
                 request.accept(requestHandler);
             }catch(Exception e){
-                Server.log(">> Client " + userHash + " closed connection");
+                Server.log(">>client " + userHash + " closed connection");
                 LobbyController.disconnectClient(userHash); //disconnects client from lobby, which deletes player from match too!
                 setActive(false);
                 close();

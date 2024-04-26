@@ -1,6 +1,6 @@
 package it.polimi.ingsw.lb10.server.controller;
-import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestSelectedRequest;
-import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestsRequest;
+import it.polimi.ingsw.lb10.network.requests.match.*;
+import it.polimi.ingsw.lb10.network.requests.match.DrawGoldenFromDeckRequest;
 import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.server.Server;
@@ -15,8 +15,7 @@ import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import it.polimi.ingsw.lb10.server.model.quest.QuestCounter;
 import it.polimi.ingsw.lb10.server.view.RemoteView;
 import java.io.IOException;
-import it.polimi.ingsw.lb10.network.requests.match.MatchRequest;
-import it.polimi.ingsw.lb10.network.requests.match.JoinMatchRequest;
+
 import it.polimi.ingsw.lb10.network.response.match.JoinMatchResponse;
 import it.polimi.ingsw.lb10.network.response.match.TerminatedMatchResponse;
 import it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitor;
@@ -45,6 +44,8 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     private boolean started = false;
     private final ArrayList<Player> players;
     private final int numberOfPlayers;
+    private boolean resourceDeckAvalaible = true;
+    private boolean goldenDeckAvalaible = true;
 
     public MatchController(int numberOfPlayers) {
         requests = new LinkedBlockingQueue<>();
@@ -82,12 +83,9 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      *      the card is placed inside the matrix if the activation cost is matched
      */
     public synchronized boolean insertCard(Player player, PlaceableCard card, int row, int column){
-
         if(!checkActivationCost(player,card))
             return false;
-
         player.getMatrix().setCard(card, row, column);
-
         return checkInsertion(player, card, row, column);
     }
 
@@ -226,15 +224,6 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         players.add(player);
     }
 
-    // --------> REQUESTS <--------
-
-
-
-
-
-
-
-    // --------> GETTER <--------
     private Position[] getPossiblePosition() {
         return new Position[]{Position.TOPLEFT, Position.TOPRIGHT, Position.BOTTOMRIGHT, Position.BOTTOMLEFT};
     }
@@ -263,7 +252,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     public synchronized  void visit(@NotNull JoinMatchRequest jmr) {
         players.add(jmr.getPlayer()); //adds new player, safe because LobbyController checked if it's possible
         getRemoteView(jmr.getUserHash()).send(new JoinMatchResponse(true, getMatchId())); //sends response
-        Server.log(">> Match joined [username : " + getPlayer(jmr.getUserHash()) + ", match : " + getMatchId());
+        Server.log(">>match joined [username : " + getPlayer(jmr.getUserHash()).getUsername() + ", match : " + getMatchId());
         if(players.size() == numberOfPlayers) start();
     }
 
@@ -272,16 +261,70 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     @Override
     public synchronized  void visit(@NotNull PrivateQuestsRequest privateQuestsRequest) {
-        getRemoteView(privateQuestsRequest.getUserHash()).send(new PrivateQuestsResponse(getPlayer(privateQuestsRequest.getUserHash()).getPrivateQuests()));
+        try{
+            Server.log(">>private quests request [username : " + getPlayer(privateQuestsRequest.getUserHash()).getUsername() + "]");
+            getRemoteView(privateQuestsRequest.getUserHash()).send(new PrivateQuestsResponse(getPlayer(privateQuestsRequest.getUserHash()).getPrivateQuests()));
+        }catch(Exception e){
+            Server.log(e.getMessage());
+        }
     }
 
     /**
      * @param privateQuestSelectedRequest this request is sent by the client when a private quest is chosen
      */
     @Override
-    public void visit(@NotNull PrivateQuestSelectedRequest privateQuestSelectedRequest) {
+    public synchronized void visit(@NotNull PrivateQuestSelectedRequest privateQuestSelectedRequest) {
+        Server.log(">>private quest selected request [username : " + getPlayer(privateQuestSelectedRequest.getUserHash()).getUsername() + "]");
         getPlayer(privateQuestSelectedRequest.getUserHash()).setPrivateQuest(privateQuestSelectedRequest.getSelectedQuest());
-        //getRemoteView(privateQuestSelectedRequest.getUserHash()).send(Player);
+        model.assignPrivateQuest(getPlayer(privateQuestSelectedRequest.getUserHash()), privateQuestSelectedRequest.getSelectedQuest());
+    }
+
+    /**
+     * @param chatRequest this request is sent by the client to send a message to the match chat
+     */
+    @Override
+    public void visit(@NotNull ChatRequest chatRequest) {
+
+    }
+
+    /**
+     * @param showPlayerRequest this request is sent by the client to see a specific player's board on his view
+     */
+    @Override
+    public void visit(@NotNull ShowPlayerRequest showPlayerRequest) {
+
+    }
+
+    /**
+     * @param drawGoldenFromTableRequest this request is sent by the client to draw a golden card from uncovered table golden card
+     */
+    @Override
+    public void visit(DrawGoldenFromTableRequest drawGoldenFromTableRequest) {
+
+    }
+
+    /**
+     * @param drawResourceFromTableRequest this request is sent by the client to draw a resource card from uncovered table resource cards.
+     */
+    @Override
+    public void visit(DrawResourceFromTableRequest drawResourceFromTableRequest) {
+
+    }
+
+    /**
+     * @param drawResourceFromDeckRequest this request is sent by the client to draw a resource card directly from deck.
+     */
+    @Override
+    public void visit(DrawResourceFromDeckRequest drawResourceFromDeckRequest) {
+
+    }
+
+    /**
+     * @param drawGoldenFromDeckRequest this request is sent by the client to draw a golden card directly from deck.
+     */
+    @Override
+    public void visit(DrawGoldenFromDeckRequest drawGoldenFromDeckRequest) {
+
     }
 
     /** this method adds the remote view to the MatchController whenever a new client joins the match
@@ -293,13 +336,16 @@ public class MatchController implements Runnable, MatchRequestVisitor {
 
     public synchronized RemoteView getRemoteView(int hashCode){
         try {
-            return remoteViews.stream().filter(remoteView -> remoteView.getSocket().hashCode() == hashCode)
-                                        .findFirst()
-                                        .orElseThrow(() -> new Exception(">> RemoteView not found [hash : " + hashCode + "]"));
+            return remoteViews
+                    .stream()
+                    .filter(remoteView -> remoteView.getSocket().hashCode() == hashCode)
+                    .findFirst()
+                    .orElseThrow(() -> new Exception(">> RemoteView not found [hash : " + hashCode + "]"));
         } catch (Exception e) {
             Server.log(e.getMessage());
             return null;
         }
+
     }
 
     /** this method removes a player and his remote view from the match in case the client sends a QuitRequest or disconnects from the socket, in this case the method
@@ -326,14 +372,13 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      * to all clients in the starting match
      */
     private synchronized void start(){
-        Server.log(">> Match started [id : " + getMatchId() + "]");
+        Server.log(">>match started [id : " + getMatchId() + "]");
         try {
             started = true;
-            model = new MatchModel(numberOfPlayers);
+            model = new MatchModel(numberOfPlayers, players);
             remoteViews.forEach(r -> model.addObserver(r));
             model.setId(id);
             model.gameSetup(); //initializer for decks, table cards , players hand and colors.
-
         }catch(Exception e){Server.log(e.getMessage());}
     }
 
@@ -355,7 +400,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
                                    .orElseThrow(() -> new Exception(">> Player not found [hash : " + userHash + "]"));
         } catch (Exception e) {
             Server.log(e.getMessage());
-            return null;
         }
+        return null;
     }
 }

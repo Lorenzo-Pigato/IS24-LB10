@@ -31,7 +31,7 @@ public class CLIStartMatchPage implements CLIPage {
     private static final CLIString invalidInput = new CLIString(">> Choose [1] or [2] <<", AnsiColor.RED, AnsiFormat.BOLD, 1, 45);
     private static final CLIString chooseQuest = new CLIString(">> Choose a quest to start the match <<", AnsiColor.CYAN, AnsiFormat.BOLD, 1, 45);
     private static final CLIString inputField = new CLIString(">> ", AnsiColor.CYAN, 61, 46);
-
+    private static final CLIString wait = new CLIString(">> Waiting for other players... <<", AnsiColor.CYAN, AnsiFormat.BOLD, 61, 46);
     private CLIState state = new CLIStartMatchPage.Default();
 
     @Override
@@ -69,13 +69,20 @@ public class CLIStartMatchPage implements CLIPage {
             inputField.print();
             CLICommand.saveCursorPosition();
         }
-
     }
 
     public static class InvalidInput implements CLIState {
         @Override
         public void apply(Object @NotNull [] args) {
             CLIString.replace(chooseQuest, invalidInput);
+            CLICommand.clearUserInput((String) args[0]);
+        }
+    }
+
+    public static class WaitPage implements CLIState {
+        @Override
+        public void apply(Object @NotNull [] args) {
+            CLIString.replace(chooseQuest, wait);
             CLICommand.clearUserInput((String) args[0]);
         }
     }

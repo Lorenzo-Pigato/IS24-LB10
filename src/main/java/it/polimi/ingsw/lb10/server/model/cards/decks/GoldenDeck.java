@@ -17,7 +17,6 @@ public class GoldenDeck{
     private  ArrayList<GoldenCard> cards ;
 
     public GoldenDeck(){
-        System.out.println("Building gold");
         cards = new ArrayList<>();
     }
 
@@ -42,7 +41,7 @@ public class GoldenDeck{
             InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("goldenDeck.json");
             cards = objectMapper.readValue(inputStream , new TypeReference<ArrayList<GoldenCard>>() {});
         } catch (Exception e) {
-            e.printStackTrace();
+            Server.log(e.getMessage());
         }
     }
 

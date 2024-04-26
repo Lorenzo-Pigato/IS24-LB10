@@ -1,7 +1,9 @@
 package it.polimi.ingsw.lb10.server.model;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
 
-public enum Resource {
+import java.io.Serializable;
+
+public enum Resource implements Serializable {
     NULL(null, null),
     PATTERN(AnsiColor.YELLOW, null),
 

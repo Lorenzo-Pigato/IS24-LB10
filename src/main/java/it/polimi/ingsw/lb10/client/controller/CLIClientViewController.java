@@ -4,6 +4,7 @@ import it.polimi.ingsw.lb10.client.Client;
 import it.polimi.ingsw.lb10.client.cli.clipages.*;
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
+import it.polimi.ingsw.lb10.client.util.InputParser;
 import it.polimi.ingsw.lb10.client.util.InputVerifier;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
 import it.polimi.ingsw.lb10.network.requests.QuitRequest;
@@ -15,7 +16,6 @@ import it.polimi.ingsw.lb10.network.requests.preMatch.NewMatchRequest;
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.network.response.lobby.HashResponse;
 import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
-import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -52,6 +52,7 @@ public class CLIClientViewController implements ClientViewController{
     }
     public Socket getSocket() {return socket;}
     public Client getClient() {return client;}
+    public CLIClientView getView() {return view;}
 
     // ------------------- UTILS ------------------- //
     @Override
@@ -173,11 +174,27 @@ public class CLIClientViewController implements ClientViewController{
 
     @Override
     public void privateQuestSelection(PrivateQuestsResponse response){
+        Scanner in = new Scanner(System.in);
+        String input;
         view.setPage(new CLIStartMatchPage());
-        view.displayPage(null);
-        //shows view with two quest card to choose from, gets input, parse send
-        // ......
-        //send(new PrivateQuestSelectedRequest(Quest selected));
+        view.displayPage(new Object[]{response.getPrivateQuests().get(0), response.getPrivateQuests().get(1)});
+        String[] parsed;
+        boolean valid;
+        do{
+            input = in.nextLine();
+            parsed = input.split(" ");
+            valid = parsed.length == 1 && ((parsed[0].equalsIgnoreCase("1")) || (parsed[0].equalsIgnoreCase("2")));
+            if(!valid){
+                view.updatePageState(new CLIStartMatchPage.InvalidInput());
+                view.displayPage(new Object[]{input});
+            } else if ("1".equalsIgnoreCase(parsed[0])) {
+                send(new PrivateQuestSelectedRequest(matchId, response.getPrivateQuests().getFirst()));
+            } else if ("2".equalsIgnoreCase(parsed[0])) {
+                send(new PrivateQuestSelectedRequest(matchId, response.getPrivateQuests().get(1)));
+            }
+        }while(!valid);
+        view.updatePageState(new CLIStartMatchPage.WaitPage());
+        view.displayPage(new Object[]{input});
     }
 
     /**
@@ -186,6 +203,7 @@ public class CLIClientViewController implements ClientViewController{
     @Override
     public void gameStart() {
         syncReceive().accept(responseHandler); //PlayerSetUpResponse
+
     }
 
     @Override
@@ -222,7 +240,6 @@ public class CLIClientViewController implements ClientViewController{
         Response response = null;
         try{
             response = (Response)socketIn.readObject();
-            response.accept(responseHandler);
         }catch(Exception e){
             ExceptionHandler.handle(e, view);
             close();
@@ -248,8 +265,8 @@ public class CLIClientViewController implements ClientViewController{
         return new Thread(() -> {
             try{
                 while(client.isActive()){
-                    Response input = (Response)socketIn.readObject();
-                    // REACTS!!!
+                    Response response = (Response)socketIn.readObject();
+                    response.accept(responseHandler);
                 }
             }catch(Exception e){
                 close();
@@ -277,13 +294,18 @@ public class CLIClientViewController implements ClientViewController{
     public Thread asyncReadFromTerminal() {
         return new Thread(() -> {
             Scanner in = new Scanner(System.in);
+            Request futureRequest;
             while (client.isActive()) {
                 try {
                     String input = in.nextLine();
-
+                    futureRequest = InputParser.parse(input);
+                    if(futureRequest != null) {
+                        asyncWriteToSocket(futureRequest).start();
+                    }else{
+                        //view error invalid command!
+                    }
                 } catch (Exception e) {
                     ExceptionHandler.handle(e, view);
-                }finally {
                     close();
                 }
             }

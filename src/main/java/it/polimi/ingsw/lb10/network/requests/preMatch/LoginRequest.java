@@ -1,6 +1,4 @@
 package it.polimi.ingsw.lb10.network.requests.preMatch;
-import it.polimi.ingsw.lb10.network.requests.Request;
-import it.polimi.ingsw.lb10.server.visitors.requestDispatch.LobbyRequestVisitable;
 import it.polimi.ingsw.lb10.server.visitors.requestDispatch.LobbyRequestVisitor;
 
 public class LoginRequest extends LobbyRequest {

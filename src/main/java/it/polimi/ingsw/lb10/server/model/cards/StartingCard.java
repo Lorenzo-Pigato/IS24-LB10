@@ -10,9 +10,11 @@ import it.polimi.ingsw.lb10.server.model.cards.StartingCardState.FrontStartingCa
 import it.polimi.ingsw.lb10.server.model.cards.StartingCardState.StateStartingCard;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class StartingCard extends BaseCard {
+public class StartingCard extends BaseCard implements Serializable {
 
     private ArrayList<Corner> flippedCardCorners;
     private ArrayList<Resource> middleResources;

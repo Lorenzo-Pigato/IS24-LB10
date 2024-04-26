@@ -8,10 +8,11 @@ import it.polimi.ingsw.lb10.server.model.cards.PlaceableCardState.FrontOfTheCard
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCardState.StateOfTheCard;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public abstract class PlaceableCard extends BaseCard {
+public abstract class PlaceableCard extends BaseCard implements Serializable {
     @JsonProperty("points")
     private int points;
     @JsonProperty("resource")

@@ -1,9 +1,15 @@
 package it.polimi.ingsw.lb10.server.model;
 
 import it.polimi.ingsw.lb10.network.response.Response;
+import it.polimi.ingsw.lb10.network.response.match.GameSetupResponse;
+import it.polimi.ingsw.lb10.network.response.match.GoldenPickResponse;
+import it.polimi.ingsw.lb10.network.response.match.ResourcePickResponse;
 import it.polimi.ingsw.lb10.network.response.match.StartedMatchResponse;
+import it.polimi.ingsw.lb10.server.Server;
 import it.polimi.ingsw.lb10.server.model.cards.Color;
+import it.polimi.ingsw.lb10.server.model.cards.GoldenCard;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
+import it.polimi.ingsw.lb10.server.model.cards.ResourceCard;
 import it.polimi.ingsw.lb10.server.model.cards.decks.GoldenDeck;
 import it.polimi.ingsw.lb10.server.model.cards.decks.QuestDeck;
 import it.polimi.ingsw.lb10.server.model.cards.decks.ResourceDeck;
@@ -18,7 +24,7 @@ public class MatchModel extends Observable<Response> {
 
     private int numberOfPlayers;
     private int id;
-    private List<Player> players;
+    private ArrayList<Player> players;
     private ResourceDeck resourceDeck;
     private GoldenDeck goldenDeck;
     private QuestDeck questDeck;
@@ -30,12 +36,12 @@ public class MatchModel extends Observable<Response> {
     private final   List<PlaceableCard> resourceUncovered= new ArrayList<>();
 
 
-    public MatchModel(int numberOfPlayers) {
-        resourceDeck = new ResourceDeck();
-        goldenDeck = new GoldenDeck();
-        questDeck = new QuestDeck();
-        startingDeck = new StartingDeck();
-        players = new ArrayList<Player>();
+    public MatchModel(int numberOfPlayers, ArrayList<Player> players) {
+        this.resourceDeck = new ResourceDeck();
+        this.goldenDeck = new GoldenDeck();
+        this.questDeck = new QuestDeck();
+        this.startingDeck = new StartingDeck();
+        this.players = players;
         this.numberOfPlayers = numberOfPlayers;
     }
 
@@ -109,22 +115,21 @@ public class MatchModel extends Observable<Response> {
         player.addCardOnHand(goldenDeck.drawCard());
         player.setPrivateQuests(questDeck.drawCard(), questDeck.drawCard());
     }
+    public void assignPrivateQuest(Player player, Quest quest){
+        player.setPrivateQuest(quest);
+        player.setInMatch(true);
+        if(players.stream().allMatch(Player::isInMatch)) notifyAll(new GameSetupResponse(players.toArray()));
+    }
+
     private void endTurn(){
         onTurnPlayer = players.get((players.indexOf(onTurnPlayer) + 1) % players.size());
     }
 
-    /**
-     * Add one resource card to the uncovered Resource cards
-     */
-    public void addOnTableResourceCard(int index){
+    public void drawResourceFromTable(Player player){
 
     }
 
-
-    /**
-     * Add one golden card to the uncovered Golden cards
-     */
-    public void addGoldenCardOnTable(int index){
+    public void drawGoldenFromTable(Player player){
 
     }
 
@@ -145,14 +150,22 @@ public class MatchModel extends Observable<Response> {
         return goldenDeck;
     }
 
-    public List<PlaceableCard> getResourceUncovered() {
-        return resourceUncovered;
+    public void removePlayer(Player player){
+        players.remove(player);
+        //nootify via chat ?? cool!
     }
-    public List<PlaceableCard> getGoldenUncovered() {
-        return goldenUncovered;
-    }
+
     public List<Player> getPlayers() {
         return players;
+    }
+
+    public Player getPlayer(int userHash){
+        try{
+            return players.stream().filter(player -> player.getUserHash() == userHash).findFirst().orElseThrow(() -> new Exception(">>player not found in match model"));
+        }catch(Exception e){
+            Server.log(e.getMessage());
+            return null;
+        }
     }
 
     public int getNumberOfPlayers() {

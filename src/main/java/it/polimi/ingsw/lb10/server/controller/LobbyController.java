@@ -17,7 +17,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -72,11 +71,11 @@ public class LobbyController implements LobbyRequestVisitor {
      */
     @Override
     public synchronized void visit(@NotNull LoginRequest lr) {
-        Server.log(">> login request [username : " + lr.getUsername() + ", " + lr.getUserHash() + "]");
+        Server.log(">>login request [username : " + lr.getUsername() + ", " + lr.getUserHash() + "]");
         boolean validated = validateUsername(lr.getUsername());
         if (validated) addSignedPlayer(lr.getUserHash(), lr.getUsername());
         getRemoteView(lr.getUserHash()).send(new BooleanResponse(validated));
-        Server.log(">> boolean response [username : " + lr.getUsername() + ", " + lr.getUserHash() + "] " + validated);
+        Server.log(">>boolean response [username : " + lr.getUsername() + ", " + lr.getUserHash() + "] " + validated);
     }
 
     /**this method handles the request of a client which wants to join a specific match. First thing to do is check if the match is present in the waiting list
@@ -85,11 +84,11 @@ public class LobbyController implements LobbyRequestVisitor {
      */
     @Override
     public synchronized void visit(@NotNull LobbyToMatchRequest ltmr) {
-        Server.log(">> join match [username : " + getPlayer(ltmr.getUserHash()).getUsername() + ", id : " + ltmr.getMatchId() + "]");
+        Server.log(">>join match [username : " + getPlayer(ltmr.getUserHash()).getUsername() + ", id : " + ltmr.getMatchId() + "]");
         if (matches.stream().filter(matchController -> !matchController.isStarted()).map(MatchController::getMatchId).noneMatch(id -> id == ltmr.getMatchId())){
             //Predicate : matchId contained in the request is an actual waiting match
             getRemoteView(ltmr.getUserHash()).send(new JoinMatchResponse(false, 0)); //match already started or not existing
-            Server.log(">> no match found, join match response [status : false]");
+            Server.log(">>no match found, join match response [status : false]");
         }else{
             //envelopes the username of the player to be passed to the controller
             matches.stream().filter(matchController -> (!matchController.isStarted()) && matchController.getMatchId() == ltmr.getMatchId()).findFirst().ifPresent(matchController -> {
@@ -107,7 +106,6 @@ public class LobbyController implements LobbyRequestVisitor {
     }
 
     public synchronized void visit(@NotNull MatchRequest mr /*A GENERAL*/) {
-        Server.log(">> Received generic Match Request from " + mr.getUserHash());
         matches.stream().filter(matchController -> matchController.getId() == mr.getMatchId()).findFirst().ifPresent(matchController -> {
             try {
                 matchController.submitRequest(mr);
@@ -135,7 +133,7 @@ public class LobbyController implements LobbyRequestVisitor {
 
     @Override
     public synchronized void visit(@NotNull QuitRequest quitRequest) {
-       Server.log(">> quit request [username : " + getPlayer(quitRequest.getUserHash()).getUsername() + "]");
+       Server.log(">>quit request [username : " + getPlayer(quitRequest.getUserHash()).getUsername() + "]");
        disconnectClient(quitRequest.getUserHash());
     }
 

@@ -14,7 +14,6 @@ public class StartingDeck {
     private ArrayList<StartingCard> cards;
 
     public StartingDeck(){
-        System.out.println("building start");
         cards = new ArrayList<>();
     }
 

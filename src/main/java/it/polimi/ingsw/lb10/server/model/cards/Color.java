@@ -1,8 +1,9 @@
 package it.polimi.ingsw.lb10.server.model.cards;
 
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
+import java.io.Serializable;
 
-public enum Color {
+public enum Color implements Serializable {
         STARTER(AnsiColor.DEFAULT),
         RED(AnsiColor.RED),
         BLUE(AnsiColor.CYAN),
