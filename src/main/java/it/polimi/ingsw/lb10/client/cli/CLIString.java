@@ -24,8 +24,7 @@ public class CLIString {
 
     //-------------------------- Builders -----------------------------//
     public CLIString(String string, AnsiColor color, AnsiFormat format, int col, int row, int widthLimit){
-        int clutterLength = 5 + color.getCode().length() + format.getCode().length();
-        this.string = string.length() - clutterLength > widthLimit ? string.substring(0, widthLimit-3)+ "..." + AnsiSpecial.RESET.getCode() : string;
+        this.string = string.length() > widthLimit ? string.substring(0, widthLimit-3)+ "..." + AnsiSpecial.RESET.getCode() : string;
         this.color = color;
         this.format = format;
 

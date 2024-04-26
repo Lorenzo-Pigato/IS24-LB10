@@ -3,7 +3,7 @@ import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
 
 public enum Resource {
     NULL(null, null),
-    PATTERN(AnsiColor.YELLOW, null),
+    PATTERN(AnsiColor.YELLOW, "▛"),
 
     EMPTY(AnsiColor.DEFAULT, null),
     MUSHROOM(AnsiColor.RED, null),
