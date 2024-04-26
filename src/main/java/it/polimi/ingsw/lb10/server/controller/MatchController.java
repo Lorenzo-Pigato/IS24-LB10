@@ -2,7 +2,6 @@ package it.polimi.ingsw.lb10.server.controller;
 import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestSelectedRequest;
 import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestsRequest;
 import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
-import it.polimi.ingsw.lb10.network.response.match.StartedMatchResponse;
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.server.Server;
 import it.polimi.ingsw.lb10.server.model.MatchModel;
@@ -277,7 +276,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     }
 
     /**
-     * @param privateQuestSelectedRequest
+     * @param privateQuestSelectedRequest this request is sent by the client when a private quest is chosen
      */
     @Override
     public void visit(@NotNull PrivateQuestSelectedRequest privateQuestSelectedRequest) {
@@ -293,7 +292,14 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     }
 
     public synchronized RemoteView getRemoteView(int hashCode){
-        return remoteViews.stream().filter(remoteView -> remoteView.getSocket().hashCode() == hashCode).findFirst().get();
+        try {
+            return remoteViews.stream().filter(remoteView -> remoteView.getSocket().hashCode() == hashCode)
+                                        .findFirst()
+                                        .orElseThrow(() -> new Exception(">> RemoteView not found [hash : " + hashCode + "]"));
+        } catch (Exception e) {
+            Server.log(e.getMessage());
+            return null;
+        }
     }
 
     /** this method removes a player and his remote view from the match in case the client sends a QuitRequest or disconnects from the socket, in this case the method
