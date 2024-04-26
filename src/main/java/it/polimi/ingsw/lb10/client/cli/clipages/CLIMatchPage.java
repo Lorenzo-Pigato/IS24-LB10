@@ -13,13 +13,17 @@ import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
 import it.polimi.ingsw.lb10.server.model.cards.ResourceCard;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
+import it.polimi.ingsw.lb10.server.model.quest.Pattern.Diagonal.TopLeftDiagonal;
+import it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ.TopRight;
+import it.polimi.ingsw.lb10.server.model.quest.Quest;
+import it.polimi.ingsw.lb10.server.model.quest.QuestCounter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
 public class CLIMatchPage implements CLIPage{
 
-    private CLIState state = new Default();
+    private CLIState state = new StartingTurn();
 
     // -------------- HAND DATA ---------------- //
     private static final int[][] handUpLeftCornersPosition = {
@@ -74,13 +78,20 @@ public class CLIMatchPage implements CLIPage{
         }
     }
 
-    public static class Default implements CLIState{
+    /**
+     * This state is used to display the game interface during the starting turn, initializing the board,
+     * player's hand and quest and displaying the frames for the chat and the starting card
+     */
+    public static class StartingTurn implements CLIState {
+        /**
+         * @param args Player object,  Starting Card, Private Quest, Public Quest 1, Public Quest 2
+         */
         @Override
         public void apply(Object[] args) {
             CLICommand.initialize();
             // Draw the board
             CLIBox.draw(2,2,113,30, AnsiColor.CYAN);
-            CLIBox.draw(2,2, "Player Board: " + (args != null ? args[0] : "Unknown") ,
+            CLIBox.draw(2,2, "Player Board: " + (args != null ? ((Player)args[0]).getUsername() : "Unknown") ,
                     AnsiColor.CYAN,
                     AnsiColor.WHITE,
                     AnsiFormat.BOLD);
@@ -92,11 +103,51 @@ public class CLIMatchPage implements CLIPage{
             // Draw hand
             CLIBox.draw(2,32, 71, 12, AnsiColor.WHITE);
             CLIBox.draw(2,32, "Hand", AnsiColor.WHITE);
-            for (int i = 1; i < 4; i++){
-                CLICommand.setPosition(13 + 23*(i-1), 33);
-                System.out.println("[" + i + "]");
+            for (int i = 0; i < 3; i++){
+                CLICommand.setPosition(13 + 23*i, 33);
+                System.out.println("[" + (i+1) + "]");
             }
 
+            // Draw available objectives
+            CLIBox.draw(118,32, 40, 12, AnsiColor.WHITE);
+            CLIBox.draw(118,32, "Objectives", AnsiColor.WHITE);
+            CLILine.drawVertical(138, 33, 44, AnsiColor.WHITE);
+
+            assert args != null;
+            CLICard.displayQuestCard((Quest) args[2], 121, 36);
+            CLICard.displayQuestCard((Quest) args[3], 140, 33);
+            CLICard.displayQuestCard((Quest) args[4],140,38);
+
+
+            // Draw Starting Card
+            CLIBox.draw(74, 32, 41, 12, AnsiColor.WHITE);
+            CLIBox.draw(74, 32, "Starting Card", AnsiColor.WHITE);
+
+
+            // User inp0ut region
+            CLILine.drawHorizontal(2, 44,158, AnsiColor.WHITE);
+
+            CLICommand.setPosition(2,47);
+            AnsiString.print(">> ", AnsiColor.CYAN, AnsiFormat.BOLD);
+
+            CLICommand.saveCursorPosition();
+        }
+
+        public static void flipStartingCard() {
+
+        }
+    }
+
+    /**
+     * This state is used to display the game interface during normal match turns
+     * It modifies the StartingTurn state by adding the resources table and the score board
+     */
+    public static class Default implements CLIState{
+        @Override
+        public void apply(Object[] args) {
+
+            // Clear starting card
+            clearRegion(74, 32, 41, 12);
             // Draw resources board
             CLIBox.draw(74,32, 20, 12, AnsiColor.WHITE);
             CLIBox.draw(74,32, "Resources", AnsiColor.WHITE);
@@ -106,17 +157,27 @@ public class CLIMatchPage implements CLIPage{
             CLIBox.draw(95,32, 20, 12, AnsiColor.WHITE);
             CLIBox.draw(95,32, "Score board", AnsiColor.WHITE);
 
-
-            // Draw available objectives
-            CLIBox.draw(118,32, 40, 12, AnsiColor.WHITE);
-            CLIBox.draw(118,32, "Objectives", AnsiColor.WHITE);
-            CLILine.drawVertical(138, 33, 44, AnsiColor.WHITE);
-
-            CLILine.drawHorizontal(2, 44,158, AnsiColor.WHITE);
-
-            CLICommand.setPosition(3,47);
-            CLICommand.saveCursorPosition();
         }
+    }
+
+    // -------------- UTIL ----------------- //
+
+    private static void clearRegion (int col, int row, int width, int height){
+        for (int i = 0; i < height; i++){
+            CLICommand.setPosition(col, row+i);
+            System.out.println(" ".repeat(width));
+        }
+
+        CLICommand.restoreCursorPosition();
+    }
+
+    // ----------- SERVER REPLY------------- //
+
+    public static void serverReply(String message){
+        CLICommand.setPosition(2, 45);
+        CLICommand.clearLine();
+
+        AnsiString.print(">> " + message, AnsiColor.CYAN, AnsiFormat.BOLD);
     }
 
     // -------------- BOARD ---------------- //
@@ -129,7 +190,7 @@ public class CLIMatchPage implements CLIPage{
 
     // ---------------- HAND ---------------- //
 
-    private static void addCardToHand(@NotNull PlaceableCard card, int inHandPosition){
+    public static void addCardToHand(@NotNull PlaceableCard card, int inHandPosition){
         int col = handUpLeftCornersPosition[inHandPosition][0];
         int row = handUpLeftCornersPosition[inHandPosition][1];
 
@@ -138,15 +199,12 @@ public class CLIMatchPage implements CLIPage{
     }
 
     public static void removeCardFromHand(int inHandPosition){
-        int col = handUpLeftCornersPosition[inHandPosition][0];
-        int row = handUpLeftCornersPosition[inHandPosition][1];
-
-        for(int i = 0; i < handCardHeight; i++){
-            CLICommand.setPosition(col, row+i);
-            System.out.print(" ".repeat(handCardWidth));
-        }
-
-        CLICommand.restoreCursorPosition();
+        clearRegion(
+                handUpLeftCornersPosition[inHandPosition][0],
+                handUpLeftCornersPosition[inHandPosition][1],
+                handCardWidth,
+                handCardHeight
+        );
     }
 
     // ------------ RESOURCES -------------- //
@@ -240,14 +298,24 @@ public class CLIMatchPage implements CLIPage{
 
     // ------------- TEST ---------------- //
     public static void main(String[] args) {
-        new CLIMatchPage().print(null);
-
         ArrayList<Player> players = new ArrayList<>(Arrays.asList(
                 new Player(1, "GUI"),
                 new Player(2, "KE_MUSH"),
                 new Player(3, "Piggy"),
                 new Player(4, "SIMON-LEBOT")
         ));
+
+        CLIMatchPage match = new CLIMatchPage();
+        match.print(new Object[]{
+                players.get(3),
+                new ResourceCard(1, Color.BLUE, new ArrayList<>(List.of(new Corner(1,true, Position.BOTTOMLEFT, Resource.FEATHER, Color.BLUE))), 0, Resource.ANIMAL, null),
+                new TopLeftDiagonal(1, 3, Color.RED),
+                new TopRight(2, 3, Color.GREEN, Color.RED),
+                new QuestCounter(9, 3, new HashMap<>(
+                        Map.of(Resource.ANIMAL, 3, Resource.MUSHROOM, 2)
+                ))
+        });
+
 
         for (Player pl : players){
             pl.setColor(Color.values()[players.indexOf(pl)]);
@@ -296,6 +364,10 @@ public class CLIMatchPage implements CLIPage{
                 Map.of(Resource.ANIMAL, 3, Resource.MUSHROOM, 2)
         )), 2);
 
+
+        match.changeState(new Default());
+        match.print(null);
+
         updateResourceCounter(Resource.ANIMAL, 3);
         updateResourceCounter(Resource.MUSHROOM, 2);
         updateResourceCounter(Resource.PLANT, 1);
@@ -311,6 +383,7 @@ public class CLIMatchPage implements CLIPage{
             chatLog(players.get(i % 4), "Lorem ipsum sit amet ".repeat(i % 7));
         }
 
+        serverReply("AJO GUIDO C'È LA NEVE");
 
         updateScoreBoard(players);
     }
