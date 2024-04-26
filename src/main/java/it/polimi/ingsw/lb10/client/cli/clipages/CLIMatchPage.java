@@ -13,7 +13,9 @@ import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
 import it.polimi.ingsw.lb10.server.model.cards.ResourceCard;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
+import it.polimi.ingsw.lb10.server.model.quest.Pattern.Diagonal.BottomLeftDiagonal;
 import it.polimi.ingsw.lb10.server.model.quest.Pattern.Diagonal.TopLeftDiagonal;
+import it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ.BottomRight;
 import it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ.TopRight;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import it.polimi.ingsw.lb10.server.model.quest.QuestCounter;
@@ -309,10 +311,10 @@ public class CLIMatchPage implements CLIPage{
         match.print(new Object[]{
                 players.get(3),
                 new ResourceCard(1, Color.BLUE, new ArrayList<>(List.of(new Corner(1,true, Position.BOTTOMLEFT, Resource.FEATHER, Color.BLUE))), 0, Resource.ANIMAL, null),
-                new TopLeftDiagonal(1, 3, Color.RED),
+                new BottomLeftDiagonal(1, 3, Color.RED),
                 new TopRight(2, 3, Color.GREEN, Color.RED),
-                new QuestCounter(9, 3, new HashMap<>(
-                        Map.of(Resource.ANIMAL, 3, Resource.MUSHROOM, 2)
+                new QuestCounter(94, 3, new HashMap<>(
+                        Map.of(Resource.FEATHER, 3, Resource.POTION, 2, Resource.PERGAMENA, 2)
                 ))
         });
 

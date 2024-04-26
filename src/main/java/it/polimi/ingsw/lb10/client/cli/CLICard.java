@@ -176,7 +176,7 @@ public abstract class CLICard {
                             ▁▁▅▅▀▀
                             ▀▀▔▔
                           """,
-                    ((TopLeftDiagonal) quest).getColor().getAnsi(), col + 3, row + 1).print();
+                    ((BottomLeftDiagonal) quest).getColor().getAnsi(), col + 3, row + 1).print();
         }
     }
 }
