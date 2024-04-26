@@ -21,6 +21,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class represents the CLI page where the player can choose its private quest before the start of the match
+ * Page creation and management is done through the State design pattern, as previous pages
+ * When calling the print method, the page will be displayed with the two quests passed as arguments
+ * InvalidInput state is used to display an error message when the player inputs an invalid choice
+ */
 public class CLIStartMatchPage implements CLIPage {
     private static final CLIString invalidInput = new CLIString(">> Choose [1] or [2] <<", AnsiColor.RED, AnsiFormat.BOLD, 1, 45);
     private static final CLIString chooseQuest = new CLIString(">> Choose a quest to start the match <<", AnsiColor.CYAN, AnsiFormat.BOLD, 1, 45);
@@ -38,6 +44,12 @@ public class CLIStartMatchPage implements CLIPage {
         state.apply(args);
     }
 
+    /**
+     * This class represents the default state of the page, where the player can choose its private quest
+     * The two quests are displayed on the screen, with their points and description
+     * The player can choose between the two quests by typing 1 or 2
+     * Quest must be passed as an argument to the print method
+     */
     public static class Default implements CLIState {
         @Override
         public void apply(Object[] args) {
@@ -66,68 +78,5 @@ public class CLIStartMatchPage implements CLIPage {
             CLIString.replace(chooseQuest, invalidInput);
             CLICommand.clearUserInput((String) args[0]);
         }
-    }
-
-    // --------- TEST -------------//
-
-    public static void main(String[] args) {
-        CLIPage page = new CLIStartMatchPage();
-        page.print(new Object[]{
-                new TopLeftDiagonal(1, 1, Color.BLUE),
-                new BottomLeftDiagonal(2, 2, Color.RED)
-        });
-
-        try{
-            Thread.sleep(2000);
-        } catch (Exception e){
-            System.out.println("Exception occurred");
-        }
-
-        page.print(new Object[]{
-                new BottomLeft(1, 1, Color.GREEN, Color.PURPLE),
-                new BottomRight(2, 3, Color.RED, Color.BLUE)
-        });
-
-        try{
-            Thread.sleep(2000);
-        } catch (Exception e){
-            System.out.println("Exception occurred");
-        }
-
-        page.print(new Object[]{
-                new TopLeft(1, 1, Color.GREEN, Color.PURPLE),
-                new TopRight(2, 2, Color.RED, Color.BLUE)
-        });
-
-        try{
-            Thread.sleep(2000);
-        } catch (Exception e){
-            System.out.println("Exception occurred");
-        }
-
-        page.print(new Object[]{
-                new QuestCounter(1, 3, new HashMap<>(
-                        Map.of(Resource.MUSHROOM, 3)
-                )),
-                new QuestCounter(1, 3, new HashMap<>(
-                        Map.of(Resource.ANIMAL, 3)
-                ))
-        });
-
-        try{
-            Thread.sleep(2000);
-        } catch (Exception e){
-            System.out.println("Exception occurred");
-        }
-
-        page.print(new Object[]{
-                new QuestCounter(94, 3, new HashMap<>(
-                        Map.of(Resource.MUSHROOM, 3)
-                )),
-                new QuestCounter(1, 3, new HashMap<>(
-                        Map.of(Resource.PERGAMENA, 2)
-                ))
-        });
-
     }
 }
