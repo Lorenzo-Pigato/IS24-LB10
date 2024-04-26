@@ -2,8 +2,8 @@ package it.polimi.ingsw.lb10.server.model.cards.corners;
 
 public enum Position {
     TOPLEFT(0,0),
-    TOPRIGHT(15,0),
-    BOTTOMRIGHT(15,5),
+    TOPRIGHT(16,0),
+    BOTTOMRIGHT(16,5),
     BOTTOMLEFT(0,5),;
 
     private final int cliColOffset;

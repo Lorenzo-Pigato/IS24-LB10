@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 public enum Resource implements Serializable {
     NULL(null, null),
-    PATTERN(AnsiColor.YELLOW, null),
+    PATTERN(AnsiColor.YELLOW, "▛"),
 
     EMPTY(AnsiColor.DEFAULT, null),
     MUSHROOM(AnsiColor.RED, null),
