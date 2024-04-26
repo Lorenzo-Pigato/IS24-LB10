@@ -479,12 +479,16 @@ public abstract class CLIBanner {
         else if (quest instanceof QuestCounter) {
             if (((QuestCounter) quest).getId() != 94) {
                 int center = col + 7;
-                ((QuestCounter) quest).getActivationCost().keySet().stream().findFirst().ifPresent(
-                        res -> {
-                            CLIBanner.displayNumber(center - 12, row, ((QuestCounter) quest).getActivationCost().get(res), AnsiColor.WHITE);
-                            CLIBanner.displaySymbol(center, row + 1, 'x');
-                            CLIBanner.displayResource(center + 8, row - 2, res);
-                        }
+                ((QuestCounter) quest).getActivationCost().keySet()
+                        .stream()
+                        .filter(res -> ((QuestCounter) quest).getActivationCost().get(res) > 0)
+                        .findFirst()
+                        .ifPresent(
+                            res -> {
+                                CLIBanner.displayNumber(center - 12, row, ((QuestCounter) quest).getActivationCost().get(res), AnsiColor.WHITE);
+                                CLIBanner.displaySymbol(center, row + 1, 'x');
+                                CLIBanner.displayResource(center + 8, row - 2, res);
+                            }
                 );
 
             } else { // Quest 94 requires a feather, a pergamena and a potion, is the only one not included in the previous pattern
