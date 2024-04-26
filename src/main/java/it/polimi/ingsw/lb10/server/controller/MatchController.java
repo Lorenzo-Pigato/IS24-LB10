@@ -312,7 +312,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         try {
             getRemoteView(p.getUserHash()).getSocket().close();
         }catch(IOException e){
-
+            Server.log(e.getMessage());
         }
         remoteViews.remove(getRemoteView(p.getUserHash()));
         //model. remove player!!!! ---------------------------------------------------
@@ -349,6 +349,13 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         return players;
     }
     public synchronized Player getPlayer(int userHash){
-        return players.stream().filter(player -> player.getUserHash() == userHash).findFirst().get();
+        try {
+            return players.stream().filter(player -> player.getUserHash() == userHash)
+                                   .findFirst()
+                                   .orElseThrow(() -> new Exception(">> Player not found [hash : " + userHash + "]"));
+        } catch (Exception e) {
+            Server.log(e.getMessage());
+            return null;
+        }
     }
 }
