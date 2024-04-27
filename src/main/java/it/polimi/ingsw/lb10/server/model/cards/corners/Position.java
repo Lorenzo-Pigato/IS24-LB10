@@ -1,6 +1,8 @@
 package it.polimi.ingsw.lb10.server.model.cards.corners;
 
-public enum Position {
+import java.io.Serializable;
+
+public enum Position implements Serializable {
     TOPLEFT(0,0),
     TOPRIGHT(16,0),
     BOTTOMRIGHT(16,5),

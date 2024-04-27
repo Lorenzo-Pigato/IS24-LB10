@@ -16,6 +16,7 @@ import it.polimi.ingsw.lb10.network.requests.preMatch.NewMatchRequest;
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.network.response.lobby.HashResponse;
 import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
+import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -34,6 +35,7 @@ public class CLIClientViewController implements ClientViewController{
     private int hash;
     private static final CLIResponseHandler responseHandler = CLIResponseHandler.instance();
     private int matchId;
+    private Player onTurn;
 
 
    public static CLIClientViewController instance(){
@@ -50,9 +52,11 @@ public class CLIClientViewController implements ClientViewController{
     public void setClient(Client client) {
         this.client = client;
     }
+    public void setOnTurn(Player player){onTurn = player;}
     public Socket getSocket() {return socket;}
     public Client getClient() {return client;}
     public CLIClientView getView() {return view;}
+    public Player getOnTurn() {return onTurn;}
 
     // ------------------- UTILS ------------------- //
     @Override
@@ -184,6 +188,7 @@ public class CLIClientViewController implements ClientViewController{
             input = in.nextLine();
             parsed = input.split(" ");
             valid = parsed.length == 1 && ((parsed[0].equalsIgnoreCase("1")) || (parsed[0].equalsIgnoreCase("2")));
+            if(parsed[0].equalsIgnoreCase("quit")) send(new QuitRequest());
             if(!valid){
                 view.updatePageState(new CLIStartMatchPage.InvalidInput());
                 view.displayPage(new Object[]{input});
@@ -220,7 +225,6 @@ public class CLIClientViewController implements ClientViewController{
             close();
             //match is Terminated
         }
-
 
     }
 
@@ -371,7 +375,6 @@ public class CLIClientViewController implements ClientViewController{
     public int getMatchId(){
         return matchId;
     }
-
 
 }
 

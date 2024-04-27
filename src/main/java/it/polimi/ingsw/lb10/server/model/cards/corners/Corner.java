@@ -7,8 +7,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.lb10.server.model.Resource;
 import it.polimi.ingsw.lb10.server.model.cards.Color;
 
+import java.io.Serializable;
 
-public class Corner {
+
+public class Corner implements Serializable {
 
     @JsonProperty("id")
     private int id;

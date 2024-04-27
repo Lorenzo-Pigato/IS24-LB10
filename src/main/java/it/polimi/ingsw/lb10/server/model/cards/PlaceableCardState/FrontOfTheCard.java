@@ -4,10 +4,11 @@ import it.polimi.ingsw.lb10.server.model.Resource;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class FrontOfTheCard implements StateOfTheCard{
+public class FrontOfTheCard implements StateOfTheCard, Serializable {
     PlaceableCard placeableCard;
     public FrontOfTheCard(PlaceableCard placeableCard){
         this.placeableCard=placeableCard;

@@ -4,8 +4,10 @@ import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
 import it.polimi.ingsw.lb10.network.requests.QuitRequest;
 import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestsRequest;
 import it.polimi.ingsw.lb10.network.response.ChatMessageResponse;
+import it.polimi.ingsw.lb10.network.response.EndTurnBroadcastResponse;
 import it.polimi.ingsw.lb10.network.response.lobby.BooleanResponse;
 import it.polimi.ingsw.lb10.network.response.match.*;
+import it.polimi.ingsw.lb10.server.model.Player;
 
 public class CLIResponseHandler implements ResponseVisitor {
 
@@ -40,7 +42,7 @@ public class CLIResponseHandler implements ResponseVisitor {
         controller.getClient().setStartedMatch(true);
         controller.setMatchId(response.getMatchId());
         controller.send(new PrivateQuestsRequest(controller.getMatchId()));
-        controller.syncReceive().accept(this);
+        controller.syncReceive().accept(this); //PrivateQuestResponse
     }
 
     @Override
@@ -51,16 +53,29 @@ public class CLIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(GameSetupResponse response){
-
-
+        controller.setOnTurn(((Player[])(response.getPlayers()))[0]);
+        controller.getView().setPage(new CLIMatchPage());
+        controller.getView().displayPage(response.getPlayers());
     }
 
     @Override
     public void visit(ChatMessageResponse chatMessageResponse){
 
+    }
+
+    @Override
+    public void visit(EndTurnBroadcastResponse response) {
+        controller.setOnTurn(response.getOnTurn());
+    }
+
+    @Override
+    public void visit(GoldenPickResponse response) {
 
     }
 
+    @Override
+    public void visit(ResourcePickResponse response) {
 
+    }
 
 }

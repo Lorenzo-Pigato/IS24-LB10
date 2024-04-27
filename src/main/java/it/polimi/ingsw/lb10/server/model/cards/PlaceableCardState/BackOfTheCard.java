@@ -5,11 +5,12 @@ import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class BackOfTheCard implements StateOfTheCard{
+public class BackOfTheCard implements StateOfTheCard, Serializable {
     private static PlaceableCard placeableCard;
     private ArrayList<Corner> flippedCorners = new ArrayList<>();
     public BackOfTheCard(PlaceableCard placeableCard){

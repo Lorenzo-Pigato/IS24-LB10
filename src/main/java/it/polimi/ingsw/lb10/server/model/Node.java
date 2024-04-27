@@ -3,12 +3,13 @@ package it.polimi.ingsw.lb10.server.model;
 
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * It's the node of the Matrix! It may contain 2 cards, every node is a corner(free/occupied) of the card!
  */
-public class Node {
+public class Node implements Serializable {
     private ArrayList<Corner> corners;
 
     public Node(){
