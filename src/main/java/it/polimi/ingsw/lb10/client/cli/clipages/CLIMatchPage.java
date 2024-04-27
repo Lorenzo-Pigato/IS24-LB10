@@ -7,15 +7,10 @@ import it.polimi.ingsw.lb10.client.cli.ansi.AnsiSpecial;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiString;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.Resource;
-import it.polimi.ingsw.lb10.server.model.cards.Color;
-import it.polimi.ingsw.lb10.server.model.cards.GoldenCard;
-import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
-import it.polimi.ingsw.lb10.server.model.cards.ResourceCard;
+import it.polimi.ingsw.lb10.server.model.cards.*;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.server.model.quest.Pattern.Diagonal.BottomLeftDiagonal;
-import it.polimi.ingsw.lb10.server.model.quest.Pattern.Diagonal.TopLeftDiagonal;
-import it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ.BottomRight;
 import it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ.TopRight;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import it.polimi.ingsw.lb10.server.model.quest.QuestCounter;
@@ -73,13 +68,6 @@ public class CLIMatchPage implements CLIPage{
         this.state.apply(args);
     }
 
-    public static class StartingRound implements CLIState {
-        @Override
-        public void apply(Object[] args) {
-
-        }
-    }
-
     /**
      * This state is used to display the game interface during the starting turn, initializing the board,
      * player's hand and quest and displaying the frames for the chat and the starting card
@@ -124,6 +112,7 @@ public class CLIMatchPage implements CLIPage{
             // Draw Starting Card
             CLIBox.draw(74, 32, 41, 12, AnsiColor.WHITE);
             CLIBox.draw(74, 32, "Starting Card", AnsiColor.WHITE);
+            CLICard.displayStartingCard((StartingCard) args[1], 78, 35);
 
 
             // User inp0ut region

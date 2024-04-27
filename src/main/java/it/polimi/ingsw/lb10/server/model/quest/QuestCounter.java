@@ -1,7 +1,6 @@
 package it.polimi.ingsw.lb10.server.model.quest;
 
 
-import it.polimi.ingsw.lb10.server.Server;
 import it.polimi.ingsw.lb10.server.model.Matrix;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,7 +8,6 @@ import it.polimi.ingsw.lb10.server.model.Resource;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
 
 /**

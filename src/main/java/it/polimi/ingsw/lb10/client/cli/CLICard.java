@@ -5,8 +5,10 @@ import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiString;
 import it.polimi.ingsw.lb10.server.model.Resource;
+import it.polimi.ingsw.lb10.server.model.cards.BaseCard;
 import it.polimi.ingsw.lb10.server.model.cards.GoldenCard;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
+import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.server.model.quest.Pattern.Diagonal.BottomLeftDiagonal;
@@ -19,7 +21,7 @@ import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import it.polimi.ingsw.lb10.server.model.quest.QuestCounter;
 
 public abstract class CLICard {
-    public static void printPlaceableCard(PlaceableCard card, int col, int row) {
+    private static void printBaseCard(BaseCard card, int col, int row) {
         new CLIString(
                 """
                 █████████████████████
@@ -32,6 +34,10 @@ public abstract class CLICard {
                 █████████████████████
                 """
                 , card.getColorCard().getAnsi(), col, row).print();
+    }
+
+    public static void printPlaceableCard(PlaceableCard card, int col, int row) {
+        printBaseCard(card, col, row);
 
         for(Position position : Position.values()) {
             card.getStateCardCorners().stream()
@@ -178,5 +184,10 @@ public abstract class CLICard {
                           """,
                     ((BottomLeftDiagonal) quest).getColor().getAnsi(), col + 3, row + 1).print();
         }
+    }
+
+    public static void displayStartingCard(StartingCard card, int col, int row){
+        printBaseCard(card, col, row);
+
     }
 }
