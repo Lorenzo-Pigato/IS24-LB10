@@ -10,7 +10,6 @@ import java.net.Socket;
 
 public interface ClientViewController {
 
-
     void setSocket(Socket socket);
 
     void setClient(Client client);
@@ -79,6 +78,9 @@ public interface ClientViewController {
     void gameStart();
 
     void game();
+
+    boolean resourceDeckIsAvailable();
+    boolean goldenDeckIsAvailable();
 }
 
 

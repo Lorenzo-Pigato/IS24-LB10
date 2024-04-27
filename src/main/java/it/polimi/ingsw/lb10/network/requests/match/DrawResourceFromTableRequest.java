@@ -12,9 +12,10 @@ public class DrawResourceFromTableRequest extends MatchRequest {
         this.index = index;
     }
 
-
     @Override
     public void accept(MatchRequestVisitor visitor) {
         visitor.visit(this);
     }
+
+    public int getIndex(){return index;}
 }

@@ -23,7 +23,11 @@ public interface ResponseVisitor {
 
     void visit(EndTurnBroadcastResponse response);
 
-    void visit(GoldenPickResponse response);
+    void visit(UnavailableResourceDeckResponse unavalaibleResourceDeckResponse);
 
-    void visit(ResourcePickResponse response);
+    void visit(UnavailableGoldenDeckResponse unavalaibleGoldenDeckResponse);
+
+    void visit(PickedCardResponse pickedCardResponse);
+
+    void visit(UnavailableTableResourceResponse unavalaibleTableResourceResponse);
 }

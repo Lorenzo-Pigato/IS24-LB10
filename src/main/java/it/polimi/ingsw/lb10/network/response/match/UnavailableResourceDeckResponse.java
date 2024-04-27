@@ -3,13 +3,12 @@ package it.polimi.ingsw.lb10.network.response.match;
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 
-public class ResourcePickResponse extends Response {
+public class UnavailableResourceDeckResponse extends Response {
 
-    /**
-     * @param handler
-     */
+
     @Override
     public void accept(CLIResponseHandler handler) {
+        handler.visit(this);
 
     }
 }

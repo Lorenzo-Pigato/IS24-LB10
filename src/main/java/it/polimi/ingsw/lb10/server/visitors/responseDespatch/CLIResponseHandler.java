@@ -68,13 +68,24 @@ public class CLIResponseHandler implements ResponseVisitor {
         controller.setOnTurn(response.getOnTurn());
     }
 
+
     @Override
-    public void visit(GoldenPickResponse response) {
+    public void visit(UnavailableResourceDeckResponse unavailableResourceDeckResponse) {
+        controller.setResourceDeckAvailable(false);
+    }
+
+    @Override
+    public void visit(UnavailableGoldenDeckResponse unavailableGoldenDeckResponse) {
+        controller.setGoldenDeckAvailable(false);
+    }
+
+    @Override
+    public void visit(PickedCardResponse pickedCardResponse) {
 
     }
 
     @Override
-    public void visit(ResourcePickResponse response) {
+    public void visit(UnavailableTableResourceResponse unavailableTableResourceResponse) {
 
     }
 
