@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class GameSetupResponse extends Response {
 
-    private Object[] players;
+    private final Object[] players;
     public GameSetupResponse(Object[] players) {this.players = players;}
 
     @Override

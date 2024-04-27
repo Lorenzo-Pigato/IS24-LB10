@@ -44,8 +44,8 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     private boolean started = false;
     private final ArrayList<Player> players;
     private final int numberOfPlayers;
-    private boolean resourceDeckAvalaible = true;
-    private boolean goldenDeckAvalaible = true;
+    //private boolean resourceDeckAvalaible = true;
+    //private boolean goldenDeckAvalaible = true;
 
     public MatchController(int numberOfPlayers) {
         requests = new LinkedBlockingQueue<>();
