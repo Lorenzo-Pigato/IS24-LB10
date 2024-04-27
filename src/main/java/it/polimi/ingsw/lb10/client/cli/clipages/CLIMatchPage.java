@@ -5,6 +5,7 @@ import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiSpecial;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiString;
+import it.polimi.ingsw.lb10.server.model.Matrix;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.Resource;
 import it.polimi.ingsw.lb10.server.model.cards.*;
@@ -53,9 +54,22 @@ public class CLIMatchPage implements CLIPage{
 
     private static final int resourceCounterOffset = 3; //Used to print #resource into resource table
 
+    // -------------- BOARD DATA -------------- //
+    private static final int boardStartCol = 3;
+    private static final int boardStartRow = 3;
+
+    private Matrix board;
+
+    public void setBoard(Matrix board) {
+        this.board = board;
+    }
+
+    // -------------- CONSTRUCTOR -------------- //
+
     public CLIMatchPage(){
         currentChatPosition[0] = 119;
         currentChatPosition[1] = 5;
+        this.board = null;
     }
 
     @Override
@@ -67,6 +81,8 @@ public class CLIMatchPage implements CLIPage{
     public void print(Object[] args) {
         this.state.apply(args);
     }
+
+    // -------------- STATES -------------- //
 
     /**
      * This state is used to display the game interface during the starting turn, initializing the board,

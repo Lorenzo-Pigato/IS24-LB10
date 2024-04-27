@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 public interface StateStartingCard {
     ArrayList<Corner> getCorners();
-    ArrayList<Corner> getFlippedCardCorners();
     ArrayList<Resource> getMiddleResources();
 
 }

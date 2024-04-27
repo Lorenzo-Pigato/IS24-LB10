@@ -10,11 +10,9 @@ import it.polimi.ingsw.lb10.server.model.cards.StartingCardState.FrontStartingCa
 import it.polimi.ingsw.lb10.server.model.cards.StartingCardState.StateStartingCard;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.ArrayList;
 
-public class StartingCard extends BaseCard implements Serializable {
+public class StartingCard extends BaseCard {
 
     private ArrayList<Corner> flippedCardCorners;
     private ArrayList<Resource> middleResources;
@@ -36,6 +34,12 @@ public class StartingCard extends BaseCard implements Serializable {
             setFlippedState();
     }
 
+    public ArrayList<Corner> getStateCardCorners() {
+        return getStateStartingCard().getCorners();
+    }
+    public ArrayList<Resource> getStateCardResources(){
+        return getStateStartingCard().getMiddleResources();
+    }
     // --------> SETTER <--------
     public void setFlippedState() {
         stateStartingCard = new FrontStartingCard(this);
@@ -45,6 +49,9 @@ public class StartingCard extends BaseCard implements Serializable {
     }
     public void setMiddleResources(ArrayList<Resource> middleResources) {
         this.middleResources = middleResources;
+    }
+    public void setFlippedCardCorners(ArrayList<Corner> flippedCardCorners) {
+        this.flippedCardCorners = flippedCardCorners;
     }
     // --------> GETTER <--------
 
@@ -56,10 +63,6 @@ public class StartingCard extends BaseCard implements Serializable {
     }
     public StateStartingCard getStateStartingCard() {
         return stateStartingCard;
-    }
-    // --------> SETTER <--------
-    public void setFlippedCardCorners(ArrayList<Corner> flippedCardCorners) {
-        this.flippedCardCorners = flippedCardCorners;
     }
 
 }

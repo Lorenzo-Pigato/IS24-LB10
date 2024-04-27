@@ -7,7 +7,7 @@ import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import java.util.ArrayList;
 
 public class FrontStartingCard implements StateStartingCard{
-    private StartingCard startingCard;
+    private final StartingCard startingCard;
     public FrontStartingCard(StartingCard startingCard){
         this.startingCard=startingCard;
     }
@@ -15,10 +15,7 @@ public class FrontStartingCard implements StateStartingCard{
     public ArrayList<Corner> getCorners() {
         return startingCard.getCorners();
     }
-    @Override
-    public ArrayList<Corner> getFlippedCardCorners() {
-        return new ArrayList<>();
-    }
+
     @Override
     public ArrayList<Resource> getMiddleResources() {
         return startingCard.getMiddleResources();
