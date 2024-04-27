@@ -4,7 +4,7 @@ import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
 import java.io.Serializable;
 
 public enum Color implements Serializable {
-        STARTER(AnsiColor.DEFAULT),
+        STARTER(AnsiColor.YELLOW),
         RED(AnsiColor.RED),
         BLUE(AnsiColor.CYAN),
         GREEN(AnsiColor.GREEN),

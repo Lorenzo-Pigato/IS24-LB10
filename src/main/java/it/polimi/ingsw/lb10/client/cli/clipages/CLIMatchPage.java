@@ -128,7 +128,7 @@ public class CLIMatchPage implements CLIPage{
             // Draw Starting Card
             CLIBox.draw(74, 32, 41, 12, AnsiColor.WHITE);
             CLIBox.draw(74, 32, "Starting Card", AnsiColor.WHITE);
-            CLICard.displayStartingCard((StartingCard) args[1], 78, 35);
+            CLICard.displayStartingCard((StartingCard) args[1], 84, 35);
 
 
             // User inp0ut region
@@ -140,8 +140,8 @@ public class CLIMatchPage implements CLIPage{
             CLICommand.saveCursorPosition();
         }
 
-        public static void flipStartingCard() {
-
+        public static void flipStartingCard(StartingCard card) {
+            CLICard.displayStartingCard(card, 84, 35);
         }
     }
 
@@ -312,10 +312,16 @@ public class CLIMatchPage implements CLIPage{
                 new Player(4, "SIMON-LEBOT")
         ));
 
+        StartingCard starter =  new StartingCard(1, Color.STARTER
+                , new ArrayList<>(
+                List.of(new Corner(1,true, Position.BOTTOMLEFT, Resource.FEATHER, Color.BLUE)))
+                , new ArrayList<>(
+                List.of(new Corner(1,true, Position.TOPRIGHT, Resource.ANIMAL, Color.BLUE))), new ArrayList<>(List.of(Resource.ANIMAL, Resource.MUSHROOM, Resource.INSECT)));
+
         CLIMatchPage match = new CLIMatchPage();
         match.print(new Object[]{
                 players.get(3),
-                new ResourceCard(1, Color.BLUE, new ArrayList<>(List.of(new Corner(1,true, Position.BOTTOMLEFT, Resource.FEATHER, Color.BLUE))), 0, Resource.ANIMAL, null),
+                starter,
                 new BottomLeftDiagonal(1, 3, Color.RED),
                 new TopRight(2, 3, Color.GREEN, Color.RED),
                 new QuestCounter(94, 3, new HashMap<>(
@@ -350,6 +356,15 @@ public class CLIMatchPage implements CLIPage{
         )), 2);
 
 
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
+
+        starter.setFlippedState();
+        StartingTurn.flipStartingCard(starter);
+
         for (int i = 0; i < 3; i++) {
             try {
                 Thread.sleep(700);
@@ -357,6 +372,8 @@ public class CLIMatchPage implements CLIPage{
                 System.out.println(e.getMessage());
             }
             removeCardFromHand(i);
+            starter.setNotFlippedState();
+            StartingTurn.flipStartingCard(starter);
         }
 
         try {

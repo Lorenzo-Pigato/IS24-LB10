@@ -24,33 +24,33 @@ public abstract class CLICard {
     private static void printBaseCard(BaseCard card, int col, int row) {
         new CLIString(
                 """
-                █████████████████████
-                █▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█
-                █▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█
-                █▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█
-                █▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█
-                █▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█
-                █▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█
-                █████████████████████
-                """
+                        █████████████████████
+                        █▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█
+                        █▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█
+                        █▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█
+                        █▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█
+                        █▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█
+                        █▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█
+                        █████████████████████
+                        """
                 , card.getColorCard().getAnsi(), col, row).print();
-    }
 
-    public static void printPlaceableCard(PlaceableCard card, int col, int row) {
-        printBaseCard(card, col, row);
-
-        for(Position position : Position.values()) {
+        for (Position position : Position.values()) {
             card.getStateCardCorners().stream()
                     .filter(c -> c.getPosition().equals(position) && c.isAvailable())
                     .findFirst()
                     .map(Corner::getResource)
                     .ifPresent(resource -> new CLIString(
-                              "▛▀▀▀▜\n" +
+                            "▛▀▀▀▜\n" +
                                     "▌ " + (resource.getLetter() == null ? "▒" : resource.getLetter()) + " ▐\n" +
                                     "▙▄▄▄▟"
                             , resource.getColor(), col + position.getCliColOffset(), row + position.getCliRowOffset()).print());
 
         }
+    }
+
+    public static void printPlaceableCard(PlaceableCard card, int col, int row) {
+        printBaseCard(card, col, row);
 
         if(card.getStateCardPoints() > 0){
             if(card instanceof GoldenCard && card.getStateCardGoldenBuffResource() != Resource.EMPTY){
@@ -83,6 +83,8 @@ public abstract class CLICard {
             for(Resource resource : card.getActivationCost().keySet())
                 AnsiString.print("▌".repeat(card.getActivationCost().get(resource)), resource.getColor());
         }
+
+        CLICommand.restoreCursorPosition();
     }
 
     public static void displayQuestCard(Quest quest, int col, int row){
@@ -184,10 +186,33 @@ public abstract class CLICard {
                           """,
                     ((BottomLeftDiagonal) quest).getColor().getAnsi(), col + 3, row + 1).print();
         }
+
+        CLICommand.restoreCursorPosition();
     }
 
     public static void displayStartingCard(StartingCard card, int col, int row){
         printBaseCard(card, col, row);
 
+        if(!card.getStateCardResources().isEmpty()){
+            new CLIString(
+                    """
+                    ▛▀▀▀▜
+                    ▌   ▐
+                    ▌   ▐
+                    ▌   ▐
+                    ▙▄▄▄▟
+                    """
+                    , AnsiColor.YELLOW, col + 8, row + 2).print();
+
+            for (Resource resource : card.getStateCardResources())
+                new CLIString(
+                        "▆",
+                        resource.getColor(),
+                        col + 10,
+                        row + 3 + card.getStateCardResources().indexOf(resource)).print();
+
+        }
+
+        CLICommand.restoreCursorPosition();
     }
 }

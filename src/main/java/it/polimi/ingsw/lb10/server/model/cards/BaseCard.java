@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public abstract class BaseCard implements Serializable {
 
@@ -41,4 +42,6 @@ public abstract class BaseCard implements Serializable {
     public void setColorCard(Color colorCard) {
         this.colorCard = colorCard;
     }
+
+    public ArrayList<Corner> getStateCardCorners() {return null;}
 }
