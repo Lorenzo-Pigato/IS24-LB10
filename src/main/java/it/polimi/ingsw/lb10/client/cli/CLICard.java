@@ -215,4 +215,55 @@ public abstract class CLICard {
 
         CLICommand.restoreCursorPosition();
     }
+
+    public static void displayCorner(Corner corner, int col, int row){
+        if(col >= 5 && row >= 6 && col <= 113 && row <= 30){
+            switch (corner.getPosition()){
+                case Position.TOPLEFT:
+                    new CLIString(
+                            """
+                             ▒▒
+                            ▒▒▒
+                            """
+                            , corner.getCardColor().getAnsi(), col, row).print();
+                    break;
+
+                case Position.TOPRIGHT:
+                    new CLIString(
+                            """
+                            ▒▒
+                            ▒▒▒
+                            """
+                            , corner.getCardColor().getAnsi(), col - 2, row).print();
+                    break;
+
+                case Position.BOTTOMLEFT:
+                    new CLIString(
+                            """
+                            ▒▒▒
+                             ▒▒
+                            """
+                            , corner.getCardColor().getAnsi(), col, row - 1).print();
+                    break;
+
+                case Position.BOTTOMRIGHT:
+                    new CLIString(
+                            """
+                            ▒▒▒
+                            ▒▒
+                            """
+                            , corner.getCardColor().getAnsi(), col - 2, row - 1).print();
+                    break;
+            }
+
+            if(!corner.isAvailable())
+                new CLIString("▒", corner.getCardColor().getAnsi(), col, row).print();
+            else{
+                if(corner.getResource().getLetter() == null)
+                    new CLIString("█", corner.getResource().getColor(), col, row).print();
+                else
+                    new CLIString(corner.getResource().getLetter(), corner.getResource().getColor(), col, row).print();
+            }
+        }
+    }
 }

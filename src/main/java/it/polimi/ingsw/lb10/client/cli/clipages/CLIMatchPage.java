@@ -6,6 +6,7 @@ import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiSpecial;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiString;
 import it.polimi.ingsw.lb10.server.model.Matrix;
+import it.polimi.ingsw.lb10.server.model.Node;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.Resource;
 import it.polimi.ingsw.lb10.server.model.cards.*;
@@ -55,21 +56,72 @@ public class CLIMatchPage implements CLIPage{
     private static final int resourceCounterOffset = 3; //Used to print #resource into resource table
 
     // -------------- BOARD DATA -------------- //
-    private static final int boardStartCol = 3;
-    private static final int boardStartRow = 3;
+    private static final int boardStartCol = 5;
+    private static final int boardStartRow = 6;
 
-    private Matrix board;
+    /**
+     * This set of variables is used to define the board focus area,
+     * which is the portion of the board which can be viewed by the player
+     */
+    private static final int defaultOnFocusCol = 23;
+    private static final int defaultOnFocusRow = 35;
 
-    public void setBoard(Matrix board) {
-        this.board = board;
+    private static final int onFocusWidth = 36;
+    private static final int onFocusHeight = 12;
+
+    private int onFocusCol = defaultOnFocusCol;
+    private int onFocusRow = defaultOnFocusRow;
+
+    public void printBoard(Matrix board){
+
+        for (int col = onFocusCol; col < onFocusCol + onFocusWidth; col++)
+            for (int row = onFocusRow; row < onFocusRow + onFocusHeight; row ++)
+                if(!board.getNode(row, col).getCorners().isEmpty())
+                    CLICard.displayCorner(
+                        board.getNode(row, col).getCorners().getLast(),
+                        (col - onFocusCol) * 3 + boardStartCol,
+                        (row - onFocusRow) * 2 + boardStartRow
+                    );
+
+        CLICommand.restoreCursorPosition();
     }
+
+    public void moveBoard(Matrix board, int colOffset, int rowOffset){
+        clearRegion(boardStartCol - 2, boardStartRow - 1, onFocusWidth * 3, onFocusHeight * 2 + 2);
+
+        onFocusCol += colOffset;
+        onFocusRow += rowOffset;
+
+        printBoard(board);
+    }
+
+    public void resetBoardView(Matrix board){
+        clearRegion(boardStartCol - 2, boardStartRow - 1, onFocusWidth * 3, onFocusHeight * 2 + 2);
+
+        onFocusCol = defaultOnFocusCol;
+        onFocusRow = defaultOnFocusRow;
+
+        printBoard(board);
+    }
+
+    public void placeCard(@NotNull PlaceableCard card, int col, int row){
+        for (Corner corner : card.getStateCardCorners())
+            CLICard.displayCorner(corner,
+                    (col - onFocusCol) * 3 + boardStartCol +
+                            (corner.getPosition().getCliColOffset() > 0 ? 3 : 0),
+                    (row - onFocusRow) * 3  + boardStartRow +
+                            (corner.getPosition().getCliRowOffset() > 0 ? 2 : 0));
+
+        CLICommand.restoreCursorPosition();
+    }
+
+
 
     // -------------- CONSTRUCTOR -------------- //
 
     public CLIMatchPage(){
         currentChatPosition[0] = 119;
         currentChatPosition[1] = 5;
-        this.board = null;
     }
 
     @Override
@@ -185,14 +237,6 @@ public class CLIMatchPage implements CLIPage{
         CLICommand.clearLine();
 
         AnsiString.print(">> " + message, AnsiColor.CYAN, AnsiFormat.BOLD);
-    }
-
-    // -------------- BOARD ---------------- //
-
-    private static void drawBoardCorner(Corner corner, int col, int row){
-        CLICommand.setPosition(col, row);
-        // ------ NOT IMPLEMENTED YET ------ //
-
     }
 
     // ---------------- HAND ---------------- //
@@ -319,6 +363,8 @@ public class CLIMatchPage implements CLIPage{
                 List.of(new Corner(1,true, Position.TOPRIGHT, Resource.ANIMAL, Color.BLUE))), new ArrayList<>(List.of(Resource.ANIMAL, Resource.MUSHROOM, Resource.INSECT)));
 
         CLIMatchPage match = new CLIMatchPage();
+        Matrix matrix = new Matrix();
+        match.resetBoardView(matrix);
         match.print(new Object[]{
                 players.get(3),
                 starter,
@@ -334,26 +380,70 @@ public class CLIMatchPage implements CLIPage{
             pl.setColor(Color.values()[players.indexOf(pl)]);
             pl.setPoints(10 * (players.indexOf(pl) + 1));
         }
+        match.changeState(new Default());
+        match.print(null);
 
-
-
-        ArrayList<Corner> corners1= new ArrayList<>(List.of(new Corner(1,true, Position.BOTTOMLEFT, Resource.FEATHER, Color.BLUE)));
-        ArrayList<Corner> corners2= new ArrayList<>(Arrays.asList(
-                new Corner(2,true, Position.BOTTOMLEFT, Resource.FEATHER, Color.RED),
-                new Corner(2, true, Position.BOTTOMRIGHT, Resource.MUSHROOM, Color.RED),
-                new Corner(2, true, Position.TOPLEFT, Resource.ANIMAL, Color.RED)
-        ));
-        ArrayList<Corner> corners3= new ArrayList<>(Arrays.asList(new Corner(3, true, Position.BOTTOMLEFT, Resource.POTION, Color.GREEN),
-                new Corner(3, true, Position.BOTTOMRIGHT, Resource.ANIMAL, Color.GREEN),
-                new Corner(3, true, Position.TOPLEFT, Resource.PLANT, Color.GREEN),
-                new Corner(3, false, Position.TOPRIGHT, Resource.MUSHROOM, Color.GREEN)
+        ArrayList<Corner> corners1 = new ArrayList<>(List.of(
+                new Corner(1,true, Position.TOPLEFT, Resource.FEATHER, Color.BLUE),
+                new Corner(1,true, Position.TOPRIGHT, Resource.ANIMAL, Color.BLUE),
+                new Corner(1,true, Position.BOTTOMRIGHT, Resource.MUSHROOM, Color.BLUE),
+                new Corner(1,true, Position.BOTTOMLEFT, Resource.INSECT, Color.BLUE)
         ));
 
-        addCardToHand(new ResourceCard(1, Color.BLUE, corners1, 0, Resource.ANIMAL, null), 0);
-        addCardToHand(new ResourceCard(2, Color.RED, corners2, 3, Resource.MUSHROOM, null), 1);
-        addCardToHand(new GoldenCard(3, Color.GREEN, corners3,  3, Resource.PLANT, Resource.FEATHER , new HashMap<>(
-                Map.of(Resource.ANIMAL, 3, Resource.MUSHROOM, 2)
-        )), 2);
+        ArrayList<Corner> corners2 = new ArrayList<>(List.of(
+                new Corner(1,true, Position.TOPLEFT, Resource.POTION, Color.RED),
+                new Corner(1,true, Position.TOPRIGHT, Resource.MUSHROOM, Color.RED),
+                new Corner(1,true, Position.BOTTOMRIGHT, Resource.MUSHROOM, Color.RED),
+                new Corner(1,false, Position.BOTTOMLEFT, Resource.INSECT, Color.RED)
+        ));
+
+        ArrayList<Corner> corners3 = new ArrayList<>(List.of(
+                new Corner(1,true, Position.TOPLEFT, Resource.POTION, Color.GREEN),
+                new Corner(1,false, Position.TOPRIGHT, Resource.MUSHROOM, Color.GREEN),
+                new Corner(1,true, Position.BOTTOMRIGHT, Resource.INSECT, Color.GREEN),
+                new Corner(1,false, Position.BOTTOMLEFT, Resource.INSECT, Color.GREEN)
+        ));
+
+        matrix.setCard(new ResourceCard(1, Color.PURPLE, corners1, 0, Resource.INSECT, null), 35, 23);
+        matrix.setCard(new ResourceCard(1, Color.PURPLE, corners2, 0, Resource.INSECT, null), 34, 22);
+        matrix.setCard(new ResourceCard(1, Color.PURPLE, corners3, 0, Resource.INSECT, null), 33, 21);
+        //matrix.setCard(new ResourceCard(1, Color.PURPLE, corners3, 0, Resource.INSECT, null), 38, 27);
+
+        match.printBoard(matrix);
+
+        for(int i = 0; i < 5; i++)
+        {
+            try {
+                Thread.sleep(600);
+            } catch (InterruptedException e) {
+                System.out.println(e.getMessage());
+            }
+
+            match.moveBoard(matrix,-1, 0);
+        }
+
+        for(int i = 0; i < 5; i++)
+        {
+            try {
+                Thread.sleep(600);
+            } catch (InterruptedException e) {
+                System.out.println(e.getMessage());
+            }
+
+            match.moveBoard(matrix,-1, -1);
+        }
+
+        for(int i = 0; i < 5; i++)
+        {
+            try {
+                Thread.sleep(600);
+            } catch (InterruptedException e) {
+                System.out.println(e.getMessage());
+            }
+
+            match.moveBoard(matrix,0, 1);
+        }
+
 
 
         try {
@@ -362,54 +452,8 @@ public class CLIMatchPage implements CLIPage{
             System.out.println(e.getMessage());
         }
 
-        starter.setFlippedState();
-        StartingTurn.flipStartingCard(starter);
-
-        for (int i = 0; i < 3; i++) {
-            try {
-                Thread.sleep(700);
-            } catch (InterruptedException e) {
-                System.out.println(e.getMessage());
-            }
-            removeCardFromHand(i);
-            starter.setNotFlippedState();
-            StartingTurn.flipStartingCard(starter);
-        }
-
-        try {
-            Thread.sleep(700);
-        } catch (InterruptedException e) {
-            System.out.println(e.getMessage());
-        }
-
-        addCardToHand(new ResourceCard(1, Color.PURPLE, corners1, 0, Resource.INSECT, null), 0);
-        addCardToHand(new ResourceCard(2, Color.GREEN, corners2, 3, Resource.MUSHROOM, null), 1);
-        addCardToHand(new GoldenCard(3, Color.BLUE, corners3,  3, Resource.PLANT, Resource.FEATHER , new HashMap<>(
-                Map.of(Resource.ANIMAL, 3, Resource.MUSHROOM, 2)
-        )), 2);
-
-
-        match.changeState(new Default());
-        match.print(null);
-
-        updateResourceCounter(Resource.ANIMAL, 3);
-        updateResourceCounter(Resource.MUSHROOM, 2);
-        updateResourceCounter(Resource.PLANT, 1);
-        updateResourceCounter(Resource.INSECT, 5);
-        updateResourceCounter(Resource.FEATHER, 0);
-
-        for (int i = 0; i < 50; i++) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                System.out.println(e.getMessage());
-            }
-            chatLog(players.get(i % 4), "Lorem ipsum sit amet ".repeat(i % 7));
-        }
-
-        serverReply("AJO GUIDO C'È LA NEVE");
-
-        updateScoreBoard(players);
+        match.resetBoardView(matrix);
+        CLICommand.restoreCursorPosition();
     }
 }
 
