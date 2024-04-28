@@ -300,7 +300,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     @Override
     public void visit(DrawGoldenFromTableRequest drawGoldenFromTableRequest) {
-
+        model.drawGoldenFromTable(getPlayer(drawGoldenFromTableRequest.getUserHash()) ,drawGoldenFromTableRequest.getIndex());
     }
 
     /**
@@ -308,7 +308,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     @Override
     public void visit(DrawResourceFromTableRequest drawResourceFromTableRequest) {
-
+        model.drawResourceFromTable(getPlayer(drawResourceFromTableRequest.getUserHash()), drawResourceFromTableRequest.getIndex());
     }
 
     /**

@@ -16,6 +16,8 @@ import it.polimi.ingsw.lb10.network.requests.preMatch.NewMatchRequest;
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.network.response.lobby.HashResponse;
 import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
+import it.polimi.ingsw.lb10.server.Server;
+import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -34,6 +36,9 @@ public class CLIClientViewController implements ClientViewController{
     private int hash;
     private static final CLIResponseHandler responseHandler = CLIResponseHandler.instance();
     private int matchId;
+    private Player onTurn;
+    private boolean resourceDeckAvailable = true;
+    private boolean goldenDeckAvailable = true;
 
 
    public static CLIClientViewController instance(){
@@ -44,17 +49,18 @@ public class CLIClientViewController implements ClientViewController{
     // ------------------ SETTERS ------------------ //
     public void setCliClientView(CLIClientView cliClientView){this.view = cliClientView;}
     @Override
-    public void setSocket(Socket socket) {
-        this.socket = socket;
-    }
-    public void setClient(Client client) {
-        this.client = client;
-    }
+    public void setSocket(Socket socket) {this.socket = socket;}
+    public void setClient(Client client) {this.client = client;}
+    public void setOnTurn(Player player){onTurn = player;}
+    public void setResourceDeckAvailable(boolean status){this.resourceDeckAvailable = status;}
+    public void setGoldenDeckAvailable(boolean status){this.goldenDeckAvailable = status;}
+    public boolean resourceDeckIsAvailable() {return resourceDeckAvailable;}
+    public boolean goldenDeckIsAvailable() {return goldenDeckAvailable;}
     public Socket getSocket() {return socket;}
     public Client getClient() {return client;}
     public CLIClientView getView() {return view;}
+    public Player getOnTurn() {return onTurn;}
 
-    // ------------------- UTILS ------------------- //
     @Override
     public void close() {
        if(!socket.isClosed()) {
@@ -70,7 +76,6 @@ public class CLIClientViewController implements ClientViewController{
        }
     }
 
-    // ------------------ METHODS ------------------ //
 
     @Override
     public void setUp(){
@@ -184,6 +189,7 @@ public class CLIClientViewController implements ClientViewController{
             input = in.nextLine();
             parsed = input.split(" ");
             valid = parsed.length == 1 && ((parsed[0].equalsIgnoreCase("1")) || (parsed[0].equalsIgnoreCase("2")));
+            if(parsed[0].equalsIgnoreCase("quit")) send(new QuitRequest());
             if(!valid){
                 view.updatePageState(new CLIStartMatchPage.InvalidInput());
                 view.displayPage(new Object[]{input});
@@ -221,7 +227,6 @@ public class CLIClientViewController implements ClientViewController{
             //match is Terminated
         }
 
-
     }
 
     public void send(Request request){
@@ -246,8 +251,6 @@ public class CLIClientViewController implements ClientViewController{
         }
         return response;
     }
-
-    // --------------- ASYNC IO HANDLING ------------- //
 
     @Override
     public void showUserOutput(Object o) {
@@ -305,7 +308,7 @@ public class CLIClientViewController implements ClientViewController{
                         //view error invalid command!
                     }
                 } catch (Exception e) {
-                    ExceptionHandler.handle(e, view);
+                    Server.log(e.getMessage());
                     close();
                 }
             }
@@ -357,7 +360,7 @@ public class CLIClientViewController implements ClientViewController{
             HashResponse hashResponse = (HashResponse) socketIn.readObject();
             this.hash = hashResponse.getHash();
         }catch(Exception e){
-            ExceptionHandler.handle(e,view);
+            Server.log(e.getMessage());
             close();
         }
     }
@@ -371,7 +374,6 @@ public class CLIClientViewController implements ClientViewController{
     public int getMatchId(){
         return matchId;
     }
-
 
 }
 

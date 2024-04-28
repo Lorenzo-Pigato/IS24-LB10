@@ -1,14 +1,10 @@
 package it.polimi.ingsw.lb10.server.model;
 
 import it.polimi.ingsw.lb10.network.response.Response;
-import it.polimi.ingsw.lb10.network.response.match.GameSetupResponse;
-import it.polimi.ingsw.lb10.network.response.match.GoldenPickResponse;
-import it.polimi.ingsw.lb10.network.response.match.ResourcePickResponse;
-import it.polimi.ingsw.lb10.network.response.match.StartedMatchResponse;
+import it.polimi.ingsw.lb10.network.response.match.*;
 import it.polimi.ingsw.lb10.server.Server;
 import it.polimi.ingsw.lb10.server.model.cards.Color;
 import it.polimi.ingsw.lb10.server.model.cards.GoldenCard;
-import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
 import it.polimi.ingsw.lb10.server.model.cards.ResourceCard;
 import it.polimi.ingsw.lb10.server.model.cards.decks.GoldenDeck;
 import it.polimi.ingsw.lb10.server.model.cards.decks.QuestDeck;
@@ -31,9 +27,13 @@ public class MatchModel extends Observable<Response> {
     private StartingDeck startingDeck;
     private Player onTurnPlayer;
 
+    private boolean resourceDeckIsEmpty = false;
+    private boolean goldenDeckIsEmpty = false;
+
     private final   List<Quest> commonQuests = new ArrayList<>();
-    private final   List<PlaceableCard> goldenUncovered = new ArrayList<>();
-    private final   List<PlaceableCard> resourceUncovered= new ArrayList<>();
+    private final   List<GoldenCard> goldenUncovered = new ArrayList<>();
+    private final   List<ResourceCard> resourceUncovered= new ArrayList<>();
+
 
 
     public MatchModel(int numberOfPlayers, ArrayList<Player> players) {
@@ -125,12 +125,86 @@ public class MatchModel extends Observable<Response> {
         onTurnPlayer = players.get((players.indexOf(onTurnPlayer) + 1) % players.size());
     }
 
-    public void drawResourceFromTable(Player player){
-
+    /**
+     * this method id used to pick a golden card from golden deck, provides simple logic to avoid NoSuchElementException inside deck drawing:
+     * once deck is empty, a little notification is sent to the client, so that his simple logic prevents client from requesting golden deck picking again.
+     * @return picked GOLDEN card
+     */
+    public ResourceCard drawResourceFromDeck(){
+        ResourceCard picked = resourceDeck.drawCard();
+        if(resourceDeck.getCards().isEmpty()){
+            resourceDeckIsEmpty = true;
+            notifyAll(new UnavailableResourceDeckResponse());
+            if(resourceDeckIsEmpty && goldenDeckIsEmpty){
+                //notifyAll(LAST TURN);
+                //Could be done via chat very very cool!
+            }
+        }
+        return picked;
     }
 
-    public void drawGoldenFromTable(Player player){
+    /**
+     * this method id used to pick a golden card from golden deck, provides simple logic to avoid NoSuchElementException inside deck drawing:
+     * once deck is empty, a little notification is sent to the client, so that his simple logic prevents client from requesting golden deck picking again.
+     * @return picked GOLDEN card
+     */
+    public GoldenCard drawGoldenFromDeck(){
+        GoldenCard picked = goldenDeck.drawCard();
+        if(goldenDeck.getCards().isEmpty()){
+            goldenDeckIsEmpty = true;
+            notifyAll(new UnavailableGoldenDeckResponse());
+            if(resourceDeckIsEmpty && goldenDeckIsEmpty){
+                //notifyAll(LAST TURN);
+                //Could be done via chat very very cool!
+            }
+        }
+        return picked;
+    }
+    /**this method is used to pick a card from table, there are always two cards, except when resource deck is empty :
+     * in this case, client controller is notified, so that client can't even request to pick from resource deck.
+     * If both decks are empty, match status changes to last turn.
+     * @param player player who requested to pick a resource card from table
+     * @param index <1 or 2>
+     */
+    public void drawResourceFromTable(Player player, int index){
 
+        ResourceCard picked = resourceUncovered.get(index); //don't worry bout nosuchelementexception here, because client won't be able to draw from table once table is empty
+        resourceUncovered.remove(picked);
+
+        resourceUncovered.add(index, resourceDeck.drawCard());
+
+        if(resourceDeck.getCards().isEmpty() && !resourceDeckIsEmpty) {
+            resourceDeckIsEmpty = true;
+            notifyAll(new UnavailableResourceDeckResponse());
+            if (resourceDeckIsEmpty && goldenDeckIsEmpty) {
+                //LAST TURN !!
+            }
+        }
+        notify(new PickedCardResponse(picked), player.getUserHash());
+        //endTurn()???
+    }
+
+    /**this method is used to pick a card from table, there are always two cards, except when golden deck is empty :
+     * in this case, client controller is notified, so that client can't even request to pick from golden deck.
+     * If both decks are empty, match status changes to last turn.
+     * @param player player who requested to pick a resource card from table
+     * @param index <1 or 2>
+     */
+    public void drawGoldenFromTable(Player player, int index){
+
+        GoldenCard picked = goldenUncovered.get(index); //don't worry bout nosuchelementexception here, because client won't be able to draw from table once table is empty
+        goldenUncovered.remove(picked);
+
+        goldenUncovered.add(index, goldenDeck.drawCard());
+
+        if(goldenDeck.getCards().isEmpty() && !goldenDeckIsEmpty) {
+            goldenDeckIsEmpty = true;
+            notifyAll(new UnavailableGoldenDeckResponse());
+            if (resourceDeckIsEmpty && goldenDeckIsEmpty) {
+                //LAST TURN !!
+            }
+        }
+        notify(new PickedCardResponse(picked), player.getUserHash());
     }
 
     public List<Quest> getCommonQuests() {

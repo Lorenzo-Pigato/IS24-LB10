@@ -4,6 +4,7 @@ import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +12,7 @@ import java.util.Map;
 /**
  *
  */
-public class Matrix {
+public class Matrix implements Serializable {
     private final ArrayList<ArrayList<Node>> matrix= new ArrayList<>();
 
 
