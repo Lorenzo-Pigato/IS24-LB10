@@ -305,7 +305,8 @@ public class CLIClientViewController implements ClientViewController{
                     Response response = (Response)socketIn.readObject();
                     response.accept(responseHandler);
                 }
-            }catch(Exception e){
+            }catch(Throwable e){
+                e.printStackTrace();
                 close();
             }
         });

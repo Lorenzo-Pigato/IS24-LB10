@@ -10,13 +10,11 @@ import java.util.ArrayList;
 
 public class GameSetupResponse extends Response implements Serializable {
     private static final long serialVersionUID = 4L;
-    private final ArrayList<Player> otherPlayers;
-    private final Player player;
+    private final ArrayList<Player> players;
     private final ArrayList<Quest> publicQuests;
 
-    public GameSetupResponse(ArrayList<Player> otherPlayers, Player player, ArrayList<Quest> publicQuest) {
-        this.otherPlayers = otherPlayers;
-        this.player = player;
+    public GameSetupResponse(ArrayList<Player> players, ArrayList<Quest> publicQuest) {
+        this.players = players;
         this.publicQuests = publicQuest;
     }
 
@@ -25,7 +23,6 @@ public class GameSetupResponse extends Response implements Serializable {
         handler.visit(this);
     }
 
-    public Player getPlayer() {return player;}
-    public ArrayList<Player> getOtherPlayers() {return otherPlayers;}
+    public ArrayList<Player> getPlayers() {return players;}
     public ArrayList<Quest> getPublicQuests() {return publicQuests;}
 }

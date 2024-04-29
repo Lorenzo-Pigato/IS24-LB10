@@ -14,4 +14,8 @@ public class ChatMessageResponse extends Response {
     public void accept(CLIResponseHandler handler) {
         handler.visit(this);
     }
+
+    public String getSender() {return senderUsername; }
+
+    public String getMessage() {return message;}
 }

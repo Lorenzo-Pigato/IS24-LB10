@@ -3,11 +3,12 @@ import it.polimi.ingsw.lb10.client.cli.clipages.CLIMatchPage;
 import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
 import it.polimi.ingsw.lb10.network.requests.QuitRequest;
 import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestsRequest;
-import it.polimi.ingsw.lb10.network.response.ChatMessageResponse;
 import it.polimi.ingsw.lb10.network.response.EndTurnBroadcastResponse;
 import it.polimi.ingsw.lb10.network.response.lobby.BooleanResponse;
 import it.polimi.ingsw.lb10.network.response.match.*;
 import it.polimi.ingsw.lb10.server.model.Player;
+
+import java.util.ArrayList;
 
 public class CLIResponseHandler implements ResponseVisitor {
 
@@ -53,13 +54,14 @@ public class CLIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(GameSetupResponse response){
-        controller.setHand(response.getPlayer().getHand());
-        controller.setStartingCard(response.getPlayer().getStartingCard());
+        Player player = ((response.getPlayers().stream().filter(p -> p.getUserHash() == controller.getUserHash())).findFirst().orElseThrow(RuntimeException::new));
+        controller.setHand(player.getHand());
+        controller.setStartingCard(player.getStartingCard());
         controller.getView().setPage(new CLIMatchPage());
-        CLIMatchPage.setPlayer(response.getPlayer());
-        CLIMatchPage.setOtherPlayers(response.getOtherPlayers());
+        CLIMatchPage.setPlayer(player);
+        CLIMatchPage.setPlayers(response.getPlayers());
         controller.getView().updatePageState(new CLIMatchPage.StartingTurn());
-        controller.getView().displayPage(new Object[]{response.getPlayer(), response.getPlayer().getStartingCard(), response.getPlayer().getPrivateQuest(), response.getPublicQuests(), response.getPlayer().getHand()});
+        controller.getView().displayPage(new Object[]{player, player.getStartingCard(), player.getPrivateQuest(), response.getPublicQuests(), player.getHand()});
     }
 
     @Override
@@ -99,11 +101,6 @@ public class CLIResponseHandler implements ResponseVisitor {
         controller.getView().getPage().print(null);
         ((CLIMatchPage)controller.getView().getPage()).placeCard(placeStartingCardResponse.getStartingCard(), 41, 41);
         CLIMatchPage.updateResourceCounter(placeStartingCardResponse.getResources());
-    }
-
-    @Override
-    public void visit(it.polimi.ingsw.lb10.network.response.match.ChatMessageResponse chatMessageResponse) {
-
     }
 
 }

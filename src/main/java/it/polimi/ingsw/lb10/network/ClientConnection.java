@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 
-public class ClientConnection extends Observable<Request> implements Runnable {
+public class ClientConnection extends Observable implements Runnable {
 
     private final Socket socket;
     private ObjectInputStream input;

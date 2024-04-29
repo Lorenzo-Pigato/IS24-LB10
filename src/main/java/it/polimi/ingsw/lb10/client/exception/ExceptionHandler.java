@@ -12,6 +12,7 @@ public abstract class ExceptionHandler {
     public static void handle(Exception e, ClientView view){
         view.setPage(new CLIErrorPage());
         view.displayPage(new String[]{">> Server closed connection<<", e.getMessage()});
+        e.printStackTrace();
     }
 
     public static void handle(UnknownHostException e, ClientView view){

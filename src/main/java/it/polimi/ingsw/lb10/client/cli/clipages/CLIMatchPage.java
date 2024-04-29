@@ -51,12 +51,11 @@ public class CLIMatchPage implements CLIPage{
     private static final int resourceCounterOffset = 3; //Used to print #resource into resource table
 
     //-----------------PLAYERS------------------//
-    private static ArrayList<Player> otherPlayers;
+    private static ArrayList<Player> allPlayers;
     private static Player clientPlayer;
-    private static ArrayList<Player> allPlayers = new ArrayList<>();
 
-    public static void setOtherPlayers(ArrayList<Player> otherPlayers1) {otherPlayers = otherPlayers1;allPlayers.addAll(otherPlayers);}
-    public static void setPlayer(Player clientPlayer1) {clientPlayer = clientPlayer1;allPlayers.add(clientPlayer);}
+    public static void setPlayers(ArrayList<Player> players) {allPlayers = players;}
+    public static void setPlayer(Player clientPlayer1) {clientPlayer = clientPlayer1;}
 
 
     // -------------- BOARD DATA -------------- //
@@ -386,19 +385,18 @@ public class CLIMatchPage implements CLIPage{
 
     // ---------------- CHAT ------------------- //
     public static void chatLog(@NotNull String sender, String message) {
-        Player player = allPlayers.stream().filter(p-> p.getUsername().equals(sender)).findFirst().orElse(null);
         messages.addLast(new CLIString[]{
-                new CLIString(player.getUsername() + ": ",
-                        player.getColor().getAnsi(),
+                new CLIString(allPlayers.stream().filter(p -> p.getUsername().equals(sender)).findFirst().orElseThrow(RuntimeException::new).getUsername() + ": ",
+                        clientPlayer.getColor().getAnsi(),
                         AnsiFormat.BOLD,
                         currentChatPosition[0], currentChatPosition[1], maxMessageLength),
 
                 new CLIString(message.split("\n")[0],
                         AnsiColor.WHITE,
                         AnsiFormat.DEFAULT,
-                        currentChatPosition[0] + player.getUsername().length() + 2,
+                        currentChatPosition[0] + clientPlayer.getUsername().length() + 2,
                         currentChatPosition[1],
-                        maxMessageLength - (player.getUsername().length() + 2))}
+                        maxMessageLength - (clientPlayer.getUsername().length() + 2))}
         );
 
         if (messages.size() > maxChatLength){
@@ -416,7 +414,7 @@ public class CLIMatchPage implements CLIPage{
             currentChatPosition[1]++;
         }
 
-
+        System.out.println("PIGGY!");
         CLICommand.restoreCursorPosition();
     }
 }

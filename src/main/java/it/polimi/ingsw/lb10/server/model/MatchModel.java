@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class MatchModel extends Observable<Response> {
+public class MatchModel extends Observable{
 
     private final int numberOfPlayers;
     private int id;
@@ -122,11 +122,8 @@ public class MatchModel extends Observable<Response> {
     public void assignPrivateQuest(Player player, Quest quest){
         player.setPrivateQuest(quest);
         player.setInMatch(true);
-        ArrayList<Player> otherPlayers = new ArrayList<>();
-        otherPlayers.addAll(players);
-        otherPlayers.remove(player);
         if(players.stream().allMatch(Player::isInMatch)){
-            players.forEach(p-> notify(new GameSetupResponse(otherPlayers ,p, commonQuests),  p.getUserHash()));
+            players.forEach(p-> notify(new GameSetupResponse(players, commonQuests),  p.getUserHash()));
         }
     }
 

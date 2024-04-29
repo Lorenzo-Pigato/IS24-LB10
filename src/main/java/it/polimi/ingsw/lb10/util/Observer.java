@@ -1,7 +1,9 @@
 package it.polimi.ingsw.lb10.util;
 
 
-public interface Observer <T>{
-    public void update(T response);
-    public void updateConditional(T response, int userHash);
+import it.polimi.ingsw.lb10.network.response.Response;
+
+public interface Observer {
+    public void update(Response response);
+    public void updateConditional(Response response, int userHash);
 }

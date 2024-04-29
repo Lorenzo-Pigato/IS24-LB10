@@ -12,7 +12,7 @@ import java.net.Socket;
  * This class is used to update the client-side view on controller's update
  * has the OutputStream to send out responses to the client.
  */
-public class RemoteView implements Observer<Response> {
+public class RemoteView implements Observer{
 
     private final int hashCode;
     private final Socket socket;
