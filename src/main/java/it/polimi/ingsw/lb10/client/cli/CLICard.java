@@ -40,12 +40,30 @@ public abstract class CLICard {
                     .filter(c -> c.getPosition().equals(position) && c.isAvailable())
                     .findFirst()
                     .map(Corner::getResource)
-                    .ifPresent(resource -> new CLIString(
-                            "▛▀▀▀▜\n" +
-                                    "▌ " + (resource != Resource.EMPTY ? (resource.getLetter() == null ? "▒" : resource.getLetter()) : " ") + " ▐\n" +
-                                    "▙▄▄▄▟"
-                            , resource.getColor(), col + position.getCliColOffset(), row + position.getCliRowOffset()).print());
-
+                    .ifPresent(resource -> {
+                        if(resource == Resource.EMPTY)
+                            new CLIString(
+                                    """
+                                            ▒▒▒▒▒
+                                            ▒▒▒▒▒
+                                            ▒▒▒▒▒
+                                            """
+                                    , resource.getColor(), col + position.getCliColOffset(), row + position.getCliRowOffset()).print();
+                        else if (resource == Resource.PERGAMENA || resource == Resource.POTION || resource == Resource.FEATHER)
+                            new CLIString(
+                                    "▛▀▀▀▜\n" +
+                                            "▌ " + (resource.getLetter()) + " ▐\n" +
+                                            "▙▄▄▄▟"
+                                    , resource.getColor(), col + position.getCliColOffset(), row + position.getCliRowOffset()).print();
+                        else
+                            new CLIString(
+                                    """
+                                          █████
+                                          █▒▒▒█
+                                          █████
+                                          """
+                            , resource.getColor(), col + position.getCliColOffset(), row + position.getCliRowOffset()).print();
+                    });
         }
     }
 
@@ -93,7 +111,8 @@ public abstract class CLICard {
 
         if (quest.getId() == 94){
             int i = 0;
-            for (Resource resource : ((QuestCounter)quest).getActivationCost().keySet()){
+            for (Resource resource : ((QuestCounter)quest).getActivationCost().keySet()
+                    .stream().filter(res -> res != Resource.EMPTY).toList()){
                 CLICommand.setPosition(col + 5, row + (i + 1));
                 System.out.print("1 x ");
                 AnsiString.print(resource.getLetter(), AnsiColor.YELLOW);
