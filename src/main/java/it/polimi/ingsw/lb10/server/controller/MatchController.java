@@ -129,6 +129,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     @Override
     public void visit(@NotNull ChatRequest chatRequest) {
+        Server.log(">> chat message from " + getPlayer(chatRequest.getUserHash()).getUsername());
         model.notifyAll(new ChatMessageResponse( getPlayer(chatRequest.getUserHash()).getUsername(), chatRequest.getMessage()));
     }
 
