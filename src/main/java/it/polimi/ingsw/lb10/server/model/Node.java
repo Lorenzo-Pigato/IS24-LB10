@@ -10,11 +10,9 @@ import java.util.ArrayList;
  */
 public class Node {
     private ArrayList<Corner> corners;
-    private boolean flagCLI;
 
     public Node(){
         corners=new ArrayList<>();
-        flagCLI=false;
     }
 
     public void addCorner(Corner corner){
@@ -41,10 +39,4 @@ public class Node {
         return false;
     }
 
-    public void setFlagCLI(){
-        if(corners.size()==1)
-            flagCLI=true;
-        if(corners.size()==2)
-            flagCLI=false;
-    }
 }

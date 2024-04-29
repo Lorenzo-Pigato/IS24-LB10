@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lb10.server.model;
 
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
+import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 
@@ -35,14 +36,22 @@ public class Matrix {
     public Map<Position, int[]> parsingPositionCorners(){
             Map<Position, int[]> setIncrement = new HashMap<>();
             setIncrement.put(Position.TOPLEFT, new int[]{0, 0});
-            setIncrement.put(Position.TOPRIGHT, new int[]{0, 1});
+            setIncrement.put(Position.TOPRIGHT, new int[]{1, 0});
             setIncrement.put(Position.BOTTOMRIGHT, new int[]{1, 1});
-            setIncrement.put(Position.BOTTOMLEFT, new int[]{1, 0});
+            setIncrement.put(Position.BOTTOMLEFT, new int[]{0, 1});
         return setIncrement;
     }
 
+    public void setCard(StartingCard card){
+        Map<Position, int[]> setIncrement = parsingPositionCorners();
+        for (Corner corner : card.getStateCardCorners()) {
+            int[] delta = setIncrement.get(corner.getPosition());
+            getNode(41 + delta[0], 41 + delta[1]).addCorner(corner);
+        }
+    }
+
     /**
-     * @param card is the starting card!
+     * This method is used on the test for testing stuff, in the std game is useless and unused.
      */
     public void setCard(PlaceableCard card){
         setCard(card,41,41);
@@ -72,9 +81,23 @@ public class Matrix {
         getNode(row+1,column+1).deleteLastCorner();
     }
 
+    /**
+     * @param row and the column must be the top left corner of the card!
+     */
+    public void setUsedForQuest(int row, int column){
+
+        Position[] possiblePosition={Position.TOPLEFT, Position.TOPRIGHT, Position.BOTTOMRIGHT, Position.BOTTOMLEFT};
+        Map<Position, int[]> setIncrement = parsingPositionCorners();
+
+        for (Position position : possiblePosition ) {
+            int[] delta = setIncrement.get(position);
+            for(Corner corner: getNode(row + delta[0], column + delta[1]).getCorners())
+                if(corner.getPosition().equals(position))
+                    corner.setUsedForQuest(true);
+        }
+    }
 
     public Node getNode(int row, int column){
         return  matrix.get(row).get(column);
     }
-
 }

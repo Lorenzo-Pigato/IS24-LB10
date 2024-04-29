@@ -6,9 +6,12 @@ import it.polimi.ingsw.lb10.server.model.MatchModel;
 import it.polimi.ingsw.lb10.server.model.Node;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.Resource;
+import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
+import it.polimi.ingsw.lb10.server.model.quest.Pattern.Diagonal.TypeDiagonal;
+import it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ.LJPattern;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import it.polimi.ingsw.lb10.server.model.quest.QuestCounter;
 import it.polimi.ingsw.lb10.server.view.RemoteView;
@@ -91,6 +94,13 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         return checkInsertion(player, card, row, column);
     }
 
+
+    public void insertStartingCard(Player player){
+        player.getMatrix().setCard(player.getStartingCard());
+
+        setCardResourceOnPlayer(player, player.getStartingCard());
+    }
+
     /**
      * @param player calls the method
      * @param card to add
@@ -103,20 +113,22 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     public boolean checkInsertion(Player player,PlaceableCard card,int row, int column){
 
         ArrayList<Node> visitedNodes = new ArrayList<>();
-
         if (verificationSetting(player, row, column, visitedNodes)) {
-            setCardResourceOnPlayer(player, card);
-            deleteCoveredResource(player, row, column);
-            addCardPointsOnPlayer(player, card, visitedNodes);
-            setFlagCLI(player,row,column);
-            player.removeCardOnHand(card);//the player chooses the next card, it's a request!
-
+            playerUpdate(player, card, visitedNodes, row, column);
             return true;
         }
         player.getMatrix().deleteCard(row,column);
             return  false;
     }
 
+    public void playerUpdate(Player player,PlaceableCard card, ArrayList<Node> visitedNodes,int row, int column){
+        setCardResourceOnPlayer(player, card);
+        deleteCoveredResource(player, row, column);
+        addCardPointsOnPlayer(player, card, visitedNodes);
+        checkPatternQuest(player, row, column);
+
+        player.removeCardOnHand(card);
+    }
     /**
      * @param row and the column is the top left corner of the card
      * @return true, if the card passed all the requirements,
@@ -191,6 +203,19 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         player.addOnMapResources(card.getStateCardMiddleResource());
     }
 
+    public void setCardResourceOnPlayer(Player player, StartingCard card){
+
+        for(Corner corner : card.getStateCardCorners()){
+            player.addOnMapResources(corner.getResource());
+        }
+
+        if(!card.getStateCardResources().isEmpty()){
+            for(Resource resoruce : card.getStateCardResources())
+                player.addOnMapResources(resoruce);
+        }
+
+    }
+
     public void deleteCoveredResource(Player player,int row, int column){
         Map<Position, int[]> setIncrement = player.getMatrix().parsingPositionCorners();
 
@@ -201,15 +226,11 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         }
     }
 
-    public void setFlagCLI(Player player, int row, int column){
-        Map<Position, int[]> setIncrement = player.getMatrix().parsingPositionCorners();
-
-        for(Position position: getPossiblePosition()){
-            int[] delta = setIncrement.get(position);
-            player.getMatrix().getNode(row + delta[0], column + delta[1]).setFlagCLI();
-        }
-    }
-
+    /**
+     * @param player
+     * @param card
+     * @param visitedNodes
+     */
     public void addCardPointsOnPlayer(Player player,PlaceableCard card, ArrayList<Node> visitedNodes) {
         Resource goldenResource=card.getStateCardGoldenBuffResource();
         if(goldenResource.equals(Resource.NULL))
@@ -229,10 +250,30 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      *  This method is to call at the end of the game!
      */
     public void checkCounterQuestPoints(Player player){
-        for(Quest quest : model.getCommonQuests()){
+        ArrayList<Quest> quests = new ArrayList<>(model.getCommonQuests());
+        quests.add(player.getPrivateQuest());
+
+        for(Quest quest : quests){
             if(quest instanceof QuestCounter)
                 player.addQuestPoints(((QuestCounter) quest).questAlgorithm(player.getOnMapResources()));
         }
+    }
+
+    /**
+     * @param row and the column is the top left corner of the card,
+     *  This method is called each turn to avoid implementing an algorithm of research inside the matrix.
+     *  If there's a pattern, it will be return true;
+     *            the corners of the cards that will be useful for the patterns are marked as visited.
+     *            After the verification of the pattern are added the points.
+     */
+    public void checkPatternQuest(Player player, int row, int column){
+        ArrayList<Quest> quests = new ArrayList<>(model.getCommonQuests());
+        quests.add(player.getPrivateQuest());
+
+        for(Quest quest : quests)
+            if (quest instanceof TypeDiagonal || quest instanceof LJPattern)
+                if(quest.isPattern(player.getMatrix(), row, column))
+                    player.addPoints(quest.getPoints());
     }
 
 

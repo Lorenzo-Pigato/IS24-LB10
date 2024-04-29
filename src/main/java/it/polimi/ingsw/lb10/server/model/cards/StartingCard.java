@@ -34,6 +34,12 @@ public class StartingCard extends BaseCard {
             setFlippedState();
     }
 
+    public ArrayList<Corner> getStateCardCorners() {
+        return getStateStartingCard().getCorners();
+    }
+    public ArrayList<Resource> getStateCardResources(){
+        return getStateStartingCard().getMiddleResources();
+    }
     // --------> SETTER <--------
     public void setFlippedState() {
         stateStartingCard = new FrontStartingCard(this);
@@ -43,6 +49,9 @@ public class StartingCard extends BaseCard {
     }
     public void setMiddleResources(ArrayList<Resource> middleResources) {
         this.middleResources = middleResources;
+    }
+    public void setFlippedCardCorners(ArrayList<Corner> flippedCardCorners) {
+        this.flippedCardCorners = flippedCardCorners;
     }
     // --------> GETTER <--------
 
@@ -54,10 +63,6 @@ public class StartingCard extends BaseCard {
     }
     public StateStartingCard getStateStartingCard() {
         return stateStartingCard;
-    }
-    // --------> SETTER <--------
-    public void setFlippedCardCorners(ArrayList<Corner> flippedCardCorners) {
-        this.flippedCardCorners = flippedCardCorners;
     }
 
 }

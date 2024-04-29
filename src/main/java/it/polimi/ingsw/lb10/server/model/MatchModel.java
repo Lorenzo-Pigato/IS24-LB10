@@ -112,7 +112,7 @@ public class MatchModel extends Observable<Request> {
         return getQuestDeck().drawCard();
     }
 
-    public List<Quest> getCommonQuests() {
+    public ArrayList<Quest> getCommonQuests() {
         return commonQuests;
     }
 

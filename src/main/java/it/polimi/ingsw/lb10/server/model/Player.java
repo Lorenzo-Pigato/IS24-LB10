@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lb10.server.model;
 
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
+import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 
 import java.util.ArrayList;
@@ -12,14 +13,11 @@ public class Player {
 
     private int hashCode;
     private String username;
-
     private Matrix matrix;
     private int points = 0;
-
     private Quest privateQuest;
     private int questPoints = 0;
-
-
+    private StartingCard startingCard;
     private final ArrayList<PlaceableCard> hand= new ArrayList<>();
     private final Map<Resource,Integer> onMapResources = new HashMap<>();
 
@@ -83,12 +81,17 @@ public class Player {
     public int getPoints() {
         return points;
     }
+    public Quest getPrivateQuest() {
+        return privateQuest;
+    }
     public Matrix getMatrix() {
         return matrix;
     }
-
     public int getQuestPoints() {
         return questPoints;
+    }
+    public StartingCard getStartingCard() {
+        return startingCard;
     }
 
     // --------> SETTER <--------
