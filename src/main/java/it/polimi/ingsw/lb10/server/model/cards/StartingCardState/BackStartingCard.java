@@ -14,13 +14,9 @@ public class BackStartingCard implements  StateStartingCard{
 
     @Override
     public ArrayList<Corner> getCorners() {
-        return new ArrayList<>();
-    }
-
-    @Override
-    public ArrayList<Corner> getFlippedCardCorners() {
         return startingCard.getFlippedCardCorners();
     }
+
 
     @Override
     public ArrayList<Resource> getMiddleResources() {

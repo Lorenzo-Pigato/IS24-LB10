@@ -54,7 +54,7 @@ public class QuestDeck {
         cards.add(new BottonRight(101,3,Color.RED, Color.GREEN));
         cards.add(new TopRight(102,3,Color.GREEN,Color.PURPLE));
 
-        shuffle();
+        //shuffle();
     }
 
 }

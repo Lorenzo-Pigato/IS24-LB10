@@ -6,6 +6,7 @@ import it.polimi.ingsw.lb10.server.model.MatchModel;
 import it.polimi.ingsw.lb10.server.model.Node;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.Resource;
+import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
@@ -108,7 +109,6 @@ public class MatchController implements Runnable, MatchRequestVisitor {
             setCardResourceOnPlayer(player, card);
             deleteCoveredResource(player, row, column);
             addCardPointsOnPlayer(player, card, visitedNodes);
-            setFlagCLI(player,row,column);
             player.removeCardOnHand(card);//the player chooses the next card, it's a request!
 
             return true;
@@ -184,6 +184,24 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         return true;
     }
 
+    /**
+     *
+     * @param card of which we will add the resources
+     *             we are setting all the resources of the card inside the OnMapResources of the player
+     */
+
+    public void setCardResourceOnPlayer(Player player, StartingCard card){
+
+        for(Corner corner : card.getStateCardCorners())
+            player.addOnMapResources(corner.getResource());
+
+        if(!card.getStateCardResources().isEmpty()){
+            for(Resource resource : card.getStateCardResources())
+                player.addOnMapResources(resource);
+        }
+
+    }
+
     public void setCardResourceOnPlayer(Player player, PlaceableCard card){
         for(Corner corner : card.getStateCardCorners()){
             player.addOnMapResources(corner.getResource());
@@ -196,17 +214,10 @@ public class MatchController implements Runnable, MatchRequestVisitor {
 
         for(Position position: getPossiblePosition()){
             int[] delta = setIncrement.get(position);
-            if (player.getMatrix().getNode(row + delta[0], column + delta[1]).getCorners().size()==2)
+            if (player.getMatrix().getNode(row + delta[0], column + delta[1]).getCorners().size()==2){
                 player.deleteOnMapResources(player.getMatrix().getNode(row + delta[0], column + delta[1]).getCorners().getFirst().getResource());
-        }
-    }
-
-    public void setFlagCLI(Player player, int row, int column){
-        Map<Position, int[]> setIncrement = player.getMatrix().parsingPositionCorners();
-
-        for(Position position: getPossiblePosition()){
-            int[] delta = setIncrement.get(position);
-            player.getMatrix().getNode(row + delta[0], column + delta[1]).setFlagCLI();
+                player.getMatrix().getNode(row + delta[0], column + delta[1]).getCorners().getFirst().setResource(Resource.NULL);
+            }
         }
     }
 

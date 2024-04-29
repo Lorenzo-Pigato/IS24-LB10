@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lb10.server.model;
 
 import it.polimi.ingsw.lb10.server.controller.MatchController;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -28,6 +29,12 @@ class MatchModelTest {
         players.add(player2);
         players.add(player3);
         matchModel.setPlayers(players);
+    }
+    @AfterEach
+    void cleanUp(){
+        matchModel.getGoldenDeck().getCards().clear();
+        matchModel.getResourceDeck().getCards().clear();
+        matchModel.getQuestDeck().getCards().clear();
     }
 
     /**
@@ -63,6 +70,11 @@ class MatchModelTest {
 
     @Test
     void initializeCardsOnHand() {
+        matchModel.getGoldenDeck().fillDeck();
+        matchModel.getResourceDeck().fillDeck();
+        matchModel.getQuestDeck().fillDeck();
+
+
         matchModel.initializeCardsOnHand();
         assertNotNull(player1.getHand());
         assertNotNull(player2.getHand());
@@ -76,6 +88,11 @@ class MatchModelTest {
 
     @Test
     void startingUncoveredCards(){
+        matchModel.getGoldenDeck().fillDeck();
+        matchModel.getResourceDeck().fillDeck();
+        matchModel.getQuestDeck().fillDeck();
+
+
         matchModel.startingUncoveredCards();
         assertNotNull(matchModel.getGoldenUncovered());
         assertNotNull(matchModel.getResourceUncovered());

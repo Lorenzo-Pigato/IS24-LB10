@@ -55,7 +55,9 @@ public class Player {
     }
 
     public void addPoints(int point){
+
         setPoints(point+getPoints());
+        maxScore();
     }
 
     /**
@@ -64,7 +66,6 @@ public class Player {
      */
     public void addQuestPoints(int questPoints){
         setQuestPoints(questPoints+getQuestPoints());
-        maxScore();
     }
     public void addCardOnHand(PlaceableCard card){
         hand.add(card);

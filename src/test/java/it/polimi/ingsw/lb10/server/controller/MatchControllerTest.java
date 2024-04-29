@@ -40,8 +40,10 @@ class MatchControllerTest {
 
 
 
+
+
     static ArrayList<Corner> corners = new ArrayList<>(Arrays.asList(
-            new Corner(0,true, Position.TOPLEFT, Resource.ANIMAL, Color.GREEN),
+            new Corner(0,true, Position.TOPLEFT, Resource.MUSHROOM, Color.GREEN),
             new Corner(0,true,Position.TOPRIGHT,Resource.PLANT,Color.GREEN),
             new Corner(0,false,Position.BOTTOMLEFT,Resource.EMPTY,Color.GREEN),
             new Corner(0,true,Position.BOTTOMRIGHT,Resource.PLANT,Color.GREEN)
@@ -102,7 +104,7 @@ class MatchControllerTest {
 
     }
 
-//Test for resource cards
+//Test for insertCard
     @Test
     void setCardTest(){
         matrix.setCard(firstCard, 41,41);
@@ -110,6 +112,7 @@ class MatchControllerTest {
         assertFalse(controller.insertCard(player, thirdCard, 42,42));
 
     }
+
 
 
     /**
@@ -218,8 +221,26 @@ class MatchControllerTest {
         matrix.setCard(startingDeck.getCards().getFirst());
 
 
+    }
+
+    @Test
+    void deleteCoveredResourceTest(){
+        //In before each I've initialized the onMapResources HashMap with 5 ANIMAL
+        matrix.setCard(firstCard, 41,41);
+        //setCard by matrix doesn't add resources in onMapResources, but it doesn't matter
+        controller.insertCard(player,secondCard, 40,40);
+        assertEquals(4, (int) player.getOnMapResources().get(Resource.MUSHROOM));
 
     }
+
+    @Test
+    void addCardPointsOnPlayerTest(){
+        matrix.setCard(firstCard, 41,41);
+        controller.insertCard(player, golden1, 40,40);
+        assertEquals(4, (int) player.getPoints());
+    }
+
+
 
 
 

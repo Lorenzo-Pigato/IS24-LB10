@@ -36,9 +36,9 @@ public class Matrix {
     public Map<Position, int[]> parsingPositionCorners(){
             Map<Position, int[]> setIncrement = new HashMap<>();
             setIncrement.put(Position.TOPLEFT, new int[]{0, 0});
-            setIncrement.put(Position.TOPRIGHT, new int[]{0, 1});
+            setIncrement.put(Position.TOPRIGHT, new int[]{1, 0});
             setIncrement.put(Position.BOTTOMRIGHT, new int[]{1, 1});
-            setIncrement.put(Position.BOTTOMLEFT, new int[]{1, 0});
+            setIncrement.put(Position.BOTTOMLEFT, new int[]{0, 1});
         return setIncrement;
     }
 
@@ -54,6 +54,9 @@ public class Matrix {
         }
     }
 
+    public  void setCard(PlaceableCard card){
+        setCard(card,41,41);
+    }
     /**
      * @param card to set inside the matrix, it's not the staring
      *      i and j are the top-left node.
@@ -81,9 +84,25 @@ public class Matrix {
         getNode(row+1,column+1).deleteLastCorner();
     }
 
+    public void setUsedForQuest(int row, int column){
+
+        Position[] possiblePosition={Position.TOPLEFT, Position.TOPRIGHT, Position.BOTTOMRIGHT, Position.BOTTOMLEFT};
+        Map<Position, int[]> setIncrement = parsingPositionCorners();
+
+        for (Position position : possiblePosition ) {
+            int[] delta = setIncrement.get(position);
+            for(Corner corner: getNode(row + delta[0], column + delta[1]).getCorners())
+                if(corner.getPosition().equals(position))
+                    corner.setUsedForQuest(true);
+        }
+    }
+
 
     public Node getNode(int row, int column){
         return  matrix.get(row).get(column);
     }
 
+    public int getSize(int row){
+        return matrix.get(row).size();
+    }
 }

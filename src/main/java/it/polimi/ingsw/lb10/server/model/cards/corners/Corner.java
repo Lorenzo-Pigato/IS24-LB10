@@ -80,5 +80,5 @@ public class Corner {
     public void setCardColor(Color cardColor) {
         this.cardColor = cardColor;
     }
-    private void setUsedForQuest(boolean usedForQuest){ this.usedForQuest=usedForQuest;}
+    public void setUsedForQuest(boolean usedForQuest){ this.usedForQuest=usedForQuest;}
 }
