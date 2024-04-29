@@ -30,9 +30,9 @@ public class MatchModel extends Observable<Response> {
     private boolean resourceDeckIsEmpty = false;
     private boolean goldenDeckIsEmpty = false;
 
-    private final   List<Quest> commonQuests = new ArrayList<>();
-    private final   List<GoldenCard> goldenUncovered = new ArrayList<>();
-    private final   List<ResourceCard> resourceUncovered= new ArrayList<>();
+    private final   ArrayList<Quest> commonQuests = new ArrayList<>();
+    private final   ArrayList<GoldenCard> goldenUncovered = new ArrayList<>();
+    private final   ArrayList<ResourceCard> resourceUncovered= new ArrayList<>();
 
 
 
@@ -114,11 +114,15 @@ public class MatchModel extends Observable<Response> {
         player.addCardOnHand(resourceDeck.drawCard());
         player.addCardOnHand(goldenDeck.drawCard());
         player.setPrivateQuests(questDeck.drawCard(), questDeck.drawCard());
+        player.setStartingCard(startingDeck.drawCard());
     }
+
     public void assignPrivateQuest(Player player, Quest quest){
         player.setPrivateQuest(quest);
         player.setInMatch(true);
-        if(players.stream().allMatch(Player::isInMatch)) notifyAll(new GameSetupResponse(players.toArray()));
+        if(players.stream().allMatch(Player::isInMatch)){
+            players.forEach(p-> notify(new GameSetupResponse(p, commonQuests),  p.getUserHash()));
+        }
     }
 
     private void endTurn(){

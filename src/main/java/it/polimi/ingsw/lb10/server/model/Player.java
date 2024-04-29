@@ -2,6 +2,7 @@ package it.polimi.ingsw.lb10.server.model;
 
 import it.polimi.ingsw.lb10.server.model.cards.Color;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
+import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 
 import java.io.Serializable;
@@ -21,7 +22,8 @@ public class Player implements Serializable {
     private final ArrayList<Quest> privateQuests = new ArrayList<>();
     private int questPoints = 0;
     private Color color;
-    private final ArrayList<PlaceableCard> hand= new ArrayList<>();
+    private final ArrayList<PlaceableCard> hand = new ArrayList<>();
+    private StartingCard startingCard;
 
 
     public Player(int hashCode, String username) {
@@ -77,11 +79,14 @@ public class Player implements Serializable {
     public Matrix getMatrix() {return matrix;}
     public int getQuestPoints() {return questPoints;}
     public ArrayList<Quest> getPrivateQuests () {return privateQuests;}
+    public Quest getPrivateQuest(){return privateQuest;}
     public Color getColor() {return color;}
     public int getUserHash() {return hashCode;}
     public String getUsername() { return username;}
     public boolean isInMatch() {return inMatch;}
     public ArrayList<PlaceableCard> getHand() {return hand;}
+    public StartingCard getStartingCard(){return startingCard;}
+    public void setStartingCard(StartingCard startingCard) {this.startingCard = startingCard;}
 
     // --------> SETTER <--------
     public void setMatrix(Matrix matrix) {this.matrix = matrix;}
