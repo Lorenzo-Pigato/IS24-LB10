@@ -4,6 +4,7 @@ import it.polimi.ingsw.lb10.client.cli.clipages.CLIMatchPage;
 import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
 import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.network.requests.match.ChatRequest;
+import it.polimi.ingsw.lb10.network.requests.match.PlaceStartingCardRequest;
 import it.polimi.ingsw.lb10.network.requests.match.ShowPlayerRequest;
 
 public class InputParser {
@@ -60,12 +61,11 @@ public class InputParser {
             }
 
             if(parsed[0].equalsIgnoreCase("place") && parsed[1].equalsIgnoreCase("s")){
-
+                result = new PlaceStartingCardRequest(0, controller.getStartingCard());
             }
 
 
         }else if(parsed.length == 1){
-
 
             if(parsed[0].equals("help")){ //1. <help> prints out all possible commands
                 //no request to submit to server

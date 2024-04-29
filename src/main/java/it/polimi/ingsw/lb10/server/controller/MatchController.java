@@ -5,14 +5,7 @@ import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.server.Server;
 import it.polimi.ingsw.lb10.server.model.MatchModel;
-import it.polimi.ingsw.lb10.server.model.Node;
 import it.polimi.ingsw.lb10.server.model.Player;
-import it.polimi.ingsw.lb10.server.model.Resource;
-import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
-import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
-import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
-import it.polimi.ingsw.lb10.server.model.quest.Quest;
-import it.polimi.ingsw.lb10.server.model.quest.QuestCounter;
 import it.polimi.ingsw.lb10.server.view.RemoteView;
 import java.io.IOException;
 
@@ -21,7 +14,6 @@ import it.polimi.ingsw.lb10.network.response.match.TerminatedMatchResponse;
 import it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitor;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -44,8 +36,8 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     private boolean started = false;
     private final ArrayList<Player> players;
     private final int numberOfPlayers;
-    //private boolean resourceDeckAvalaible = true;
-    //private boolean goldenDeckAvalaible = true;
+    //private boolean resourceDeckAvailable = true;
+    //private boolean goldenDeckAvailable = true;
 
     public MatchController(int numberOfPlayers) {
         requests = new LinkedBlockingQueue<>();
@@ -72,160 +64,12 @@ public class MatchController implements Runnable, MatchRequestVisitor {
             Server.log(">> " + e.getMessage());
         }
         finally {
-            remoteViews.forEach(remoteView -> remoteView.send(new TerminatedMatchResponse())); //either match model or match controller send this, better matchmodel via obs
-        }
-    }
-
-    /**
-     *  This method is called to insert a Card
-     *  A boolean is returned to verify if the card is placeable
-     *  --> At the beginning the algorithm checks if the card is flipped, with a consequent update of the state of the card.
-     *      the card is placed inside the matrix if the activation cost is matched
-     */
-    public synchronized boolean insertCard(Player player, PlaceableCard card, int row, int column){
-        if(!checkActivationCost(player,card))
-            return false;
-        player.getMatrix().setCard(card, row, column);
-        return checkInsertion(player, card, row, column);
-    }
-
-    /**
-     * @param player calls the method
-     * @param card to add
-     * @param row row
-     * @param column column
-     * The method that starts the Insertion rules
-     * @return true if the card passed all the verification rules
-     *  if the card passes the tests, at the end he is correctly positioned inside the matrix
-     *  it's called all the
-     */
-    public synchronized boolean checkInsertion(Player player,PlaceableCard card,int row, int column){
-
-        ArrayList<Node> visitedNodes = new ArrayList<>();
-
-        if (verificationSetting(player, row, column, visitedNodes)) {
-            setCardResourceOnPlayer(player, card);
-            deleteCoveredResource(player, row, column);
-            addCardPointsOnPlayer(player, card, visitedNodes);
-            player.removeCardOnHand(card);//the player chooses the next card, it's a request!
-
-            return true;
-        }
-        player.getMatrix().deleteCard(row,column);
-            return  false;
-    }
-
-    /**
-     * @param row and column are the top left corner of the card
-     * @return true if the card passed all the requirements
-     * it's important to remember that the card is already inserted!
-     */
-    public synchronized  boolean verificationSetting(Player player, int row, int column, ArrayList<Node> visitedNodes){
-        //if one corner isn't available
-        if(checkNotAvailability(player,row,column))
-            return false;
-
-        Map<Position, int[]> setIncrement=player.getMatrix().parsingPositionCorners();
-        int[] delta= new int[]{0,0};
-
-        for(Position position: getPossiblePosition()){
-        //turning to the starting position
-            row-=delta[0]; column-=delta[1];
-                delta = setIncrement.get(position);
-            row+=delta[0]; column+=delta[1];
-
-            //if in the matrix node there's only the corner of the card that I want to add, there's nothing to check
-            if(player.getMatrix().getNode(row, column).getCorners().size()==1){
-                //Can't be more than 2 cards on a corner!
-                if(player.getMatrix().getNode(row,column).getCorners().size()==3)
-                    return false;
-                // I added the node that I visited inside the arraylist, because it has 2 corners in the node
-                visitedNodes.add(player.getMatrix().getNode(row,column));
-                // If I visited more than 1 node with 2 corners
-                if(visitedNodes.size()>1){
-                    for(int x = 0; x< visitedNodes.size()-1; x++){
-                        for(int y = x+1; y< visitedNodes.size(); y++){
-                            if(visitedNodes.get(x).getCorners().getFirst().getId() == visitedNodes.get(y).getCorners().getFirst().getId())
-                                return false;
-                        }
-                    }
-                }
-            }
-        }
-        //turning to the starting position
-        row-=delta[0]; column-=delta[1];
-        //if the card doesn't cover at least one card, it's an error
-        return !visitedNodes.isEmpty();
-    }
-
-    public synchronized  boolean checkActivationCost(Player player,PlaceableCard card){
-        if(card.getStateCardActivationCost().isEmpty())
-            return true;
-        for (Map.Entry<Resource, Integer> entry : card.getStateCardActivationCost().entrySet())
-            if(player.getResourceQuantity(entry.getKey()) < entry.getValue())
-                return false;
-
-        return true;
-    }
-
-    public synchronized boolean checkNotAvailability(Player player,int row, int column){
-        Map<Position, int[]> setIncrement=player.getMatrix().parsingPositionCorners();
-
-        for(Position position: getPossiblePosition()){
-            int[] delta = setIncrement.get(position);
-            if (player.getMatrix().getNode(row + delta[0], column + delta[1]).checkIsNotAvailable())
-                return false;
-        }
-        return true;
-    }
-
-    public synchronized void setCardResourceOnPlayer(Player player, PlaceableCard card){
-        for(Corner corner : card.getStateCardCorners()){
-            player.addOnMapResources(corner.getResource());
-        }
-        player.addOnMapResources(card.getStateCardMiddleResource());
-    }
-
-    public synchronized void deleteCoveredResource(Player player,int row, int column){
-        Map<Position, int[]> setIncrement = player.getMatrix().parsingPositionCorners();
-
-        for(Position position: getPossiblePosition()){
-            int[] delta = setIncrement.get(position);
-            if (player.getMatrix().getNode(row + delta[0], column + delta[1]).getCorners().size()==2)
-                player.deleteOnMapResources(player.getMatrix().getNode(row + delta[0], column + delta[1]).getCorners().getFirst().getResource());
-        }
-    }
-    public synchronized void addCardPointsOnPlayer(Player player,PlaceableCard card, ArrayList<Node> visitedNodes) {
-        Resource goldenResource=card.getStateCardGoldenBuffResource();
-        if(goldenResource.equals(Resource.NULL))
-            player.addPoints(card.getStateCardPoints());
-        else if(goldenResource.equals(Resource.PATTERN))
-            player.addPoints(card.getStateCardPoints() * visitedNodes.size());
-        else if (goldenResource.equals(Resource.FEATHER) || goldenResource.equals(Resource.PERGAMENA) || goldenResource.equals(Resource.POTION) )
-            player.addPoints(card.getStateCardPoints()*player.getResourceQuantity(goldenResource));
-        else
-            player.addPoints(card.getStateCardPoints());
-
-        visitedNodes =new ArrayList<>();
-    }
-
-    /**
-     * @param player who has the turn
-     *  This method is to call at the end of the game!
-     */
-    public synchronized void checkCounterQuestPoints(Player player){
-        for(Quest quest : model.getCommonQuests()){
-            if(quest instanceof QuestCounter)
-                player.addQuestPoints(((QuestCounter) quest).questAlgorithm(player.getOnMapResources()));
+            remoteViews.forEach(remoteView -> remoteView.send(new TerminatedMatchResponse())); //either match model or match controller send this, better match model via obs
         }
     }
 
     public synchronized void addPlayer(Player player){
         players.add(player);
-    }
-
-    private Position[] getPossiblePosition() {
-        return new Position[]{Position.TOPLEFT, Position.TOPRIGHT, Position.BOTTOMRIGHT, Position.BOTTOMLEFT};
     }
 
     /** this method puts the request in the BlockingQueue object to be handled by the MatchController
@@ -329,7 +173,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
 
     @Override
     public void visit( @NotNull PlaceStartingCardRequest placeStartingCardRequest) {
-        //insertStartingCard(getPlayer(placeStartingCardRequest.getUserHash()));
+        model.insertStartingCard(getPlayer(placeStartingCardRequest.getUserHash()));
     }
 
     /** this method adds the remote view to the MatchController whenever a new client joins the match
@@ -369,7 +213,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         //model. remove player!!!! ---------------------------------------------------
         if((players.isEmpty() && !isStarted()) || (players.size() == 1 && isStarted())){
             setActive(false);
-            //VINCITORE???????????????????????????????????????????????????????????????????????????????????????????????????????
+            //WINNER???????????????????????????????????????????????????????????????????????????????????????????????????????
         }
     }
     /**

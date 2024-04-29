@@ -90,4 +90,10 @@ public class CLIResponseHandler implements ResponseVisitor {
 
     }
 
+    @Override
+    public void visit(PlaceStartingCardResponse placeStartingCardResponse) {
+        ((CLIMatchPage)controller.getView().getPage()).placeCard(placeStartingCardResponse.getStartingCard(), 41, 41);
+        CLIMatchPage.updateResourceCounter(placeStartingCardResponse.getResources());
+    }
+
 }

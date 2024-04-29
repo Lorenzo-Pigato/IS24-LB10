@@ -36,7 +36,7 @@ public class CLIMatchPage implements CLIPage{
     private static final int[] currentChatPosition = new int[2];
 
     // ------------ RESOURCE DATA -------------- //
-    private static final Map<Resource, int[]> resources = new HashMap<>(){
+    private static final Map<Resource, int[]> onBoardResourcesPositions = new HashMap<>(){
         {
             put(Resource.ANIMAL, new int[]{78, 35});
             put(Resource.MUSHROOM, new int[]{78, 37});
@@ -99,7 +99,7 @@ public class CLIMatchPage implements CLIPage{
         printBoard(board);
     }
 
-    public void placeCard(@NotNull PlaceableCard card, int col, int row){
+    public void placeCard(@NotNull BaseCard card, int col, int row){
         for (Corner corner : card.getStateCardCorners())
             CLICard.displayCorner(corner,
                     (col - onFocusCol) * 3 + boardStartCol +
@@ -229,9 +229,8 @@ public class CLIMatchPage implements CLIPage{
             CLIBox.draw(74,32, "Resources", AnsiColor.WHITE);
 
             drawResourceTable();
-            for(Resource resource : ((HashMap<Resource, Integer>)args[5]).keySet()){
-                updateResourceCounter(resource, ((HashMap<Resource, Integer>)args[5]).get(resource));
-            }
+            updateResourceCounter((HashMap<Resource, Integer>)args[5]);
+
 
             // Draw ranking and points
             CLIBox.draw(95,32, 20, 12, AnsiColor.WHITE);
@@ -320,8 +319,8 @@ public class CLIMatchPage implements CLIPage{
     // ------------ RESOURCES -------------- //
 
     private static void drawResourceTable(){
-        for (Resource resource : resources.keySet()){
-            CLICommand.setPosition(resources.get(resource)[0], resources.get(resource)[1]);
+        for (Resource resource : onBoardResourcesPositions.keySet()){
+            CLICommand.setPosition(onBoardResourcesPositions.get(resource)[0], onBoardResourcesPositions.get(resource)[1]);
             if(resource.getLetter() == null)
                 AnsiString.print(AnsiSpecial.BLOCK.getCode() + ": ", resource.getColor());
             else
@@ -335,15 +334,18 @@ public class CLIMatchPage implements CLIPage{
 
     /**
      * This method is used to update a resource counter on the resource table
-     * @param resource Resource to update
-     * @param counter New counter value
+     * @param resources HashMap<Resource, Integer> containing the resources to be updated
      */
-    public static void updateResourceCounter(Resource resource, int counter){
-        CLICommand.setPosition(resources.get(resource)[0] + resourceCounterOffset, resources.get(resource)[1]);
-        System.out.println(" ".repeat(3 - String.valueOf(counter).length()));
+    public static void updateResourceCounter(HashMap<Resource, Integer> resources){
+        for(Resource resource : resources.keySet())
+        {
+            CLICommand.setPosition(onBoardResourcesPositions.get(resource)[0] + resourceCounterOffset, onBoardResourcesPositions.get(resource)[1]);
+            System.out.println(" ".repeat(3 - String.valueOf(resources.get(resource)).length()));
 
-        CLICommand.setPosition(resources.get(resource)[0] + resourceCounterOffset, resources.get(resource)[1]);
-        System.out.println(counter);
+            CLICommand.setPosition(onBoardResourcesPositions.get(resource)[0] + resourceCounterOffset, onBoardResourcesPositions.get(resource)[1]);
+            System.out.println(resources.get(resource));
+
+        }
 
         CLICommand.restoreCursorPosition();
     }

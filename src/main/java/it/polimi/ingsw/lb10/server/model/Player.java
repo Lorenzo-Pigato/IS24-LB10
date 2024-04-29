@@ -74,7 +74,7 @@ public class Player implements Serializable {
 
     // --------> GETTER <--------
     public int getResourceQuantity(Resource resource) {return onMapResources.getOrDefault(resource, 0);}
-    public Map<Resource, Integer> getOnMapResources() {return onMapResources;}
+    public HashMap<Resource, Integer> getOnMapResources() {return onMapResources;}
     public int getPoints() {return points;}
     public Matrix getMatrix() {return matrix;}
     public int getQuestPoints() {return questPoints;}

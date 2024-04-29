@@ -30,4 +30,6 @@ public interface ResponseVisitor {
     void visit(PickedCardResponse pickedCardResponse);
 
     void visit(UnavailableTableResourceResponse unavalaibleTableResourceResponse);
+
+    void visit(PlaceStartingCardResponse placeStartingCardResponse);
 }

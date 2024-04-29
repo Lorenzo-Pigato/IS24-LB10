@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lb10.server.model;
 
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
+import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 
@@ -58,6 +59,14 @@ public class Matrix implements Serializable {
         for (Corner corner : card.getStateCardCorners()) {
             int[] delta = setIncrement.get(corner.getPosition());
             getNode(row + delta[0], column + delta[1]).addCorner(corner);
+        }
+    }
+
+    public void setCard(StartingCard card){
+        Map<Position, int[]> setIncrement = parsingPositionCorners();
+        for (Corner corner : card.getStateCardCorners()) {
+            int[] delta = setIncrement.get(corner.getPosition());
+            getNode(41 + delta[0], 41 + delta[1]).addCorner(corner);
         }
     }
 
