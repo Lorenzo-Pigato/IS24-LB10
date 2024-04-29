@@ -104,14 +104,6 @@ public class GUIClientViewController implements ClientViewController {
      *
      */
     @Override
-    public void gameStart() {
-
-    }
-
-    /**
-     *
-     */
-    @Override
     public void game() {
 
     }
@@ -137,6 +129,14 @@ public class GUIClientViewController implements ClientViewController {
 
     @Override
     public StartingCard getStartingCard() {return null;}
+
+    /**
+     *
+     */
+    @Override
+    public void flipStarting() {
+
+    }
 
     @Override
     public void joinMatch() {

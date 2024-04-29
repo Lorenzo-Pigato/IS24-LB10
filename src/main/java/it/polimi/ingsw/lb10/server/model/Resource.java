@@ -7,7 +7,7 @@ public enum Resource implements Serializable {
     NULL(null, null),
     PATTERN(AnsiColor.YELLOW, "▛"),
 
-    EMPTY(AnsiColor.DEFAULT, null),
+    EMPTY(AnsiColor.GREY, null),
     MUSHROOM(AnsiColor.RED, null),
     ANIMAL(AnsiColor.CYAN, null),
     INSECT(AnsiColor.PURPLE, null),

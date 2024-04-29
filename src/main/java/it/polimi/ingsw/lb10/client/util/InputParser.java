@@ -35,12 +35,15 @@ public class InputParser {
 
                 }
                 else if(parsed[1].equals("2")){
-                    CLIMatchPage.flipCard(1, controller.getHand().get(0));
+                    controller.flipCard(1);
+                    CLIMatchPage.flipCard(1, controller.getHand().get(1));
                 }
                 else if(parsed[1].equals("3")){
-                    CLIMatchPage.flipCard(2, controller.getHand().get(0));
+                    controller.flipCard(2);
+                    CLIMatchPage.flipCard(2, controller.getHand().get(2));
                 }
                 else if(parsed[1].equals("s")){
+                    controller.flipStarting();
                     CLIMatchPage.StartingTurn.flipStartingCard(controller.getStartingCard());
                 }
                 else{

@@ -79,8 +79,6 @@ public interface ClientViewController {
 
     void privateQuestSelection(PrivateQuestsResponse response);
 
-    void gameStart();
-
     void game();
 
     boolean resourceDeckIsAvailable();
@@ -88,6 +86,8 @@ public interface ClientViewController {
 
     ArrayList<PlaceableCard> getHand();
     StartingCard getStartingCard();
+
+    void flipStarting();
 }
 
 

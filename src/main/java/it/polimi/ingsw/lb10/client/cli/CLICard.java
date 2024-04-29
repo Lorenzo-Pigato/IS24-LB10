@@ -42,7 +42,7 @@ public abstract class CLICard {
                     .map(Corner::getResource)
                     .ifPresent(resource -> new CLIString(
                             "▛▀▀▀▜\n" +
-                                    "▌ " + (resource.getLetter() == null ? "▒" : resource.getLetter()) + " ▐\n" +
+                                    "▌ " + (resource != Resource.EMPTY ? (resource.getLetter() == null ? "▒" : resource.getLetter()) : " ") + " ▐\n" +
                                     "▙▄▄▄▟"
                             , resource.getColor(), col + position.getCliColOffset(), row + position.getCliRowOffset()).print());
 

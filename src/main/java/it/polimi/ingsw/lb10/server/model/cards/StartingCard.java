@@ -29,10 +29,10 @@ public class StartingCard extends BaseCard implements Serializable {
     }
 
     public void swapState(){
-        if (getStateStartingCard() instanceof FrontOfTheCard)
-            setNotFlippedState();
-        else
+        if (getStateStartingCard() instanceof FrontStartingCard)
             setFlippedState();
+        else
+            setNotFlippedState();
     }
 
     public ArrayList<Corner> getStateCardCorners() {
@@ -42,18 +42,12 @@ public class StartingCard extends BaseCard implements Serializable {
         return getStateStartingCard().getMiddleResources();
     }
     // --------> SETTER <--------
-    public void setFlippedState() {
-        stateStartingCard = new FrontStartingCard(this);
-    }
-    public void setNotFlippedState() {
-        stateStartingCard = new BackStartingCard(this);
-    }
+    public void setFlippedState() {stateStartingCard = new BackStartingCard(this);}
+    public void setNotFlippedState() {stateStartingCard = new FrontStartingCard(this);}
     public void setMiddleResources(ArrayList<Resource> middleResources) {
         this.middleResources = middleResources;
     }
-    public void setFlippedCardCorners(ArrayList<Corner> flippedCardCorners) {
-        this.flippedCardCorners = flippedCardCorners;
-    }
+    public void setFlippedCardCorners(ArrayList<Corner> flippedCardCorners) {this.flippedCardCorners = flippedCardCorners;}
     // --------> GETTER <--------
 
     public ArrayList<Corner> getFlippedCardCorners() {

@@ -70,8 +70,14 @@ public class CLIClientViewController implements ClientViewController{
     public Player getOnTurn() {return onTurn;}
     public void setHand(ArrayList<PlaceableCard> hand){this.hand = hand;}
     public void flipCard(int index){hand.get(index).swapState();}
-    public ArrayList<PlaceableCard> getHand() {return null;}
+    public ArrayList<PlaceableCard> getHand() {return hand;}
     public StartingCard getStartingCard() {return startingCard;}
+
+    /**
+     *
+     */
+    @Override
+    public void flipStarting() {startingCard.swapState();}
 
 
     @Override
@@ -238,13 +244,6 @@ public class CLIClientViewController implements ClientViewController{
         view.displayPage(new Object[]{input});
     }
 
-    /**
-     *
-     */
-    @Override
-    public void gameStart() {
-        syncReceive().accept(responseHandler); //GameSetUpResponse
-    }
 
     @Override
     public void game(){
@@ -346,7 +345,7 @@ public class CLIClientViewController implements ClientViewController{
                         //view error invalid command!
                     }
                 } catch (Exception e) {
-                    Server.log(e.getMessage());
+                    e.printStackTrace();
                     close();
                 }
             }

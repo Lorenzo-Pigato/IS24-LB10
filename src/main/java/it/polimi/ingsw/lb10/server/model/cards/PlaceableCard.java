@@ -36,9 +36,9 @@ public abstract class PlaceableCard extends BaseCard implements Serializable {
 
     public void swapState(){
         if (getCardState() instanceof FrontOfTheCard)
-            setNotFlippedState();
-        else
             setFlippedState();
+        else
+            setNotFlippedState();
     }
 
     // --------> SETTER <--------

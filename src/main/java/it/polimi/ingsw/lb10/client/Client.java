@@ -64,7 +64,6 @@ public class Client implements Runnable{
         controller.waitingRoom();
 
         if (active) {
-            controller.gameStart();
             controller.game();
         }
     }
