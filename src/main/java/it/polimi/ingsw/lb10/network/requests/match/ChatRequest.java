@@ -4,6 +4,7 @@ import it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitor;
 
 public class ChatRequest extends MatchRequest{
     private static final long serialVersionUID = 17L;
+
     private String message;
 
     public ChatRequest(int matchId, String message) {

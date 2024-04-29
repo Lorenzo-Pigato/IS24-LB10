@@ -49,7 +49,7 @@ public class CLILobbyPage implements CLIPage {
             CLICommand.setPosition(1, 38);
             CLICommand.clearLine();
 
-            if(((String)args[0]).split(" ")[0].equals("join"))
+            if( ((String)args[0]).split(" ").length == 2 && ((String)args[0]).split(" ")[0].equals("join"))
                 new CLIString(">> Match ID: " + ((String) args[0]).split(" ")[1] + " doesn't exist <<",
                         AnsiColor.RED, AnsiFormat.BOLD, 1, 38).centerPrint();
             else

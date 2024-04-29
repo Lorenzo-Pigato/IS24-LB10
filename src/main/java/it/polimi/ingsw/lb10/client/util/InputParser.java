@@ -29,7 +29,7 @@ public class InputParser {
         String[] parsed = input.split(" ");
 
         if (parsed[0].equalsIgnoreCase( "chat")){
-            String message = Arrays.toString(parsed).substring(4, parsed.length);
+            String message = input.substring(5);
             result = new ChatRequest(controller.getMatchId(), message);
         }else if(parsed.length == 3){ // 4
 
