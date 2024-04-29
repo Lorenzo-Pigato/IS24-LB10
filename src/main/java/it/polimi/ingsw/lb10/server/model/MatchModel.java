@@ -18,13 +18,13 @@ import java.util.List;
 
 public class MatchModel extends Observable<Response> {
 
-    private int numberOfPlayers;
+    private final int numberOfPlayers;
     private int id;
-    private ArrayList<Player> players;
-    private ResourceDeck resourceDeck;
-    private GoldenDeck goldenDeck;
-    private QuestDeck questDeck;
-    private StartingDeck startingDeck;
+    private final ArrayList<Player> players;
+    private final ResourceDeck resourceDeck;
+    private final GoldenDeck goldenDeck;
+    private final QuestDeck questDeck;
+    private final StartingDeck startingDeck;
     private Player onTurnPlayer;
 
     private boolean resourceDeckIsEmpty = false;

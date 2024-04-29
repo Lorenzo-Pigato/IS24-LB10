@@ -28,25 +28,36 @@ public class InputParser {
 
         }else if(parsed.length == 2){
 
-            if(parsed[0].equals("flip")){
-                if(parsed[1].equalsIgnoreCase("1")){
-                    if(controller.getView().getPage().getClass().equals(CLIMatchPage.class)) ((CLIMatchPage)(controller.getView().getPage()))
-                }
-                if(parsed[1].equalsIgnoreCase("2")){
+            if(parsed[0].equals("flip") && controller.getView().getPage().getClass().equals(CLIMatchPage.class)){
+                if(parsed[1].equals("1")){
+                    controller.flipCard(0);
+                    CLIMatchPage.flipCard(0, controller.getHand().get(0));
 
                 }
-                if(parsed[1].equalsIgnoreCase("3")){
-
+                else if(parsed[1].equals("2")){
+                    CLIMatchPage.flipCard(1, controller.getHand().get(0));
                 }
-                if(parsed[1].equalsIgnoreCase("s")){}
-
+                else if(parsed[1].equals("3")){
+                    CLIMatchPage.flipCard(2, controller.getHand().get(0));
+                }
+                else if(parsed[1].equals("s")){
+                    CLIMatchPage.StartingTurn.flipStartingCard(controller.getStartingCard());
+                }
+                else{
+                    CLIMatchPage.serverReply("You can flip cards in range [1] to [3] or 'S'");
+                }
             }
-            if(parsed[0].equals("chat") && !parsed[1].isEmpty()){ // 6. <chat <...>> sends a message to chat
+
+            if(parsed[0].equalsIgnoreCase("chat") && !parsed[1].isEmpty()){ // 6. <chat <...>> sends a message to chat
                 result = new ChatRequest(0, parsed[1]);
             }
 
-            if(parsed[0].equals("show") && !parsed[1].isEmpty()){
+            if(parsed[0].equalsIgnoreCase("show") && !parsed[1].isEmpty()){
                 result = new ShowPlayerRequest(0, parsed[1]); // 3. <show <player>> shows requested player board
+            }
+
+            if(parsed[0].equalsIgnoreCase("place") && parsed[1].equalsIgnoreCase("s")){
+
             }
 
 

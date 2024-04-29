@@ -5,8 +5,12 @@ import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
 import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
+import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
+import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
 
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Map;
 
 public interface ClientViewController {
 
@@ -81,6 +85,9 @@ public interface ClientViewController {
 
     boolean resourceDeckIsAvailable();
     boolean goldenDeckIsAvailable();
+
+    ArrayList<PlaceableCard> getHand();
+    StartingCard getStartingCard();
 }
 
 

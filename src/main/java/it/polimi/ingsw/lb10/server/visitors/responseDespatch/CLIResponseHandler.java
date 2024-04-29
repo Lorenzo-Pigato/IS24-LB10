@@ -52,6 +52,8 @@ public class CLIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(GameSetupResponse response){
+        controller.setHand(response.getPlayer().getHand());
+        controller.setStartingCard(response.getPlayer().getStartingCard());
         controller.getView().setPage(new CLIMatchPage());
         controller.getView().updatePageState(new CLIMatchPage.StartingTurn());
         controller.getView().displayPage(new Object[]{response.getPlayer(), response.getPlayer().getStartingCard(), response.getPlayer().getPrivateQuest(), response.getPublicQuests(), response.getPlayer().getHand()});

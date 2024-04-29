@@ -112,7 +112,6 @@ public class LobbyController implements LobbyRequestVisitor {
             } catch(Exception e){
                 getRemoteView(mr.getUserHash()).send(new TerminatedMatchResponse());
             }
-
         });
     }
 

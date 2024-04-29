@@ -323,8 +323,13 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      * @param drawGoldenFromDeckRequest this request is sent by the client to draw a golden card directly from deck.
      */
     @Override
-    public void visit(DrawGoldenFromDeckRequest drawGoldenFromDeckRequest) {
+    public void visit(@NotNull DrawGoldenFromDeckRequest drawGoldenFromDeckRequest) {
 
+    }
+
+    @Override
+    public void visit( @NotNull PlaceStartingCardRequest placeStartingCardRequest) {
+        //insertStartingCard(getPlayer(placeStartingCardRequest.getUserHash()));
     }
 
     /** this method adds the remote view to the MatchController whenever a new client joins the match

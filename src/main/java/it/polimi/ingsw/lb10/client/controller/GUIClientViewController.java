@@ -5,10 +5,13 @@ import it.polimi.ingsw.lb10.client.view.GUIClientView;
 import it.polimi.ingsw.lb10.client.Client;
 import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
+import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
+import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class GUIClientViewController implements ClientViewController {
 
@@ -128,6 +131,12 @@ public class GUIClientViewController implements ClientViewController {
     public boolean goldenDeckIsAvailable() {
         return false;
     }
+
+    @Override
+    public ArrayList<PlaceableCard> getHand() {return null;}
+
+    @Override
+    public StartingCard getStartingCard() {return null;}
 
     @Override
     public void joinMatch() {

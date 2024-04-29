@@ -29,9 +29,6 @@ public class CLIMatchPage implements CLIPage{
     private static final int handCardHeight = 8;
     private static final int handCardWidth = 21;
 
-    private static StartingCard startingCard;
-    private static ArrayList<PlaceableCard> hand;
-
     // -------------- CHAT DATA ---------------- //
     private static final int maxChatLength = 26;
     private static final int maxMessageLength = 38;
@@ -147,10 +144,10 @@ public class CLIMatchPage implements CLIPage{
             CLICommand.initialize();
 
             Player player = (Player) args[0];
-            startingCard = (StartingCard) args[1];
+            StartingCard startingCard = (StartingCard) args[1];
             Quest privateQuest = (Quest) args[2];
             ArrayList<Quest> publicQuests = new ArrayList<>((ArrayList<Quest>) args[3]);
-            hand = (ArrayList<PlaceableCard>) args[4];
+            ArrayList<PlaceableCard> hand = (ArrayList<PlaceableCard>) args[4];
 
             // Draw the board
             CLIBox.draw(2,2,113,30, AnsiColor.CYAN);
@@ -197,10 +194,12 @@ public class CLIMatchPage implements CLIPage{
             AnsiString.print(">> ", AnsiColor.CYAN, AnsiFormat.BOLD);
 
             CLICommand.saveCursorPosition();
+
+            serverReply("You can flip your cards by typing 'flip [card id]', type 'place S' to start playing");
         }
 
-        public static void flipStartingCard(StartingCard card) {
-            CLICard.displayStartingCard(card, 84, 35);
+        public static void flipStartingCard(StartingCard startingCard) {
+            CLICard.displayStartingCard(startingCard, 84, 35);
         }
     }
 
@@ -287,6 +286,8 @@ public class CLIMatchPage implements CLIPage{
         CLICommand.clearLine();
 
         AnsiString.print(">> " + message, AnsiColor.CYAN, AnsiFormat.BOLD);
+
+        CLICommand.restoreCursorPosition();
     }
 
     // ---------------- HAND ---------------- //
@@ -312,9 +313,8 @@ public class CLIMatchPage implements CLIPage{
         );
     }
 
-    public static void flipCard(int inHandPosition){
-        removeCardFromHand(inHandPosition);
-        addCardToHand(hand.get(inHandPosition), inHandPosition);
+    public static void flipCard(int inHandPosition, PlaceableCard card){
+        addCardToHand(card, inHandPosition);
     }
 
     // ------------ RESOURCES -------------- //

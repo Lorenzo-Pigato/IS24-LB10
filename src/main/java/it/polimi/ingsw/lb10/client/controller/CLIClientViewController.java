@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lb10.client.controller;
 
 import it.polimi.ingsw.lb10.client.Client;
+import it.polimi.ingsw.lb10.client.cli.CLICommand;
 import it.polimi.ingsw.lb10.client.cli.clipages.*;
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
@@ -18,11 +19,14 @@ import it.polimi.ingsw.lb10.network.response.lobby.HashResponse;
 import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
 import it.polimi.ingsw.lb10.server.Server;
 import it.polimi.ingsw.lb10.server.model.Player;
+import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
+import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class CLIClientViewController implements ClientViewController{
@@ -39,9 +43,11 @@ public class CLIClientViewController implements ClientViewController{
     private Player onTurn;
     private boolean resourceDeckAvailable = true;
     private boolean goldenDeckAvailable = true;
+    private ArrayList<PlaceableCard> hand;
+    private StartingCard startingCard;
 
 
-   public static CLIClientViewController instance(){
+    public static CLIClientViewController instance(){
        if(instance == null) instance = new CLIClientViewController();
        return instance;
    }
@@ -56,10 +62,18 @@ public class CLIClientViewController implements ClientViewController{
     public void setGoldenDeckAvailable(boolean status){this.goldenDeckAvailable = status;}
     public boolean resourceDeckIsAvailable() {return resourceDeckAvailable;}
     public boolean goldenDeckIsAvailable() {return goldenDeckAvailable;}
+    public void setStartingCard(StartingCard startingCard) {this.startingCard = startingCard;}
+
     public Socket getSocket() {return socket;}
     public Client getClient() {return client;}
     public CLIClientView getView() {return view;}
     public Player getOnTurn() {return onTurn;}
+    public void setHand(ArrayList<PlaceableCard> hand){this.hand = hand;}
+    public void flipCard(int index){hand.get(index).swapState();}
+    public ArrayList<PlaceableCard> getHand() {return null;}
+    public StartingCard getStartingCard() {return startingCard;}
+
+
     @Override
     public void setHash() {
         try{
@@ -322,6 +336,10 @@ public class CLIClientViewController implements ClientViewController{
                 try {
                     String input = in.nextLine();
                     futureRequest = InputParser.parse(input);
+
+                    CLICommand.restoreCursorPosition();
+                    CLICommand.clearLineAfterCursor();
+
                     if(futureRequest != null) {
                         asyncWriteToSocket(futureRequest).start();
                     }else{
