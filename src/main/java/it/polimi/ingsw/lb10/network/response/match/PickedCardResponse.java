@@ -8,7 +8,7 @@ import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 import javax.smartcardio.Card;
 
 public class PickedCardResponse extends Response {
-
+    private static final long serialVersionUID = 6L;
     private PlaceableCard card;
 
     public PickedCardResponse(PlaceableCard card) {this.card = card;}

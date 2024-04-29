@@ -4,7 +4,7 @@ import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 
 public class JoinMatchResponse extends Response {
-
+    private static final long serialVersionUID = 5L;
     private final boolean joined;
     private int matchId;
 

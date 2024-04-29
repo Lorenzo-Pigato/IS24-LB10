@@ -4,7 +4,7 @@ import it.polimi.ingsw.lb10.server.visitors.requestDispatch.LobbyRequestVisitor;
 import it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitor;
 
 public class DrawGoldenFromDeckRequest extends MatchRequest {
-
+    private static final long serialVersionUID = 18L;
 
     public DrawGoldenFromDeckRequest(int matchId) {
         super(matchId);

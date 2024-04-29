@@ -7,7 +7,7 @@ import it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitabl
 import it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitor;
 
 public abstract class MatchRequest extends Request implements LobbyRequestVisitable, MatchRequestVisitable {
-
+    private static final long serialVersionUID = 23L;
     private final int matchId;
 
     public MatchRequest(int matchId) {

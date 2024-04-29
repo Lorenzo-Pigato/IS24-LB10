@@ -4,7 +4,7 @@ import it.polimi.ingsw.lb10.server.visitors.requestDispatch.LobbyRequestVisitabl
 import java.io.Serializable;
 
 public abstract class Request implements Serializable , LobbyRequestVisitable{
-    private static final long serialVersionUID = 3L;
+    private static final long serialVersionUID = 31L;
     private int userHash;
 
     public int getUserHash(){

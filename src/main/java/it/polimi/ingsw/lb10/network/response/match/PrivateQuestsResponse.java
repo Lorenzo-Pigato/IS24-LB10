@@ -7,7 +7,7 @@ import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 import java.util.ArrayList;
 
 public class PrivateQuestsResponse extends Response {
-
+    private static final long serialVersionUID = 8L;
     private final ArrayList<Quest> privateQuests;
 
     public PrivateQuestsResponse(ArrayList<Quest> privateQuests) {this.privateQuests = privateQuests;}

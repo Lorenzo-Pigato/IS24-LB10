@@ -4,7 +4,7 @@ import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 
 public class HashResponse extends Response {
-
+    private static final long serialVersionUID = 2L;
     private int hash;
 
     public HashResponse(int i) {

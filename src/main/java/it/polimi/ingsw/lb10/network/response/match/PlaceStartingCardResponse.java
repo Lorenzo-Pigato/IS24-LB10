@@ -8,6 +8,7 @@ import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 import java.util.HashMap;
 
 public class PlaceStartingCardResponse extends Response {
+    private static final long serialVersionUID = 7L;
     private StartingCard startingCard;
     private HashMap<Resource, Integer> resources;
 

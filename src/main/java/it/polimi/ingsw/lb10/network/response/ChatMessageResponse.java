@@ -2,7 +2,7 @@ package it.polimi.ingsw.lb10.network.response;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 
 public class ChatMessageResponse extends Response {
-
+    private static final long serialVersionUID = 14L;
     private final String message;
     private final String sender;
 

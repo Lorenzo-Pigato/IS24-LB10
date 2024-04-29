@@ -5,10 +5,11 @@ import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class GameSetupResponse extends Response {
-
+public class GameSetupResponse extends Response implements Serializable {
+    private static final long serialVersionUID = 4L;
     private final ArrayList<Player> otherPlayers;
     private final Player player;
     private final ArrayList<Quest> publicQuests;
