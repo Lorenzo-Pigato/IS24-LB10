@@ -60,7 +60,28 @@ public class CLIClientViewController implements ClientViewController{
     public Client getClient() {return client;}
     public CLIClientView getView() {return view;}
     public Player getOnTurn() {return onTurn;}
+    @Override
+    public void setHash() {
+        try{
+            HashResponse hashResponse = (HashResponse) socketIn.readObject();
+            this.hash = hashResponse.getHash();
+        }catch(Exception e){
+            Server.log(e.getMessage());
+            close();
+        }
+    }
 
+    @Override
+    public void setMatchId(int  matchId){
+        this.matchId = matchId;
+    }
+
+    @Override
+    public int getMatchId(){
+        return matchId;
+    }
+
+    public int getUserHash(){return hash;}
     @Override
     public void close() {
        if(!socket.isClosed()) {
@@ -208,8 +229,7 @@ public class CLIClientViewController implements ClientViewController{
      */
     @Override
     public void gameStart() {
-        syncReceive().accept(responseHandler); //PlayerSetUpResponse
-
+        syncReceive().accept(responseHandler); //GameSetUpResponse
     }
 
     @Override
@@ -354,26 +374,7 @@ public class CLIClientViewController implements ClientViewController{
         setSocket(cliSocket);
     }
 
-    @Override
-    public void setHash() {
-        try{
-            HashResponse hashResponse = (HashResponse) socketIn.readObject();
-            this.hash = hashResponse.getHash();
-        }catch(Exception e){
-            Server.log(e.getMessage());
-            close();
-        }
-    }
 
-    @Override
-    public void setMatchId(int  matchId){
-        this.matchId = matchId;
-    }
-
-    @Override
-    public int getMatchId(){
-        return matchId;
-    }
 
 }
 
