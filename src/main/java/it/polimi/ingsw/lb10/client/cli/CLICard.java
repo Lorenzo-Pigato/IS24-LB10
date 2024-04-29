@@ -264,6 +264,8 @@ public abstract class CLICard {
                 else
                     new CLIString(corner.getResource().getLetter(), corner.getResource().getColor(), col, row).print();
             }
+
+            CLICommand.restoreCursorPosition();
         }
     }
 }

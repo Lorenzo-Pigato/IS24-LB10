@@ -6,16 +6,11 @@ import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiSpecial;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiString;
 import it.polimi.ingsw.lb10.server.model.Matrix;
-import it.polimi.ingsw.lb10.server.model.Node;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.Resource;
 import it.polimi.ingsw.lb10.server.model.cards.*;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
-import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
-import it.polimi.ingsw.lb10.server.model.quest.Pattern.Diagonal.BottomLeftDiagonal;
-import it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ.TopRight;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
-import it.polimi.ingsw.lb10.server.model.quest.QuestCounter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -24,7 +19,7 @@ public class CLIMatchPage implements CLIPage{
 
     private CLIState state = new StartingTurn();
 
-    // -------------- HAND DATA ---------------- //
+    // -------------- CARDS DATA ---------------- //
     private static final int[][] handUpLeftCornersPosition = {
             {4, 35},
             {27, 35},
@@ -33,6 +28,9 @@ public class CLIMatchPage implements CLIPage{
 
     private static final int handCardHeight = 8;
     private static final int handCardWidth = 21;
+
+    private static StartingCard startingCard;
+    private static ArrayList<PlaceableCard> hand;
 
     // -------------- CHAT DATA ---------------- //
     private static final int maxChatLength = 26;
@@ -142,14 +140,21 @@ public class CLIMatchPage implements CLIPage{
      */
     public static class StartingTurn implements CLIState {
         /**
-         * @param args Player object,  Starting Card, Private Quest, Public Quest 1, Public Quest 2
+         * @param args Player, StartingCard, Quest privateQuest, ArrayList<Quest> publicQuests, ArrayList<PlaceableCard> hand
          */
         @Override
         public void apply(Object[] args) {
             CLICommand.initialize();
+
+            Player player = (Player) args[0];
+            startingCard = (StartingCard) args[1];
+            Quest privateQuest = (Quest) args[2];
+            ArrayList<Quest> publicQuests = new ArrayList<>((ArrayList<Quest>) args[3]);
+            hand = (ArrayList<PlaceableCard>) args[4];
+
             // Draw the board
             CLIBox.draw(2,2,113,30, AnsiColor.CYAN);
-            CLIBox.draw(2,2, "Player Board: " + (args != null ? ((Player)args[0]).getUsername() : "Unknown") ,
+            CLIBox.draw(2,2, "Player Board: " + (player != null ? player.getUsername() : "Unknown") ,
                     AnsiColor.CYAN,
                     AnsiColor.WHITE,
                     AnsiFormat.BOLD);
@@ -161,26 +166,28 @@ public class CLIMatchPage implements CLIPage{
             // Draw hand
             CLIBox.draw(2,32, 71, 12, AnsiColor.WHITE);
             CLIBox.draw(2,32, "Hand", AnsiColor.WHITE);
-            for (int i = 0; i < 3; i++){
-                CLICommand.setPosition(13 + 23*i, 33);
-                System.out.println("[" + (i+1) + "]");
+
+            for (PlaceableCard card : hand){
+                CLICommand.setPosition(13 + 23 * hand.indexOf(card), 33);
+                System.out.println("[" + (hand.indexOf(card) + 1) + "]");
+
+                addCardToHand(card, hand.indexOf(card));
             }
+
 
             // Draw available objectives
             CLIBox.draw(118,32, 40, 12, AnsiColor.WHITE);
             CLIBox.draw(118,32, "Objectives", AnsiColor.WHITE);
             CLILine.drawVertical(138, 33, 44, AnsiColor.WHITE);
 
-            assert args != null;
-            CLICard.displayQuestCard((Quest) args[2], 121, 36);
-            CLICard.displayQuestCard((Quest) args[3], 140, 33);
-            CLICard.displayQuestCard((Quest) args[4],140,38);
-
+            CLICard.displayQuestCard(privateQuest, 121, 36);
+            CLICard.displayQuestCard(publicQuests.get(0), 140, 33);
+            CLICard.displayQuestCard(publicQuests.get(1), 140, 38);
 
             // Draw Starting Card
             CLIBox.draw(74, 32, 41, 12, AnsiColor.WHITE);
             CLIBox.draw(74, 32, "Starting Card", AnsiColor.WHITE);
-            CLICard.displayStartingCard((StartingCard) args[1], 84, 35);
+            CLICard.displayStartingCard(startingCard, 84, 35);
 
 
             // User inp0ut region
@@ -202,20 +209,59 @@ public class CLIMatchPage implements CLIPage{
      * It modifies the StartingTurn state by adding the resources table and the score board
      */
     public static class Default implements CLIState{
+        /**
+         * @param args Player this player, Player[3] other players, Matrix board, HashMap<Resource, Integer> resources
+         */
         @Override
-        public void apply(Object[] args) {
-
+        public void apply(Object @NotNull [] args) {
             // Clear starting card
             clearRegion(74, 32, 41, 12);
+
+            // Clear board
+            clearRegion(2, 2, 113, 30);
+            CLIBox.draw(2,2,113,30, AnsiColor.CYAN);
+            CLIBox.draw(2,2, "Player Board: " + (args[0] != null ? ((Player)args[0]).getUsername() : "Unknown") ,
+                    AnsiColor.CYAN,
+                    AnsiColor.WHITE,
+                    AnsiFormat.BOLD);
+
             // Draw resources board
             CLIBox.draw(74,32, 20, 12, AnsiColor.WHITE);
             CLIBox.draw(74,32, "Resources", AnsiColor.WHITE);
+
             drawResourceTable();
+            for(Resource resource : ((HashMap<Resource, Integer>)args[5]).keySet()){
+                updateResourceCounter(resource, ((HashMap<Resource, Integer>)args[5]).get(resource));
+            }
 
             // Draw ranking and points
             CLIBox.draw(95,32, 20, 12, AnsiColor.WHITE);
             CLIBox.draw(95,32, "Score board", AnsiColor.WHITE);
 
+        }
+    }
+
+    public static class pickCard implements CLIState{
+        /**
+         * @param args PlaceableCard[4], uncovered cards on table, GoldenDeck first card FLIPPED, ResourceDeck first card FLIPPED
+         */
+        @Override
+        public void apply(Object[] args) {
+            clearRegion(2, 2, 113, 30);
+
+            for (int i = 0; i< 4; i++)
+                CLICard.printPlaceableCard(
+                        (PlaceableCard) args[i],
+                        17 + 31 * (i % 2),
+                        9 + 10 * (i / 2));
+
+            if(args[4] != null)
+                CLICard.printPlaceableCard((GoldenCard) args[4], 79, 9);
+
+            if (args[5] != null)
+                CLICard.printPlaceableCard((ResourceCard) args[5], 79, 19);
+
+            CLICommand.restoreCursorPosition();
         }
     }
 
@@ -230,6 +276,10 @@ public class CLIMatchPage implements CLIPage{
         CLICommand.restoreCursorPosition();
     }
 
+    private static void printEmptyGame(){
+
+    }
+
     // ----------- SERVER REPLY------------- //
 
     public static void serverReply(String message){
@@ -240,8 +290,12 @@ public class CLIMatchPage implements CLIPage{
     }
 
     // ---------------- HAND ---------------- //
+    public static void displayHand(ArrayList<PlaceableCard> hand){
+        for (PlaceableCard card : hand)
+            addCardToHand(card, hand.indexOf(card));
+    }
 
-    public static void addCardToHand(@NotNull PlaceableCard card, int inHandPosition){
+    private static void addCardToHand(@NotNull PlaceableCard card, int inHandPosition){
         int col = handUpLeftCornersPosition[inHandPosition][0];
         int row = handUpLeftCornersPosition[inHandPosition][1];
 
@@ -249,13 +303,18 @@ public class CLIMatchPage implements CLIPage{
         CLICommand.restoreCursorPosition();
     }
 
-    public static void removeCardFromHand(int inHandPosition){
+    private static void removeCardFromHand(int inHandPosition){
         clearRegion(
                 handUpLeftCornersPosition[inHandPosition][0],
                 handUpLeftCornersPosition[inHandPosition][1],
                 handCardWidth,
                 handCardHeight
         );
+    }
+
+    public static void flipCard(int inHandPosition){
+        removeCardFromHand(inHandPosition);
+        addCardToHand(hand.get(inHandPosition), inHandPosition);
     }
 
     // ------------ RESOURCES -------------- //
