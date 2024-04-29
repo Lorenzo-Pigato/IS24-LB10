@@ -7,6 +7,8 @@ import it.polimi.ingsw.lb10.network.requests.match.ChatRequest;
 import it.polimi.ingsw.lb10.network.requests.match.PlaceStartingCardRequest;
 import it.polimi.ingsw.lb10.network.requests.match.ShowPlayerRequest;
 
+import java.util.Arrays;
+
 public class InputParser {
 
     public static CLIClientViewController controller = CLIClientViewController.instance();
@@ -25,7 +27,11 @@ public class InputParser {
         Request result = null;
 
         String[] parsed = input.split(" ");
-        if(parsed.length == 3){ // 4
+
+        if (parsed[0].equalsIgnoreCase( "chat")){
+            String message = Arrays.toString(parsed).substring(4, parsed.length);
+            result = new ChatRequest(controller.getMatchId(), message);
+        }else if(parsed.length == 3){ // 4
 
         }else if(parsed.length == 2){
 
@@ -52,29 +58,25 @@ public class InputParser {
                 }
             }
 
-            if(parsed[0].equalsIgnoreCase("chat") && !parsed[1].isEmpty()){ // 6. <chat <...>> sends a message to chat
-                result = new ChatRequest(0, parsed[1]);
-            }
-
             if(parsed[0].equalsIgnoreCase("show") && !parsed[1].isEmpty()){
-                result = new ShowPlayerRequest(0, parsed[1]); // 3. <show <player>> shows requested player board
+                result = new ShowPlayerRequest(controller.getMatchId(), parsed[1]); // 3. <show <player>> shows requested player board
             }
 
             if(parsed[0].equalsIgnoreCase("place") && parsed[1].equalsIgnoreCase("s")){
-                result = new PlaceStartingCardRequest(0, controller.getStartingCard());
+                result = new PlaceStartingCardRequest(controller.getMatchId(), controller.getStartingCard());
             }
 
 
-        }else if(parsed.length == 1){
+        }else if(parsed.length == 1) {
 
-            if(parsed[0].equals("help")){ //1. <help> prints out all possible commands
+            if (parsed[0].equals("help")) { //1. <help> prints out all possible commands
                 //no request to submit to server
             }
-
 
         }else{
 
         }
+
 
         return result;
     }

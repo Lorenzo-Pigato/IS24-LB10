@@ -47,6 +47,7 @@ public class CLIClientViewController implements ClientViewController{
     private StartingCard startingCard;
 
 
+
     public static CLIClientViewController instance(){
        if(instance == null) instance = new CLIClientViewController();
        return instance;
@@ -317,7 +318,7 @@ public class CLIClientViewController implements ClientViewController{
      * @return the thread
      */
     public Thread asyncWriteToSocket(Request message){
-        message .setUserHash(hash);
+        message.setUserHash(hash);
         return new Thread(() -> send(message));
     }
 
@@ -334,18 +335,22 @@ public class CLIClientViewController implements ClientViewController{
             while (client.isActive()) {
                 try {
                     String input = in.nextLine();
+
                     futureRequest = InputParser.parse(input);
 
                     CLICommand.restoreCursorPosition();
                     CLICommand.clearLineAfterCursor();
 
                     if(futureRequest != null) {
-                        asyncWriteToSocket(futureRequest).start();
+
+                        Thread t = asyncWriteToSocket(futureRequest);
+                        t.start();
+                        t.join();
+
                     }else{
                         //view error invalid command!
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
                     close();
                 }
             }

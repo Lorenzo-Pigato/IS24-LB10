@@ -9,10 +9,15 @@ import java.util.ArrayList;
 
 public class GameSetupResponse extends Response {
 
+    private final ArrayList<Player> otherPlayers;
     private final Player player;
     private final ArrayList<Quest> publicQuests;
 
-    public GameSetupResponse(Player player, ArrayList<Quest> publicQuest) {this.player = player;  this.publicQuests = publicQuest;}
+    public GameSetupResponse(ArrayList<Player> otherPlayers, Player player, ArrayList<Quest> publicQuest) {
+        this.otherPlayers = otherPlayers;
+        this.player = player;
+        this.publicQuests = publicQuest;
+    }
 
     @Override
     public void accept(CLIResponseHandler handler) {
@@ -20,5 +25,6 @@ public class GameSetupResponse extends Response {
     }
 
     public Player getPlayer() {return player;}
+    public ArrayList<Player> getOtherPlayers() {return otherPlayers;}
     public ArrayList<Quest> getPublicQuests() {return publicQuests;}
 }

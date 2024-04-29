@@ -8,6 +8,8 @@ import it.polimi.ingsw.lb10.server.model.Resource;
 import it.polimi.ingsw.lb10.server.model.cards.BaseCard;
 import it.polimi.ingsw.lb10.server.model.cards.GoldenCard;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
+import it.polimi.ingsw.lb10.server.model.cards.PlaceableCardState.BackOfTheCard;
+import it.polimi.ingsw.lb10.server.model.cards.PlaceableCardState.FrontOfTheCard;
 import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
@@ -44,9 +46,9 @@ public abstract class CLICard {
                         if(resource == Resource.EMPTY)
                             new CLIString(
                                     """
-                                            ▒▒▒▒▒
-                                            ▒▒▒▒▒
-                                            ▒▒▒▒▒
+                                            ▛▀▀▀▜
+                                            ▌   ▐
+                                            ▙▄▄▄▟
                                             """
                                     , resource.getColor(), col + position.getCliColOffset(), row + position.getCliRowOffset()).print();
                         else if (resource == Resource.PERGAMENA || resource == Resource.POTION || resource == Resource.FEATHER)
@@ -58,9 +60,9 @@ public abstract class CLICard {
                         else
                             new CLIString(
                                     """
-                                          █████
-                                          █▒▒▒█
-                                          █████
+                                          ▛▀▀▀▜
+                                          ▌ █ ▐
+                                          ▙▄▄▄▟
                                           """
                             , resource.getColor(), col + position.getCliColOffset(), row + position.getCliRowOffset()).print();
                     });
@@ -87,7 +89,7 @@ public abstract class CLICard {
             }
         }
 
-        if(card instanceof GoldenCard){
+        if(card instanceof GoldenCard && card.getCardState().getClass() != BackOfTheCard.class){
             new CLIString(
                     """
                             ▛▀▀▀▀▀▀▀▜
@@ -112,7 +114,7 @@ public abstract class CLICard {
         if (quest.getId() == 94){
             int i = 0;
             for (Resource resource : ((QuestCounter)quest).getActivationCost().keySet()
-                    .stream().filter(res -> res != Resource.EMPTY).toList()){
+                    .stream().filter(res -> ((QuestCounter) quest).getActivationCost().get(res) > 0 ).toList()){
                 CLICommand.setPosition(col + 5, row + (i + 1));
                 System.out.print("1 x ");
                 AnsiString.print(resource.getLetter(), AnsiColor.YELLOW);
@@ -122,13 +124,13 @@ public abstract class CLICard {
         else if(quest instanceof QuestCounter){
             CLICommand.setPosition(col + 5, row + 2);
             System.out.print("3 x ");
-            AnsiString.print("█",
-                    ((QuestCounter)quest).getActivationCost().keySet()
-                            .stream()
-                            .filter(r -> ((QuestCounter) quest).getActivationCost().get(r) > 0)
-                            .findFirst()
-                            .get()
-                            .getColor());
+            Resource resource = ((QuestCounter)quest).getActivationCost().keySet()
+                    .stream()
+                    .filter(r -> ((QuestCounter) quest).getActivationCost().get(r) > 0)
+                    .findFirst()
+                    .get();
+
+            AnsiString.print(resource.getLetter() != null ? resource.getLetter() : "█", resource.getColor());
         }
         else if(quest instanceof TopLeft){
             new CLIString(

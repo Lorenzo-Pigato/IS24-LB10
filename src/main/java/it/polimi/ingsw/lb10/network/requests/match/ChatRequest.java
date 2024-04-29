@@ -8,7 +8,9 @@ public class ChatRequest extends MatchRequest{
 
     public ChatRequest(int matchId, String message) {
         super(matchId);
+        this.message = message;
     }
+
     public String getMessage() {return this.message;}
 
     /**

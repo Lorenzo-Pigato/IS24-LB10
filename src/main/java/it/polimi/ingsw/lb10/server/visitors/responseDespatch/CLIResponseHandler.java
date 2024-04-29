@@ -7,6 +7,7 @@ import it.polimi.ingsw.lb10.network.response.ChatMessageResponse;
 import it.polimi.ingsw.lb10.network.response.EndTurnBroadcastResponse;
 import it.polimi.ingsw.lb10.network.response.lobby.BooleanResponse;
 import it.polimi.ingsw.lb10.network.response.match.*;
+import it.polimi.ingsw.lb10.server.model.Player;
 
 public class CLIResponseHandler implements ResponseVisitor {
 
@@ -55,13 +56,15 @@ public class CLIResponseHandler implements ResponseVisitor {
         controller.setHand(response.getPlayer().getHand());
         controller.setStartingCard(response.getPlayer().getStartingCard());
         controller.getView().setPage(new CLIMatchPage());
+        CLIMatchPage.setPlayer(response.getPlayer());
+        CLIMatchPage.setOtherPlayers(response.getOtherPlayers());
         controller.getView().updatePageState(new CLIMatchPage.StartingTurn());
         controller.getView().displayPage(new Object[]{response.getPlayer(), response.getPlayer().getStartingCard(), response.getPlayer().getPrivateQuest(), response.getPublicQuests(), response.getPlayer().getHand()});
     }
 
     @Override
     public void visit(ChatMessageResponse chatMessageResponse){
-
+        CLIMatchPage.chatLog(chatMessageResponse.getSender(), chatMessageResponse.getMessage());
     }
 
     @Override
@@ -92,8 +95,15 @@ public class CLIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(PlaceStartingCardResponse placeStartingCardResponse) {
+        controller.getView().getPage().changeState(new CLIMatchPage.Default());
+        controller.getView().getPage().print(null);
         ((CLIMatchPage)controller.getView().getPage()).placeCard(placeStartingCardResponse.getStartingCard(), 41, 41);
         CLIMatchPage.updateResourceCounter(placeStartingCardResponse.getResources());
+    }
+
+    @Override
+    public void visit(it.polimi.ingsw.lb10.network.response.match.ChatMessageResponse chatMessageResponse) {
+
     }
 
 }

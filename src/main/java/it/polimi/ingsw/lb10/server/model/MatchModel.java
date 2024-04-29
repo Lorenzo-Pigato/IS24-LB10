@@ -122,8 +122,11 @@ public class MatchModel extends Observable<Response> {
     public void assignPrivateQuest(Player player, Quest quest){
         player.setPrivateQuest(quest);
         player.setInMatch(true);
+        ArrayList<Player> otherPlayers = new ArrayList<>();
+        otherPlayers.addAll(players);
+        otherPlayers.remove(player);
         if(players.stream().allMatch(Player::isInMatch)){
-            players.forEach(p-> notify(new GameSetupResponse(p, commonQuests),  p.getUserHash()));
+            players.forEach(p-> notify(new GameSetupResponse(otherPlayers ,p, commonQuests),  p.getUserHash()));
         }
     }
 

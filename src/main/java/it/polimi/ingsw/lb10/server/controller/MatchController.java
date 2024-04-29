@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lb10.server.controller;
 import it.polimi.ingsw.lb10.network.requests.match.*;
 import it.polimi.ingsw.lb10.network.requests.match.DrawGoldenFromDeckRequest;
+import it.polimi.ingsw.lb10.network.response.match.ChatMessageResponse;
 import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.server.Server;
@@ -128,7 +129,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     @Override
     public void visit(@NotNull ChatRequest chatRequest) {
-
+        model.notifyAll(new ChatMessageResponse(chatRequest.getMessage(), getPlayer(chatRequest.getUserHash()).getUsername()));
     }
 
     /**
@@ -173,6 +174,8 @@ public class MatchController implements Runnable, MatchRequestVisitor {
 
     @Override
     public void visit( @NotNull PlaceStartingCardRequest placeStartingCardRequest) {
+        Server.log("player " + getPlayer(placeStartingCardRequest.getUserHash()).getUsername() + "placed starting card");
+        model.getPlayer(placeStartingCardRequest.getUserHash()).setStartingCard(placeStartingCardRequest.getStartingCard());
         model.insertStartingCard(getPlayer(placeStartingCardRequest.getUserHash()));
     }
 

@@ -32,4 +32,6 @@ public interface ResponseVisitor {
     void visit(UnavailableTableResourceResponse unavalaibleTableResourceResponse);
 
     void visit(PlaceStartingCardResponse placeStartingCardResponse);
+
+    void visit(it.polimi.ingsw.lb10.network.response.match.ChatMessageResponse chatMessageResponse);
 }

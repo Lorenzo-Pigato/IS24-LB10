@@ -50,6 +50,15 @@ public class CLIMatchPage implements CLIPage{
 
     private static final int resourceCounterOffset = 3; //Used to print #resource into resource table
 
+    //-----------------PLAYERS------------------//
+    private static ArrayList<Player> otherPlayers;
+    private static Player clientPlayer;
+    private static ArrayList<Player> allPlayers = new ArrayList<>();
+
+    public static void setOtherPlayers(ArrayList<Player> otherPlayers1) {otherPlayers = otherPlayers1;allPlayers.addAll(otherPlayers);}
+    public static void setPlayer(Player clientPlayer1) {clientPlayer = clientPlayer1;allPlayers.add(clientPlayer);}
+
+
     // -------------- BOARD DATA -------------- //
     private static final int boardStartCol = 5;
     private static final int boardStartRow = 6;
@@ -208,18 +217,20 @@ public class CLIMatchPage implements CLIPage{
      * It modifies the StartingTurn state by adding the resources table and the score board
      */
     public static class Default implements CLIState{
+
+
         /**
-         * @param args Player this player, Player[3] other players, Matrix board, HashMap<Resource, Integer> resources
+         * @param args null
          */
         @Override
-        public void apply(Object @NotNull [] args) {
+        public void apply(Object[] args) {
             // Clear starting card
             clearRegion(74, 32, 41, 12);
 
             // Clear board
             clearRegion(2, 2, 113, 30);
             CLIBox.draw(2,2,113,30, AnsiColor.CYAN);
-            CLIBox.draw(2,2, "Player Board: " + (args[0] != null ? ((Player)args[0]).getUsername() : "Unknown") ,
+            CLIBox.draw(2,2, "Player Board: " + (clientPlayer != null ? clientPlayer.getUsername() : "Unknown") ,
                     AnsiColor.CYAN,
                     AnsiColor.WHITE,
                     AnsiFormat.BOLD);
@@ -229,12 +240,13 @@ public class CLIMatchPage implements CLIPage{
             CLIBox.draw(74,32, "Resources", AnsiColor.WHITE);
 
             drawResourceTable();
-            updateResourceCounter((HashMap<Resource, Integer>)args[5]);
+            updateResourceCounter(clientPlayer.getOnMapResources());
 
 
             // Draw ranking and points
             CLIBox.draw(95,32, 20, 12, AnsiColor.WHITE);
             CLIBox.draw(95,32, "Score board", AnsiColor.WHITE);
+            updateScoreBoard(allPlayers);
 
         }
     }
@@ -373,7 +385,8 @@ public class CLIMatchPage implements CLIPage{
     }
 
     // ---------------- CHAT ------------------- //
-    public static void chatLog(@NotNull Player player, String message) {
+    public static void chatLog(@NotNull String sender, String message) {
+        Player player = allPlayers.stream().filter(p-> p.getUsername().equals(sender)).findFirst().orElse(null);
         messages.addLast(new CLIString[]{
                 new CLIString(player.getUsername() + ": ",
                         player.getColor().getAnsi(),
