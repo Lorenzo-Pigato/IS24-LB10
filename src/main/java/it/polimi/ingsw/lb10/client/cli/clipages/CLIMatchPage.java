@@ -385,18 +385,21 @@ public class CLIMatchPage implements CLIPage{
 
     // ---------------- CHAT ------------------- //
     public static void chatLog(@NotNull String sender, String message) {
+        Player senderPlayer = allPlayers.stream().filter(p -> p.getUsername().equals(sender)).findFirst().orElseThrow(RuntimeException::new);
+
         messages.addLast(new CLIString[]{
-                new CLIString(allPlayers.stream().filter(p -> p.getUsername().equals(sender)).findFirst().orElseThrow(RuntimeException::new).getUsername() + ": ",
-                        clientPlayer.getColor().getAnsi(),
+
+                new CLIString(senderPlayer.getUsername() + ": ",
+                        senderPlayer.getColor().getAnsi(),
                         AnsiFormat.BOLD,
                         currentChatPosition[0], currentChatPosition[1], maxMessageLength),
 
                 new CLIString(message.split("\n")[0],
                         AnsiColor.WHITE,
                         AnsiFormat.DEFAULT,
-                        currentChatPosition[0] + clientPlayer.getUsername().length() + 2,
+                        currentChatPosition[0] + senderPlayer.getUsername().length() + 2,
                         currentChatPosition[1],
-                        maxMessageLength - (clientPlayer.getUsername().length() + 2))}
+                        maxMessageLength - (senderPlayer.getUsername().length() + 2))}
         );
 
         if (messages.size() > maxChatLength){
@@ -414,7 +417,6 @@ public class CLIMatchPage implements CLIPage{
             currentChatPosition[1]++;
         }
 
-        System.out.println("PIGGY!");
         CLICommand.restoreCursorPosition();
     }
 }
