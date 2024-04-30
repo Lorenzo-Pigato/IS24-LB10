@@ -6,10 +6,12 @@ import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiSpecial;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiString;
 import it.polimi.ingsw.lb10.server.model.Matrix;
+import it.polimi.ingsw.lb10.server.model.Node;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.Resource;
 import it.polimi.ingsw.lb10.server.model.cards.*;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
+import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import org.jetbrains.annotations.NotNull;
 
@@ -75,7 +77,7 @@ public class CLIMatchPage implements CLIPage{
     private int onFocusCol = defaultOnFocusCol;
     private int onFocusRow = defaultOnFocusRow;
 
-    public void printBoard(Matrix board){
+    private void printBoard(Matrix board){
 
         for (int col = onFocusCol; col < onFocusCol + onFocusWidth; col++)
             for (int row = onFocusRow; row < onFocusRow + onFocusHeight; row ++)
@@ -107,7 +109,16 @@ public class CLIMatchPage implements CLIPage{
         printBoard(board);
     }
 
-    public void placeCard(@NotNull BaseCard card, int col, int row){
+    /**
+     * @param card the card to be placed on the board
+     * @param col the column OF THE MATRIX where the card will be placed
+     * @param row the row OF THE MATRIX where the card will be placed
+     * @param inHandPosition the position of the card in the player's hand, if the card in not the starting card
+     */
+    public void placeCard(@NotNull BaseCard card, int col, int row, Integer inHandPosition){
+
+        if(inHandPosition != null) removeCardFromHand(inHandPosition);
+
         for (Corner corner : card.getStateCardCorners())
             CLICard.displayCorner(corner,
                     (col - onFocusCol) * 3 + boardStartCol +
@@ -216,8 +227,6 @@ public class CLIMatchPage implements CLIPage{
      * It modifies the StartingTurn state by adding the resources table and the score board
      */
     public static class Default implements CLIState{
-
-
         /**
          * @param args null
          */
@@ -250,9 +259,36 @@ public class CLIMatchPage implements CLIPage{
         }
     }
 
-    public static class pickCard implements CLIState{
+    public class OnTurn implements CLIState{
         /**
-         * @param args PlaceableCard[4], uncovered cards on table, GoldenDeck first card FLIPPED, ResourceDeck first card FLIPPED
+         * @param args Matrix board
+         */
+        @Override
+        public void apply(@NotNull Object[] args) {
+            Matrix board = (Matrix) args[0];
+            Corner corner;
+
+            for (int col = onFocusCol; col < onFocusCol + onFocusWidth; col++) {
+                for (int row = onFocusRow; row < onFocusRow + onFocusHeight; row++) {
+                    corner = board.getNode(row, col).getCorners().stream().filter(c -> c.getPosition().equals(Position.TOPLEFT)).findAny().orElse(null);
+                    if (corner != null) {
+                        CLICommand.setPosition(
+                                (col - onFocusCol) * 3 + boardStartCol + 1,
+                                (row - onFocusRow) * 2 + boardStartRow - 1);
+                        AnsiString.print("#" + corner.getId(), AnsiColor.WHITE);
+
+                    }
+                }
+            }
+
+            CLICommand.restoreCursorPosition();
+        }
+    }
+
+    public static class PickCard implements CLIState{
+        /**
+         * @param args PlaceableCard[6] - uncovered cards on table, GoldenDeck first card FLIPPED, ResourceDeck first card FLIPPED
+         *             last positions are null when decks are empty
          */
         @Override
         public void apply(Object[] args) {
@@ -265,10 +301,12 @@ public class CLIMatchPage implements CLIPage{
                         9 + 10 * (i / 2));
 
             if(args[4] != null)
-                CLICard.printPlaceableCard((GoldenCard) args[4], 79, 9);
+                CLICard.printGoldenDeck((GoldenCard) args[4], 79, 9);
+
+
 
             if (args[5] != null)
-                CLICard.printPlaceableCard((ResourceCard) args[5], 79, 19);
+                CLICard.printResourceDeck((ResourceCard) args[5], 79, 19);
 
             CLICommand.restoreCursorPosition();
         }

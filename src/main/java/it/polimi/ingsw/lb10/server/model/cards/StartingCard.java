@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.lb10.server.model.Resource;
-import it.polimi.ingsw.lb10.server.model.cards.PlaceableCardState.FrontOfTheCard;
 import it.polimi.ingsw.lb10.server.model.cards.StartingCardState.BackStartingCard;
 import it.polimi.ingsw.lb10.server.model.cards.StartingCardState.FrontStartingCard;
 import it.polimi.ingsw.lb10.server.model.cards.StartingCardState.StateStartingCard;

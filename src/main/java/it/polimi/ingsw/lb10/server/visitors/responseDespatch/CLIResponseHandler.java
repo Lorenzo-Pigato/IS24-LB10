@@ -99,7 +99,7 @@ public class CLIResponseHandler implements ResponseVisitor {
     public void visit(PlaceStartingCardResponse placeStartingCardResponse) {
         controller.getView().getPage().changeState(new CLIMatchPage.Default());
         controller.getView().getPage().print(null);
-        ((CLIMatchPage)controller.getView().getPage()).placeCard(placeStartingCardResponse.getStartingCard(), 41, 41);
+        ((CLIMatchPage)controller.getView().getPage()).placeCard(placeStartingCardResponse.getStartingCard(), 41, 41, null);
         CLIMatchPage.updateResourceCounter(placeStartingCardResponse.getResources());
     }
 

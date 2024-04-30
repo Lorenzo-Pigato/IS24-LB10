@@ -5,12 +5,9 @@ import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiString;
 import it.polimi.ingsw.lb10.server.model.Resource;
-import it.polimi.ingsw.lb10.server.model.cards.BaseCard;
-import it.polimi.ingsw.lb10.server.model.cards.GoldenCard;
-import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
+import it.polimi.ingsw.lb10.server.model.cards.*;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCardState.BackOfTheCard;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCardState.FrontOfTheCard;
-import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.server.model.quest.Pattern.Diagonal.BottomLeftDiagonal;
@@ -288,5 +285,40 @@ public abstract class CLICard {
 
             CLICommand.restoreCursorPosition();
         }
+    }
+
+    public static void printGoldenDeck(GoldenCard goldenCard, int col, int row) {
+        new CLIString(
+                """
+                                     ╗╗╗
+                                     ║║║
+                                     ║║║
+                                     ║║║
+                                     ║║║
+                                     ║║║
+                                     ║║║
+                                     ║║║
+                ╚════════════════════╝╝╝
+                """,
+                AnsiColor.YELLOW, col, row).print();
+
+        printPlaceableCard(goldenCard, col, row);
+    }
+
+    public static void printResourceDeck(ResourceCard resourceCard, int col, int row) {
+        new CLIString(
+                """
+                                     ╗╗╗
+                                     ║║║
+                                     ║║║
+                                     ║║║
+                                     ║║║
+                                     ║║║
+                                     ║║║
+                                     ║║║
+                ╚════════════════════╝╝╝
+                """,
+                AnsiColor.GREY, col, row).print();
+        printPlaceableCard(resourceCard, col, row);
     }
 }
