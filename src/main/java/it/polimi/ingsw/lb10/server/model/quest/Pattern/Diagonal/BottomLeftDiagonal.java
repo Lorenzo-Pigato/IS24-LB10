@@ -20,15 +20,15 @@ public class BottomLeftDiagonal extends TypeDiagonal {
     @Override
     public boolean isPattern(Matrix matrix, int row, int column) {
         if(isOfTheSameColor(matrix,row,column))
-            if(isOfTheSameColor(matrix,row+1,column-1)) {
-                if (isOfTheSameColor(matrix, row+2, column-2))
+            if(isOfTheSameColor(matrix,row-1,column+1)) {
+                if (isOfTheSameColor(matrix, row-2, column+2))
                     return true;
-                if(isOfTheSameColor(matrix, row - 1, column + 1))
+                if(isOfTheSameColor(matrix, row + 1, column - 1))
                     return true;
             }
             else{
-                if(isOfTheSameColor(matrix,row-1,column+1))
-                    if(isOfTheSameColor(matrix,row-2,column+2))
+                if(isOfTheSameColor(matrix,row+1,column-1))
+                    if(isOfTheSameColor(matrix,row+2,column-2))
                         return true;
             }
         return  false;

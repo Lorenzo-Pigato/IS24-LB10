@@ -31,15 +31,15 @@ class TopRightTest {
     @AfterEach
     void cleanUp(){
         matrix.deleteCard(41,41);
-        matrix.deleteCard(41,43);
-        matrix.deleteCard(42,40);
+        matrix.deleteCard(43,41);
+        matrix.deleteCard(40,42);
     }
 
     @Test
     public void isPatternRightOne(){
         matrix.setCard(resourceDeck.getCards().get(15));
-        matrix.setCard(resourceDeck.getCards().get(16),41,43);
-        matrix.setCard(resourceDeck.getCards().get(27),42,40);
+        matrix.setCard(resourceDeck.getCards().get(16),43,41);
+        matrix.setCard(resourceDeck.getCards().get(27),40,42);
 
         assertTrue(topRight.isPattern(matrix,41,41));
     }
@@ -47,51 +47,51 @@ class TopRightTest {
     @Test
     public void isPatternRightTwo(){
         matrix.setCard(resourceDeck.getCards().get(11));
-        matrix.setCard(resourceDeck.getCards().get(12),41,43);
-        matrix.setCard(resourceDeck.getCards().get(28),42,40);
+        matrix.setCard(resourceDeck.getCards().get(12),43,41);
+        matrix.setCard(resourceDeck.getCards().get(28),40,42);
 
-        assertTrue(topRight.isPattern(matrix,41,43));
+        assertTrue(topRight.isPattern(matrix,43,41));
     }
 
     @Test
     public void isPatternRightThree(){
         matrix.setCard(resourceDeck.getCards().get(13));
-        matrix.setCard(resourceDeck.getCards().get(14),41,43);
-        matrix.setCard(resourceDeck.getCards().get(29),42,40);
+        matrix.setCard(resourceDeck.getCards().get(14),43,41);
+        matrix.setCard(resourceDeck.getCards().get(29),40,42);
 
-        assertTrue(topRight.isPattern(matrix,42,40));
+        assertTrue(topRight.isPattern(matrix,40,42));
     }
 
     @Test
     public void isPatternNotRightTop(){
         matrix.setCard(resourceDeck.getCards().get(15));
-        matrix.setCard(resourceDeck.getCards().get(16),41,43);
-        matrix.setCard(resourceDeck.getCards().get(3),42,40);
+        matrix.setCard(resourceDeck.getCards().get(16),43,41);
+        matrix.setCard(resourceDeck.getCards().get(3),40,42);
 
         assertFalse(topRight.isPattern(matrix,41,41));
-        assertFalse(topRight.isPattern(matrix,41,43));
-        assertFalse(topRight.isPattern(matrix,42,40));
+        assertFalse(topRight.isPattern(matrix,43,41));
+        assertFalse(topRight.isPattern(matrix,40,42));
     }
 
     @Test
     public void isPatternNotRightMiddle(){
         matrix.setCard(resourceDeck.getCards().get(2));
-        matrix.setCard(resourceDeck.getCards().get(15),41,43);
-        matrix.setCard(resourceDeck.getCards().get(3),42,40);
+        matrix.setCard(resourceDeck.getCards().get(15),43,41);
+        matrix.setCard(resourceDeck.getCards().get(3),40,42);
 
         assertFalse(topRight.isPattern(matrix,41,41));
-        assertFalse(topRight.isPattern(matrix,41,43));
-        assertFalse(topRight.isPattern(matrix,42,40));
+        assertFalse(topRight.isPattern(matrix,43,41));
+        assertFalse(topRight.isPattern(matrix,40,42));
     }
 
     @Test
     public void isPatternNotRightBot(){
         matrix.setCard(resourceDeck.getCards().get(15));
-        matrix.setCard(resourceDeck.getCards().get(12),41,43);
-        matrix.setCard(resourceDeck.getCards().get(2),42,40);
+        matrix.setCard(resourceDeck.getCards().get(12),43,41);
+        matrix.setCard(resourceDeck.getCards().get(2),40,42);
 
         assertFalse(topRight.isPattern(matrix,41,41));
-        assertFalse(topRight.isPattern(matrix,41,43));
-        assertFalse(topRight.isPattern(matrix,42,40));
+        assertFalse(topRight.isPattern(matrix,43,41));
+        assertFalse(topRight.isPattern(matrix,40,42));
     }
 }

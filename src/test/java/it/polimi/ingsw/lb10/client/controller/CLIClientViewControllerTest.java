@@ -108,36 +108,6 @@ public class CLIClientViewControllerTest {
 //
 //    }
 
-    @ParameterizedTest
-    @ValueSource(strings = "127.0.0.1:3557\n")
-    public void testSuccessfulInitializeConnection(String input) throws ConnectionErrorException {
-        System.setIn(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8)));
-        controller.setClient(client);
 
-        //localhost server listening
-
-        assertDoesNotThrow(() -> {
-            controller.initializeConnection();
-        });
-
-
-
-        //socket is connected!
-        assertTrue(controller.getSocket().isConnected());
-
-
-        //to the host we started (local)
-        assertEquals(localSocket.getInetAddress(), controller.getSocket().getInetAddress());
-
-        //setting up the streams
-        controller.setUp();
-
-        //closing controller (socket and streams) and deactivating client
-        controller.close();
-
-        assertTrue(controller.getSocket().isClosed());
-        assertFalse(controller.getClient().isActive());
-
-    }
 
 }

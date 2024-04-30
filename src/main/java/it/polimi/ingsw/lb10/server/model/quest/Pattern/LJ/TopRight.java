@@ -13,38 +13,36 @@ public class TopRight extends LJPattern {
     }
 
     /**
-     * The card from where it starts is in the bottom parte of the pattern
-     *  I'm not considering the worst case,
-     *  like if we want to insert in the edge of the matrix, this will be fix up in the future
+     * From the bottom part of the pattern
      */
     public boolean checkPatternBodyOne(Matrix matrix, int row, int column){
-        if(checkCorner(matrix, row, column, Position.TOPLEFT, true) && checkCorner(matrix, row, column + 2, Position.TOPLEFT, true) && checkCorner(matrix, row+1, column , Position.BOTTOMLEFT, false)){
+        if(checkCorner(matrix, row, column, Position.TOPLEFT, true) && checkCorner(matrix, row +2, column, Position.TOPLEFT, true) && checkCorner(matrix, row , column +1 , Position.BOTTOMLEFT, false)){
             matrix.setUsedForQuest(row,column);
-            matrix.setUsedForQuest(row,column+2);
-            matrix.setUsedForQuest(row+1,column-1);
+            matrix.setUsedForQuest(row +2,column);
+            matrix.setUsedForQuest(row-1,column+1);
             return true;
         }
         return false;
     }
     /**
-     * The card from where it starts is in the middle of the pattern
+     * If I start the search from the middle
      */
     public boolean checkPatternBodyTwo(Matrix matrix, int row, int column){
-        if(checkCorner(matrix, row, column-2, Position.TOPLEFT, true) && checkCorner(matrix, row, column , Position.TOPLEFT, true) && checkCorner(matrix, row+1, column-2 , Position.BOTTOMLEFT, false)){
-            matrix.setUsedForQuest(row,column-2);
+        if(checkCorner(matrix, row, column, Position.TOPLEFT, true) && checkCorner(matrix, row -2, column , Position.TOPLEFT, true) && checkCorner(matrix, row-2, column+1 , Position.BOTTOMLEFT, false)){
             matrix.setUsedForQuest(row,column);
-            matrix.setUsedForQuest(row+1,column-3);
+            matrix.setUsedForQuest(row -2,column);
+            matrix.setUsedForQuest(row-3,column+1);
             return true;
         }
         return false;
     }
     /**
-     * The card from where it starts is at the top of the pattern
+     * Starting from the top of the pattern
      */
     public boolean checkPatternBodyThree(Matrix matrix, int row, int column){
-        if(checkCorner(matrix, row-1, column+3, Position.TOPLEFT, true) && checkCorner(matrix, row-1, column+1 , Position.TOPLEFT, true) && checkCorner(matrix, row, column , Position.TOPLEFT, false)){
-            matrix.setUsedForQuest(row-1,column-3);
-            matrix.setUsedForQuest(row-1,column-1);
+        if(checkCorner(matrix, row+3, column-1, Position.TOPLEFT, true) && checkCorner(matrix, row+1, column-1 , Position.TOPLEFT, true) && checkCorner(matrix, row, column , Position.TOPLEFT, false)){
+            matrix.setUsedForQuest(row+3,column-1);
+            matrix.setUsedForQuest(row+1,column-1);
             matrix.setUsedForQuest(row,column);
             return true;
         }

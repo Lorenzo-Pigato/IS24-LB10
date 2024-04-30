@@ -22,12 +22,12 @@ class LJPatternTest {
     @Test
     void checkCorner() {
         matrix.setCard(resourceDeck.getCards().get(31));
-        matrix.setCard(resourceDeck.getCards().get(32),41,43);
-        matrix.setCard(resourceDeck.getCards().get(1),40,44);
+        matrix.setCard(resourceDeck.getCards().get(32),43,41);
+        matrix.setCard(resourceDeck.getCards().get(1),44,40);
 
         assertTrue(questCard.checkCorner(matrix,41,41, Position.TOPLEFT,true));
-        assertTrue(questCard.checkCorner(matrix,41,43, Position.TOPLEFT,true));
-        assertTrue(questCard.checkCorner(matrix,41,44, Position.TOPRIGHT,false));
+        assertTrue(questCard.checkCorner(matrix,43,41, Position.TOPLEFT,true));
+        assertTrue(questCard.checkCorner(matrix,44,41, Position.TOPRIGHT,false));
     }
 
     @Test

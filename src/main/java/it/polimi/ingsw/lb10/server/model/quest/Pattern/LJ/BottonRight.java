@@ -18,10 +18,10 @@ public class BottonRight extends LJPattern {
      *  like if we want to insert in the edge of the matrix, this will be fix up in the future
      */
     public boolean checkPatternBodyOne(Matrix matrix, int row, int column) {
-        if (checkCorner(matrix, row, column, Position.TOPLEFT, true) && checkCorner(matrix, row, column + 2, Position.TOPLEFT, true) && checkCorner(matrix, row + 1, column + 3, Position.TOPLEFT, false)) {
+        if (checkCorner(matrix, row, column, Position.TOPLEFT, true) && checkCorner(matrix, row +2, column, Position.TOPLEFT, true) && checkCorner(matrix, row + 3, column + 1, Position.TOPLEFT, false)) {
             matrix.setUsedForQuest(row, column);
-            matrix.setUsedForQuest(row, +2);
-            matrix.setUsedForQuest(row + 1, column + 3);
+            matrix.setUsedForQuest(row + 2, column);
+            matrix.setUsedForQuest(row + 3, column + 1);
             return true;
         }
         return false;
@@ -30,9 +30,9 @@ public class BottonRight extends LJPattern {
      * The card from where it starts is in the middle of the pattern
      */
     public boolean checkPatternBodyTwo(Matrix matrix, int row, int column) {
-        if (checkCorner(matrix, row, column, Position.TOPLEFT, true) && checkCorner(matrix, row, column - 2, Position.TOPLEFT, true) && checkCorner(matrix, row + 1, column + 1, Position.TOPLEFT, false)) {
+        if (checkCorner(matrix, row, column, Position.TOPLEFT, true) && checkCorner(matrix, row -2, column , Position.TOPLEFT, true) && checkCorner(matrix, row + 1, column + 1, Position.TOPLEFT, false)) {
             matrix.setUsedForQuest(row, column);
-            matrix.setUsedForQuest(row, column - 2);
+            matrix.setUsedForQuest(row -2, column );
             matrix.setUsedForQuest(row + 1, column + 1);
             return true;
         }
@@ -42,8 +42,8 @@ public class BottonRight extends LJPattern {
      * The card from where it starts is in the bottom parte of the pattern
      */
     public boolean checkPatternBodyThree(Matrix matrix, int row, int column) {
-        if (checkCorner(matrix, row - 1, column - 3, Position.TOPLEFT, true) && checkCorner(matrix, row - 1, column - 1, Position.TOPLEFT, true) && checkCorner(matrix, row, column, Position.TOPLEFT, false)) {
-            matrix.setUsedForQuest(row - 1, column - 3);
+        if (checkCorner(matrix, row - 3, column - 1, Position.TOPLEFT, true) && checkCorner(matrix, row - 1, column - 1, Position.TOPLEFT, true) && checkCorner(matrix, row, column, Position.TOPLEFT, false)) {
+            matrix.setUsedForQuest(row - 3, column - 1);
             matrix.setUsedForQuest(row - 1, column - 1);
             matrix.setUsedForQuest(row, column);
             return true;

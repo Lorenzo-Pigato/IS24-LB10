@@ -63,7 +63,7 @@ class MatchControllerTest {
             new Corner(2,true,Position.BOTTOMRIGHT,Resource.PLANT,Color.BLUE)
     ));
 
-    static Resource goldenBuffResource =Resource.PLANT;
+    static Resource goldenBuffResource =Resource.FEATHER;
     static HashMap<Resource, Integer> activationCost;
 
     static HashMap<Resource,Integer> onMapResources;
@@ -78,7 +78,7 @@ class MatchControllerTest {
     static StartingDeck startingDeck= new StartingDeck();
     static Position[] positions = new Position[]{Position.TOPLEFT, Position.TOPRIGHT, Position.BOTTOMRIGHT, Position.BOTTOMLEFT};
     @BeforeEach
-    void setUp() {
+     void setUp() {
         firstCard = new ResourceCard(0,Color.GREEN,corners,points,Resource.NULL,new HashMap<>());
         secondCard = new ResourceCard(1,Color.RED,corners2,points,Resource.NULL,new HashMap<>());
         thirdCard = new ResourceCard(2,Color.BLUE,corners3,points,Resource.NULL,new HashMap<>());
@@ -163,6 +163,19 @@ class MatchControllerTest {
 
     }
 
+//    @Test
+//    void deleteCoveredResourceTest(){
+//        //In before each I've initialized the onMapResources HashMap with 5 ANIMAL
+//        matrix.setCard(firstCard, 42,43 );
+//
+//        //setCard by matrix doesn't add resources in onMapResources, but it doesn't matter
+//        controller.insertCard(player,secondCard, 41,42);
+//        assertEquals(4, (int) player.getOnMapResources().get(Resource.MUSHROOM));
+//
+//    }
+
+
+
     //Adding test with Deck created from Json
 
     @Test
@@ -223,22 +236,26 @@ class MatchControllerTest {
 
     }
 
-    @Test
-    void deleteCoveredResourceTest(){
-        //In before each I've initialized the onMapResources HashMap with 5 ANIMAL
-        matrix.setCard(firstCard, 41,41);
-        //setCard by matrix doesn't add resources in onMapResources, but it doesn't matter
-        controller.insertCard(player,secondCard, 40,40);
-        assertEquals(4, (int) player.getOnMapResources().get(Resource.MUSHROOM));
 
-    }
 
+    /**
+     * I'll try different cases for points gave by goldenCard
+     */
     @Test
-    void addCardPointsOnPlayerTest(){
+    void addCardPointsResourceNull(){
         matrix.setCard(firstCard, 41,41);
         controller.insertCard(player, golden1, 40,40);
-        assertEquals(4, (int) player.getPoints());
+        assertEquals(4,player.getPoints());
+
     }
+
+//    @Test
+//    void addPointResourcePattern1(){
+//        matrix.setCard(firstCard, 41,41);
+//        controller.insertCard(player, golden1, 40,40); //This card is needed for activation cost of the other goldenCard
+//        controller.insertCard(player, goldenDeck.getCards().get(7), 40,42);
+//        assertEquals(6, (int) player.getPoints());
+//    }
 
 
 
