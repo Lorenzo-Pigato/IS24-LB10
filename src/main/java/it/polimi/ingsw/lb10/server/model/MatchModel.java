@@ -257,7 +257,7 @@ public class MatchModel extends Observable{
 
     public void removePlayer(Player player){
         players.remove(player);
-        //nootify via chat ?? cool!
+        notifyAll(new ChatMessageResponse("Server", "player" + player.getUserHash() + "left"));
     }
 
     public List<Player> getPlayers() {

@@ -45,8 +45,7 @@ public class CLIClientViewController implements ClientViewController{
     private boolean goldenDeckAvailable = true;
     private ArrayList<PlaceableCard> hand;
     private StartingCard startingCard;
-
-
+    private boolean startingCardHasBeenPlaced = false;
 
     public static CLIClientViewController instance(){
        if(instance == null) instance = new CLIClientViewController();
@@ -73,7 +72,8 @@ public class CLIClientViewController implements ClientViewController{
     public void flipCard(int index){hand.get(index).swapState();}
     public ArrayList<PlaceableCard> getHand() {return hand;}
     public StartingCard getStartingCard() {return startingCard;}
-
+    public void setStartingCardHasBeenPlaced(boolean status){this.startingCardHasBeenPlaced = status;}
+    public boolean startingCardHasBeenPlaced(){return startingCardHasBeenPlaced;}
     /**
      *
      */

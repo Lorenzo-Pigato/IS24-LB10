@@ -385,8 +385,7 @@ public class CLIMatchPage implements CLIPage{
 
     // ---------------- CHAT ------------------- //
     public static void chatLog(@NotNull String sender, String message) {
-        Player senderPlayer = allPlayers.stream().filter(p -> p.getUsername().equals(sender)).findFirst().orElseThrow(RuntimeException::new);
-
+        Player senderPlayer = allPlayers.stream().filter(p -> p.getUsername().equals(sender)).findFirst().orElse(new Player(0, ""));
         messages.addLast(new CLIString[]{
 
                 new CLIString(senderPlayer.getUsername() + ": ",

@@ -2,6 +2,7 @@ package it.polimi.ingsw.lb10.client.util;
 
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIMatchPage;
 import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
+import it.polimi.ingsw.lb10.network.requests.QuitRequest;
 import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.network.requests.match.ChatRequest;
 import it.polimi.ingsw.lb10.network.requests.match.PlaceStartingCardRequest;
@@ -62,17 +63,19 @@ public class InputParser {
                 result = new ShowPlayerRequest(controller.getMatchId(), parsed[1]); // 3. <show <player>> shows requested player board
             }
 
-            if(parsed[0].equalsIgnoreCase("place") && parsed[1].equalsIgnoreCase("s")){
+            if(parsed[0].equalsIgnoreCase("place") && parsed[1].equalsIgnoreCase("s") && !controller.startingCardHasBeenPlaced()){
                 result = new PlaceStartingCardRequest(controller.getMatchId(), controller.getStartingCard());
+                controller.setStartingCardHasBeenPlaced(true);
             }
 
 
         }else if(parsed.length == 1) {
 
-            if (parsed[0].equals("help")) { //1. <help> prints out all possible commands
+            if (parsed[0].equalsIgnoreCase("help")) { //1. <help> prints out all possible commands
                 //no request to submit to server
+            }else if (parsed[0].equalsIgnoreCase("quit")) {
+                result = new QuitRequest();
             }
-
         }else{
 
         }
