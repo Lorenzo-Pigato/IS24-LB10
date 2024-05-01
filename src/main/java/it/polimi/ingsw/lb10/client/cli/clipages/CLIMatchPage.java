@@ -287,7 +287,9 @@ public class CLIMatchPage implements CLIPage{
 
     public static class PickCard implements CLIState{
         /**
-         * @param args PlaceableCard[6] - uncovered cards on table, GoldenDeck first card FLIPPED, ResourceDeck first card FLIPPED
+         * @param args PlaceableCard[6] - uncovered cards on table,
+         *             GoldenDeck first card (to be flipped later)
+         *             ResourceDeck first card (to be flipped later)
          *             last positions are null when decks are empty
          */
         @Override
@@ -300,13 +302,15 @@ public class CLIMatchPage implements CLIPage{
                         17 + 31 * (i % 2),
                         9 + 10 * (i / 2));
 
-            if(args[4] != null)
+            if(args[4] != null) {
+                ((GoldenCard) args[4]).setFlippedState();
                 CLICard.printGoldenDeck((GoldenCard) args[4], 79, 9);
+            }
 
-
-
-            if (args[5] != null)
+            if (args[5] != null){
+                ((GoldenCard) args[5]).setFlippedState();
                 CLICard.printResourceDeck((ResourceCard) args[5], 79, 19);
+            }
 
             CLICommand.restoreCursorPosition();
         }
