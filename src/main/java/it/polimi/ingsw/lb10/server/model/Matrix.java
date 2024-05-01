@@ -6,9 +6,7 @@ import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  *
@@ -85,6 +83,27 @@ public class Matrix implements Serializable {
 
     public Node getNode(int row, int column){
         return  matrix.get(row).get(column);
+    }
+
+    public Integer getCardRow(int cardId){
+
+        return matrix.stream().filter(row -> row.stream()
+                        .filter(node -> !node.getCorners().isEmpty())
+                        .anyMatch(node -> node.getCorners().stream().anyMatch(corner -> corner.getId() == cardId && corner.getPosition().equals(Position.TOPLEFT))))
+                        .map(matrix::indexOf).findFirst().orElse(null);
+    }
+
+    public Integer getCardColumn(int cardId){
+
+        return matrix.stream()
+                .filter(row -> row.stream()
+                    .filter(node-> !node.getCorners().isEmpty()) //filters empty nodes inside every row
+                    .anyMatch(node -> node.getCorners().stream()
+                            .anyMatch(corner -> corner.getId() == cardId && corner.getPosition().equals(Position.TOPLEFT)))) //filters nodes which do not contain corners of the given card
+                .findFirst() //takes the one and only row which contains a node which contains TOPLEFT corner of the given card
+                .map(row -> row.indexOf(row.stream()
+                                .filter(node -> !node.getCorners().isEmpty() && node.getCorners().stream().anyMatch(corner -> corner.getId() == cardId && corner.getPosition().equals(Position.TOPLEFT))).findFirst().orElse(null))
+                ).orElse(null);
     }
 
 }

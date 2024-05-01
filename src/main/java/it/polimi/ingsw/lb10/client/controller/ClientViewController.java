@@ -81,8 +81,6 @@ public interface ClientViewController {
 
     void game();
 
-    boolean resourceDeckIsAvailable();
-    boolean goldenDeckIsAvailable();
 
     ArrayList<PlaceableCard> getHand();
     StartingCard getStartingCard();

@@ -41,8 +41,6 @@ public class CLIClientViewController implements ClientViewController{
     private static final CLIResponseHandler responseHandler = CLIResponseHandler.instance();
     private int matchId;
     private Player onTurn;
-    private boolean resourceDeckAvailable = true;
-    private boolean goldenDeckAvailable = true;
     private ArrayList<PlaceableCard> hand;
     private StartingCard startingCard;
     private boolean startingCardHasBeenPlaced = false;
@@ -58,10 +56,6 @@ public class CLIClientViewController implements ClientViewController{
     public void setSocket(Socket socket) {this.socket = socket;}
     public void setClient(Client client) {this.client = client;}
     public void setOnTurn(Player player){onTurn = player;}
-    public void setResourceDeckAvailable(boolean status){this.resourceDeckAvailable = status;}
-    public void setGoldenDeckAvailable(boolean status){this.goldenDeckAvailable = status;}
-    public boolean resourceDeckIsAvailable() {return resourceDeckAvailable;}
-    public boolean goldenDeckIsAvailable() {return goldenDeckAvailable;}
     public void setStartingCard(StartingCard startingCard) {this.startingCard = startingCard;}
 
     public Socket getSocket() {return socket;}
