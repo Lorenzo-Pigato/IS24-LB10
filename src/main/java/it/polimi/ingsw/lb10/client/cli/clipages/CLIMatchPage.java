@@ -50,7 +50,7 @@ public class CLIMatchPage implements CLIPage{
         }
     };
 
-    private  Map<Resource, Integer> playerResources = new HashMap<>(){
+    private  HashMap<Resource, Integer> playerResources = new HashMap<>(){
         {
             put(Resource.ANIMAL, 0);
             put(Resource.MUSHROOM, 0);
@@ -138,16 +138,14 @@ public class CLIMatchPage implements CLIPage{
                     (row - onFocusRow) * 2  + boardStartRow +
                             (corner.getPosition().getCliRowOffset() > 0 ? 2 : 0));
 
-        HashMap<Resource, Integer> newResources = new HashMap<>();
-
-        for(Resource resource : card.getStateCardCorners().stream().filter(Corner::isAvailable).map(Corner::getResource).filter(r -> !r.equals(Resource.EMPTY) && !r.equals(Resource.NULL)).toList())
-            newResources.put(resource, playerResources.get(resource) + 1);
+        for(Resource resource : card.getStateCardCorners().stream().filter(Corner::isAvailable).map(Corner::getResource).filter(r -> !r.equals(Resource.EMPTY)).toList())
+            if(playerResources.containsKey(resource)) playerResources.compute(resource, (k, v) -> v + 1);
 
         if(card instanceof StartingCard)
             for(Resource resource : ((StartingCard) card).getMiddleResources())
-                newResources.put(resource, newResources.get(resource) + 1);
+                playerResources.compute(resource, (k, v) -> v + 1);
 
-        updateResourceCounter(newResources);
+        updateResourceCounter(playerResources);
 
         CLICommand.restoreCursorPosition();
     }
