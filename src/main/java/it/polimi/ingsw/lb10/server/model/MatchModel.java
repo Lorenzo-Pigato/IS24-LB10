@@ -314,6 +314,11 @@ public class MatchModel extends Observable{
         }else notify(new PlaceCardResponse(card,false, row, column), player.getUserHash());
     }
 
+    public boolean checkValidMatrixCardId(PlaceableCard card, Player player) {
+        return player.getMatrix().getMatrix().stream().flatMap(col -> col.stream())
+                .flatMap(node -> node.getCorners().stream()).anyMatch(corner -> corner.getId() == card.getId());
+    }
+
     /**
      * @param player calls the method
      * @param card to add
@@ -359,7 +364,7 @@ public class MatchModel extends Observable{
             row+=delta[0]; column+=delta[1];
 
             //if in the matrix node there's only the corner of the card that I want to add, there's nothing to check
-            if(player.getMatrix().getNode(row, column).getCorners().size()==1){
+            if(player.getMatrix().getNode(row, column).getCorners().size()!=1){
                 //Can't be more than 2 cards on a corner!
                 if(player.getMatrix().getNode(row,column).getCorners().size()==3)
                     return false;

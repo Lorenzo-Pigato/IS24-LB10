@@ -203,14 +203,25 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     @Override
     public void visit(PlaceCardRequest placeCardRequest){
+        Server.log(">>new place card request");
         if(model.getPlayer(placeCardRequest.getUserHash()).equals(model.getOnTurnPlayer())){
-            Position position = placeCardRequest.getPosition();
-            switch(position){
-                case TOPLEFT -> model.insertCard(getPlayer(placeCardRequest.getUserHash()), placeCardRequest.getCard(), getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardRow(placeCardRequest.getMatrixCardId()) + 1, getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardColumn(placeCardRequest.getMatrixCardId()) + 1);
-                case TOPRIGHT -> model.insertCard(getPlayer(placeCardRequest.getUserHash()), placeCardRequest.getCard(), getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardRow(placeCardRequest.getMatrixCardId()) + 1, getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardColumn(placeCardRequest.getMatrixCardId()) - 1);
-                case BOTTOMLEFT -> model.insertCard(getPlayer(placeCardRequest.getUserHash()), placeCardRequest.getCard(), getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardRow(placeCardRequest.getMatrixCardId() - 1), getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardColumn(placeCardRequest.getMatrixCardId()) + 1);
-                case BOTTOMRIGHT -> model.insertCard(getPlayer(placeCardRequest.getUserHash()), placeCardRequest.getCard(), getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardRow(placeCardRequest.getMatrixCardId()) - 1, getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardColumn(placeCardRequest.getMatrixCardId()) - 1);
-            }
+            if(model.checkValidMatrixCardId(placeCardRequest.getCard(), getPlayer(placeCardRequest.getUserHash()))) {
+                Position position = placeCardRequest.getPosition();
+                switch (position) {
+                    case TOPLEFT ->
+                            model.insertCard(getPlayer(placeCardRequest.getUserHash()), placeCardRequest.getCard(), getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardRow(placeCardRequest.getMatrixCardId()) + 1, getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardColumn(placeCardRequest.getMatrixCardId()) + 1);
+                    case TOPRIGHT ->
+                            model.insertCard(getPlayer(placeCardRequest.getUserHash()), placeCardRequest.getCard(), getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardRow(placeCardRequest.getMatrixCardId()) + 1, getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardColumn(placeCardRequest.getMatrixCardId()) - 1);
+                    case BOTTOMLEFT ->
+                            model.insertCard(getPlayer(placeCardRequest.getUserHash()), placeCardRequest.getCard(), getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardRow(placeCardRequest.getMatrixCardId() - 1), getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardColumn(placeCardRequest.getMatrixCardId()) + 1);
+                    case BOTTOMRIGHT ->
+                            model.insertCard(getPlayer(placeCardRequest.getUserHash()), placeCardRequest.getCard(), getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardRow(placeCardRequest.getMatrixCardId()) - 1, getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardColumn(placeCardRequest.getMatrixCardId()) - 1);
+                }
+
+            }else{
+                    model.notify(new PickedCardResponse(null, false, "Invalid card id"), placeCardRequest.getUserHash());
+                }
+
         }else{
             model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), placeCardRequest.getUserHash());
         }
@@ -219,6 +230,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
 
     @Override
     public void visit(PickRequest pickRequest) {
+        Server.log("new pick request");
         if(model.getPlayer(pickRequest.getUserHash()).equals(model.getOnTurnPlayer())){
             model.notify(new ShowPickingPossibilitiesResponse(model.getGoldenDeck().getCards().getLast(), model.getResourceDeck().getCards().getLast(), model.getGoldenUncovered(), model.getResourceUncovered()), pickRequest.getUserHash());
         }else{

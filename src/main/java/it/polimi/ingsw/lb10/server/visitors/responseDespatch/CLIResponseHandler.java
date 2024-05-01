@@ -2,6 +2,7 @@ package it.polimi.ingsw.lb10.server.visitors.responseDespatch;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIMatchPage;
 import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
 import it.polimi.ingsw.lb10.network.requests.QuitRequest;
+import it.polimi.ingsw.lb10.network.requests.match.PickRequest;
 import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestsRequest;
 
 import it.polimi.ingsw.lb10.network.response.lobby.BooleanResponse;
@@ -92,9 +93,10 @@ public class CLIResponseHandler implements ResponseVisitor {
     public void visit(PlaceCardResponse placeCardResponse) {
         if(placeCardResponse.getStatus()){
             ((CLIMatchPage)controller.getView().getPage()).placeCard(placeCardResponse.getCard(), placeCardResponse.getCol(), placeCardResponse.getRow(),controller.getHand().indexOf(controller.getHand().stream().filter(placeableCard -> placeableCard.getId() == placeCardResponse.getCard().getId()).findFirst().orElse(null)));
+            controller.send(new PickRequest(controller.getMatchId()));
         }else{
             CLIMatchPage.serverReply("Invalid card placement, retry!");
-        }
+        };
     }
 
     @Override

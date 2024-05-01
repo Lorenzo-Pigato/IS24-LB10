@@ -26,14 +26,10 @@ public class InputParser {
         String errorMessage = "";
 
         String[] parsed = input.split(" ");
-
-        if (parsed[0].equalsIgnoreCase( "chat") && !parsed[1].isEmpty()) {
-            String message = input.substring(5);
-            result = new ChatRequest(controller.getMatchId(), message);
-
-        }else if(parsed[0].equalsIgnoreCase("place") && isValidHandCard(parsed[1]) && isValidPosition(parsed[2] )&& isValidMatrixCard(parsed[3])){
-            result = new PlaceCardRequest(controller.getMatchId(), controller.getHand().get(Integer.parseInt(parsed[1])), parsePosition(parsed[2]),  Integer.parseInt(parsed[3]));
-
+        if(parsed.length == 4){
+            if(parsed[0].equalsIgnoreCase("place") && isValidHandCard(parsed[1]) && isValidPosition(parsed[2] )&& isValidMatrixCard(parsed[3])) {
+                result = new PlaceCardRequest(controller.getMatchId(), controller.getHand().get(Integer.parseInt(parsed[1])), parsePosition(parsed[2]), Integer.parseInt(parsed[3]));
+            }
         }else if(parsed.length == 3){ // 4
 
         }else if(parsed.length == 2) {
@@ -47,8 +43,16 @@ public class InputParser {
                     case "5" -> result = new DrawGoldenFromDeckRequest(controller.getMatchId());
                     case "6" -> result = new DrawResourceFromDeckRequest(controller.getMatchId());
                 }
+
+            }
+            //CHAT
+            else if (parsed[0].equalsIgnoreCase( "chat") && !parsed[1].isEmpty()) {
+                String message = input.substring(5);
+                result = new ChatRequest(controller.getMatchId(), message);
+
+            }
             //FLIP
-            }else if(parsed[0].equals("flip") && controller.getView().getPage().getClass().equals(CLIMatchPage.class)){
+            else if(parsed[0].equals("flip") && controller.getView().getPage().getClass().equals(CLIMatchPage.class)){
                 switch (parsed[1]) {
                     case "1" -> {
                         controller.flipCard(0);

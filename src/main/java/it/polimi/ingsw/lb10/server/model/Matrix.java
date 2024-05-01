@@ -85,6 +85,10 @@ public class Matrix implements Serializable {
         return  matrix.get(row).get(column);
     }
 
+    public ArrayList<ArrayList<Node>> getMatrix() {
+        return matrix;
+    }
+
     public Integer getCardRow(int cardId){
 
         return matrix.stream().filter(row -> row.stream()

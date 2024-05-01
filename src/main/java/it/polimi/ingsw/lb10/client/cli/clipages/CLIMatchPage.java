@@ -50,6 +50,18 @@ public class CLIMatchPage implements CLIPage{
         }
     };
 
+    private  Map<Resource, Integer> playerResources = new HashMap<>(){
+        {
+            put(Resource.ANIMAL, 0);
+            put(Resource.MUSHROOM, 0);
+            put(Resource.PLANT, 0);
+            put(Resource.INSECT, 0);
+            put(Resource.FEATHER, 0);
+            put(Resource.PERGAMENA, 0);
+            put(Resource.POTION, 0);
+        }
+    };
+
     private static final int resourceCounterOffset = 3; //Used to print #resource into resource table
 
     //-----------------PLAYERS------------------//
@@ -61,7 +73,7 @@ public class CLIMatchPage implements CLIPage{
 
 
     // -------------- BOARD DATA -------------- //
-    private static final int boardStartCol = 5;
+    private static final int boardStartCol = 4;
     private static final int boardStartRow = 6;
 
     /**
@@ -123,8 +135,14 @@ public class CLIMatchPage implements CLIPage{
             CLICard.displayCorner(corner,
                     (col - onFocusCol) * 3 + boardStartCol +
                             (corner.getPosition().getCliColOffset() > 0 ? 3 : 0),
-                    (row - onFocusRow) * 3  + boardStartRow +
+                    (row - onFocusRow) * 2  + boardStartRow +
                             (corner.getPosition().getCliRowOffset() > 0 ? 2 : 0));
+
+        HashMap<Resource, Integer> newResources = new HashMap<>();
+
+        for(Resource resource : card.getStateCardCorners().stream().map(Corner::getResource).filter(r -> !r.equals(Resource.EMPTY)).toList())
+            newResources.put(resource, newResources.get(resource) + playerResources.get(resource));
+        updateResourceCounter(newResources);
 
         CLICommand.restoreCursorPosition();
     }
