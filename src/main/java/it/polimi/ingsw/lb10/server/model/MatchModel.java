@@ -17,6 +17,7 @@ import it.polimi.ingsw.lb10.util.Observable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 public class MatchModel extends Observable{
 
@@ -28,11 +29,14 @@ public class MatchModel extends Observable{
     private final QuestDeck questDeck;
     private final StartingDeck startingDeck;
     private Player onTurnPlayer;
+    private boolean finalTurn = false;
+    private Player finalTurnPlayer;
 
     private boolean resourceDeckIsEmpty = false;
     private boolean goldenDeckIsEmpty = false;
 
     private final   ArrayList<Quest> commonQuests = new ArrayList<>();
+
     private final   ArrayList<GoldenCard> goldenUncovered = new ArrayList<>();
     private final   ArrayList<ResourceCard> resourceUncovered= new ArrayList<>();
 
@@ -47,6 +51,9 @@ public class MatchModel extends Observable{
         this.numberOfPlayers = numberOfPlayers;
     }
 
+    public ArrayList<GoldenCard> getGoldenUncovered() {return goldenUncovered;}
+    public ArrayList<ResourceCard> getResourceUncovered() {return resourceUncovered;}
+    public Player getOnTurnPlayer(){return onTurnPlayer;}
 
     /**
      * This method sets up the game by initializing both table status and players
@@ -135,6 +142,7 @@ public class MatchModel extends Observable{
 
     private void endTurn(){
         onTurnPlayer = players.get((players.indexOf(onTurnPlayer) + 1) % players.size());
+        if(onTurnPlayer.equals(finalTurnPlayer)) endGame();
     }
 
     /**
@@ -142,17 +150,21 @@ public class MatchModel extends Observable{
      * once deck is empty, a little notification is sent to the client, so that his simple logic prevents client from requesting golden deck picking again.
      * @return picked GOLDEN card
      */
-    public ResourceCard drawResourceFromDeck(){
-        ResourceCard picked = resourceDeck.drawCard();
-        if(resourceDeck.getCards().isEmpty()){
-            resourceDeckIsEmpty = true;
-            notifyAll(new UnavailableResourceDeckResponse());
-            if(resourceDeckIsEmpty && goldenDeckIsEmpty){
-                //notifyAll(LAST TURN);
-                //Could be done via chat very very cool!
+    public void drawResourceFromDeck(Player player){
+        if(!resourceDeckIsEmpty){
+            ResourceCard picked = resourceDeck.drawCard();
+            notify(new PickedCardResponse(picked, true, null), player.getUserHash());
+            endTurn();
+            if(resourceDeck.getCards().isEmpty()){
+                resourceDeckIsEmpty = true;
+                if(resourceDeckIsEmpty && goldenDeckIsEmpty){
+                    //notifyAll(LAST TURN);
+                    //Could be done via chat very very cool!
+                }
             }
+        }else {
+            notify(new PickedCardResponse(null, false, "Resource deck is empty!"), player.getUserHash());
         }
-        return picked;
     }
 
     /**
@@ -160,17 +172,15 @@ public class MatchModel extends Observable{
      * once deck is empty, a little notification is sent to the client, so that his simple logic prevents client from requesting golden deck picking again.
      * @return picked GOLDEN card
      */
-    public GoldenCard drawGoldenFromDeck(){
-        GoldenCard picked = goldenDeck.drawCard();
-        if(goldenDeck.getCards().isEmpty()){
-            goldenDeckIsEmpty = true;
-            notifyAll(new UnavailableGoldenDeckResponse());
-            if(resourceDeckIsEmpty && goldenDeckIsEmpty){
-                //notifyAll(LAST TURN);
-                //Could be done via chat very very cool!
-            }
+    public void drawGoldenFromDeck(Player player){
+        if(!goldenDeckIsEmpty){
+            GoldenCard picked = goldenDeck.drawCard();
+            notify(new PickedCardResponse(picked, true, null), player.getUserHash());
+            endTurn();
+            checkDeckEmptiness();
+        }else{
+            notify(new PickedCardResponse(null, false, "Golden deck is empty!"), player.getUserHash());
         }
-        return picked;
     }
     /**this method is used to pick a card from table, there are always two cards, except when resource deck is empty :
      * in this case, client controller is notified, so that client can't even request to pick from resource deck.
@@ -179,21 +189,30 @@ public class MatchModel extends Observable{
      * @param index <1 or 2>
      */
     public void drawResourceFromTable(Player player, int index){
+        ResourceCard picked = null;
 
-        ResourceCard picked = resourceUncovered.get(index); //don't worry bout nosuchelementexception here, because client won't be able to draw from table once table is empty
-        resourceUncovered.remove(picked);
+        try{
+           picked = resourceUncovered.get(index);
+           resourceUncovered.remove(picked);
+           if(!resourceDeckIsEmpty){
+               resourceUncovered.add(index, resourceDeck.drawCard());
+           }
+       }catch(NoSuchElementException e){
+           notify(new PickedCardResponse(null, false, "Table position not avaliable!"), player.getUserHash());
+       }
+        checkDeckEmptiness();
+        notify(new PickedCardResponse(picked, true, null), player.getUserHash());
+        endTurn();
+    }
 
-        resourceUncovered.add(index, resourceDeck.drawCard());
-
+    private void checkDeckEmptiness() {
         if(resourceDeck.getCards().isEmpty() && !resourceDeckIsEmpty) {
             resourceDeckIsEmpty = true;
-            notifyAll(new UnavailableResourceDeckResponse());
             if (resourceDeckIsEmpty && goldenDeckIsEmpty) {
-                //LAST TURN !!
+                finalTurn = true;
+                finalTurnPlayer = onTurnPlayer;
             }
         }
-        notify(new PickedCardResponse(picked), player.getUserHash());
-        //endTurn()???
     }
 
     /**this method is used to pick a card from table, there are always two cards, except when golden deck is empty :
@@ -203,20 +222,20 @@ public class MatchModel extends Observable{
      * @param index <1 or 2>
      */
     public void drawGoldenFromTable(Player player, int index){
-
-        GoldenCard picked = goldenUncovered.get(index); //don't worry bout nosuchelementexception here, because client won't be able to draw from table once table is empty
-        goldenUncovered.remove(picked);
-
-        goldenUncovered.add(index, goldenDeck.drawCard());
-
-        if(goldenDeck.getCards().isEmpty() && !goldenDeckIsEmpty) {
-            goldenDeckIsEmpty = true;
-            notifyAll(new UnavailableGoldenDeckResponse());
-            if (resourceDeckIsEmpty && goldenDeckIsEmpty) {
-                //LAST TURN !!
+        GoldenCard picked = null;
+        try{
+            picked = goldenUncovered.get(index);
+            resourceUncovered.remove(picked);
+            if(!resourceDeckIsEmpty){
+                resourceUncovered.add(index, resourceDeck.drawCard());
             }
+
+        }catch(NoSuchElementException e){
+            notify(new PickedCardResponse(null, false, "Table position not avaliable!"), player.getUserHash());
         }
-        notify(new PickedCardResponse(picked), player.getUserHash());
+        checkDeckEmptiness();
+        notify(new PickedCardResponse(picked, true, null), player.getUserHash());
+        endTurn();
     }
 
     public void setCardResourceOnPlayer(Player player, PlaceableCard card){
@@ -288,11 +307,15 @@ public class MatchModel extends Observable{
      *  --> At the beginning the algorithm checks if the card is flipped, with a consequent update of the state of the card.
      *      the card is placed inside the matrix if the activation cost is matched
      */
-    public synchronized boolean insertCard(Player player, PlaceableCard card, int row, int column){
-        if(!checkActivationCost(player,card))
-            return false;
-        player.getMatrix().setCard(card, row, column);
-        return checkInsertion(player, card, row, column);
+
+
+    public synchronized void insertCard(Player player, PlaceableCard card, int row, int column){
+        boolean responseStatus = checkActivationCost(player,card);
+        if(responseStatus) {
+            player.getMatrix().setCard(card, row, column);
+            checkInsertion(player, card, row, column);
+
+        }else notify(new PlaceCardResponse(card,false, row, column), player.getUserHash());
     }
 
     /**
@@ -301,11 +324,10 @@ public class MatchModel extends Observable{
      * @param row row
      * @param column column
      * The method that starts the Insertion rules
-     * @return true if the card passed all the verification rules
-     *  if the card passes the tests, at the end he is correctly positioned inside the matrix
-     *  it's called all the
+     *  sends new PlaceCardResponse with status true if the card passes the tests, at the end he is correctly positioned inside the matrix
+     *  else sends new PlaceCardResponse with status false
      */
-    public synchronized boolean checkInsertion(Player player,PlaceableCard card,int row, int column){
+    public synchronized void checkInsertion(Player player,PlaceableCard card,int row, int column){
 
         ArrayList<Node> visitedNodes = new ArrayList<>();
 
@@ -315,10 +337,10 @@ public class MatchModel extends Observable{
             addCardPointsOnPlayer(player, card, visitedNodes);
             player.removeCardOnHand(card);//the player chooses the next card, it's a request!
 
-            return true;
+            notify(new PlaceCardResponse(card, true, row, column), player.getUserHash());
         }
         player.getMatrix().deleteCard(row,column);
-        return  false;
+        notify(new PlaceCardResponse(card, false, row, column), player.getUserHash());
     }
 
     /**
@@ -424,4 +446,12 @@ public class MatchModel extends Observable{
     }
 
 
+    public void startTurns() {
+        onTurnPlayer = players.getFirst();
+        notifyAll(new ChatMessageResponse("Server", "it's " + onTurnPlayer.getUsername() + "turn, make your move!"));
+    }
+
+
+    private void endGame() {
+    }
 }

@@ -25,4 +25,8 @@ public interface MatchRequestVisitor {
     void visit(DrawGoldenFromDeckRequest drawGoldenFromDeckRequest);
 
     void visit(PlaceStartingCardRequest placeStartingCardRequest);
+
+    void visit(PlaceCardRequest placeCardRequest);
+
+    void visit(PickRequest pickRequest);
 }

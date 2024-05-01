@@ -1,17 +1,15 @@
 package it.polimi.ingsw.lb10.server.controller;
 import it.polimi.ingsw.lb10.network.requests.match.*;
 import it.polimi.ingsw.lb10.network.requests.match.DrawGoldenFromDeckRequest;
-import it.polimi.ingsw.lb10.network.response.match.ChatMessageResponse;
-import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
+import it.polimi.ingsw.lb10.network.response.match.*;
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.server.Server;
 import it.polimi.ingsw.lb10.server.model.MatchModel;
 import it.polimi.ingsw.lb10.server.model.Player;
+import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.server.view.RemoteView;
 import java.io.IOException;
 
-import it.polimi.ingsw.lb10.network.response.match.JoinMatchResponse;
-import it.polimi.ingsw.lb10.network.response.match.TerminatedMatchResponse;
 import it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitor;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
@@ -37,8 +35,6 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     private boolean started = false;
     private final ArrayList<Player> players;
     private final int numberOfPlayers;
-    //private boolean resourceDeckAvailable = true;
-    //private boolean goldenDeckAvailable = true;
 
     public MatchController(int numberOfPlayers) {
         requests = new LinkedBlockingQueue<>();
@@ -146,7 +142,12 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     @Override
     public void visit(DrawGoldenFromTableRequest drawGoldenFromTableRequest) {
-        model.drawGoldenFromTable(getPlayer(drawGoldenFromTableRequest.getUserHash()) ,drawGoldenFromTableRequest.getIndex());
+        if(getPlayer(drawGoldenFromTableRequest.getUserHash()).equals(model.getOnTurnPlayer())){
+            model.drawGoldenFromTable(getPlayer(drawGoldenFromTableRequest.getUserHash()) ,drawGoldenFromTableRequest.getIndex());
+        }else{
+            model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), drawGoldenFromTableRequest.getUserHash());
+        }
+
     }
 
     /**
@@ -154,7 +155,12 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     @Override
     public void visit(DrawResourceFromTableRequest drawResourceFromTableRequest) {
-        model.drawResourceFromTable(getPlayer(drawResourceFromTableRequest.getUserHash()), drawResourceFromTableRequest.getIndex());
+        if(getPlayer(drawResourceFromTableRequest.getUserHash()).equals(model.getOnTurnPlayer())){
+            model.drawResourceFromTable(getPlayer(drawResourceFromTableRequest.getUserHash()), drawResourceFromTableRequest.getIndex());
+        }else{
+            model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), drawResourceFromTableRequest.getUserHash());
+        }
+
     }
 
     /**
@@ -162,6 +168,11 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     @Override
     public void visit(DrawResourceFromDeckRequest drawResourceFromDeckRequest) {
+        if(getPlayer(drawResourceFromDeckRequest.getUserHash()).equals(model.getOnTurnPlayer())){
+            model.drawResourceFromDeck(getPlayer(drawResourceFromDeckRequest.getUserHash()));
+        }else{
+            model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), drawResourceFromDeckRequest.getUserHash());
+        }
 
     }
 
@@ -170,6 +181,11 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     @Override
     public void visit(@NotNull DrawGoldenFromDeckRequest drawGoldenFromDeckRequest) {
+        if(getPlayer(drawGoldenFromDeckRequest.getUserHash()).equals(model.getOnTurnPlayer())){
+            model.drawGoldenFromDeck(getPlayer(drawGoldenFromDeckRequest.getUserHash()));
+        }else{
+            model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), drawGoldenFromDeckRequest.getUserHash());
+        }
 
     }
 
@@ -178,6 +194,36 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         Server.log("player " + getPlayer(placeStartingCardRequest.getUserHash()).getUsername() + "placed starting card");
         model.getPlayer(placeStartingCardRequest.getUserHash()).setStartingCard(placeStartingCardRequest.getStartingCard());
         model.insertStartingCard(getPlayer(placeStartingCardRequest.getUserHash()));
+        if(players.stream().allMatch(player ->  !player.getMatrix().getNode(41, 41).getCorners().isEmpty())) model.startTurns();
+    }
+
+    /**
+     *See PlaceCardRequest constructor for more info on placing stream.
+     * @param placeCardRequest request senti by the client at the beginning of his turn when he wants to place a card on his matrix
+     */
+    @Override
+    public void visit(PlaceCardRequest placeCardRequest){
+        if(model.getPlayer(placeCardRequest.getUserHash()).equals(model.getOnTurnPlayer())){
+            Position position = placeCardRequest.getPosition();
+            switch(position){
+                case TOPLEFT -> model.insertCard(getPlayer(placeCardRequest.getUserHash()), placeCardRequest.getCard(), getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardRow(placeCardRequest.getMatrixCardId()) + 1, getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardColumn(placeCardRequest.getMatrixCardId()) + 1);
+                case TOPRIGHT -> model.insertCard(getPlayer(placeCardRequest.getUserHash()), placeCardRequest.getCard(), getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardRow(placeCardRequest.getMatrixCardId())  + 1, getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardColumn(placeCardRequest.getMatrixCardId()));
+                case BOTTOMLEFT -> model.insertCard(getPlayer(placeCardRequest.getUserHash()), placeCardRequest.getCard(), getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardRow(placeCardRequest.getMatrixCardId()), getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardColumn(placeCardRequest.getMatrixCardId()) + 1);
+                case BOTTOMRIGHT -> model.insertCard(getPlayer(placeCardRequest.getUserHash()), placeCardRequest.getCard(), getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardRow(placeCardRequest.getMatrixCardId()), getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardColumn(placeCardRequest.getMatrixCardId()));
+            }
+        }else{
+            model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), placeCardRequest.getUserHash());
+        }
+
+    }
+
+    @Override
+    public void visit(PickRequest pickRequest) {
+        if(model.getPlayer(pickRequest.getUserHash()).equals(model.getOnTurnPlayer())){
+            model.notify(new ShowPickingPossibilitiesResponse(model.getGoldenDeck().getCards().getLast(), model.getResourceDeck().getCards().getLast(), model.getGoldenUncovered(), model.getResourceUncovered()), pickRequest.getUserHash());
+        }else{
+            model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), pickRequest.getUserHash());
+        }
     }
 
     /** this method adds the remote view to the MatchController whenever a new client joins the match

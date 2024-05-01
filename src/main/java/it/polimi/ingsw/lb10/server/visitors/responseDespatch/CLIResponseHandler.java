@@ -1,14 +1,14 @@
 package it.polimi.ingsw.lb10.server.visitors.responseDespatch;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIMatchPage;
 import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
+import it.polimi.ingsw.lb10.client.util.InputParser;
 import it.polimi.ingsw.lb10.network.requests.QuitRequest;
 import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestsRequest;
-import it.polimi.ingsw.lb10.network.response.EndTurnBroadcastResponse;
+
 import it.polimi.ingsw.lb10.network.response.lobby.BooleanResponse;
 import it.polimi.ingsw.lb10.network.response.match.*;
 import it.polimi.ingsw.lb10.server.model.Player;
 
-import java.util.ArrayList;
 
 public class CLIResponseHandler implements ResponseVisitor {
 
@@ -70,28 +70,14 @@ public class CLIResponseHandler implements ResponseVisitor {
     }
 
     @Override
-    public void visit(EndTurnBroadcastResponse response) {
-        controller.setOnTurn(response.getOnTurn());
-    }
-
-
-    @Override
-    public void visit(UnavailableResourceDeckResponse unavailableResourceDeckResponse) {
-        controller.setResourceDeckAvailable(false);
-    }
-
-    @Override
-    public void visit(UnavailableGoldenDeckResponse unavailableGoldenDeckResponse) {
-        controller.setGoldenDeckAvailable(false);
-    }
-
-    @Override
     public void visit(PickedCardResponse pickedCardResponse) {
-
-    }
-
-    @Override
-    public void visit(UnavailableTableResourceResponse unavailableTableResourceResponse) {
+        if(pickedCardResponse.getStatus()){
+            controller.getHand().add(pickedCardResponse.getCard());
+            controller.getView().getPage().changeState(new CLIMatchPage.Default());
+            ((CLIMatchPage)controller.getView().getPage()).displayHand(controller.getHand());
+        }else{
+            CLIMatchPage.serverReply(pickedCardResponse.getMessage() + "pick another card");
+        }
 
     }
 
@@ -103,4 +89,27 @@ public class CLIResponseHandler implements ResponseVisitor {
         CLIMatchPage.updateResourceCounter(placeStartingCardResponse.getResources());
     }
 
+    @Override
+    public void visit(PlaceCardResponse placeCardResponse) {
+        if(placeCardResponse.getStatus()){
+            ((CLIMatchPage)controller.getView().getPage()).placeCard(placeCardResponse.getCard(), placeCardResponse.getCol(), placeCardResponse.getRow(),controller.getHand().indexOf(controller.getHand().stream().filter(placeableCard -> placeableCard.getId() == placeCardResponse.getCard().getId()).findFirst().orElse(null)));
+
+
+        }else{
+            CLIMatchPage.serverReply("Invalid card placement, retry!");
+        }
+    }
+
+    @Override
+    public void visit(ShowPickingPossibilitiesResponse showPickingPossibilitiesResponse) {
+        controller.getView().getPage().changeState(new CLIMatchPage.PickCard());
+        controller.getView().getPage().print(new Object[]{showPickingPossibilitiesResponse.getGoldenUncovered().toArray(), showPickingPossibilitiesResponse.getResourceUncovered().toArray(), showPickingPossibilitiesResponse.getGoldenCard(),  showPickingPossibilitiesResponse.getResourceCard()});
+        CLIMatchPage.serverReply("Choose which card you want to pick by typing command <pick> <id>"); //ugly message
+    }
+
+
+    @Override
+    public void visit(NotYourTurnResponse notYourTurnResponse) {
+        CLIMatchPage.serverReply("It's " + notYourTurnResponse.getUsername() + ", wait for your turn...");
+    }
 }
