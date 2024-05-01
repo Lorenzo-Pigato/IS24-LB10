@@ -314,9 +314,9 @@ public class MatchModel extends Observable{
         }else notify(new PlaceCardResponse(card,false, row, column), player.getUserHash());
     }
 
-    public boolean checkValidMatrixCardId(PlaceableCard card, Player player) {
+    public boolean checkValidMatrixCardId(int targetId, Player player) {
         return player.getMatrix().getMatrix().stream().flatMap(col -> col.stream())
-                .flatMap(node -> node.getCorners().stream()).anyMatch(corner -> corner.getId() == card.getId());
+                .flatMap(node -> node.getCorners().stream()).anyMatch(corner -> corner.getId() == targetId);
     }
 
     /**

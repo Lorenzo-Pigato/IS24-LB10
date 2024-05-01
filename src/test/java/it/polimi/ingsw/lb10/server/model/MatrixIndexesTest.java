@@ -86,4 +86,24 @@ public class MatrixIndexesTest {
 
     }
 
+    @Test
+    public void checkValidMatrixIdTest(){
+        setUp();
+        PlaceableCard card1 = resourceDeck.drawCard();
+        PlaceableCard card2 = goldenDeck.drawCard();
+        PlaceableCard card3 = resourceDeck.drawCard();
+        PlaceableCard card4 = goldenDeck.drawCard();
+        matrix.setCard(card2, 40, 40);
+        matrix.setCard(card1, 40, 42);
+        matrix.setCard(card4, 42, 42);
+        MatchModel model = new MatchModel(3, null);
+        Player player = new Player(0, null);
+        player.setMatrix(matrix);
+
+        assertTrue(model.checkValidMatrixCardId(card1.getId(), player));
+        assertTrue(model.checkValidMatrixCardId(card2.getId(), player));
+        assertTrue(model.checkValidMatrixCardId(card4.getId(), player));
+        assertFalse(model.checkValidMatrixCardId(card3.getId(), player));
+    }
+
 }

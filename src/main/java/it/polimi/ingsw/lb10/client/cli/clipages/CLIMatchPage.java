@@ -140,8 +140,13 @@ public class CLIMatchPage implements CLIPage{
 
         HashMap<Resource, Integer> newResources = new HashMap<>();
 
-        for(Resource resource : card.getStateCardCorners().stream().map(Corner::getResource).filter(r -> !r.equals(Resource.EMPTY)).toList())
-            newResources.put(resource, newResources.get(resource) + playerResources.get(resource));
+        for(Resource resource : card.getStateCardCorners().stream().filter(Corner::isAvailable).map(Corner::getResource).filter(r -> !r.equals(Resource.EMPTY) && !r.equals(Resource.NULL)).toList())
+            newResources.put(resource, playerResources.get(resource) + 1);
+
+        if(card instanceof StartingCard)
+            for(Resource resource : ((StartingCard) card).getMiddleResources())
+                newResources.put(resource, newResources.get(resource) + 1);
+
         updateResourceCounter(newResources);
 
         CLICommand.restoreCursorPosition();

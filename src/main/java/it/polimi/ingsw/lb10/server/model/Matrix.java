@@ -12,7 +12,8 @@ import java.util.*;
  *
  */
 public class Matrix implements Serializable {
-    private final ArrayList<ArrayList<Node>> matrix= new ArrayList<>();
+
+    private final ArrayList<ArrayList<Node>> matrix=  new ArrayList<>();
 
 
     public Matrix(){

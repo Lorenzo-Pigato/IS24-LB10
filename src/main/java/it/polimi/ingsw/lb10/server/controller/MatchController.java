@@ -205,7 +205,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     public void visit(PlaceCardRequest placeCardRequest){
         Server.log(">>new place card request");
         if(model.getPlayer(placeCardRequest.getUserHash()).equals(model.getOnTurnPlayer())){
-            if(model.checkValidMatrixCardId(placeCardRequest.getCard(), getPlayer(placeCardRequest.getUserHash()))) {
+            if(model.checkValidMatrixCardId(placeCardRequest.getMatrixCardId(), getPlayer(placeCardRequest.getUserHash()))) {
                 Position position = placeCardRequest.getPosition();
                 switch (position) {
                     case TOPLEFT ->
