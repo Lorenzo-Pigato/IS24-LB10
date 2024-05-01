@@ -102,7 +102,7 @@ public class CLIResponseHandler implements ResponseVisitor {
     @Override
     public void visit(ShowPickingPossibilitiesResponse showPickingPossibilitiesResponse) {
         controller.getView().getPage().changeState(new CLIMatchPage.PickCard());
-        controller.getView().getPage().print(new Object[]{showPickingPossibilitiesResponse.getGoldenUncovered().toArray(), showPickingPossibilitiesResponse.getResourceUncovered().toArray(), showPickingPossibilitiesResponse.getGoldenCard(),  showPickingPossibilitiesResponse.getResourceCard()});
+        controller.getView().getPage().print(new Object[]{showPickingPossibilitiesResponse.getGoldenUncovered().get(0),showPickingPossibilitiesResponse.getGoldenUncovered().get(1), showPickingPossibilitiesResponse.getResourceUncovered().get(0), showPickingPossibilitiesResponse.getResourceUncovered().get(1), showPickingPossibilitiesResponse.getGoldenCard(),  showPickingPossibilitiesResponse.getResourceCard()});
         CLIMatchPage.serverReply("Choose which card you want to pick by typing command <pick> <id>"); //ugly message
     }
 

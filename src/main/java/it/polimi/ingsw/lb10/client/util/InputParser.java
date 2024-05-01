@@ -28,7 +28,7 @@ public class InputParser {
         String[] parsed = input.split(" ");
         if(parsed.length == 4){
             if(parsed[0].equalsIgnoreCase("place") && isValidHandCard(parsed[1]) && isValidPosition(parsed[2] )&& isValidMatrixCard(parsed[3])) {
-                result = new PlaceCardRequest(controller.getMatchId(), controller.getHand().get(Integer.parseInt(parsed[1])), parsePosition(parsed[2]), Integer.parseInt(parsed[3]));
+                result = new PlaceCardRequest(controller.getMatchId(), controller.getHand().get(Integer.parseInt(parsed[1]) - 1), parsePosition(parsed[2]), Integer.parseInt(parsed[3]));
             }
         }else if(parsed.length == 3){ // 4
 

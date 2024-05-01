@@ -213,7 +213,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
                     case TOPRIGHT ->
                             model.insertCard(getPlayer(placeCardRequest.getUserHash()), placeCardRequest.getCard(), getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardRow(placeCardRequest.getMatrixCardId()) + 1, getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardColumn(placeCardRequest.getMatrixCardId()) - 1);
                     case BOTTOMLEFT ->
-                            model.insertCard(getPlayer(placeCardRequest.getUserHash()), placeCardRequest.getCard(), getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardRow(placeCardRequest.getMatrixCardId() - 1), getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardColumn(placeCardRequest.getMatrixCardId()) + 1);
+                            model.insertCard(getPlayer(placeCardRequest.getUserHash()), placeCardRequest.getCard(), getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardRow(placeCardRequest.getMatrixCardId()) - 1, getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardColumn(placeCardRequest.getMatrixCardId()) + 1);
                     case BOTTOMRIGHT ->
                             model.insertCard(getPlayer(placeCardRequest.getUserHash()), placeCardRequest.getCard(), getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardRow(placeCardRequest.getMatrixCardId()) - 1, getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardColumn(placeCardRequest.getMatrixCardId()) - 1);
                 }

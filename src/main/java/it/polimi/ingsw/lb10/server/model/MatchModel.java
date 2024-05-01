@@ -337,11 +337,12 @@ public class MatchModel extends Observable{
             deleteCoveredResource(player, row, column);
             addCardPointsOnPlayer(player, card, visitedNodes);
             player.removeCardOnHand(card);//the player chooses the next card, it's a request!
-
             notify(new PlaceCardResponse(card, true, row, column), player.getUserHash());
+        }else{
+            player.getMatrix().deleteCard(row,column);
+            notify(new PlaceCardResponse(card, false, row, column), player.getUserHash());
         }
-        player.getMatrix().deleteCard(row,column);
-        notify(new PlaceCardResponse(card, false, row, column), player.getUserHash());
+
     }
 
     /**
@@ -351,7 +352,7 @@ public class MatchModel extends Observable{
      */
     public synchronized  boolean verificationSetting(Player player, int row, int column, ArrayList<Node> visitedNodes){
         //if one corner isn't available
-        if(checkNotAvailability(player,row,column))
+        if(!checkNotAvailability(player,row,column))
             return false;
 
         Map<Position, int[]> setIncrement=player.getMatrix().parsingPositionCorners();
@@ -381,8 +382,6 @@ public class MatchModel extends Observable{
                 }
             }
         }
-        //turning to the starting position
-        row-=delta[0]; column-=delta[1];
         //if the card doesn't cover at least one card, it's an error
         return !visitedNodes.isEmpty();
     }

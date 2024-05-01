@@ -329,7 +329,7 @@ public class CLIMatchPage implements CLIPage{
             }
 
             if (args[5] != null){
-                ((GoldenCard) args[5]).setFlippedState();
+                ((ResourceCard) args[5]).setFlippedState();
                 CLICard.printResourceDeck((ResourceCard) args[5], 79, 19);
             }
 

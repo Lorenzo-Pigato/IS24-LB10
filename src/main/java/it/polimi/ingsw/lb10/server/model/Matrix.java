@@ -76,9 +76,9 @@ public class Matrix implements Serializable {
      */
     public void deleteCard(int row , int column){
         getNode(row,column).deleteLastCorner();
-        getNode(row++,column).deleteLastCorner();
-        getNode(row,column++).deleteLastCorner();
-        getNode(row++,column++).deleteLastCorner();
+        getNode(row+1,column).deleteLastCorner();
+        getNode(row,column+1).deleteLastCorner();
+        getNode(row+1,column+1).deleteLastCorner();
     }
 
 
@@ -91,7 +91,6 @@ public class Matrix implements Serializable {
     }
 
     public Integer getCardRow(int cardId){
-
         return matrix.stream().filter(row -> row.stream()
                         .filter(node -> !node.getCorners().isEmpty())
                         .anyMatch(node -> node.getCorners().stream().anyMatch(corner -> corner.getId() == cardId && corner.getPosition().equals(Position.TOPLEFT))))
