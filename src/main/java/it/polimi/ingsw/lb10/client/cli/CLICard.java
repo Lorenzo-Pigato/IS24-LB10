@@ -245,7 +245,7 @@ public abstract class CLICard {
                             """
                             , corner.getCardColor().getAnsi(), col, row).print();
 
-                    new CLIString("#" + corner.getId(), corner.getCardColor().getAnsi(), col + 1, row - 1).print();
+                    new CLIString(corner.getId() + "", corner.getCardColor().getAnsi(), col + 1, row - 1).print();
 
                     break;
 
