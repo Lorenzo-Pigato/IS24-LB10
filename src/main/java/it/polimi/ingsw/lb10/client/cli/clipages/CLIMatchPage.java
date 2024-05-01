@@ -280,31 +280,31 @@ public class CLIMatchPage implements CLIPage{
         }
     }
 
-    public class OnTurn implements CLIState{
-        /**
-         * @param args Matrix board
-         */
-        @Override
-        public void apply(@NotNull Object[] args) {
-            Matrix board = (Matrix) args[0];
-            Corner corner;
-
-            for (int col = onFocusCol; col < onFocusCol + onFocusWidth; col++) {
-                for (int row = onFocusRow; row < onFocusRow + onFocusHeight; row++) {
-                    corner = board.getNode(row, col).getCorners().stream().filter(c -> c.getPosition().equals(Position.TOPLEFT)).findAny().orElse(null);
-                    if (corner != null) {
-                        CLICommand.setPosition(
-                                (col - onFocusCol) * 3 + boardStartCol + 1,
-                                (row - onFocusRow) * 2 + boardStartRow - 1);
-                        AnsiString.print("#" + corner.getId(), AnsiColor.WHITE);
-
-                    }
-                }
-            }
-
-            CLICommand.restoreCursorPosition();
-        }
-    }
+//    public class OnTurn implements CLIState{
+//        /**
+//         * @param args Matrix board
+//         */
+//        @Override
+//        public void apply(@NotNull Object[] args) {
+//            Matrix board = (Matrix) args[0];
+//            Corner corner;
+//
+//            for (int col = onFocusCol; col < onFocusCol + onFocusWidth; col++) {
+//                for (int row = onFocusRow; row < onFocusRow + onFocusHeight; row++) {
+//                    corner = board.getNode(row, col).getCorners().stream().filter(c -> c.getPosition().equals(Position.TOPLEFT)).findAny().orElse(null);
+//                    if (corner != null) {
+//                        CLICommand.setPosition(
+//                                (col - onFocusCol) * 3 + boardStartCol + 1,
+//                                (row - onFocusRow) * 2 + boardStartRow - 1);
+//                        AnsiString.print("#" + corner.getId(), AnsiColor.WHITE);
+//
+//                    }
+//                }
+//            }
+//
+//            CLICommand.restoreCursorPosition();
+//        }
+//    }
 
     public static class PickCard implements CLIState{
         /**
