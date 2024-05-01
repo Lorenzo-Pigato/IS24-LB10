@@ -16,9 +16,9 @@ public class BackOfTheCard implements StateOfTheCard{
         this.placeableCard=placeableCard;
         BackOfTheCard.placeableCard =placeableCard;
          flippedCorners= new ArrayList<>(Arrays.asList(new Corner(placeableCard.getId(),true,Position.TOPLEFT,Resource.EMPTY,placeableCard.getColorCard()),
-                new Corner(placeableCard.getId(),true,Position.TOPLEFT,Resource.EMPTY,placeableCard.getColorCard()),
-                new Corner(placeableCard.getId(),true,Position.TOPLEFT,Resource.EMPTY,placeableCard.getColorCard()),
-                new Corner(placeableCard.getId(),true,Position.TOPLEFT,Resource.EMPTY,placeableCard.getColorCard())));
+                new Corner(placeableCard.getId(),true,Position.TOPRIGHT,Resource.EMPTY,placeableCard.getColorCard()),
+                new Corner(placeableCard.getId(),true,Position.BOTTOMLEFT,Resource.EMPTY,placeableCard.getColorCard()),
+                new Corner(placeableCard.getId(),true,Position.BOTTOMRIGHT,Resource.EMPTY,placeableCard.getColorCard())));
     }
     @Override
     public ArrayList<Corner> getCorners() {

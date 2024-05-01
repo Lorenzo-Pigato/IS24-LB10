@@ -53,6 +53,7 @@ public class Player {
     }
 
     public void addPoints(int point){
+
         setPoints(point+getPoints());
         maxScore();
     }

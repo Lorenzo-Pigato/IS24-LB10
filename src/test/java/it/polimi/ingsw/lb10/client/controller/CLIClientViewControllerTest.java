@@ -98,5 +98,4 @@ public class CLIClientViewControllerTest {
         assertTrue(InputVerifier.isNotValidPort(port));
 
     }
-
 }

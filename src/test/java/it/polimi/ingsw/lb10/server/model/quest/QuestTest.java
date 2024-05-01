@@ -6,10 +6,7 @@ import it.polimi.ingsw.lb10.server.model.cards.decks.QuestDeck;
 import org.junit.jupiter.api.*;
 
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
-
-import static org.junit.Assert.*;
 
 class QuestCounterTest {
     private static QuestDeck questDeck = new QuestDeck();
@@ -32,6 +29,7 @@ class QuestCounterTest {
 
     @Test
     void algorithmResourcesNotInTheQuest() {
+        counterQuest=questDeck.getCards().getFirst();
         onMapResources.put(Resource.MUSHROOM,10);
         for(int i=0;i<onMapResources.get(Resource.MUSHROOM);i++)
             player.addOnMapResources(Resource.MUSHROOM);
@@ -40,6 +38,7 @@ class QuestCounterTest {
 
     @Test
     void algorithmResourcesInQuest() {
+        counterQuest=questDeck.getCards().getFirst();
         onMapResources.put(Resource.INSECT,10);
         for(int i=0;i<onMapResources.get(Resource.INSECT);i++)
             player.addOnMapResources(Resource.INSECT);
@@ -51,8 +50,19 @@ class QuestCounterTest {
      */
     @Test
     void algorithmsDifferentResources(){
-        counterQuest=questDeck.getCards().get(7);
+        onMapResources.put(Resource.FEATHER,3);
+        onMapResources.put(Resource.POTION,2);
+        onMapResources.put(Resource.PERGAMENA,3);
 
+        for(int i=0;i<onMapResources.get(Resource.FEATHER);i++)
+            player.addOnMapResources(Resource.FEATHER);
+        for(int i=0;i<onMapResources.get(Resource.POTION);i++)
+            player.addOnMapResources(Resource.POTION);
+        for(int i=0;i<onMapResources.get(Resource.PERGAMENA);i++)
+            player.addOnMapResources(Resource.PERGAMENA);
+
+        counterQuest=questDeck.getCards().get(7);
+        Assertions.assertEquals(4, counterQuest.questAlgorithm(player.getOnMapResources()));
     }
 
 

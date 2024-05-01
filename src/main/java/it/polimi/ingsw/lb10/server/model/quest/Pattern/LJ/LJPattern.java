@@ -19,13 +19,19 @@ public  abstract class LJPattern extends Quest {
         this.bodyColor=bodyColor;
         this.toeColor=toeColor;
     }
+    /**
+     * @param matrix of the player
+     * @param row and column are the top-left corner of the card!
+     * @return true, if it's all okay,
+     * Three different cases of card to check!
+     */
+    public boolean isPattern(Matrix matrix, int row, int column) {
+        return checkPatternBodyOne(matrix, row, column) ||  checkPatternBodyTwo(matrix, row, column)  || checkPatternBodyThree(matrix, row, column);
+    }
 
     public abstract boolean checkPatternBodyOne(Matrix matrix, int row, int column);
     public abstract boolean checkPatternBodyTwo(Matrix matrix, int row, int column);
     public abstract boolean checkPatternBodyThree(Matrix matrix, int row, int column);
-    public boolean isPattern(Matrix matrix, int row, int column) {
-        return checkPatternBodyOne(matrix, row, column) || checkPatternBodyTwo(matrix, row, column) ||  checkPatternBodyThree(matrix, row, column);
-    }
 
     /**
      * @param matrix of the player
@@ -41,7 +47,8 @@ public  abstract class LJPattern extends Quest {
             if(corner.getPosition().equals(position))
                 cornerToCheck=corner;
 
-        assert cornerToCheck != null;
+        if(cornerToCheck == null)
+                return false;
         if(!cornerToCheck.isUsedForQuest()){
             return checkColor(cornerToCheck, bodyOrToe);
         }

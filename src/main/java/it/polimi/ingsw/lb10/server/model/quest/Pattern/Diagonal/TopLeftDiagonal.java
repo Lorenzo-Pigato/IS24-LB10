@@ -12,7 +12,7 @@ public class TopLeftDiagonal extends TypeDiagonal {
     }
 
     /**
-     * this method is called after the insertion of a card, there are three different types of patterns to check
+     * this method is called after the insertion of a card, there are three different type of pattern to check
      * if the card it's on the top, in the middle or bottom
      * @return true if the cards respect the pattern and the rules.
      */
