@@ -108,22 +108,6 @@ public class GUIClientViewController implements ClientViewController {
 
     }
 
-    /**
-     * @return 
-     */
-    @Override
-    public boolean resourceDeckIsAvailable() {
-        return false;
-    }
-
-    /**
-     * @return 
-     */
-    @Override
-    public boolean goldenDeckIsAvailable() {
-        return false;
-    }
-
     @Override
     public ArrayList<PlaceableCard> getHand() {return null;}
 

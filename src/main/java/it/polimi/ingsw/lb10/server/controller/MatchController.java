@@ -199,7 +199,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
 
     /**
      *See PlaceCardRequest constructor for more info on placing stream.
-     * @param placeCardRequest request senti by the client at the beginning of his turn when he wants to place a card on his matrix
+     * @param placeCardRequest request sent by the client at the beginning of his turn when he wants to place a card on his matrix
      */
     @Override
     public void visit(PlaceCardRequest placeCardRequest){
@@ -207,9 +207,9 @@ public class MatchController implements Runnable, MatchRequestVisitor {
             Position position = placeCardRequest.getPosition();
             switch(position){
                 case TOPLEFT -> model.insertCard(getPlayer(placeCardRequest.getUserHash()), placeCardRequest.getCard(), getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardRow(placeCardRequest.getMatrixCardId()) + 1, getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardColumn(placeCardRequest.getMatrixCardId()) + 1);
-                case TOPRIGHT -> model.insertCard(getPlayer(placeCardRequest.getUserHash()), placeCardRequest.getCard(), getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardRow(placeCardRequest.getMatrixCardId())  + 1, getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardColumn(placeCardRequest.getMatrixCardId()));
-                case BOTTOMLEFT -> model.insertCard(getPlayer(placeCardRequest.getUserHash()), placeCardRequest.getCard(), getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardRow(placeCardRequest.getMatrixCardId()), getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardColumn(placeCardRequest.getMatrixCardId()) + 1);
-                case BOTTOMRIGHT -> model.insertCard(getPlayer(placeCardRequest.getUserHash()), placeCardRequest.getCard(), getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardRow(placeCardRequest.getMatrixCardId()), getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardColumn(placeCardRequest.getMatrixCardId()));
+                case TOPRIGHT -> model.insertCard(getPlayer(placeCardRequest.getUserHash()), placeCardRequest.getCard(), getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardRow(placeCardRequest.getMatrixCardId()) + 1, getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardColumn(placeCardRequest.getMatrixCardId()) - 1);
+                case BOTTOMLEFT -> model.insertCard(getPlayer(placeCardRequest.getUserHash()), placeCardRequest.getCard(), getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardRow(placeCardRequest.getMatrixCardId() - 1), getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardColumn(placeCardRequest.getMatrixCardId()) + 1);
+                case BOTTOMRIGHT -> model.insertCard(getPlayer(placeCardRequest.getUserHash()), placeCardRequest.getCard(), getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardRow(placeCardRequest.getMatrixCardId()) - 1, getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardColumn(placeCardRequest.getMatrixCardId()) - 1);
             }
         }else{
             model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), placeCardRequest.getUserHash());
@@ -281,13 +281,6 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         }catch(Exception e){Server.log(e.getMessage());}
     }
 
-
-    /** sends a specific response to all RemoteViews connected
-     * @param response response to be sent
-     */
-    public synchronized void broadcast (Response response){
-            remoteViews.forEach(remoteView -> remoteView.send(response));
-    }
 
     public synchronized ArrayList<Player> getPlayers() {
         return players;

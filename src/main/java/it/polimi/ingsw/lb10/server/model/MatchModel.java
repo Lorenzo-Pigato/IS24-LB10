@@ -1,6 +1,5 @@
 package it.polimi.ingsw.lb10.server.model;
 
-import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.network.response.match.*;
 import it.polimi.ingsw.lb10.server.Server;
 import it.polimi.ingsw.lb10.server.model.cards.*;
@@ -14,10 +13,7 @@ import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import it.polimi.ingsw.lb10.server.model.quest.QuestCounter;
 import it.polimi.ingsw.lb10.util.Observable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class MatchModel extends Observable{
 
@@ -142,7 +138,7 @@ public class MatchModel extends Observable{
 
     private void endTurn(){
         onTurnPlayer = players.get((players.indexOf(onTurnPlayer) + 1) % players.size());
-        if(onTurnPlayer.equals(finalTurnPlayer)) endGame();
+        if(finalTurn && onTurnPlayer.equals(finalTurnPlayer)) endGame(players.stream().max(Comparator.comparingInt(Player::getPoints)));
     }
 
     /**
@@ -426,8 +422,11 @@ public class MatchModel extends Observable{
             player.addPoints(card.getStateCardPoints()*player.getResourceQuantity(goldenResource));
         else
             player.addPoints(card.getStateCardPoints());
-
-        visitedNodes =new ArrayList<>();
+        if(player.getPoints() >= 20 && finalTurn == false){
+            finalTurn = true;
+            finalTurnPlayer = onTurnPlayer;
+        }
+        notifyAll(new PlayerPointsUpdateResponse(player.getUsername(), player.getPoints()));
     }
 
     /**
@@ -448,10 +447,11 @@ public class MatchModel extends Observable{
 
     public void startTurns() {
         onTurnPlayer = players.getFirst();
-        notifyAll(new ChatMessageResponse("Server", "it's " + onTurnPlayer.getUsername() + "turn, make your move!"));
+        notifyAll(new ChatMessageResponse("Server", "it's " + onTurnPlayer.getUsername() + "'s turn, make your move!"));
     }
 
 
-    private void endGame() {
+    private void endGame(Optional<Player> max) {
+        notifyAll(new EndGameResponse(max));
     }
 }

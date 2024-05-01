@@ -1,7 +1,6 @@
 package it.polimi.ingsw.lb10.server.visitors.responseDespatch;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIMatchPage;
 import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
-import it.polimi.ingsw.lb10.client.util.InputParser;
 import it.polimi.ingsw.lb10.network.requests.QuitRequest;
 import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestsRequest;
 
@@ -74,9 +73,9 @@ public class CLIResponseHandler implements ResponseVisitor {
         if(pickedCardResponse.getStatus()){
             controller.getHand().add(pickedCardResponse.getCard());
             controller.getView().getPage().changeState(new CLIMatchPage.Default());
-            ((CLIMatchPage)controller.getView().getPage()).displayHand(controller.getHand());
+            CLIMatchPage.displayHand(controller.getHand());
         }else{
-            CLIMatchPage.serverReply(pickedCardResponse.getMessage() + "pick another card");
+            CLIMatchPage.serverReply(pickedCardResponse.getMessage() + " pick another card");
         }
 
     }
@@ -93,8 +92,6 @@ public class CLIResponseHandler implements ResponseVisitor {
     public void visit(PlaceCardResponse placeCardResponse) {
         if(placeCardResponse.getStatus()){
             ((CLIMatchPage)controller.getView().getPage()).placeCard(placeCardResponse.getCard(), placeCardResponse.getCol(), placeCardResponse.getRow(),controller.getHand().indexOf(controller.getHand().stream().filter(placeableCard -> placeableCard.getId() == placeCardResponse.getCard().getId()).findFirst().orElse(null)));
-
-
         }else{
             CLIMatchPage.serverReply("Invalid card placement, retry!");
         }
@@ -111,5 +108,21 @@ public class CLIResponseHandler implements ResponseVisitor {
     @Override
     public void visit(NotYourTurnResponse notYourTurnResponse) {
         CLIMatchPage.serverReply("It's " + notYourTurnResponse.getUsername() + ", wait for your turn...");
+    }
+
+    /**
+     * @param playerPointsUpdateResponse
+     */
+    @Override
+    public void visit(PlayerPointsUpdateResponse playerPointsUpdateResponse) {
+
+    }
+
+    /**
+     * @param endGameResponse
+     */
+    @Override
+    public void visit(EndGameResponse endGameResponse) {
+
     }
 }

@@ -27,7 +27,7 @@ public class InputParser {
 
         String[] parsed = input.split(" ");
 
-        if (parsed[0].equalsIgnoreCase( "chat")) {
+        if (parsed[0].equalsIgnoreCase( "chat") && !parsed[1].isEmpty()) {
             String message = input.substring(5);
             result = new ChatRequest(controller.getMatchId(), message);
 

@@ -428,9 +428,10 @@ public class CLIMatchPage implements CLIPage{
     // ---------------- CHAT ------------------- //
     public static void chatLog(@NotNull String sender, String message) {
         Player senderPlayer = allPlayers.stream().filter(p -> p.getUsername().equals(sender)).findFirst().orElse(new Player(0, ""));
+        if(senderPlayer.getUserHash() == 0) senderPlayer.setColor(Color.GREEN);
         messages.addLast(new CLIString[]{
 
-                new CLIString(senderPlayer.getUsername() + ": ",
+                new CLIString(senderPlayer.getUsername() + (senderPlayer.getUserHash() == 0 ? "" : ":"),
                         senderPlayer.getColor().getAnsi(),
                         AnsiFormat.BOLD,
                         currentChatPosition[0], currentChatPosition[1], maxMessageLength),

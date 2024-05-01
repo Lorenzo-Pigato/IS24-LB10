@@ -55,13 +55,11 @@ public class CLIClientViewController implements ClientViewController{
     @Override
     public void setSocket(Socket socket) {this.socket = socket;}
     public void setClient(Client client) {this.client = client;}
-    public void setOnTurn(Player player){onTurn = player;}
     public void setStartingCard(StartingCard startingCard) {this.startingCard = startingCard;}
 
     public Socket getSocket() {return socket;}
     public Client getClient() {return client;}
     public CLIClientView getView() {return view;}
-    public Player getOnTurn() {return onTurn;}
     public void setHand(ArrayList<PlaceableCard> hand){this.hand = hand;}
     public void flipCard(int index){hand.get(index).swapState();}
     public ArrayList<PlaceableCard> getHand() {return hand;}

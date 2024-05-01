@@ -28,4 +28,8 @@ public interface ResponseVisitor {
     void visit(ShowPickingPossibilitiesResponse showPickingPossibilitiesResponse);
 
     void visit(NotYourTurnResponse notYourTurnResponse);
+
+    void visit(PlayerPointsUpdateResponse playerPointsUpdateResponse);
+
+    void visit(EndGameResponse endGameResponse);
 }
