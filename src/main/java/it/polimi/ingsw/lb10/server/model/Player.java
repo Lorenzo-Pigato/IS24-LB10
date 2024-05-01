@@ -54,15 +54,15 @@ public class Player {
 
     public void addPoints(int point){
         setPoints(point+getPoints());
+        maxScore();
     }
 
     /**
      * @param questPoints to add,
-     *                    It's important to manage the fact that the max score is 30!!!!
+     *                    It's important to manage the fact that the max score is 29!!!!
      */
     public void addQuestPoints(int questPoints){
         setQuestPoints(questPoints+getQuestPoints());
-        maxScore();
     }
     public void addCardOnHand(PlaceableCard card){
         hand.add(card);
@@ -72,6 +72,7 @@ public class Player {
     }
 
     // --------> GETTER <--------
+
     public int getResourceQuantity(Resource resource) {
         return onMapResources.getOrDefault(resource, 0);
     }

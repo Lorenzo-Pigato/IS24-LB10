@@ -96,8 +96,8 @@ public class MatchController implements Runnable, MatchRequestVisitor {
 
 
     public void insertStartingCard(Player player){
-        player.getMatrix().setCard(player.getStartingCard());
 
+        player.getMatrix().setCard(player.getStartingCard());
         setCardResourceOnPlayer(player, player.getStartingCard());
     }
 
@@ -196,6 +196,10 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         return true;
     }
 
+    /**
+     * @param card of which we will add the resources
+     *             we are setting all the resources of the card inside the OnMapResources of the player.
+     */
     public void setCardResourceOnPlayer(Player player, PlaceableCard card){
         for(Corner corner : card.getStateCardCorners()){
             player.addOnMapResources(corner.getResource());
@@ -205,31 +209,36 @@ public class MatchController implements Runnable, MatchRequestVisitor {
 
     public void setCardResourceOnPlayer(Player player, StartingCard card){
 
-        for(Corner corner : card.getStateCardCorners()){
+        for(Corner corner : card.getStateCardCorners())
             player.addOnMapResources(corner.getResource());
-        }
 
         if(!card.getStateCardResources().isEmpty()){
-            for(Resource resoruce : card.getStateCardResources())
-                player.addOnMapResources(resoruce);
+            for(Resource resource : card.getStateCardResources())
+                player.addOnMapResources(resource);
         }
-
     }
 
+    /**
+     * @param row and the column is the top left corner of the card,
+     * This method it's called after insertion of the card to delete all the covered resources from the new card.
+     */
     public void deleteCoveredResource(Player player,int row, int column){
         Map<Position, int[]> setIncrement = player.getMatrix().parsingPositionCorners();
 
         for(Position position: getPossiblePosition()){
             int[] delta = setIncrement.get(position);
-            if (player.getMatrix().getNode(row + delta[0], column + delta[1]).getCorners().size()==2)
+            if (player.getMatrix().getNode(row + delta[0], column + delta[1]).getCorners().size()==2){
                 player.deleteOnMapResources(player.getMatrix().getNode(row + delta[0], column + delta[1]).getCorners().getFirst().getResource());
+                player.getMatrix().getNode(row + delta[0], column + delta[1]).getCorners().getFirst().setResource(Resource.NULL);
+            }
         }
     }
 
     /**
-     * @param player
-     * @param card
-     * @param visitedNodes
+     * @param card it's the card to add
+     * @param visitedNodes are the nodes that have been visited in the current iteration.
+     *                     This method adds the card's points in the counter of the player.
+     *                     It controls all the different cases.
      */
     public void addCardPointsOnPlayer(Player player,PlaceableCard card, ArrayList<Node> visitedNodes) {
         Resource goldenResource=card.getStateCardGoldenBuffResource();
@@ -247,7 +256,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
 
     /**
      * @param player who has the turn
-     *  This method is to call at the end of the game!
+     *  This method is called at the end of the game!
      */
     public void checkCounterQuestPoints(Player player){
         ArrayList<Quest> quests = new ArrayList<>(model.getCommonQuests());
