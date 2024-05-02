@@ -227,9 +227,9 @@ public class MatchModel extends Observable{
         GoldenCard picked = null;
         try{
             picked = goldenUncovered.get(index);
-            resourceUncovered.remove(picked);
-            if(!resourceDeckIsEmpty){
-                resourceUncovered.add(index, resourceDeck.drawCard());
+            goldenUncovered.add(picked);
+            if(!goldenDeckIsEmpty){
+                goldenUncovered.add(index, goldenDeck.drawCard());
             }
 
         }catch(NoSuchElementException e){
