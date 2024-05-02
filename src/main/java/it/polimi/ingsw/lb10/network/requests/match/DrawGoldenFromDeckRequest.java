@@ -9,20 +9,11 @@ public class DrawGoldenFromDeckRequest extends MatchRequest {
     public DrawGoldenFromDeckRequest(int matchId) {
         super(matchId);
     }
-
-    /**
-     * @param handler
-     */
-    @Override
-    public void accept(LobbyRequestVisitor handler) {
-        handler.visit(this);
-    }
-
     /**
      * @param visitor
      */
     @Override
     public void accept(MatchRequestVisitor visitor) {
-
+        visitor.visit(this);
     }
 }

@@ -142,12 +142,13 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     @Override
     public void visit(DrawGoldenFromTableRequest drawGoldenFromTableRequest) {
-        if(getPlayer(drawGoldenFromTableRequest.getUserHash()).equals(model.getOnTurnPlayer())){
-            model.drawGoldenFromTable(getPlayer(drawGoldenFromTableRequest.getUserHash()) ,drawGoldenFromTableRequest.getIndex());
-        }else{
+        if(isOnTurnPlayer(drawGoldenFromTableRequest.getUserHash()) && hasToPick(drawGoldenFromTableRequest.getUserHash())){
+            model.drawGoldenFromTable(getPlayer(drawGoldenFromTableRequest.getUserHash()), drawGoldenFromTableRequest.getIndex());
+        }else if (!isOnTurnPlayer(drawGoldenFromTableRequest.getUserHash())){
             model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), drawGoldenFromTableRequest.getUserHash());
+        }else if(!hasToPick(drawGoldenFromTableRequest.getUserHash())){
+            model.notify(new BadRequestResponse("You must place a card before picking one! "), drawGoldenFromTableRequest.getUserHash());
         }
-
     }
 
     /**
@@ -155,10 +156,12 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     @Override
     public void visit(DrawResourceFromTableRequest drawResourceFromTableRequest) {
-        if(getPlayer(drawResourceFromTableRequest.getUserHash()).equals(model.getOnTurnPlayer())){
+        if(isOnTurnPlayer(drawResourceFromTableRequest.getUserHash()) && hasToPick(drawResourceFromTableRequest.getUserHash())){
             model.drawResourceFromTable(getPlayer(drawResourceFromTableRequest.getUserHash()), drawResourceFromTableRequest.getIndex());
-        }else{
+        }else if (!isOnTurnPlayer(drawResourceFromTableRequest.getUserHash())){
             model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), drawResourceFromTableRequest.getUserHash());
+        }else if(!hasToPick(drawResourceFromTableRequest.getUserHash())){
+            model.notify(new BadRequestResponse("You must place a card before picking one! "), drawResourceFromTableRequest.getUserHash());
         }
 
     }
@@ -168,10 +171,12 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     @Override
     public void visit(DrawResourceFromDeckRequest drawResourceFromDeckRequest) {
-        if(getPlayer(drawResourceFromDeckRequest.getUserHash()).equals(model.getOnTurnPlayer())){
+        if(isOnTurnPlayer(drawResourceFromDeckRequest.getUserHash()) && hasToPick(drawResourceFromDeckRequest.getUserHash())){
             model.drawResourceFromDeck(getPlayer(drawResourceFromDeckRequest.getUserHash()));
-        }else{
+        }else if (!isOnTurnPlayer(drawResourceFromDeckRequest.getUserHash())){
             model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), drawResourceFromDeckRequest.getUserHash());
+        }else if(!hasToPick(drawResourceFromDeckRequest.getUserHash())){
+            model.notify(new BadRequestResponse("You must place a card before picking one! "), drawResourceFromDeckRequest.getUserHash());
         }
 
     }
@@ -181,12 +186,13 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     @Override
     public void visit(@NotNull DrawGoldenFromDeckRequest drawGoldenFromDeckRequest) {
-        if(getPlayer(drawGoldenFromDeckRequest.getUserHash()).equals(model.getOnTurnPlayer())){
+        if(isOnTurnPlayer(drawGoldenFromDeckRequest.getUserHash()) && hasToPick(drawGoldenFromDeckRequest.getUserHash())){
             model.drawGoldenFromDeck(getPlayer(drawGoldenFromDeckRequest.getUserHash()));
-        }else{
+        }else if (!isOnTurnPlayer(drawGoldenFromDeckRequest.getUserHash())){
             model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), drawGoldenFromDeckRequest.getUserHash());
+        }else if(!hasToPick(drawGoldenFromDeckRequest.getUserHash())){
+            model.notify(new BadRequestResponse("You must place a card before picking one! "), drawGoldenFromDeckRequest.getUserHash());
         }
-
     }
 
     @Override
@@ -219,7 +225,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
                 }
 
             }else{
-                    model.notify(new PickedCardResponse(null, false, "Invalid card id"), placeCardRequest.getUserHash());
+                    model.notify(new PickedCardResponse(null, false, "Invalid card id", null), placeCardRequest.getUserHash());
                 }
 
         }else{
@@ -229,13 +235,9 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     }
 
     @Override
-    public void visit(PickRequest pickRequest) {
-        Server.log("new pick request");
-        if(model.getPlayer(pickRequest.getUserHash()).equals(model.getOnTurnPlayer())){
+    public void visit(PickRequest pickRequest) { //TEST !!
+        Server.log(">> new pick request");
             model.notify(new ShowPickingPossibilitiesResponse(model.getGoldenDeck().getCards().getLast(), model.getResourceDeck().getCards().getLast(), model.getGoldenUncovered(), model.getResourceUncovered()), pickRequest.getUserHash());
-        }else{
-            model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), pickRequest.getUserHash());
-        }
     }
 
     /** this method adds the remote view to the MatchController whenever a new client joins the match
@@ -306,5 +308,13 @@ public class MatchController implements Runnable, MatchRequestVisitor {
             Server.log(e.getMessage());
         }
         return null;
+    }
+
+    public boolean isOnTurnPlayer(int userHash){
+        return getPlayer(userHash).equals(model.getOnTurnPlayer());
+    }
+
+    public boolean hasToPick(int userHash){
+        return model.getPlayer(userHash).getHand().size() == 2;
     }
 }

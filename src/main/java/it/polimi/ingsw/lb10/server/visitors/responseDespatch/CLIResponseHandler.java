@@ -1,4 +1,5 @@
 package it.polimi.ingsw.lb10.server.visitors.responseDespatch;
+import it.polimi.ingsw.lb10.client.cli.clipages.CLILoginPage;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIMatchPage;
 import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
 import it.polimi.ingsw.lb10.network.requests.QuitRequest;
@@ -74,9 +75,14 @@ public class CLIResponseHandler implements ResponseVisitor {
         if(pickedCardResponse.getStatus()){
             controller.getHand().add(pickedCardResponse.getCard());
             controller.getView().getPage().changeState(new CLIMatchPage.Default());
+            controller.getView().getPage().print(null);
+
+            ((CLIMatchPage)controller.getView().getPage()).printBoard(pickedCardResponse.getMatrix());
             CLIMatchPage.displayHand(controller.getHand());
+
+
         }else{
-            CLIMatchPage.serverReply(pickedCardResponse.getMessage() + " pick another card");
+            CLIMatchPage.serverReply(pickedCardResponse.getMessage() + ", pick another card");
         }
 
     }
@@ -84,6 +90,7 @@ public class CLIResponseHandler implements ResponseVisitor {
     @Override
     public void visit(PlaceStartingCardResponse placeStartingCardResponse) {
         controller.getView().getPage().changeState(new CLIMatchPage.Default());
+        CLIMatchPage.updateResourceCounter(placeStartingCardResponse.getResources());
         controller.getView().getPage().print(null);
         ((CLIMatchPage)controller.getView().getPage()).placeCard(placeStartingCardResponse.getStartingCard(), 41, 41, null);
         CLIMatchPage.updateResourceCounter(placeStartingCardResponse.getResources());
@@ -92,7 +99,10 @@ public class CLIResponseHandler implements ResponseVisitor {
     @Override
     public void visit(PlaceCardResponse placeCardResponse) {
         if(placeCardResponse.getStatus()){
+            CLIMatchPage.updateResourceCounter(placeCardResponse.getPlayerResources());
             ((CLIMatchPage)controller.getView().getPage()).placeCard(placeCardResponse.getCard(), placeCardResponse.getCol(), placeCardResponse.getRow(),controller.getHand().indexOf(controller.getHand().stream().filter(placeableCard -> placeableCard.getId() == placeCardResponse.getCard().getId()).findFirst().orElse(null)));
+
+            controller.getHand().remove(controller.getHand().stream().filter(placeableCard -> placeableCard.getId() == placeCardResponse.getCard().getId()).findFirst().orElse(null));
             controller.send(new PickRequest(controller.getMatchId()));
         }else{
             CLIMatchPage.serverReply("Invalid card placement, retry!");
@@ -117,6 +127,7 @@ public class CLIResponseHandler implements ResponseVisitor {
      */
     @Override
     public void visit(PlayerPointsUpdateResponse playerPointsUpdateResponse) {
+        ((CLIMatchPage)controller.getView().getPage()).updatePlayerScore(playerPointsUpdateResponse.getUsername(), playerPointsUpdateResponse.getPoints());
 
     }
 
@@ -127,4 +138,13 @@ public class CLIResponseHandler implements ResponseVisitor {
     public void visit(EndGameResponse endGameResponse) {
 
     }
+
+    /**
+     * @param badRequestResponse
+     */
+    @Override
+    public void visit(BadRequestResponse badRequestResponse) {
+        CLIMatchPage.serverReply(badRequestResponse.getMessage());
+    }
+
 }

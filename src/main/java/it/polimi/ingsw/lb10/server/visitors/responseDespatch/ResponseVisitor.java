@@ -32,4 +32,6 @@ public interface ResponseVisitor {
     void visit(PlayerPointsUpdateResponse playerPointsUpdateResponse);
 
     void visit(EndGameResponse endGameResponse);
+
+    void visit(BadRequestResponse badRequestResponse);
 }

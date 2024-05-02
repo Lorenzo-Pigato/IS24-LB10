@@ -69,7 +69,7 @@ public class Player implements Serializable {
     }
 
     public void addCardOnHand(PlaceableCard card){hand.add(card);}
-    public void removeCardOnHand(PlaceableCard cardToRemove){getHand().remove(cardToRemove);}
+    public void removeCardOnHand(PlaceableCard cardToRemove){getHand().remove(getHand().stream().filter(placeableCard -> placeableCard.getId() == cardToRemove.getId()).findFirst().orElse(null));}
 
 
     // --------> GETTER <--------

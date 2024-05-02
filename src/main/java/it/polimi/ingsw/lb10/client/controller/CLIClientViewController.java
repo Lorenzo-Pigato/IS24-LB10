@@ -298,7 +298,9 @@ public class CLIClientViewController implements ClientViewController{
                     response.accept(responseHandler);
                 }
             }catch(Throwable e){
-                e.printStackTrace();
+                view.updatePageState(new CLIErrorPage.Default());
+                view.displayPage(new Object[]{"Error : ", e.getMessage()});
+                //print error -----------------------------------------------------
                 close();
             }
         });

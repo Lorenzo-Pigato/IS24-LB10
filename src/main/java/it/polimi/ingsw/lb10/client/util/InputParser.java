@@ -34,7 +34,7 @@ public class InputParser {
 
         }else if(parsed.length == 2) {
             //PICK
-            if(parsed[0].equalsIgnoreCase("pick") && "12345".contains(parsed[1]) && parsed[1].length() == 1){ //1, 2 ->golden, 3, 4-> res , 5 -> goldenDeck, 6 -> resourceDeck
+            if(parsed[0].equalsIgnoreCase("pick") && "123456".contains(parsed[1]) && parsed[1].length() == 1){ //1, 2 ->golden, 3, 4-> res , 5 -> goldenDeck, 6 -> resourceDeck
                 switch (parsed[1]){
                     case "1" -> result = new DrawGoldenFromTableRequest(controller.getMatchId(), 0);
                     case "2" -> result = new DrawGoldenFromTableRequest(controller.getMatchId(), 1);

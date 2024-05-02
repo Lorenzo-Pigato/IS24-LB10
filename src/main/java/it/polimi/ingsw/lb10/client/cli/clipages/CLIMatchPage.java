@@ -6,12 +6,10 @@ import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiSpecial;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiString;
 import it.polimi.ingsw.lb10.server.model.Matrix;
-import it.polimi.ingsw.lb10.server.model.Node;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.Resource;
 import it.polimi.ingsw.lb10.server.model.cards.*;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
-import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import org.jetbrains.annotations.NotNull;
 
@@ -50,18 +48,6 @@ public class CLIMatchPage implements CLIPage{
         }
     };
 
-    private  HashMap<Resource, Integer> playerResources = new HashMap<>(){
-        {
-            put(Resource.ANIMAL, 0);
-            put(Resource.MUSHROOM, 0);
-            put(Resource.PLANT, 0);
-            put(Resource.INSECT, 0);
-            put(Resource.FEATHER, 0);
-            put(Resource.PERGAMENA, 0);
-            put(Resource.POTION, 0);
-        }
-    };
-
     private static final int resourceCounterOffset = 3; //Used to print #resource into resource table
 
     //-----------------PLAYERS------------------//
@@ -89,15 +75,16 @@ public class CLIMatchPage implements CLIPage{
     private int onFocusCol = defaultOnFocusCol;
     private int onFocusRow = defaultOnFocusRow;
 
-    private void printBoard(Matrix board){
+    public void printBoard(Matrix board){
 
         for (int col = onFocusCol; col < onFocusCol + onFocusWidth; col++)
             for (int row = onFocusRow; row < onFocusRow + onFocusHeight; row ++)
                 if(!board.getNode(row, col).getCorners().isEmpty())
-                    CLICard.displayCorner(
-                        board.getNode(row, col).getCorners().getLast(),
-                        (col - onFocusCol) * 3 + boardStartCol,
-                        (row - onFocusRow) * 2 + boardStartRow
+                    for(Corner corner : board.getNode(row, col).getCorners())
+                        CLICard.displayCorner(
+                            corner,
+                            (col - onFocusCol) * 3 + boardStartCol,
+                            (row - onFocusRow) * 2 + boardStartRow
                     );
 
         CLICommand.restoreCursorPosition();
@@ -138,14 +125,6 @@ public class CLIMatchPage implements CLIPage{
                     (row - onFocusRow) * 2  + boardStartRow +
                             (corner.getPosition().getCliRowOffset() > 0 ? 2 : 0));
 
-        for(Resource resource : card.getStateCardCorners().stream().filter(Corner::isAvailable).map(Corner::getResource).filter(r -> !r.equals(Resource.EMPTY)).toList())
-            if(playerResources.containsKey(resource)) playerResources.compute(resource, (k, v) -> v + 1);
-
-        if(card instanceof StartingCard)
-            for(Resource resource : ((StartingCard) card).getMiddleResources())
-                playerResources.compute(resource, (k, v) -> v + 1);
-
-        updateResourceCounter(playerResources);
 
         CLICommand.restoreCursorPosition();
     }
@@ -249,7 +228,7 @@ public class CLIMatchPage implements CLIPage{
      */
     public static class Default implements CLIState{
         /**
-         * @param args null
+         * @param args player matrix (args[0])
          */
         @Override
         public void apply(Object[] args) {
@@ -264,18 +243,16 @@ public class CLIMatchPage implements CLIPage{
                     AnsiColor.WHITE,
                     AnsiFormat.BOLD);
 
+
             // Draw resources board
             CLIBox.draw(74,32, 20, 12, AnsiColor.WHITE);
             CLIBox.draw(74,32, "Resources", AnsiColor.WHITE);
-
-            drawResourceTable();
-            updateResourceCounter(clientPlayer.getOnMapResources());
-
+            //drawResourceTable();
 
             // Draw ranking and points
             CLIBox.draw(95,32, 20, 12, AnsiColor.WHITE);
             CLIBox.draw(95,32, "Score board", AnsiColor.WHITE);
-            updateScoreBoard(allPlayers);
+            updateScoreBoard();
 
         }
     }
@@ -315,22 +292,29 @@ public class CLIMatchPage implements CLIPage{
          */
         @Override
         public void apply(Object[] args) {
-            clearRegion(2, 2, 113, 30);
+            clearRegion(3, 5, 108, 26); //1, 2 ->golden, 3, 4-> res , 5 -> goldenDeck, 6 -> resourceDeck
 
-            for (int i = 0; i< 4; i++)
+            for (int i = 0; i< 4; i++) {
+                CLICommand.setPosition(26 + 31 * (i % 2), 7 + 12 * (i / 2));
+                AnsiString.print( "[" + (i + 1) + "]", AnsiColor.WHITE, AnsiFormat.BOLD);
                 CLICard.printPlaceableCard(
                         (PlaceableCard) args[i],
                         17 + 31 * (i % 2),
-                        9 + 10 * (i / 2));
+                        9 + 12 * (i / 2));
+            }
 
             if(args[4] != null) {
+                CLICommand.setPosition(88, 7);
+                AnsiString.print( "[" + "5" + "]", AnsiColor.WHITE, AnsiFormat.BOLD);
                 ((GoldenCard) args[4]).setFlippedState();
                 CLICard.printGoldenDeck((GoldenCard) args[4], 79, 9);
             }
 
             if (args[5] != null){
+                CLICommand.setPosition(88, 19);
+                AnsiString.print( "[" + "6" + "]", AnsiColor.WHITE, AnsiFormat.BOLD);
                 ((ResourceCard) args[5]).setFlippedState();
-                CLICard.printResourceDeck((ResourceCard) args[5], 79, 19);
+                CLICard.printResourceDeck((ResourceCard) args[5], 79, 21);
             }
 
             CLICommand.restoreCursorPosition();
@@ -392,7 +376,13 @@ public class CLIMatchPage implements CLIPage{
 
     // ------------ RESOURCES -------------- //
 
-    private static void drawResourceTable(){
+    /**
+     * This method is used to update a resource counter on the resource table
+     * @param resources HashMap<Resource, Integer> containing the resources to be updated
+     */
+    public static void updateResourceCounter(HashMap<Resource, Integer> resources){
+        clearRegion(75,35, 17, 7);
+
         for (Resource resource : onBoardResourcesPositions.keySet()){
             CLICommand.setPosition(onBoardResourcesPositions.get(resource)[0], onBoardResourcesPositions.get(resource)[1]);
             if(resource.getLetter() == null)
@@ -400,43 +390,32 @@ public class CLIMatchPage implements CLIPage{
             else
                 AnsiString.print(resource.getLetter() + ": ", resource.getColor());
 
-            System.out.println("0");
-        }
-
-        CLICommand.restoreCursorPosition();
-    }
-
-    /**
-     * This method is used to update a resource counter on the resource table
-     * @param resources HashMap<Resource, Integer> containing the resources to be updated
-     */
-    public static void updateResourceCounter(HashMap<Resource, Integer> resources){
-        for(Resource resource : resources.keySet())
-        {
-            CLICommand.setPosition(onBoardResourcesPositions.get(resource)[0] + resourceCounterOffset, onBoardResourcesPositions.get(resource)[1]);
-            System.out.println(" ".repeat(3 - String.valueOf(resources.get(resource)).length()));
-
-            CLICommand.setPosition(onBoardResourcesPositions.get(resource)[0] + resourceCounterOffset, onBoardResourcesPositions.get(resource)[1]);
-            System.out.println(resources.get(resource));
-
+            System.out.println(resources.get(resource) == null ? 0 : resources.get(resource));
         }
 
         CLICommand.restoreCursorPosition();
     }
 
     // ------------ SCORE BOARD ---------------- //
-    private static void updateScoreBoard(ArrayList<Player> players){
 
-        players.sort(Comparator.comparingInt(Player::getPoints).reversed());  // Lambda for sorting players to make scoreboard
 
-        for(Player player : players){
-            CLICommand.setPosition(97, 35 + players.indexOf(player)*2);
-            System.out.print(players.indexOf(player) + 1 + "- ");
+    private Player findPlayer(String username){
+        return allPlayers.stream().filter(player -> player.getUsername().equals(username)).findAny().orElse(null);
+    }
+
+    private static void updateScoreBoard(){
+
+        allPlayers.sort(Comparator.comparingInt(Player::getPoints).reversed());  // Lambda for sorting players to make scoreboard
+        clearRegion(97,35,17, 7);
+
+        for(Player player : allPlayers){
+            CLICommand.setPosition(97, 35 + allPlayers.indexOf(player)*2);
+            System.out.print(allPlayers.indexOf(player) + 1 + "- ");
             new CLIString (
                     player.getUsername(),
                     player.getColor().getAnsi(),
                     AnsiFormat.BOLD,
-                    100, 35 + (players.indexOf(player)*2),
+                    100, 35 + (allPlayers.indexOf(player)*2),
                     9
             ).print();
 
@@ -446,6 +425,10 @@ public class CLIMatchPage implements CLIPage{
         CLICommand.restoreCursorPosition();
     }
 
+    public void updatePlayerScore(String username, int points){
+        findPlayer(username).setPoints(points);
+        updateScoreBoard();
+    }
     // ---------------- CHAT ------------------- //
     public static void chatLog(@NotNull String sender, String message) {
         Player senderPlayer = allPlayers.stream().filter(p -> p.getUsername().equals(sender)).findFirst().orElse(new Player(0, ""));
