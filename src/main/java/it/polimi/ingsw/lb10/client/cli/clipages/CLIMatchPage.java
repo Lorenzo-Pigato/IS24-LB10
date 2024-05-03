@@ -5,6 +5,7 @@ import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiSpecial;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiString;
+import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
 import it.polimi.ingsw.lb10.server.model.Matrix;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.Resource;
@@ -206,7 +207,7 @@ public class CLIMatchPage implements CLIPage{
             CLICard.displayStartingCard(startingCard, 84, 35);
 
 
-            // User inp0ut region
+            // User input region
             CLILine.drawHorizontal(2, 44,158, AnsiColor.WHITE);
 
             CLICommand.setPosition(2,47);
@@ -469,6 +470,40 @@ public class CLIMatchPage implements CLIPage{
         }
 
         CLICommand.restoreCursorPosition();
+    }
+
+    public static void help(){
+
+        CLIBox.draw(118,2, 40, 30, AnsiColor.CYAN);
+        CLIBox.draw(118,2, 40,3, "HELP", AnsiColor.CYAN, AnsiColor.WHITE, AnsiFormat.BOLD);
+
+        new CLIString(
+                """
+                 1. help - prints out all possible commands
+                 2. flip [hand card id] - flips requested card
+                 3. show [player] - shows requested player board
+                 4. place [id] [hand card's corner] [matrix card id]
+                 5. move [col] [row] - moves the board focus area
+                 6. chat <...> - sends a message to other players
+                 7. quit - quits match
+                 """,
+                AnsiColor.WHITE, AnsiFormat.DEFAULT, 120, 6, 38
+        ).print();
+
+
+        try{
+            Thread.sleep(5000);
+        }catch (InterruptedException e){
+            //
+        }
+
+        CLIBox.draw(118,2, 40, 30, AnsiColor.PURPLE);
+        CLIBox.draw(118,2, 40,3, "Chat", AnsiColor.PURPLE, AnsiColor.WHITE, AnsiFormat.BOLD);
+
+        messages.forEach(m -> {
+            m[0].print();
+            m[1].print();
+        });
     }
 }
 
