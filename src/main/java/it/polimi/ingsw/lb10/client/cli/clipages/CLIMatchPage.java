@@ -77,7 +77,6 @@ public class CLIMatchPage implements CLIPage{
     private static int onFocusRow = defaultOnFocusRow;
 
     public static void printBoard(Matrix board){
-
         for (int col = onFocusCol; col < onFocusCol + onFocusWidth; col++)
             for (int row = onFocusRow; row < onFocusRow + onFocusHeight; row ++)
                 if(!board.getNode(row, col).getCorners().isEmpty())
@@ -92,10 +91,19 @@ public class CLIMatchPage implements CLIPage{
     }
 
     public static void moveBoard(Matrix board, int colOffset, int rowOffset){
-        clearRegion(boardStartCol - 2, boardStartRow - 1, onFocusWidth * 3, onFocusHeight * 2 + 2);
+        clearRegion(boardStartCol - 1, boardStartRow - 1, onFocusWidth * 3, onFocusHeight * 2 + 2);
 
         onFocusCol += colOffset;
         onFocusRow += rowOffset;
+        if(onFocusCol < 0 || onFocusRow < 0) {
+            onFocusCol = 0;
+            onFocusRow = 0;
+            CLIMatchPage.serverReply("Invalid <Move Board Coordinates>, positioning at coordinates [0 ; 0]");
+        }
+        if(onFocusCol > 83 - onFocusWidth)
+            onFocusCol = 83 - onFocusWidth;
+        if(onFocusRow > 83 - onFocusHeight)
+            onFocusRow = 83 - onFocusHeight;
 
         printBoard(board);
     }
@@ -267,32 +275,6 @@ public class CLIMatchPage implements CLIPage{
         }
     }
 
-//    public class OnTurn implements CLIState{
-//        /**
-//         * @param args Matrix board
-//         */
-//        @Override
-//        public void apply(@NotNull Object[] args) {
-//            Matrix board = (Matrix) args[0];
-//            Corner corner;
-//
-//            for (int col = onFocusCol; col < onFocusCol + onFocusWidth; col++) {
-//                for (int row = onFocusRow; row < onFocusRow + onFocusHeight; row++) {
-//                    corner = board.getNode(row, col).getCorners().stream().filter(c -> c.getPosition().equals(Position.TOPLEFT)).findAny().orElse(null);
-//                    if (corner != null) {
-//                        CLICommand.setPosition(
-//                                (col - onFocusCol) * 3 + boardStartCol + 1,
-//                                (row - onFocusRow) * 2 + boardStartRow - 1);
-//                        AnsiString.print("#" + corner.getId(), AnsiColor.WHITE);
-//
-//                    }
-//                }
-//            }
-//
-//            CLICommand.restoreCursorPosition();
-//        }
-//    }
-
     public static class PickCard implements CLIState{
         /**
          * @param args PlaceableCard[6] - uncovered cards on table,
@@ -330,7 +312,50 @@ public class CLIMatchPage implements CLIPage{
             CLICommand.restoreCursorPosition();
         }
     }
+    public static class Help implements CLIState{
 
+        @Override
+        public void apply(Object[] args) {
+
+            clearRegion(2, 32, 71, 12);
+
+            CLIBox.draw(2,32, 71, 12, AnsiColor.WHITE);
+            CLIBox.draw(2,32, "Help", AnsiColor.WHITE);
+
+            new CLIString(
+                    """
+                            1. <help> - prints out all possible commands
+                            2. <flip> <hand card id> - flips requested card
+                            3. <show> <player> - shows requested player board
+                            4. <place> [id] [hand card's corner] [matrix card id]
+                            5. <move> [col] [row] - moves the board focus area
+                            6. <chat> <...> - sends a message to other players
+                            7. <quit> - quits match
+                            press 'q' to quit help page
+                            """,
+                    AnsiColor.WHITE, AnsiFormat.DEFAULT, 3, 35
+            ).print();
+            Scanner in = new Scanner(System.in);
+            String input;
+            do{
+                CLICommand.restoreCursorPosition();
+                CLICommand.clearLine();
+                input =  in.nextLine();
+            }while(!input.equalsIgnoreCase("q"));
+            in.close();
+
+            // Draw hand
+            clearRegion(2, 32, 71, 12);
+            CLIBox.draw(2,32, 71, 12, AnsiColor.WHITE);
+            CLIBox.draw(2,32, "Hand", AnsiColor.WHITE);
+
+            for (int i = 1; i < 4; i++){
+                CLICommand.setPosition(13 + 23 * i, 33);
+                System.out.println("[" + (i+ 1) + "]");
+
+            }
+        }
+    }
     // -------------- UTIL ----------------- //
 
     private static void clearRegion (int col, int row, int width, int height){
@@ -472,39 +497,7 @@ public class CLIMatchPage implements CLIPage{
         CLICommand.restoreCursorPosition();
     }
 
-    public static void help(){
 
-        CLIBox.draw(118,2, 40, 30, AnsiColor.CYAN);
-        CLIBox.draw(118,2, 40,3, "HELP", AnsiColor.CYAN, AnsiColor.WHITE, AnsiFormat.BOLD);
-
-        new CLIString(
-                """
-                 1. help - prints out all possible commands
-                 2. flip [hand card id] - flips requested card
-                 3. show [player] - shows requested player board
-                 4. place [id] [hand card's corner] [matrix card id]
-                 5. move [col] [row] - moves the board focus area
-                 6. chat <...> - sends a message to other players
-                 7. quit - quits match
-                 """,
-                AnsiColor.WHITE, AnsiFormat.DEFAULT, 120, 6, 38
-        ).print();
-
-
-        try{
-            Thread.sleep(5000);
-        }catch (InterruptedException e){
-            //
-        }
-
-        CLIBox.draw(118,2, 40, 30, AnsiColor.PURPLE);
-        CLIBox.draw(118,2, 40,3, "Chat", AnsiColor.PURPLE, AnsiColor.WHITE, AnsiFormat.BOLD);
-
-        messages.forEach(m -> {
-            m[0].print();
-            m[1].print();
-        });
-    }
 }
 
 

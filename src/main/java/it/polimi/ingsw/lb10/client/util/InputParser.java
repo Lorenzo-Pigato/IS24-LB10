@@ -35,7 +35,7 @@ public class InputParser {
 
         switch (parsed[0]){
             case "move" : {
-                if(parsed.length == 3 && isValidNumber(parsed[1]) && isValidNumber(parsed[2])){
+                if(parsed.length == 3 && isValidNumber(parsed[1]) && isValidNumber(parsed[2]) && controller.getHand().size() == 3){
                     return new MoveBoardRequest(controller.getMatchId(), Integer.parseInt(parsed[1]), Integer.parseInt(parsed[2]));
                 }else{
                 return null;
@@ -122,15 +122,22 @@ public class InputParser {
     }
 
     private static Request parseOneWordCommand(String[] parsed) {
-        if(parsed[0].equalsIgnoreCase("quit")){
-            return new QuitRequest();
-        }else if(parsed[0].equalsIgnoreCase("help")){
-            //help
-            return null;
-        }else{
-            CLIMatchPage.serverReply("Invalid command, please retry or type <help> to see al commands...");
-            return null;
+        switch(parsed[0]){
+
+            case "help" -> {
+                controller.getView().getPage().changeState(new CLIMatchPage.Help());
+                controller.getView().getPage().print(null);
+                controller.getView().getPage().changeState(new CLIMatchPage.Default());
+                controller.getView().getPage().print(null);
+                CLIMatchPage.displayHand(controller.getHand());
+            }
+
+            case "quit" -> {return new QuitRequest();}
+
+            default     -> CLIMatchPage.serverReply("Invalid command, type <help> to see all commands");
         }
+
+        return null;
     }
 
     private static boolean isValidHandCard(String input){

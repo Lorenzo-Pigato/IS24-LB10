@@ -171,7 +171,7 @@
     },
     {
       "id" 			    : "20",
-      "corners"	        : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 19, "color" : "GREEN"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 20, "color" : "GREEN"},{"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "PLANT" , "id" : 20, "color" : "GREEN"},{"available" : false , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 20, "color" : "GREEN"}],
+      "corners"	        : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 20, "color" : "GREEN"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 20, "color" : "GREEN"},{"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "PLANT" , "id" : 20, "color" : "GREEN"},{"available" : false , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 20, "color" : "GREEN"}],
       "resource"        : "PLANT" ,
       "points"          : 1 ,
       "color"			: "GREEN",
@@ -328,7 +328,7 @@
 
     {
       "id" 			    : "36",
-      "corners"	        : [{"available" : false , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 36, "color" : "BLUE"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "INSECT" , "id" : 36, "color" : "BLUE"},{"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "POTION" , "id" : 36, "color" : "BLUE"},{"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "ANIMAL" , "id" : 35, "color" : "BLUE"}],
+      "corners"	        : [{"available" : false , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 36, "color" : "BLUE"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "INSECT" , "id" : 36, "color" : "BLUE"},{"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "POTION" , "id" : 36, "color" : "BLUE"},{"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "ANIMAL" , "id" : 36, "color" : "BLUE"}],
       "resource"         : "ANIMAL" , 
       "points"          : 0 ,
       "color"			: "BLUE",
