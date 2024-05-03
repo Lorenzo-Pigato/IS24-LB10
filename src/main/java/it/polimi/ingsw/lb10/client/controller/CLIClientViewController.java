@@ -136,7 +136,7 @@ public class CLIClientViewController implements ClientViewController{
      */
     @Override
     public Thread asyncWriteToSocket(Request message) {
-        return null;
+        return new Thread(() -> send(message));
     }
 
     @Override

@@ -14,7 +14,8 @@ import java.util.Map;
 
 public class QuestCounter extends Quest implements Serializable {
 
-    private Map<Resource,Integer> activationCost = new HashMap<>();
+
+    private Map<Resource,Integer> activationCost;
 
 
 @JsonCreator

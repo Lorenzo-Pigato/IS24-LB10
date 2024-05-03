@@ -14,21 +14,28 @@ public class InputParser {
     public static CLIClientViewController controller = CLIClientViewController.instance();
 
 
-    public static Request parse(String input){
+    public static Request parse(String input) {
         String[] parsed = input.split(" ");
+        if (controller.getClient().isActive()) {
 
-        if (parsed[0].equalsIgnoreCase( "chat") && !parsed[1].isEmpty()) {
-            String message = input.substring(5);
-            return new ChatRequest(controller.getMatchId(), message);
-        }
+            if (parsed[0].equalsIgnoreCase("chat") && !parsed[1].isEmpty()) {
+                String message = input.substring(5);
+                return new ChatRequest(controller.getMatchId(), message);
+            }
 
-       switch(parsed.length){
-            case 1 : return parseOneWordCommand(parsed);
-            case 2 : return parseTwoWordsCommand(parsed);
-            case 3 : return parseThreeWordCommand(parsed);
-            case 4 : return parseFourWordsCommand(parsed);
-           default : return null;
-        }
+            switch (parsed.length) {
+                case 1:
+                    return parseOneWordCommand(parsed);
+                case 2:
+                    return parseTwoWordsCommand(parsed);
+                case 3:
+                    return parseThreeWordCommand(parsed);
+                case 4:
+                    return parseFourWordsCommand(parsed);
+                default:
+                    return null;
+            }
+        }else return null;
     }
 
     private static Request parseThreeWordCommand(String[] parsed) {

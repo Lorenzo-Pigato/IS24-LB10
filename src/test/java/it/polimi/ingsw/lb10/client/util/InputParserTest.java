@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lb10.client.util;
 
+import it.polimi.ingsw.lb10.client.Client;
 import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
 import it.polimi.ingsw.lb10.network.requests.match.ChatRequest;
 import org.junit.Test;
@@ -15,6 +16,9 @@ public class InputParserTest {
     @BeforeAll
     public static void setUp() {
         InputParser.controller.setMatchId(0);
+        InputParser.controller.setClient(Client.instance());
+        InputParser.controller.getClient().setActive(true);
+
     }
 
     @Test
