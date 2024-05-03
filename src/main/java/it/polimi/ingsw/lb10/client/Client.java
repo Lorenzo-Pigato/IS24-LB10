@@ -66,6 +66,7 @@ public class Client implements Runnable{
         if (active) {
             controller.game();
         }
+        new Scanner(System.in).nextLine();
     }
     /**
      * @return the client state

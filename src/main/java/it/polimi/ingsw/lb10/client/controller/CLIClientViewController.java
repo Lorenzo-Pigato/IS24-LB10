@@ -326,10 +326,11 @@ public class CLIClientViewController implements ClientViewController{
      */
     public Thread asyncReadFromTerminal() {
         return new Thread(() -> {
-            Scanner in = new Scanner(System.in);
+
             Request futureRequest;
             while (client.isActive()) {
                 try {
+                    Scanner in = new Scanner(System.in);
                     String input = in.nextLine();
 
                     futureRequest = InputParser.parse(input);

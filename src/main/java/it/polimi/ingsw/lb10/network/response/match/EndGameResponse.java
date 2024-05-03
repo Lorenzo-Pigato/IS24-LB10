@@ -5,13 +5,17 @@ import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.ResponseVisitor;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class EndGameResponse extends Response {
-    private final String winnerUsername;
 
-    public EndGameResponse(Optional<Player> winner) {
-        this.winnerUsername = winner.map(Player::getUsername).orElse(null);
+    private Player player;
+    private ArrayList<Player> players;
+
+    public EndGameResponse(Player player, ArrayList<Player> players) {
+        this.player = player;
+        this.players = players;
     }
 
     @Override
@@ -19,5 +23,6 @@ public class EndGameResponse extends Response {
         handler.visit(this);
     }
 
-    public String getWinnerUsername() {return winnerUsername;}
+    public Player getPlayer() {return player;}
+    public ArrayList<Player> getPlayers() {return players;}
 }

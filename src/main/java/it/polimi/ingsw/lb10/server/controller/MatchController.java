@@ -65,10 +65,9 @@ public class MatchController implements Runnable, MatchRequestVisitor {
             }
         }catch(Throwable e){
             Server.log(">> " + e.getMessage());
+            remoteViews.forEach(remoteView -> remoteView.send(new TerminatedMatchResponse()));
         }
-        finally {
-            remoteViews.forEach(remoteView -> remoteView.send(new TerminatedMatchResponse())); //either match model or match controller send this, better match model via obs
-        }
+
     }
 
     public void addPlayer(Player player){
@@ -170,6 +169,8 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     public void visit(DrawResourceFromTableRequest drawResourceFromTableRequest) {
         if(isOnTurnPlayer(drawResourceFromTableRequest.getUserHash()) && hasToPick(drawResourceFromTableRequest.getUserHash())){
             model.drawResourceFromTable(getPlayer(drawResourceFromTableRequest.getUserHash()), drawResourceFromTableRequest.getIndex());
+            model.endTurn(drawResourceFromTableRequest.getUserHash(), getPlayer(drawResourceFromTableRequest.getUserHash()).getPoints());
+            model.checkDeckEmptiness();
         }else if (!isOnTurnPlayer(drawResourceFromTableRequest.getUserHash())){
             model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), drawResourceFromTableRequest.getUserHash());
         }else if(!hasToPick(drawResourceFromTableRequest.getUserHash())){
@@ -185,6 +186,8 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     public void visit(DrawResourceFromDeckRequest drawResourceFromDeckRequest) {
         if(isOnTurnPlayer(drawResourceFromDeckRequest.getUserHash()) && hasToPick(drawResourceFromDeckRequest.getUserHash())){
             model.drawResourceFromDeck(getPlayer(drawResourceFromDeckRequest.getUserHash()));
+            model.endTurn(drawResourceFromDeckRequest.getUserHash(), getPlayer(drawResourceFromDeckRequest.getUserHash()).getPoints());
+            model.checkDeckEmptiness();
         }else if (!isOnTurnPlayer(drawResourceFromDeckRequest.getUserHash())){
             model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), drawResourceFromDeckRequest.getUserHash());
         }else if(!hasToPick(drawResourceFromDeckRequest.getUserHash())){
@@ -200,6 +203,8 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     public void visit(@NotNull DrawGoldenFromDeckRequest drawGoldenFromDeckRequest) {
         if(isOnTurnPlayer(drawGoldenFromDeckRequest.getUserHash()) && hasToPick(drawGoldenFromDeckRequest.getUserHash())){
             model.drawGoldenFromDeck(getPlayer(drawGoldenFromDeckRequest.getUserHash()));
+            model.endTurn(drawGoldenFromDeckRequest.getUserHash(), getPlayer(drawGoldenFromDeckRequest.getUserHash()).getPoints());
+            model.checkDeckEmptiness();
         }else if (!isOnTurnPlayer(drawGoldenFromDeckRequest.getUserHash())){
             model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), drawGoldenFromDeckRequest.getUserHash());
         }else if(!hasToPick(drawGoldenFromDeckRequest.getUserHash())){
@@ -249,7 +254,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     @Override
     public void visit(PickRequest pickRequest) { //TEST !!
         Server.log(">> new pick request");
-            model.notify(new ShowPickingPossibilitiesResponse(model.getGoldenDeck().getCards().getLast(), model.getResourceDeck().getCards().getLast(), model.getGoldenUncovered(), model.getResourceUncovered()), pickRequest.getUserHash());
+            model.notify(new ShowPickingPossibilitiesResponse(!model.getGoldenDeck().getCards().isEmpty() ? model.getGoldenDeck().getCards().getLast() : null, !model.getResourceDeck().getCards().isEmpty() ? model.getResourceDeck().getCards().getLast() : null, model.getGoldenUncovered(), model.getResourceUncovered()), pickRequest.getUserHash());
     }
 
     /**
@@ -295,9 +300,10 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         }
         remoteViews.remove(getRemoteView(p.getUserHash()));
         model.removePlayer(p);
-        if((players.isEmpty() && !isStarted()) || (players.size() == 1 && isStarted())){
+
+        if(((players.size() < 2 && isStarted()))) {
             setActive(false);
-            //WINNER???????????????????????????????????????????????????????????????????????????????????????????????????????
+            model.notify(new EndGameResponse(players.getFirst(),players), players.getFirst().getUserHash());
         }
     }
     /**

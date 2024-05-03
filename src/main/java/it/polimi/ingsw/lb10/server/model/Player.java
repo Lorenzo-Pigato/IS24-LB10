@@ -95,6 +95,7 @@ public class Player implements Serializable {
     public ArrayList<PlaceableCard> getHand() {return hand;}
     public StartingCard getStartingCard(){return startingCard;}
     public void setStartingCard(StartingCard startingCard) {this.startingCard = startingCard;}
+    public void setFinalScore(){points = points + questPoints;}
 
 
     // --------> SETTER <--------

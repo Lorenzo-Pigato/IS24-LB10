@@ -1,4 +1,5 @@
 package it.polimi.ingsw.lb10.server.visitors.responseDespatch;
+import it.polimi.ingsw.lb10.client.cli.clipages.CLIEndOfMatchPage;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLILoginPage;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIMatchPage;
 import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
@@ -9,6 +10,8 @@ import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestsRequest;
 import it.polimi.ingsw.lb10.network.response.lobby.BooleanResponse;
 import it.polimi.ingsw.lb10.network.response.match.*;
 import it.polimi.ingsw.lb10.server.model.Player;
+import it.polimi.ingsw.lb10.server.model.cards.GoldenCard;
+import it.polimi.ingsw.lb10.server.model.cards.ResourceCard;
 
 
 public class CLIResponseHandler implements ResponseVisitor {
@@ -115,8 +118,28 @@ public class CLIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(ShowPickingPossibilitiesResponse showPickingPossibilitiesResponse) {
+        GoldenCard g1 = null;
+        GoldenCard g2 = null;
+
+        ResourceCard r1 = null;
+        ResourceCard r2 = null;
+
+        if(showPickingPossibilitiesResponse.getGoldenUncovered().size() == 2){
+            g1 = showPickingPossibilitiesResponse.getGoldenUncovered().get(0);
+            g2 = showPickingPossibilitiesResponse.getGoldenUncovered().get(1);
+        } else if (showPickingPossibilitiesResponse.getGoldenUncovered().size() == 1) {
+            g1 = showPickingPossibilitiesResponse.getGoldenUncovered().get(0);
+        }
+
+        if(showPickingPossibilitiesResponse.getResourceUncovered().size() == 2){
+            r1 = showPickingPossibilitiesResponse.getResourceUncovered().get(0);
+            r2 = showPickingPossibilitiesResponse.getResourceUncovered().get(1);
+        } else if (showPickingPossibilitiesResponse.getResourceUncovered().size() == 1) {
+            r1 = showPickingPossibilitiesResponse.getResourceUncovered().get(0);
+        }
+
         controller.getView().getPage().changeState(new CLIMatchPage.PickCard());
-        controller.getView().getPage().print(new Object[]{showPickingPossibilitiesResponse.getGoldenUncovered().get(0),showPickingPossibilitiesResponse.getGoldenUncovered().get(1), showPickingPossibilitiesResponse.getResourceUncovered().get(0), showPickingPossibilitiesResponse.getResourceUncovered().get(1), showPickingPossibilitiesResponse.getGoldenCard(),  showPickingPossibilitiesResponse.getResourceCard()});
+        controller.getView().getPage().print(new Object[]{g1, g2, r1, r2, showPickingPossibilitiesResponse.getGoldenCard(),  showPickingPossibilitiesResponse.getResourceCard()});
         CLIMatchPage.serverReply("Choose which card you want to pick by typing command <pick> <id>"); //ugly message
     }
 
@@ -140,6 +163,9 @@ public class CLIResponseHandler implements ResponseVisitor {
      */
     @Override
     public void visit(EndGameResponse endGameResponse) {
+        controller.getView().setPage(new CLIEndOfMatchPage());
+        controller.getView().getPage().print(new Object[]{endGameResponse.getPlayer(), endGameResponse.getPlayers()});
+
 
     }
 
@@ -155,6 +181,11 @@ public class CLIResponseHandler implements ResponseVisitor {
     @Override
     public void visit(MoveBoardResponse moveBoardResponse) {
         CLIMatchPage.moveBoard(moveBoardResponse.getBoard(), moveBoardResponse.getxOffset(), moveBoardResponse.getyOffset());
+    }
+
+    @Override
+    public void visit(PlayerLeftResponse playerLeftResponse) {
+        CLIMatchPage.removePlayer(playerLeftResponse.getUsername());
     }
 
 }

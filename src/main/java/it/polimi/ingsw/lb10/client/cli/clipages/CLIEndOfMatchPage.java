@@ -60,18 +60,4 @@ public class CLIEndOfMatchPage implements CLIPage{
 
     }
 
-    public static void main(String[] args) {
-        new CLIEndOfMatchPage().print(
-                new Object[] {
-                    new Player(0, "Simo"),
-                    new ArrayList<Player>(Arrays.asList(
-                            new Player(0, "Piggy"),
-                            new Player(0, "Gui"),
-                            new Player(0, "Kevin"),
-                            new Player(0, "Simo")
-
-                    ))
-        });
-
-    }
 }

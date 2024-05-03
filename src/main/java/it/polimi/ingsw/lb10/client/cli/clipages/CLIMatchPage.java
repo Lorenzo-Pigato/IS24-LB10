@@ -57,6 +57,10 @@ public class CLIMatchPage implements CLIPage{
 
     public static void setPlayers(ArrayList<Player> players) {allPlayers = players;}
     public static void setPlayer(Player clientPlayer1) {clientPlayer = clientPlayer1;}
+    public static void removePlayer(String username){
+        allPlayers.remove(allPlayers.stream().filter(player -> player.getUsername().equals(username)).findFirst().orElse(null));
+        updateScoreBoard();
+    }
 
 
     // -------------- BOARD DATA -------------- //
@@ -342,7 +346,6 @@ public class CLIMatchPage implements CLIPage{
                 CLICommand.clearLineAfterCursor();
                 input =  in.nextLine();
             }while(!input.equalsIgnoreCase("q"));
-            in.close();
 
             // Draw hand
             clearRegion(2, 32, 71, 12);

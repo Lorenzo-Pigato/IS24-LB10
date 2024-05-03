@@ -146,12 +146,29 @@ public class MatchModel extends Observable {
         notify(new PlaceStartingCardResponse(player.getStartingCard(), player.getOnMapResources(), player.getMatrix()), player.getUserHash());
     }
 
-    private void endTurn(String username, int points) {
+    public void endTurn(int userHash, int points) {
         onTurnPlayer = players.get((players.indexOf(onTurnPlayer) + 1) % players.size());
-        if (finalTurn && onTurnPlayer.equals(finalTurnPlayer))
-            endGame(players.stream().max(Comparator.comparingInt(Player::getPoints)));
-        notifyAll(new PlayerPointsUpdateResponse(username, points));
+        checkFinalTurn(getPlayer(userHash));
+        checkEndGame();
+        notifyAll(new PlayerPointsUpdateResponse(getPlayer(userHash).getUsername(), points));
         notifyAll(new ChatMessageResponse("Server", "it's " + onTurnPlayer.getUsername() + "'s turn"));
+    }
+
+    private void checkFinalTurn(Player p) {
+        if(!finalTurn && p.getPoints() >= 20){
+            finalTurnPlayer = p;
+            finalTurn = true;
+        }
+    }
+
+    private void checkEndGame() {
+        if (finalTurn && onTurnPlayer.equals(finalTurnPlayer)) {
+            players.forEach(player -> checkCounterQuestPoints(player));
+            players.forEach(player -> player.setFinalScore());
+            players.forEach(player -> notifyAll(new PlayerPointsUpdateResponse(player.getUsername(), player.getPoints())));
+            endGame();
+
+        }
     }
 
     /**
@@ -163,14 +180,6 @@ public class MatchModel extends Observable {
             ResourceCard picked = resourceDeck.drawCard();
             player.addCardOnHand(picked);
             notify(new PickedCardResponse(picked, true, null, player.getMatrix()), player.getUserHash());
-            endTurn(player.getUsername(), player.getPoints());
-            if (resourceDeck.getCards().isEmpty()) {
-                resourceDeckIsEmpty = true;
-                if (resourceDeckIsEmpty && goldenDeckIsEmpty) {
-                    //notifyAll(LAST TURN);
-                    //Could be done via chat very very cool!
-                }
-            }
         } else {
             notify(new PickedCardResponse(null, false, "Resource deck is empty!", null), player.getUserHash());
         }
@@ -187,8 +196,6 @@ public class MatchModel extends Observable {
             GoldenCard picked = goldenDeck.drawCard();
             player.addCardOnHand(picked);
             notify(new PickedCardResponse(picked, true, null, player.getMatrix()), player.getUserHash());
-            endTurn(player.getUsername(), player.getPoints());
-            checkDeckEmptiness();
         } else {
             notify(new PickedCardResponse(null, false, "Golden deck is empty!", null), player.getUserHash());
         }
@@ -216,22 +223,27 @@ public class MatchModel extends Observable {
         checkDeckEmptiness();
         player.addCardOnHand(picked);
         notify(new PickedCardResponse(picked, true, null, player.getMatrix()), player.getUserHash());
-        endTurn(player.getUsername(), player.getPoints());
+        endTurn(player.getUserHash(), player.getPoints());
     }
 
-    private void checkDeckEmptiness() {
+    public void checkDeckEmptiness() {
         if (resourceDeck.getCards().isEmpty() && !resourceDeckIsEmpty) {
             resourceDeckIsEmpty = true;
-            if (resourceDeckIsEmpty && goldenDeckIsEmpty) {
-                finalTurn = true;
-                finalTurnPlayer = onTurnPlayer;
-            }
+        }
+
+        if (goldenDeck.getCards().isEmpty() && !goldenDeckIsEmpty) {
+            goldenDeckIsEmpty = true;
+        }
+
+        if (resourceDeckIsEmpty && goldenDeckIsEmpty) {
+            finalTurn = true;
+            finalTurnPlayer = onTurnPlayer;
+            new ChatMessageResponse("Server", "It's your final turn, both decks are empty!");
         }
     }
 
     /**
-     * this method is used to pick a card from table, there are always two cards, except when golden deck is empty :
-     * in this case, client controller is notified, so that client can't even request to pick from golden deck.
+     * this method is used to pick a card from table, there are always two cards, except when golden deck is empty.
      * If both decks are empty, match status changes to last turn.
      *
      * @param player player who requested to pick a resource card from table
@@ -245,14 +257,13 @@ public class MatchModel extends Observable {
             if (!goldenDeckIsEmpty) {
                 goldenUncovered.add(index, goldenDeck.drawCard());
             }
-
         } catch (NoSuchElementException e) {
             notify(new PickedCardResponse(null, false, "Table position not avaliable!", null), player.getUserHash());
         }
         checkDeckEmptiness();
         player.addCardOnHand(picked);
         notify(new PickedCardResponse(picked, true, null, player.getMatrix()), player.getUserHash());
-        endTurn(player.getUsername(), player.getPoints());
+        endTurn(player.getUserHash(), player.getPoints());
     }
 
     public void setCardResourceOnPlayer(Player player, PlaceableCard card) {
@@ -282,6 +293,7 @@ public class MatchModel extends Observable {
 
         public void removePlayer (Player player){
             players.remove(player);
+            notifyAll(new PlayerLeftResponse(player.getUsername()));
             notifyAll(new ChatMessageResponse("Server", "player" + player.getUserHash() + "left"));
         }
 
@@ -461,8 +473,9 @@ public class MatchModel extends Observable {
         }
 
 
-        private void endGame (Optional < Player > max) {
-            notifyAll(new EndGameResponse(max));
+        private void endGame () {
+            players.forEach(player -> notify(new EndGameResponse(player, players), player.getUserHash()));
+            notifyAll(new TerminatedMatchResponse());
         }
 
 

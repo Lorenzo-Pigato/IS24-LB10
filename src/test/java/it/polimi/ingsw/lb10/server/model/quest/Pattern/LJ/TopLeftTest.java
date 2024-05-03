@@ -36,6 +36,7 @@ class TopLeftTest {
 
     @Test
     public void isPatternRightOne(){
+        setUp();
         matrix.setCard(resourceDeck.getCards().get(21));
         matrix.setCard(resourceDeck.getCards().get(22),43,41);
         matrix.setCard(resourceDeck.getCards().get(34),40,40);
