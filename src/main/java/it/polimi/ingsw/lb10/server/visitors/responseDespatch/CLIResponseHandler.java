@@ -59,8 +59,10 @@ public class CLIResponseHandler implements ResponseVisitor {
         controller.setHand(player.getHand());
         controller.setStartingCard(player.getStartingCard());
         controller.getView().setPage(new CLIMatchPage());
+
         CLIMatchPage.setPlayer(player);
         CLIMatchPage.setPlayers(response.getPlayers());
+
         controller.getView().updatePageState(new CLIMatchPage.StartingTurn());
         controller.getView().displayPage(new Object[]{player, player.getStartingCard(), player.getPrivateQuest(), response.getPublicQuests(), player.getHand()});
     }
@@ -77,7 +79,7 @@ public class CLIResponseHandler implements ResponseVisitor {
             controller.getView().getPage().changeState(new CLIMatchPage.Default());
             controller.getView().getPage().print(null);
 
-            ((CLIMatchPage)controller.getView().getPage()).printBoard(pickedCardResponse.getMatrix());
+            CLIMatchPage.printBoard(pickedCardResponse.getMatrix());
             CLIMatchPage.displayHand(controller.getHand());
 
         }else{
@@ -94,7 +96,7 @@ public class CLIResponseHandler implements ResponseVisitor {
         controller.getView().getPage().changeState(new CLIMatchPage.Default());
         controller.getView().getPage().print(null);
 
-        ((CLIMatchPage)controller.getView().getPage()).placeCard(placeStartingCardResponse.getStartingCard(), 41, 41, null);
+        CLIMatchPage.placeCard(placeStartingCardResponse.getStartingCard(), 41, 41, null);
         CLIMatchPage.updateResourceCounter(placeStartingCardResponse.getResources());
     }
 
@@ -102,7 +104,7 @@ public class CLIResponseHandler implements ResponseVisitor {
     public void visit(PlaceCardResponse placeCardResponse) {
         if(placeCardResponse.getStatus()){
             CLIMatchPage.updateResourceCounter(placeCardResponse.getPlayerResources());
-            ((CLIMatchPage)controller.getView().getPage()).placeCard(placeCardResponse.getCard(), placeCardResponse.getCol(), placeCardResponse.getRow(),controller.getHand().indexOf(controller.getHand().stream().filter(placeableCard -> placeableCard.getId() == placeCardResponse.getCard().getId()).findFirst().orElse(null)));
+            CLIMatchPage.placeCard(placeCardResponse.getCard(), placeCardResponse.getCol(), placeCardResponse.getRow(),controller.getHand().indexOf(controller.getHand().stream().filter(placeableCard -> placeableCard.getId() == placeCardResponse.getCard().getId()).findFirst().orElse(null)));
 
             controller.getHand().remove(controller.getHand().stream().filter(placeableCard -> placeableCard.getId() == placeCardResponse.getCard().getId()).findFirst().orElse(null));
             controller.send(new PickRequest(controller.getMatchId()));
@@ -129,7 +131,7 @@ public class CLIResponseHandler implements ResponseVisitor {
      */
     @Override
     public void visit(PlayerPointsUpdateResponse playerPointsUpdateResponse) {
-        ((CLIMatchPage)controller.getView().getPage()).updatePlayerScore(playerPointsUpdateResponse.getUsername(), playerPointsUpdateResponse.getPoints());
+        CLIMatchPage.updatePlayerScore(playerPointsUpdateResponse.getUsername(), playerPointsUpdateResponse.getPoints());
 
     }
 

@@ -72,10 +72,10 @@ public class CLIMatchPage implements CLIPage{
     private static final int onFocusWidth = 36;
     private static final int onFocusHeight = 12;
 
-    private int onFocusCol = defaultOnFocusCol;
-    private int onFocusRow = defaultOnFocusRow;
+    private static int onFocusCol = defaultOnFocusCol;
+    private static int onFocusRow = defaultOnFocusRow;
 
-    public void printBoard(Matrix board){
+    public static void printBoard(Matrix board){
 
         for (int col = onFocusCol; col < onFocusCol + onFocusWidth; col++)
             for (int row = onFocusRow; row < onFocusRow + onFocusHeight; row ++)
@@ -90,7 +90,7 @@ public class CLIMatchPage implements CLIPage{
         CLICommand.restoreCursorPosition();
     }
 
-    public void moveBoard(Matrix board, int colOffset, int rowOffset){
+    public static void moveBoard(Matrix board, int colOffset, int rowOffset){
         clearRegion(boardStartCol - 2, boardStartRow - 1, onFocusWidth * 3, onFocusHeight * 2 + 2);
 
         onFocusCol += colOffset;
@@ -114,7 +114,7 @@ public class CLIMatchPage implements CLIPage{
      * @param row the row OF THE MATRIX where the card will be placed
      * @param inHandPosition the position of the card in the player's hand, if the card in not the starting card
      */
-    public void placeCard(@NotNull BaseCard card, int col, int row, Integer inHandPosition){
+    public static void placeCard(@NotNull BaseCard card, int col, int row, Integer inHandPosition){
 
         if(inHandPosition != null) removeCardFromHand(inHandPosition);
 
@@ -341,10 +341,6 @@ public class CLIMatchPage implements CLIPage{
         CLICommand.restoreCursorPosition();
     }
 
-    private static void printEmptyGame(){
-
-    }
-
     // ----------- SERVER REPLY------------- //
 
     public static void serverReply(String message){
@@ -408,7 +404,7 @@ public class CLIMatchPage implements CLIPage{
     // ------------ SCORE BOARD ---------------- //
 
 
-    private Player findPlayer(String username){
+    private static Player findPlayer(String username){
         return allPlayers.stream().filter(player -> player.getUsername().equals(username)).findAny().orElse(null);
     }
 
@@ -434,7 +430,7 @@ public class CLIMatchPage implements CLIPage{
         CLICommand.restoreCursorPosition();
     }
 
-    public void updatePlayerScore(String username, int points){
+    public static void updatePlayerScore(String username, int points){
         findPlayer(username).setPoints(points);
         updateScoreBoard();
     }
