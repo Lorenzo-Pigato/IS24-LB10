@@ -2,14 +2,12 @@ package it.polimi.ingsw.lb10.client.util;
 
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIMatchPage;
 import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
-import it.polimi.ingsw.lb10.network.MoveBoardRequest;
+import it.polimi.ingsw.lb10.network.requests.match.MoveBoardRequest;
 import it.polimi.ingsw.lb10.network.requests.QuitRequest;
 import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.network.requests.match.*;
-import it.polimi.ingsw.lb10.server.Server;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
-
-import java.util.Arrays;
+import org.jetbrains.annotations.Contract;
 
 public class InputParser {
 
@@ -36,10 +34,15 @@ public class InputParser {
     private static Request parseThreeWordCommand(String[] parsed) {
 
         switch (parsed[0]){
-            case "move" -> {
-                return new MoveBoardRequest(controller.getMatchId());
+            case "move" : {
+                if(parsed.length == 3 && isValidNumber(parsed[1]) && isValidNumber(parsed[2])){
+                    return new MoveBoardRequest(controller.getMatchId(), Integer.parseInt(parsed[1]), Integer.parseInt(parsed[2]));
+                }else{
+                return null;
+                }
+
             }
-            default -> CLIMatchPage.serverReply("Invalid command, type <help> to see all commands");
+            default : CLIMatchPage.serverReply("Invalid command, type <help> to see all commands");
         }
         return null;
     }
@@ -47,7 +50,7 @@ public class InputParser {
     private static Request parseFourWordsCommand(String[] parsed) {
         switch (parsed[0]){
             case "place" : {
-                if(!(!isValidHandCard(parsed[1]) || !isValidPosition(parsed[2]) || !isValidMatrixCard(parsed[3]))) {
+                if(!(!isValidHandCard(parsed[1]) || !isValidPosition(parsed[2]) || !isValidNumber(parsed[3]))) {
                     return new PlaceCardRequest(controller.getMatchId(), controller.getHand().get(Integer.parseInt(parsed[1]) - 1), parsePosition(parsed[2]), Integer.parseInt(parsed[3]));
                 }
                 else {
@@ -154,7 +157,8 @@ public class InputParser {
         };
     }
 
-    private static boolean isValidMatrixCard(String input){
+    @Contract(pure = true)
+    private static boolean isValidNumber(String input){
         try{
             Integer.parseInt(input);
         }catch(NumberFormatException e){

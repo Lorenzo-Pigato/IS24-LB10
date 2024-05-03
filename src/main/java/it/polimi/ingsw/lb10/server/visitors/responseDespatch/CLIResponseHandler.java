@@ -154,7 +154,7 @@ public class CLIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(MoveBoardResponse moveBoardResponse) {
-
+        CLIMatchPage.moveBoard(moveBoardResponse.getBoard(), moveBoardResponse.getxOffset(), moveBoardResponse.getyOffset());
     }
 
 }

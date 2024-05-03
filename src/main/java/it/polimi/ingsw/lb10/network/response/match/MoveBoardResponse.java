@@ -7,10 +7,14 @@ import it.polimi.ingsw.lb10.server.visitors.responseDespatch.ResponseVisitor;
 
 public class MoveBoardResponse extends Response {
 
-    private Matrix board;
+    private final Matrix board;
+    private final int xOffset;
+    private final int yOffset;
 
-    public MoveBoardResponse(Matrix board) {
+    public MoveBoardResponse(Matrix board, int xOffset, int yOffset) {
         this.board = board;
+        this.xOffset = xOffset;
+        this.yOffset = yOffset;
     }
 
     @Override
@@ -19,4 +23,7 @@ public class MoveBoardResponse extends Response {
     }
 
     public Matrix getBoard() {return board;}
+
+    public int getxOffset() {return xOffset;}
+    public int getyOffset() {return yOffset;}
 }
