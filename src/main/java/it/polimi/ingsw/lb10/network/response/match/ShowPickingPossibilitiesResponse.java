@@ -5,6 +5,8 @@ import it.polimi.ingsw.lb10.server.model.cards.GoldenCard;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
 import it.polimi.ingsw.lb10.server.model.cards.ResourceCard;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
+import it.polimi.ingsw.lb10.server.visitors.responseDespatch.ResponseVisitor;
+
 import java.util.ArrayList;
 
 public class ShowPickingPossibilitiesResponse extends Response {
@@ -21,7 +23,7 @@ public class ShowPickingPossibilitiesResponse extends Response {
     }
 
     @Override
-    public void accept(CLIResponseHandler handler) {
+    public void accept(ResponseVisitor handler) {
         handler.visit(this);
     }
 

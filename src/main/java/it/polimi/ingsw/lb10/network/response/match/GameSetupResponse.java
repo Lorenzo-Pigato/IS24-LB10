@@ -4,6 +4,7 @@ import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
+import it.polimi.ingsw.lb10.server.visitors.responseDespatch.ResponseVisitor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class GameSetupResponse extends Response implements Serializable {
     }
 
     @Override
-    public void accept(CLIResponseHandler handler) {
+    public void accept(ResponseVisitor handler) {
         handler.visit(this);
     }
 

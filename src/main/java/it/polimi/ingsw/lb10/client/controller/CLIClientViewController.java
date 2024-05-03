@@ -43,6 +43,7 @@ public class CLIClientViewController implements ClientViewController{
     private Player onTurn;
     private ArrayList<PlaceableCard> hand;
     private StartingCard startingCard;
+
     private boolean startingCardHasBeenPlaced = false;
 
     public static CLIClientViewController instance(){

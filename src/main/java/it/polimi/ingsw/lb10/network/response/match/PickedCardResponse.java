@@ -5,6 +5,7 @@ import it.polimi.ingsw.lb10.server.model.Matrix;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
+import it.polimi.ingsw.lb10.server.visitors.responseDespatch.ResponseVisitor;
 
 import javax.smartcardio.Card;
 
@@ -21,7 +22,7 @@ public class PickedCardResponse extends Response {
     }
 
     @Override
-    public void accept(CLIResponseHandler handler) {
+    public void accept(ResponseVisitor handler) {
         handler.visit(this);
     }
     public PlaceableCard getCard(){

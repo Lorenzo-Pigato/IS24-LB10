@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lb10.server.visitors.requestDispatch;
 
+import it.polimi.ingsw.lb10.network.MoveBoardRequest;
 import it.polimi.ingsw.lb10.network.requests.QuitRequest;
 import it.polimi.ingsw.lb10.network.requests.match.MatchRequest;
 import it.polimi.ingsw.lb10.network.requests.match.PlaceCardRequest;
@@ -30,6 +31,5 @@ public interface LobbyRequestVisitor {
      * @param quitRequest sent by the client whwnwver he wants to leave the match or the match is terminated
      */
     void visit(QuitRequest quitRequest);
-
 
 }

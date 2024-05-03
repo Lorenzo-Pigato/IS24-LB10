@@ -1,17 +1,16 @@
 package it.polimi.ingsw.lb10.network.response.match;
 
 import it.polimi.ingsw.lb10.network.response.Response;
-import it.polimi.ingsw.lb10.server.model.Player;
+import it.polimi.ingsw.lb10.server.model.Matrix;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.ResponseVisitor;
 
-import java.util.Optional;
+public class MoveBoardResponse extends Response {
 
-public class EndGameResponse extends Response {
-    private final String winnerUsername;
+    private Matrix board;
 
-    public EndGameResponse(Optional<Player> winner) {
-        this.winnerUsername = winner.map(Player::getUsername).orElse(null);
+    public MoveBoardResponse(Matrix board) {
+        this.board = board;
     }
 
     @Override
@@ -19,5 +18,5 @@ public class EndGameResponse extends Response {
         handler.visit(this);
     }
 
-    public String getWinnerUsername() {return winnerUsername;}
+    public Matrix getBoard() {return board;}
 }

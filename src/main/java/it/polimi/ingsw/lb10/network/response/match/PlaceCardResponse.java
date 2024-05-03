@@ -4,6 +4,7 @@ import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.server.model.Resource;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
+import it.polimi.ingsw.lb10.server.visitors.responseDespatch.ResponseVisitor;
 
 import java.util.HashMap;
 
@@ -20,7 +21,7 @@ public class PlaceCardResponse extends Response {
     }
 
     @Override
-    public void accept(CLIResponseHandler handler) {
+    public void accept(ResponseVisitor handler) {
         handler.visit(this);
     }
 

@@ -147,4 +147,10 @@ public class CLIResponseHandler implements ResponseVisitor {
         CLIMatchPage.serverReply(badRequestResponse.getMessage());
     }
 
+
+    @Override
+    public void visit(MoveBoardResponse moveBoardResponse) {
+
+    }
+
 }

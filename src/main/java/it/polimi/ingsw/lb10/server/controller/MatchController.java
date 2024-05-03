@@ -1,4 +1,5 @@
 package it.polimi.ingsw.lb10.server.controller;
+import it.polimi.ingsw.lb10.network.MoveBoardRequest;
 import it.polimi.ingsw.lb10.network.requests.match.*;
 import it.polimi.ingsw.lb10.network.requests.match.DrawGoldenFromDeckRequest;
 import it.polimi.ingsw.lb10.network.response.match.*;
@@ -238,6 +239,14 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     public void visit(PickRequest pickRequest) { //TEST !!
         Server.log(">> new pick request");
             model.notify(new ShowPickingPossibilitiesResponse(model.getGoldenDeck().getCards().getLast(), model.getResourceDeck().getCards().getLast(), model.getGoldenUncovered(), model.getResourceUncovered()), pickRequest.getUserHash());
+    }
+
+    /**
+     * @param moveBoardRequest
+     */
+    @Override
+    public void visit(MoveBoardRequest moveBoardRequest){
+        model.notify( new MoveBoardResponse(model.getPlayer(moveBoardRequest.getUserHash()).getMatrix()), moveBoardRequest.getUserHash());
     }
 
     /** this method adds the remote view to the MatchController whenever a new client joins the match

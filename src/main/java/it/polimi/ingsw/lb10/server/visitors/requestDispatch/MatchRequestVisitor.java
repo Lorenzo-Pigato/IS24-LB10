@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lb10.server.visitors.requestDispatch;
 
 
+import it.polimi.ingsw.lb10.network.MoveBoardRequest;
 import it.polimi.ingsw.lb10.network.requests.match.*;
 import it.polimi.ingsw.lb10.network.requests.match.DrawGoldenFromDeckRequest;
 
@@ -29,4 +30,6 @@ public interface MatchRequestVisitor {
     void visit(PlaceCardRequest placeCardRequest);
 
     void visit(PickRequest pickRequest);
+
+    void visit(MoveBoardRequest moveBoardRequest);
 }

@@ -34,4 +34,6 @@ public interface ResponseVisitor {
     void visit(EndGameResponse endGameResponse);
 
     void visit(BadRequestResponse badRequestResponse);
+
+    void visit(MoveBoardResponse moveBoardResponse);
 }

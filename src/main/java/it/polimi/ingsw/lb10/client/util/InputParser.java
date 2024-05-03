@@ -2,61 +2,73 @@ package it.polimi.ingsw.lb10.client.util;
 
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIMatchPage;
 import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
+import it.polimi.ingsw.lb10.network.MoveBoardRequest;
 import it.polimi.ingsw.lb10.network.requests.QuitRequest;
 import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.network.requests.match.*;
+import it.polimi.ingsw.lb10.server.Server;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
+
+import java.util.Arrays;
 
 public class InputParser {
 
     public static CLIClientViewController controller = CLIClientViewController.instance();
-    /**
-     * This method parses all user inputs via command line, possible inputs :
-     * 1. <help> prints out all possible commands
-     * 2. <flip <hand card id> <tl, tr, bl, br> <matrix card id>> flips requested card
-     * 3. <show <player>> shows requested player board
-     * 4. <place <card id> <...>> places card on the board
-     * 5. <> card drawing will be procedural
-     * 6. <chat <...>> sends a message to chat
-     * 7. <quit> quits match
-     * @param input user input to be parsed
-     */
+
+
     public static Request parse(String input){
-        Request result = null;
-        String errorMessage = "";
-
         String[] parsed = input.split(" ");
-        if(parsed.length == 4){
-            if(parsed[0].equalsIgnoreCase("place") && isValidHandCard(parsed[1]) && isValidPosition(parsed[2] )&& isValidMatrixCard(parsed[3])) {
-                result = new PlaceCardRequest(controller.getMatchId(), controller.getHand().get(Integer.parseInt(parsed[1]) - 1), parsePosition(parsed[2]), Integer.parseInt(parsed[3]));
-            }
-        }else if(parsed.length == 3){ // 4
 
-        }else if(parsed.length == 2) {
-            //PICK
-            if(parsed[0].equalsIgnoreCase("pick") && "123456".contains(parsed[1]) && parsed[1].length() == 1){ //1, 2 ->golden, 3, 4-> res , 5 -> goldenDeck, 6 -> resourceDeck
-                switch (parsed[1]){
-                    case "1" -> result = new DrawGoldenFromTableRequest(controller.getMatchId(), 0);
-                    case "2" -> result = new DrawGoldenFromTableRequest(controller.getMatchId(), 1);
-                    case "3" -> result = new DrawResourceFromTableRequest(controller.getMatchId(), 0);
-                    case "4" -> result = new DrawResourceFromTableRequest(controller.getMatchId(), 1);
-                    case "5" -> result = new DrawGoldenFromDeckRequest(controller.getMatchId());
-                    case "6" -> result = new DrawResourceFromDeckRequest(controller.getMatchId());
+        if (parsed[0].equalsIgnoreCase( "chat") && !parsed[1].isEmpty()) {
+            String message = input.substring(5);
+            return new ChatRequest(controller.getMatchId(), message);
+        }
+
+       switch(parsed.length){
+            case 1 : return parseOneWordCommand(parsed);
+            case 2 : return parseTwoWordsCommand(parsed);
+            case 3 : return parseThreeWordCommand(parsed);
+            case 4 : return parseFourWordsCommand(parsed);
+           default : return null;
+        }
+    }
+
+    private static Request parseThreeWordCommand(String[] parsed) {
+
+        switch (parsed[0]){
+            case "move" -> {
+                return new MoveBoardRequest(controller.getMatchId());
+            }
+            default -> CLIMatchPage.serverReply("Invalid command, type <help> to see all commands");
+        }
+        return null;
+    }
+
+    private static Request parseFourWordsCommand(String[] parsed) {
+        switch (parsed[0]){
+            case "place" : {
+                if(!(!isValidHandCard(parsed[1]) || !isValidPosition(parsed[2]) || !isValidMatrixCard(parsed[3]))) {
+                    return new PlaceCardRequest(controller.getMatchId(), controller.getHand().get(Integer.parseInt(parsed[1]) - 1), parsePosition(parsed[2]), Integer.parseInt(parsed[3]));
                 }
-
+                else {
+                    CLIMatchPage.serverReply("Invalid card placement, type <help> to see all commands");
+                    return null;
+                }
             }
-            //CHAT
-            else if (parsed[0].equalsIgnoreCase( "chat") && !parsed[1].isEmpty()) {
-                String message = input.substring(5);
-                result = new ChatRequest(controller.getMatchId(), message);
+            default:
+                CLIMatchPage.serverReply("Invalid command, type <help> to see all commands");
+        }
+        return null;
+    }
 
-            }
-            //FLIP
-            else if(parsed[0].equals("flip") && controller.getView().getPage().getClass().equals(CLIMatchPage.class)){
+    private static Request parseTwoWordsCommand(String[] parsed) {
+        switch(parsed[0]) {
+            case ("flip") -> {
                 switch (parsed[1]) {
+
                     case "1" -> {
                         controller.flipCard(0);
-                        CLIMatchPage.flipCard(0, controller.getHand().get(0));
+                        CLIMatchPage.flipCard(0, controller.getHand().getFirst());
                     }
                     case "2" -> {
                         controller.flipCard(1);
@@ -67,35 +79,55 @@ public class InputParser {
                         CLIMatchPage.flipCard(2, controller.getHand().get(2));
                     }
                     case "s" -> {
-                        controller.flipStarting();
-                        CLIMatchPage.StartingTurn.flipStartingCard(controller.getStartingCard());
+                        if (!controller.startingCardHasBeenPlaced()) { //prevents from re drawing starting card inside table
+                            controller.flipStarting();
+                            CLIMatchPage.StartingTurn.flipStartingCard(controller.getStartingCard());
+                        } else CLIMatchPage.serverReply("Starting card has already been placed");
                     }
                     default -> CLIMatchPage.serverReply("You can flip cards in range [1] to [3] or 'S'");
                 }
             }
-            //SHOW
-            if(parsed[0].equalsIgnoreCase("show") && !parsed[1].isEmpty()){
-                result = new ShowPlayerRequest(controller.getMatchId(), parsed[1]); // 3. <show <player>> shows requested player board
+
+            case ("place") -> {
+                if(!controller.startingCardHasBeenPlaced() && parsed[1].equalsIgnoreCase("s")) {
+                    controller.setStartingCardHasBeenPlaced(true);
+                    return new PlaceStartingCardRequest(controller.getMatchId(), controller.getStartingCard());
+                }
             }
 
-            //PLACE
-            if(parsed[0].equalsIgnoreCase("place") && parsed[1].equalsIgnoreCase("s") && !controller.startingCardHasBeenPlaced()){
-                result = new PlaceStartingCardRequest(controller.getMatchId(), controller.getStartingCard());
-                controller.setStartingCardHasBeenPlaced(true);
+            case ("pick") -> {
+                switch(parsed[1]) {
+                    case "1" : return new DrawGoldenFromTableRequest(controller.getMatchId(), 0);
+                    case "2" : return new DrawGoldenFromTableRequest(controller.getMatchId(), 1);
+                    case "3" : return new DrawResourceFromTableRequest(controller.getMatchId(), 0);
+                    case "4" : return new DrawResourceFromTableRequest(controller.getMatchId(), 1);
+                    case "5" : return new DrawGoldenFromDeckRequest(controller.getMatchId());
+                    case "6" : return new DrawResourceFromDeckRequest(controller.getMatchId());
+                    default  : {
+                        CLIMatchPage.serverReply("Invalid picking id, choose between [1] and [6]");
+                        return null;
+                    }
+                }
             }
 
-        }else if(parsed.length == 1) {
-
-            if (parsed[0].equalsIgnoreCase("help")) { //1. <help> prints out all possible commands
-                //no request to submit to server
-            }else if (parsed[0].equalsIgnoreCase("quit")) {
-                result = new QuitRequest();
+            default -> {
+                CLIMatchPage.serverReply("Invalid command, type <help> to see all commands...");
+                return null;
             }
-        }else{
-            CLIMatchPage.serverReply("bad command, type <help> to see all commands");
         }
+        return null;
+    }
 
-        return result;
+    private static Request parseOneWordCommand(String[] parsed) {
+        if(parsed[0].equalsIgnoreCase("quit")){
+            return new QuitRequest();
+        }else if(parsed[0].equalsIgnoreCase("help")){
+            //help
+            return null;
+        }else{
+            CLIMatchPage.serverReply("Invalid command, please retry or type <help> to see al commands...");
+            return null;
+        }
     }
 
     private static boolean isValidHandCard(String input){
