@@ -155,6 +155,9 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     public void visit(DrawGoldenFromTableRequest drawGoldenFromTableRequest) {
         if(isOnTurnPlayer(drawGoldenFromTableRequest.getUserHash()) && hasToPick(drawGoldenFromTableRequest.getUserHash())){
             model.drawGoldenFromTable(getPlayer(drawGoldenFromTableRequest.getUserHash()), drawGoldenFromTableRequest.getIndex());
+            model.drawResourceFromTable(getPlayer(drawGoldenFromTableRequest.getUserHash()), drawGoldenFromTableRequest.getIndex());
+            model.endTurn(drawGoldenFromTableRequest.getUserHash(), getPlayer(drawGoldenFromTableRequest.getUserHash()).getPoints());
+            model.checkDeckEmptiness();
         }else if (!isOnTurnPlayer(drawGoldenFromTableRequest.getUserHash())){
             model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), drawGoldenFromTableRequest.getUserHash());
         }else if(!hasToPick(drawGoldenFromTableRequest.getUserHash())){

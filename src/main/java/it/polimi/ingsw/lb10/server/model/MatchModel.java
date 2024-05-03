@@ -220,10 +220,8 @@ public class MatchModel extends Observable {
         } catch (NoSuchElementException e) {
             notify(new PickedCardResponse(null, false, "Table position not avaliable!", null), player.getUserHash());
         }
-        checkDeckEmptiness();
         player.addCardOnHand(picked);
         notify(new PickedCardResponse(picked, true, null, player.getMatrix()), player.getUserHash());
-        endTurn(player.getUserHash(), player.getPoints());
     }
 
     public void checkDeckEmptiness() {
@@ -260,10 +258,8 @@ public class MatchModel extends Observable {
         } catch (NoSuchElementException e) {
             notify(new PickedCardResponse(null, false, "Table position not avaliable!", null), player.getUserHash());
         }
-        checkDeckEmptiness();
         player.addCardOnHand(picked);
         notify(new PickedCardResponse(picked, true, null, player.getMatrix()), player.getUserHash());
-        endTurn(player.getUserHash(), player.getPoints());
     }
 
     public void setCardResourceOnPlayer(Player player, PlaceableCard card) {

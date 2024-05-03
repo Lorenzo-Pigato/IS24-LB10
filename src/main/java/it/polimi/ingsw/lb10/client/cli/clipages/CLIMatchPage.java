@@ -293,10 +293,11 @@ public class CLIMatchPage implements CLIPage{
             for (int i = 0; i< 4; i++) {
                 CLICommand.setPosition(26 + 31 * (i % 2), 7 + 12 * (i / 2));
                 AnsiString.print( "[" + (i + 1) + "]", AnsiColor.WHITE, AnsiFormat.BOLD);
-                CLICard.printPlaceableCard(
-                        (PlaceableCard) args[i],
-                        17 + 31 * (i % 2),
-                        9 + 12 * (i / 2));
+                if(args[i] != null)
+                    CLICard.printPlaceableCard(
+                            (PlaceableCard) args[i],
+                            17 + 31 * (i % 2),
+                            9 + 12 * (i / 2));
             }
 
             if(args[4] != null) {
