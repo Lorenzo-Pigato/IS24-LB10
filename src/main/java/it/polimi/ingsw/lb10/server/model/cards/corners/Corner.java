@@ -46,7 +46,7 @@ public class Corner implements Serializable {
     }
 
     public boolean isUsedForQuest(){
-        return isUsedForQuest();
+        return usedForQuest;
     }
 
     public Resource getResource() {
@@ -82,5 +82,5 @@ public class Corner implements Serializable {
     public void setCardColor(Color cardColor) {
         this.cardColor = cardColor;
     }
-    private void setUsedForQuest(boolean usedForQuest){ this.usedForQuest=usedForQuest;}
+    public void setUsedForQuest(boolean usedForQuest){ this.usedForQuest=usedForQuest;}
 }

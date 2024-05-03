@@ -5,14 +5,20 @@ import it.polimi.ingsw.lb10.network.requests.match.DrawGoldenFromDeckRequest;
 import it.polimi.ingsw.lb10.network.response.match.*;
 import it.polimi.ingsw.lb10.server.Server;
 import it.polimi.ingsw.lb10.server.model.MatchModel;
+import it.polimi.ingsw.lb10.server.model.Node;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
+import it.polimi.ingsw.lb10.server.model.Resource;
+import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
+import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
+import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
 import it.polimi.ingsw.lb10.server.view.RemoteView;
 import java.io.IOException;
 
 import it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitor;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -65,8 +71,13 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         }
     }
 
-    public synchronized void addPlayer(Player player){
+    public void addPlayer(Player player){
         players.add(player);
+    }
+
+    // --------> GETTER <--------
+    public Position[] getPossiblePosition() {
+        return new Position[]{Position.TOPLEFT, Position.TOPRIGHT, Position.BOTTOMRIGHT, Position.BOTTOMLEFT};
     }
 
     /** this method puts the request in the BlockingQueue object to be handled by the MatchController
@@ -84,7 +95,8 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         return id;
     }
 
-    /** this method is used to handle the "JoinMatchRequest" sent by the client to the LobbyController, and from the LobbyController to the MatchController
+    /** This method is used to handle the "JoinMatchRequest"
+     *  sent by the client to the LobbyController, and from the LobbyController to the MatchController
      * in this method MatchController adds the player to his players, sends positive response and checks if the match can start. In case the match can start, sends a
      * broadcast message to all the players waiting.
      * @param jmr join match request

@@ -14,17 +14,21 @@ public class Player implements Serializable {
 
     private final int hashCode;
     private final String username;
+
     private boolean inMatch = false;
     private Matrix matrix;
+
     private final HashMap<Resource,Integer> onMapResources= new HashMap<>();
     private int points = 0;
+
     private Quest privateQuest;
     private final ArrayList<Quest> privateQuests = new ArrayList<>();
+
     private int questPoints = 0;
     private Color color;
+
     private final ArrayList<PlaceableCard> hand = new ArrayList<>();
     private StartingCard startingCard;
-
 
     public Player(int hashCode, String username) {
         this.hashCode = hashCode;
@@ -53,19 +57,22 @@ public class Player implements Serializable {
     }
 
     public void maxScore(){
-        if(getPoints()>30)
-            setPoints(30);
+        if(getPoints()>29)
+            setPoints(29);
     }
 
-    public void addPoints(int point){setPoints(point+getPoints());}
+    public void addPoints(int point){
+        setPoints(point+getPoints());
+        maxScore();
+    }
+
 
     /**
      * @param questPoints to add,
-     *                    It's important to manage the fact that the max score is 30!!!!
+     *                    It's important to manage the fact that the max score is 29!!!!
      */
     public void addQuestPoints(int questPoints){
         setQuestPoints(questPoints+getQuestPoints());
-        maxScore();
     }
 
     public void addCardOnHand(PlaceableCard card){hand.add(card);}
@@ -73,6 +80,7 @@ public class Player implements Serializable {
 
 
     // --------> GETTER <--------
+
     public int getResourceQuantity(Resource resource) {return onMapResources.getOrDefault(resource, 0);}
     public HashMap<Resource, Integer> getOnMapResources() {return onMapResources;}
     public int getPoints() {return points;}
@@ -87,6 +95,7 @@ public class Player implements Serializable {
     public ArrayList<PlaceableCard> getHand() {return hand;}
     public StartingCard getStartingCard(){return startingCard;}
     public void setStartingCard(StartingCard startingCard) {this.startingCard = startingCard;}
+
 
     // --------> SETTER <--------
     public void setMatrix(Matrix matrix) {this.matrix = matrix;}

@@ -36,36 +36,39 @@ public class Matrix implements Serializable {
     public Map<Position, int[]> parsingPositionCorners(){
             Map<Position, int[]> setIncrement = new HashMap<>();
             setIncrement.put(Position.TOPLEFT, new int[]{0, 0});
-            setIncrement.put(Position.TOPRIGHT, new int[]{0, 1});
+            setIncrement.put(Position.TOPRIGHT, new int[]{1, 0});
             setIncrement.put(Position.BOTTOMRIGHT, new int[]{1, 1});
-            setIncrement.put(Position.BOTTOMLEFT, new int[]{1, 0});
+            setIncrement.put(Position.BOTTOMLEFT, new int[]{0, 1});
         return setIncrement;
     }
 
     /**
-     * @param card is the starting card!
+     * This method is used on the test for testing stuff, in the std game is useless and unused.
      */
-    public void setCard(PlaceableCard card){
-        setCard(card,41,41);
+    public void setCard(StartingCard card){
+
+        Map<Position, int[]> setIncrement = parsingPositionCorners();
+        for (Corner corner : card.getFlippedCardCorners()) {
+            int[] delta = setIncrement.get(corner.getPosition());
+            getNode(41 + delta[0], 41 + delta[1]).addCorner(corner);
+        }
     }
 
+    public  void setCard(PlaceableCard card){
+        setCard(card,41,41);
+    }
     /**
      * @param card to set inside the matrix, it's not the staring
      *      i and j are the top-left node.
      */
     public void setCard(PlaceableCard card, int row, int column){
+        if(row >82 || column > 82){
+            return;
+        }
         Map<Position, int[]> setIncrement = parsingPositionCorners();
         for (Corner corner : card.getStateCardCorners()) {
             int[] delta = setIncrement.get(corner.getPosition());
             getNode(row + delta[0], column + delta[1]).addCorner(corner);
-        }
-    }
-
-    public void setCard(StartingCard card){
-        Map<Position, int[]> setIncrement = parsingPositionCorners();
-        for (Corner corner : card.getStateCardCorners()) {
-            int[] delta = setIncrement.get(corner.getPosition());
-            getNode(41 + delta[0], 41 + delta[1]).addCorner(corner);
         }
     }
 
@@ -82,9 +85,26 @@ public class Matrix implements Serializable {
     }
 
 
+    /**
+     * @param row and the column must be the top left corner of the card!
+     */
+    public void setUsedForQuest(int row, int column){
+
+        Position[] possiblePosition={Position.TOPLEFT, Position.TOPRIGHT, Position.BOTTOMRIGHT, Position.BOTTOMLEFT};
+        Map<Position, int[]> setIncrement = parsingPositionCorners();
+
+        for (Position position : possiblePosition ) {
+            int[] delta = setIncrement.get(position);
+            for(Corner corner: getNode(row + delta[0], column + delta[1]).getCorners())
+                if(corner.getPosition().equals(position))
+                    corner.setUsedForQuest(true);
+        }
+    }
+
     public Node getNode(int row, int column){
         return  matrix.get(row).get(column);
     }
+
 
     public ArrayList<ArrayList<Node>> getMatrix() {
         return matrix;

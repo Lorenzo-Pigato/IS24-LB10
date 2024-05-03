@@ -14,7 +14,7 @@ public abstract class BaseCard implements Serializable {
     private ArrayList<Corner> corners;
 
     public BaseCard(){}
-@JsonCreator
+    @JsonCreator
     public BaseCard(@JsonProperty("id") int id, @JsonProperty("color") Color colorCard, @JsonProperty("corners") ArrayList<Corner> corners){
         this.id=id;
         this.colorCard=colorCard;

@@ -40,9 +40,22 @@ public class QuestDeck {
         return cards;
     }
 
+<<<<<<< HEAD
     public void fillDeck(){
         ObjectMapper objectMapper = new ObjectMapper();
         ArrayList<QuestCounter> counterQuest = new ArrayList<QuestCounter>();
+=======
+    public void fillDeck() {
+
+        ObjectMapper mapper = new ObjectMapper();
+        ArrayList<QuestCounter> counterQuest = new ArrayList<QuestCounter>();
+        try {
+            counterQuest = mapper.readValue(new File("src/main/resources/counterQuestDeck.json"), new TypeReference<ArrayList<QuestCounter>>() {
+            });
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+>>>>>>> dev-model
 
         InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("counterQuestDeck.json");
         try {
@@ -55,10 +68,19 @@ public class QuestDeck {
         cards.add(new BottomLeftDiagonal(96, 2, Color.BLUE));
         cards.add(new TopLeftDiagonal(97, 2, Color.GREEN));
         cards.add(new TopLeftDiagonal(98, 2, Color.PURPLE));
+<<<<<<< HEAD
         cards.add(new BottomLeft(99,3,Color.BLUE, Color.RED));
         cards.add(new BottomLeft(100,3,Color.PURPLE, Color.BLUE));
         cards.add(new BottomRight(101,3,Color.RED, Color.GREEN));
         cards.add(new TopRight(102,3,Color.GREEN,Color.PURPLE));
     }
+=======
+>>>>>>> dev-model
 
+        cards.add(new BottomLeft(99, 3, Color.BLUE, Color.RED));
+        cards.add(new TopLeft(100, 3, Color.PURPLE, Color.BLUE));
+        cards.add(new BottonRight(101, 3, Color.RED, Color.GREEN));
+        cards.add(new TopRight(102, 3, Color.GREEN, Color.PURPLE));
+
+    }
 }

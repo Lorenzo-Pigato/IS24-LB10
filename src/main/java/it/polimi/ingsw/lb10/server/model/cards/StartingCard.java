@@ -47,6 +47,7 @@ public class StartingCard extends BaseCard implements Serializable {
         this.middleResources = middleResources;
     }
     public void setFlippedCardCorners(ArrayList<Corner> flippedCardCorners) {this.flippedCardCorners = flippedCardCorners;}
+
     // --------> GETTER <--------
 
     public ArrayList<Corner> getFlippedCardCorners() {

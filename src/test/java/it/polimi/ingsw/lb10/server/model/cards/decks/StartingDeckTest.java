@@ -19,6 +19,7 @@ public class StartingDeckTest {
         startingDeck.fillDeck();
         assertTrue(!startingDeck.getCards().isEmpty());
         assertTrue(startingDeck.getCards().size() == 6);
+
     }
 
     @Test
@@ -28,8 +29,16 @@ public class StartingDeckTest {
         StartingCard oracle = startingDeck.getCards().getLast();
         StartingCard first = startingDeck.drawCard();
         assertEquals(first, oracle);
-        assertTrue(startingDeck.getCards().size() == 5);
+        assertEquals(5, startingDeck.getCards().size());
+    }
 
+    @Test
+    public void shuffleTest(){
+        startingDeck = new StartingDeck();
+        startingDeck.fillDeck();
+        StartingCard oracle = startingDeck.getCards().getLast();
+        startingDeck.shuffle();
+        assertNotEquals(startingDeck.getCards().getLast(), oracle);
     }
 
     @Test

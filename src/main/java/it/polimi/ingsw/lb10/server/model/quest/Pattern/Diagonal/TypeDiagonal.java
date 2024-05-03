@@ -31,7 +31,8 @@ public abstract class TypeDiagonal extends Quest {
             if(corner.getPosition().equals(Position.TOPLEFT))
                 cornerToCheck=corner;
 
-        assert cornerToCheck != null;
+        if(cornerToCheck == null)
+            return false;
         return !cornerToCheck.isUsedForQuest() && cornerToCheck.getCardColor().equals(color);
 
     }

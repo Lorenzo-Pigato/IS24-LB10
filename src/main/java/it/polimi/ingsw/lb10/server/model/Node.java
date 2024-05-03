@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * It's the node of the Matrix! It may contain 2 cards, every node is a corner(free/occupied) of the card!
+ * It's the node of the Matrix! It may contain two cards, every node is a corner(free/occupied) of the card!
  */
 public class Node implements Serializable {
     private ArrayList<Corner> corners;
@@ -28,8 +28,8 @@ public class Node implements Serializable {
     }
 
     /**
-     * In the first part of the algorithm we insert the card in any case
-     * @return false if there's only 1 card or both the cards have isAvailable-->true
+     * In the first part of the algorithm, we insert the card in any case
+     * @return false if there's only one card or both the cards have isAvailable-->true
      * and @return true if one of them it's not available
      */
     public boolean checkIsNotAvailable(){
@@ -39,4 +39,5 @@ public class Node implements Serializable {
             return true;
         return false;
     }
+
 }

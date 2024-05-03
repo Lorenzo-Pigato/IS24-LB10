@@ -38,10 +38,17 @@ public class ResourceDeck {
     public void fillDeck(){
         try {
             ObjectMapper objectMapper = new ObjectMapper();
+<<<<<<< HEAD
             InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("resourceDeck.json");
             cards = objectMapper.readValue(inputStream , new TypeReference<ArrayList<ResourceCard>>() {});
         }catch (Exception e){
             e.printStackTrace();
+=======
+            File file = new File("src/main/resources/resourceDeck.json");
+            cards = objectMapper.readValue(file, new TypeReference<ArrayList<ResourceCard>>() {});
+        }catch (IOException e) {
+
+>>>>>>> dev-model
         }
     }
 
