@@ -222,19 +222,40 @@ public class CLIMatchPage implements CLIPage{
         }
     }
 
-    /**
-     * This state is used to display the game interface during normal match turns
-     * It modifies the StartingTurn state by adding the resources table and the score board
-     */
-    public static class Default implements CLIState{
+    public static class InterfaceSetup implements CLIState{
         /**
-         * @param args player matrix (args[0])
+         * This state is used to set up the cli after the "special" configuration used in "StartingTurn".
+         * This page must be applied before the "Default" state or to reset the interface
+         * @param args null
          */
         @Override
         public void apply(Object[] args) {
             // Clear starting card
             clearRegion(74, 32, 41, 12);
 
+            // Draw resources board
+            CLIBox.draw(74,32, 20, 12, AnsiColor.WHITE);
+            CLIBox.draw(74,32, "Resources", AnsiColor.WHITE);
+
+            // Draw ranking and points
+            CLIBox.draw(95,32, 20, 12, AnsiColor.WHITE);
+            CLIBox.draw(95,32, "Score board", AnsiColor.WHITE);
+            updateScoreBoard();
+
+            CLICommand.restoreCursorPosition();
+        }
+    }
+
+    /**
+     * This state is used to display the game interface during normal match turns
+     * It modifies the StartingTurn state by adding the resources table and the score board
+     */
+    public static class Default implements CLIState{
+        /**
+         * @param args player's matrix (args[0])
+         */
+        @Override
+        public void apply(Object[] args) {
             // Clear board
             clearRegion(2, 2, 113, 30);
             CLIBox.draw(2,2,113,30, AnsiColor.CYAN);
@@ -242,18 +263,6 @@ public class CLIMatchPage implements CLIPage{
                     AnsiColor.CYAN,
                     AnsiColor.WHITE,
                     AnsiFormat.BOLD);
-
-
-            // Draw resources board
-            CLIBox.draw(74,32, 20, 12, AnsiColor.WHITE);
-            CLIBox.draw(74,32, "Resources", AnsiColor.WHITE);
-            //drawResourceTable();
-
-            // Draw ranking and points
-            CLIBox.draw(95,32, 20, 12, AnsiColor.WHITE);
-            CLIBox.draw(95,32, "Score board", AnsiColor.WHITE);
-            updateScoreBoard();
-
         }
     }
 
@@ -431,11 +440,11 @@ public class CLIMatchPage implements CLIPage{
     }
     // ---------------- CHAT ------------------- //
     public static void chatLog(@NotNull String sender, String message) {
-        Player senderPlayer = allPlayers.stream().filter(p -> p.getUsername().equals(sender)).findFirst().orElse(new Player(0, ""));
+        Player senderPlayer = allPlayers.stream().filter(p -> p.getUsername().equals(sender)).findFirst().orElse(new Player(0, "Server"));
         if(senderPlayer.getUserHash() == 0) senderPlayer.setColor(Color.GREEN);
         messages.addLast(new CLIString[]{
 
-                new CLIString(senderPlayer.getUsername() + (senderPlayer.getUserHash() == 0 ? "" : ":"),
+                new CLIString(senderPlayer.getUsername() + (":"),
                         senderPlayer.getColor().getAnsi(),
                         AnsiFormat.BOLD,
                         currentChatPosition[0], currentChatPosition[1], maxMessageLength),

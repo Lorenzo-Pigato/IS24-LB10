@@ -80,7 +80,6 @@ public class CLIResponseHandler implements ResponseVisitor {
             ((CLIMatchPage)controller.getView().getPage()).printBoard(pickedCardResponse.getMatrix());
             CLIMatchPage.displayHand(controller.getHand());
 
-
         }else{
             CLIMatchPage.serverReply(pickedCardResponse.getMessage() + ", pick another card");
         }
@@ -89,9 +88,12 @@ public class CLIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(PlaceStartingCardResponse placeStartingCardResponse) {
-        controller.getView().getPage().changeState(new CLIMatchPage.Default());
-        CLIMatchPage.updateResourceCounter(placeStartingCardResponse.getResources());
+        controller.getView().getPage().changeState(new CLIMatchPage.InterfaceSetup());
         controller.getView().getPage().print(null);
+
+        controller.getView().getPage().changeState(new CLIMatchPage.Default());
+        controller.getView().getPage().print(null);
+
         ((CLIMatchPage)controller.getView().getPage()).placeCard(placeStartingCardResponse.getStartingCard(), 41, 41, null);
         CLIMatchPage.updateResourceCounter(placeStartingCardResponse.getResources());
     }

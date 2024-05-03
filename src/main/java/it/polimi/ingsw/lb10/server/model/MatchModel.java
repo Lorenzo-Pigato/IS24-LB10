@@ -141,13 +141,12 @@ public class MatchModel extends Observable{
         onTurnPlayer = players.get((players.indexOf(onTurnPlayer) + 1) % players.size());
         if(finalTurn && onTurnPlayer.equals(finalTurnPlayer)) endGame(players.stream().max(Comparator.comparingInt(Player::getPoints)));
         notifyAll(new PlayerPointsUpdateResponse(username, points));
-        notifyAll(new ChatMessageResponse("Server", "it's " + onTurnPlayer.getUsername() + "'s turn, make your move !"));
+        notifyAll(new ChatMessageResponse("Server", "it's " + onTurnPlayer.getUsername() + "'s turn"));
     }
 
     /**
      * this method id used to pick a golden card from golden deck, provides simple logic to avoid NoSuchElementException inside deck drawing:
-     * once deck is empty, a little notification is sent to the client, so that his simple logic prevents client from requesting golden deck picking again.
-     * @return picked GOLDEN card
+     * once deck is empty, a little notification is sent to the client, so that its simple logic prevents client from requesting golden deck picking again.
      */
     public void drawResourceFromDeck(Player player){
         if(!resourceDeckIsEmpty){
