@@ -424,7 +424,6 @@ public class MatchModel extends Observable {
                 int[] delta = setIncrement.get(position);
                 if (player.getMatrix().getNode(row + delta[0], column + delta[1]).getCorners().size() == 2)
                     player.deleteOnMapResources(player.getMatrix().getNode(row + delta[0], column + delta[1]).getCorners().getFirst().getResource());
-                player.getMatrix().getNode(row + delta[0], column + delta[1]).getCorners().getFirst().setResource(Resource.EMPTY); //possible error
             }
         }
 

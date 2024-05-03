@@ -36,9 +36,9 @@ public class Matrix implements Serializable {
     public Map<Position, int[]> parsingPositionCorners(){
             Map<Position, int[]> setIncrement = new HashMap<>();
             setIncrement.put(Position.TOPLEFT, new int[]{0, 0});
-            setIncrement.put(Position.TOPRIGHT, new int[]{1, 0});
+            setIncrement.put(Position.TOPRIGHT, new int[]{0, 1});
             setIncrement.put(Position.BOTTOMRIGHT, new int[]{1, 1});
-            setIncrement.put(Position.BOTTOMLEFT, new int[]{0, 1});
+            setIncrement.put(Position.BOTTOMLEFT, new int[]{1, 0});
         return setIncrement;
     }
 

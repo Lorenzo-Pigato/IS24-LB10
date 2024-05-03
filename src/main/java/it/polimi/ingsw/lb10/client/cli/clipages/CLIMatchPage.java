@@ -9,17 +9,9 @@ import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
 import it.polimi.ingsw.lb10.server.model.Matrix;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.Resource;
-<<<<<<< HEAD
 import it.polimi.ingsw.lb10.server.model.cards.*;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
-=======
-import it.polimi.ingsw.lb10.server.model.cards.Color;
-import it.polimi.ingsw.lb10.server.model.cards.GoldenCard;
-import it.polimi.ingsw.lb10.server.model.cards.ResourceCard;
-import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
-import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
->>>>>>> dev-model
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -90,10 +82,10 @@ public class CLIMatchPage implements CLIPage{
                 if(!board.getNode(row, col).getCorners().isEmpty())
                     for(Corner corner : board.getNode(row, col).getCorners())
                         CLICard.displayCorner(
-                            corner,
-                            (col - onFocusCol) * 3 + boardStartCol,
-                            (row - onFocusRow) * 2 + boardStartRow
-                    );
+                                corner,
+                                (col - onFocusCol) * 3 + boardStartCol,
+                                (row - onFocusRow) * 2 + boardStartRow
+                        );
 
         CLICommand.restoreCursorPosition();
     }
@@ -347,7 +339,7 @@ public class CLIMatchPage implements CLIPage{
             String input;
             do{
                 CLICommand.restoreCursorPosition();
-                CLICommand.clearLine();
+                CLICommand.clearLineAfterCursor();
                 input =  in.nextLine();
             }while(!input.equalsIgnoreCase("q"));
             in.close();
@@ -357,7 +349,7 @@ public class CLIMatchPage implements CLIPage{
             CLIBox.draw(2,32, 71, 12, AnsiColor.WHITE);
             CLIBox.draw(2,32, "Hand", AnsiColor.WHITE);
 
-            for (int i = 1; i < 4; i++){
+            for (int i = 0; i < 3; i++){
                 CLICommand.setPosition(13 + 23 * i, 33);
                 System.out.println("[" + (i+ 1) + "]");
 
@@ -387,7 +379,6 @@ public class CLIMatchPage implements CLIPage{
     }
 
     // ---------------- HAND ---------------- //
-<<<<<<< HEAD
     public static void displayHand(ArrayList<PlaceableCard> hand){
         for (PlaceableCard card : hand)
             addCardToHand(card, hand.indexOf(card));
@@ -400,47 +391,6 @@ public class CLIMatchPage implements CLIPage{
         CLICard.printPlaceableCard(card, col, row);
         CLICommand.restoreCursorPosition();
     }
-=======
-
-    private static void drawHandCorner(Corner corner, int col, int row) {
-//        if(corner instanceof CornerAvailable) {
-//            CLIBox.draw(col + corner.getPosition().getCliColOffset(),
-//                    row + corner.getPosition().getCliRowOffset(),
-//                    5, 3,
-//                    corner.getResource().getLetter() != null ? corner.getResource().getLetter() : "",
-//                    corner.getResource().getColor(),
-//                    corner.getResource().getColor(),
-//                    AnsiFormat.BOLD
-//            );
-//        }
-    }
-
-//    private static void addCardToHand(@NotNull Card card, int inHandPosition){
-//        int col = handUpLeftCornersPosition[inHandPosition][0];
-//        int row = handUpLeftCornersPosition[inHandPosition][1];
-//
-//        CLIBox.draw(col, row, handCardWidth, handCardHeight, card.getColor().getAnsi());
-//
-//        for (Corner corner : card.getStateCardCorners()){
-//            drawHandCorner(corner, col, row);
-//        }
-//
-//        if (card.getPoints() > 0){
-//            if(card instanceof GoldenCard) {
-//                // ------ NOT IMPLEMENTED YET ------ //
-//            }
-//            else {
-//                CLICommand.setPosition(col + 9, row+1);
-//                AnsiString.print(
-//                        card.getStateCardPoints() + "",
-//                        AnsiColor.YELLOW,
-//                        AnsiFormat.BOLD);
-//            }
-//        }
-//
-//        CLICommand.restoreCursorPosition();
-//    }
->>>>>>> dev-model
 
     private static void removeCardFromHand(int inHandPosition){
         clearRegion(
@@ -548,49 +498,4 @@ public class CLIMatchPage implements CLIPage{
     }
 
 
-<<<<<<< HEAD
-=======
-    // ------------- TEST ---------------- //
-//    public static void main(String[] args) {
-//        new CLIMatchPage().print(null);
-//        ArrayList<Corner> corners1= new ArrayList<>(List.of(new CornerAvailable(Position.BOTTOMLEFT, Resource.FEATHER)));
-//        ArrayList<Corner> corners2= new ArrayList<>(Arrays.asList(new CornerAvailable(Position.BOTTOMLEFT, Resource.FEATHER),
-//                new CornerAvailable(Position.BOTTOMRIGHT, Resource.MUSHROOM),
-//                new CornerAvailable(Position.TOPLEFT, Resource.ANIMAL)
-//        ));
-//        ArrayList<Corner> corners3= new ArrayList<>(Arrays.asList(new CornerAvailable(Position.BOTTOMLEFT, Resource.POTION),
-//                new CornerAvailable(Position.BOTTOMRIGHT, Resource.ANIMAL),
-//                new CornerAvailable(Position.TOPLEFT, Resource.PLANT)
-//        ));
-//
-//        addCardToHand(new ResourceCard(1, false, 5, corners1, Resource.ANIMAL, Color.BLUE, null, null), 0);
-//        addCardToHand(new ResourceCard(2, false, 0, corners2, Resource.MUSHROOM, Color.RED, null, null), 1);
-//        addCardToHand(new ResourceCard(3, false, 1, corners3, Resource.PLANT, Color.GREEN, null, null), 2);
-//
-//
-//        for (int i = 0; i < 3; i++) {
-//            try {
-//                Thread.sleep(700);
-//            } catch (InterruptedException e) {
-//                System.out.println(e.getMessage());
-//            }
-//
-//            removeCardFromHand(i);
-//        }
-//
-//        for (int i = 0; i < 60; i++) {
-//            try {
-//                Thread.sleep(300);
-//            } catch (InterruptedException e) {
-//                System.out.println(e.getMessage());
-//            }
-//
-//            chatLog("Player" + i, "lorem ipsum sit amet consectetur adipiscing elit", AnsiColor.CYAN);
-//        }
-//
-//    }
->>>>>>> dev-model
 }
-
-
-
