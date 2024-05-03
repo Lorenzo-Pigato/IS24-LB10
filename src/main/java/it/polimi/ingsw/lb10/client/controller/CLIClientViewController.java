@@ -127,6 +127,18 @@ public class CLIClientViewController implements ClientViewController{
         }
     }
 
+    /**
+     * This asynchronous method provides a thread to send asynchronous requests to the network layer through
+     * serialization
+     *
+     * @param message the request
+     * @return the thread
+     */
+    @Override
+    public Thread asyncWriteToSocket(Request message) {
+        return null;
+    }
+
     @Override
     public void login() {
        if(client.isActive()) {
@@ -298,25 +310,13 @@ public class CLIClientViewController implements ClientViewController{
                     Response response = (Response)socketIn.readObject();
                     response.accept(responseHandler);
                 }
-            }catch(Throwable e){
-                view.updatePageState(new CLIErrorPage.Default());
-                view.displayPage(new Object[]{"Error : ", e.getMessage()});
-                //print error -----------------------------------------------------
+            }catch(Exception e){
+                ExceptionHandler.handle(e, view);
                 close();
             }
         });
     }
 
-    /**
-     *  This asynchronous method provides a thread to send asynchronous requests to the network layer through
-     *  serialization
-     * @param message the request
-     * @return the thread
-     */
-    public Thread asyncWriteToSocket(Request message){
-        message.setUserHash(hash);
-        return new Thread(() -> send(message));
-    }
 
     /**
      * This asynchronous method is run by a separated thread to receive asynchronous requests from user command line (commands)
