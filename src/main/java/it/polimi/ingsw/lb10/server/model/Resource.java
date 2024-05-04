@@ -1,9 +1,12 @@
 package it.polimi.ingsw.lb10.server.model;
+
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public enum Resource implements Serializable {
+
     NULL(null, null),
     PATTERN(AnsiColor.YELLOW, "▛"),
 
@@ -13,13 +16,15 @@ public enum Resource implements Serializable {
     INSECT(AnsiColor.PURPLE, null),
     PLANT(AnsiColor.GREEN, null),
     FEATHER(AnsiColor.YELLOW, "F"),
-    POTION(AnsiColor.YELLOW ,"P"),
+    POTION(AnsiColor.YELLOW, "P"),
     PERGAMENA(AnsiColor.YELLOW, "S");
 
     final private AnsiColor color;
     final private String letter;
+    @Serial
+    private static final long serialVersionUID = 38L;
 
-    Resource (AnsiColor color, String string){
+    Resource(AnsiColor color, String string) {
         this.color = color;
         this.letter = string;
     }

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.lb10.server.model.cards.corners;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,8 +24,8 @@ public class Corner implements Serializable {
     @JsonProperty("color")
     private Color cardColor;
 
-@JsonCreator
-    public Corner( @JsonProperty("id") int id, @JsonProperty("available") boolean available, @JsonProperty("position") Position position, @JsonProperty("resource") Resource resource, @JsonProperty("color") Color cardColor){
+    @JsonCreator
+    public Corner(@JsonProperty("id") int id, @JsonProperty("available") boolean available, @JsonProperty("position") Position position, @JsonProperty("resource") Resource resource, @JsonProperty("color") Color cardColor) {
         this.id = id;
         this.available = available;
         this.usedForQuest = false;
@@ -45,7 +44,7 @@ public class Corner implements Serializable {
         return available;
     }
 
-    public boolean isUsedForQuest(){
+    public boolean isUsedForQuest() {
         return usedForQuest;
     }
 
@@ -82,5 +81,8 @@ public class Corner implements Serializable {
     public void setCardColor(Color cardColor) {
         this.cardColor = cardColor;
     }
-    public void setUsedForQuest(boolean usedForQuest){ this.usedForQuest=usedForQuest;}
+
+    public void setUsedForQuest(boolean usedForQuest) {
+        this.usedForQuest = usedForQuest;
+    }
 }

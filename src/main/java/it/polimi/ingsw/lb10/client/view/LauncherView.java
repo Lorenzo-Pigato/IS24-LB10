@@ -26,12 +26,12 @@ public abstract class LauncherView {
     );
 
     // ------------- SERVER STRINGS ----------- //
-    private static final CLIString startingServer = new CLIString(">> Starting Server Application <<", AnsiColor.YELLOW,0,36);
+    private static final CLIString startingServer = new CLIString(">> Starting Server Application <<", AnsiColor.YELLOW, 0, 36);
     private static final CLIString choosePort = new CLIString(
             ">> Insert server port\n>> ",
             AnsiColor.YELLOW, 0, 37
     );
-    private static final CLIString invalidPort = new CLIString(">> Invalid port number <<", AnsiColor.RED, AnsiFormat.BOLD,0,36);
+    private static final CLIString invalidPort = new CLIString(">> Invalid port number <<", AnsiColor.RED, AnsiFormat.BOLD, 0, 36);
 
     public static @NotNull String runLauncherPage() {
         CLICommand.initialize();
@@ -40,29 +40,27 @@ public abstract class LauncherView {
 
         String choice = InputVerifier.verify(new String[]{"server", "client"}, welcome, inputError, true);
 
-        if(choice.equalsIgnoreCase(("client"))) {
+        if (choice.equalsIgnoreCase(("client"))) {
             CLIString.replace(welcome, welcomePlayer);
             CLIString.replace(chooseApplication, chooseInterface);
             CLICommand.saveCursorPosition();
 
             choice += InputVerifier.verify(new String[]{"Y", "N"}, welcomePlayer, inputError, true)
                     .equalsIgnoreCase("Y") ? ":gui" : ":cli";
-        }
-
-        else{
+        } else {
             CLIString.replace(welcome, startingServer);
             CLIString.replace(chooseApplication, choosePort);
             CLICommand.saveCursorPosition();
 
             Scanner in = new Scanner(System.in);
             String input;
-            do{
+            do {
                 input = in.nextLine();
-                if(InputVerifier.isNotValidPort(input)) {
+                if (InputVerifier.isNotValidPort(input)) {
                     CLIString.replace(startingServer, invalidPort);
                     CLICommand.clearUserInput(input);
                 }
-            }while(InputVerifier.isNotValidPort(input));
+            } while (InputVerifier.isNotValidPort(input));
 
             choice += ":" + input;
         }

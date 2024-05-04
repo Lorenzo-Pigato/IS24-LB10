@@ -1,14 +1,10 @@
 package it.polimi.ingsw.lb10.server.model;
+
 import it.polimi.ingsw.lb10.network.response.match.*;
 import it.polimi.ingsw.lb10.server.Server;
 import it.polimi.ingsw.lb10.server.model.cards.*;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
-import it.polimi.ingsw.lb10.network.response.match.TerminatedMatchResponse;
-import it.polimi.ingsw.lb10.server.controller.MatchController;
-import it.polimi.ingsw.lb10.server.model.cards.GoldenCard;
-import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
-import it.polimi.ingsw.lb10.server.model.cards.ResourceCard;
 import it.polimi.ingsw.lb10.server.model.cards.decks.GoldenDeck;
 import it.polimi.ingsw.lb10.server.model.cards.decks.QuestDeck;
 import it.polimi.ingsw.lb10.server.model.cards.decks.ResourceDeck;
@@ -19,8 +15,10 @@ import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import it.polimi.ingsw.lb10.server.model.quest.QuestCounter;
 import it.polimi.ingsw.lb10.util.Observable;
 
-import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
 
 public class MatchModel extends Observable {
 
@@ -46,7 +44,6 @@ public class MatchModel extends Observable {
     private boolean terminated = false;
 
 
-
     public MatchModel(int numberOfPlayers, ArrayList<Player> players) {
         this.resourceDeck = new ResourceDeck();
         this.goldenDeck = new GoldenDeck();
@@ -56,24 +53,51 @@ public class MatchModel extends Observable {
         this.numberOfPlayers = numberOfPlayers;
     }
 
-    public ArrayList<GoldenCard> getGoldenUncovered() {return goldenUncovered;}
-    public ArrayList<ResourceCard> getResourceUncovered() {return resourceUncovered;}
-    public QuestDeck getQuestDeck() {return questDeck;}
-    public StartingDeck getStartingDeck() {return startingDeck;}
-    public ResourceDeck getResourceDeck(){return resourceDeck;}
-    public GoldenDeck getGoldenDeck(){return goldenDeck;}
-    public boolean isTerminated(){return terminated;}
-    public void terminate(){Server.log("[" + id + "]" + ">>match terminated");terminated = true; notifyAll(new TerminatedMatchResponse());}
+    public ArrayList<GoldenCard> getGoldenUncovered() {
+        return goldenUncovered;
+    }
+
+    public ArrayList<ResourceCard> getResourceUncovered() {
+        return resourceUncovered;
+    }
+
+    public QuestDeck getQuestDeck() {
+        return questDeck;
+    }
+
+    public StartingDeck getStartingDeck() {
+        return startingDeck;
+    }
+
+    public ResourceDeck getResourceDeck() {
+        return resourceDeck;
+    }
+
+    public GoldenDeck getGoldenDeck() {
+        return goldenDeck;
+    }
+
+    public boolean isTerminated() {
+        return terminated;
+    }
+
+    public void terminate() {
+        Server.log("[" + id + "]" + ">>match terminated");
+        terminated = true;
+        notifyAll(new TerminatedMatchResponse());
+    }
 
 
-    public Player getOnTurnPlayer() {return onTurnPlayer;}
+    public Player getOnTurnPlayer() {
+        return onTurnPlayer;
+    }
 
     /**
      * This method sets up the game by initializing both table status and players
      * Initializes decks [golden, resource, quest]
      * Initializes players [private quests to be chosen, pin color, first cards deal]
      */
-    public void gameSetup(){
+    public void gameSetup() {
 
         initializeDecks();
 
@@ -111,7 +135,7 @@ public class MatchModel extends Observable {
         notifyAll(new StartedMatchResponse(id));
     }
 
-    public void initializeDecks(){
+    public void initializeDecks() {
 
         resourceDeck.fillDeck();
         resourceDeck.shuffle();
@@ -153,9 +177,9 @@ public class MatchModel extends Observable {
 
     /**
      * @param userHash player userHash
-     * @param points player points
-     * this method provides logic to end a player's turn by selecting next "onTurnPlayer", checking if given player has reached 20 points,
-     * checks if game has to end by checking equaliance with "finalTurnPlayer", then
+     * @param points   player points
+     *                 this method provides logic to end a player's turn by selecting next "onTurnPlayer", checking if given player has reached 20 points,
+     *                 checks if game has to end by checking equaliance with "finalTurnPlayer", then
      */
     public void endTurn(int userHash, int points) {
         onTurnPlayer = players.get((players.indexOf(onTurnPlayer) + 1) % players.size());
@@ -167,15 +191,15 @@ public class MatchModel extends Observable {
 
     /**
      * @param p player to check on
-     * this method provides logic to check if a given player p has got to 20 or more points: in this case each one of the other players has one last turn left
-     * before game termination.
+     *          this method provides logic to check if a given player p has got to 20 or more points: in this case each one of the other players has one last turn left
+     *          before game termination.
      */
     private void checkFinalTurn(Player p) {
-        Server.log("[ "  + id + "]" + ">>checking final turn");
-        if(!finalTurn && p.getPoints() >= 20){
+        Server.log("[ " + id + "]" + ">>checking final turn");
+        if (!finalTurn && p.getPoints() >= 20) {
             finalTurnPlayer = p;
             finalTurn = true;
-            Server.log("[ "  + id + "]" + ">>final turn started, " + p.getUsername() + " reached 20 pts");
+            Server.log("[ " + id + "]" + ">>final turn started, " + p.getUsername() + " reached 20 pts");
         }
     }
 
@@ -257,7 +281,7 @@ public class MatchModel extends Observable {
         if (resourceDeckIsEmpty && goldenDeckIsEmpty) {
             finalTurn = true;
             finalTurnPlayer = onTurnPlayer;
-            Server.log("[ "  + id + "]" + ">>final turn started, both decks are empty!");
+            Server.log("[ " + id + "]" + ">>final turn started, both decks are empty!");
             new ChatMessageResponse("Server", "It's your final turn, both decks are empty!");
         }
     }
@@ -302,230 +326,230 @@ public class MatchModel extends Observable {
         }
     }
 
-        public List<Quest> getCommonQuests () {
-            return commonQuests;
+    public List<Quest> getCommonQuests() {
+        return commonQuests;
+    }
+
+
+    // --------> GETTER <--------
+
+    public void removePlayer(Player player) {
+        players.remove(player);
+        notifyAll(new PlayerLeftResponse(player.getUsername()));
+        notifyAll(new ChatMessageResponse("Server", player.getUsername() + "left"));
+    }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public Player getPlayer(int userHash) {
+        try {
+            return players.stream().filter(player -> player.getUserHash() == userHash).findFirst().orElseThrow(() -> new Exception(">>player not found in match model"));
+
+        } catch (Exception e) {
+            Server.log("[" + id + "]" + e.getMessage());
+            return null;
         }
+    }
+
+    public int getNumberOfPlayers() {
+        return numberOfPlayers;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    // --------> MODEL <-------- //
+
+    /**
+     * This method is called to insert a Card
+     * A boolean is returned to verify if the card is placeable
+     * --> At the beginning the algorithm checks if the card is flipped, with a consequent update of the state of the card.
+     * the card is placed inside the matrix if the activation cost is matched
+     */
 
 
-        // --------> GETTER <--------
+    public synchronized void insertCard(Player player, PlaceableCard card, int row, int column) {
+        boolean responseStatus = checkActivationCost(player, card);
+        if (responseStatus) {
+            player.getMatrix().setCard(card, row, column);
+            checkInsertion(player, card, row, column);
+        } else notify(new PlaceCardResponse(card, false, row, column, null), player.getUserHash());
+    }
 
-        public void removePlayer (Player player){
-            players.remove(player);
-            notifyAll(new PlayerLeftResponse(player.getUsername()));
-            notifyAll(new ChatMessageResponse("Server", "player" + player.getUserHash() + "left"));
+    public boolean checkValidMatrixCardId(int targetId, Player player) {
+        return player.getMatrix().getMatrix().stream().flatMap(col -> col.stream())
+                .flatMap(node -> node.getCorners().stream()).anyMatch(corner -> corner.getId() == targetId);
+    }
+
+    /**
+     * @param player calls the method
+     * @param card   to add
+     * @param row    row
+     * @param column column
+     *               The method that starts the Insertion rules
+     *               sends new PlaceCardResponse with status true if the card passes the tests, at the end he is correctly positioned inside the matrix
+     *               else sends new PlaceCardResponse with status false
+     */
+    public synchronized void checkInsertion(Player player, PlaceableCard card, int row, int column) {
+        ArrayList<Node> visitedNodes = new ArrayList<>();
+        if (verificationSetting(player, row, column, visitedNodes)) {
+            setCardResourceOnPlayer(player, card);
+            deleteCoveredResource(player, row, column);
+            addCardPointsOnPlayer(player, card, visitedNodes);
+            checkPatternQuest(player, row, column);
+            player.removeCardOnHand(card);//the player chooses the next card, it's a request!
+            notify(new PlaceCardResponse(card, true, row, column, player.getOnMapResources()), player.getUserHash());
+        } else {
+            player.getMatrix().deleteCard(row, column);
+            notify(new PlaceCardResponse(card, false, row, column, null), player.getUserHash());
         }
-
-        public List<Player> getPlayers () {
-            return players;
-        }
-
-        public Player getPlayer (int userHash){
-            try {
-                return players.stream().filter(player -> player.getUserHash() == userHash).findFirst().orElseThrow(() -> new Exception(">>player not found in match model"));
-
-            } catch (Exception e) {
-                Server.log("["  + id + "]" + e.getMessage());
-                return null;
-            }
-        }
-
-        public int getNumberOfPlayers () {
-            return numberOfPlayers;
-        }
-
-        public void setId ( int id){
-            this.id = id;
-        }
-
-        // --------> MODEL <-------- //
-        /**
-         *  This method is called to insert a Card
-         *  A boolean is returned to verify if the card is placeable
-         *  --> At the beginning the algorithm checks if the card is flipped, with a consequent update of the state of the card.
-         *      the card is placed inside the matrix if the activation cost is matched
-         */
+    }
 
 
-        public synchronized void insertCard (Player player, PlaceableCard card,int row, int column){
-            boolean responseStatus = checkActivationCost(player, card);
-            if (responseStatus) {
-                player.getMatrix().setCard(card, row, column);
-                checkInsertion(player, card, row, column);
-            } else notify(new PlaceCardResponse(card, false, row, column, null), player.getUserHash());
-        }
+    /**
+     * @param row and column are the top left corner of the card
+     * @return true if the card passed all the requirements
+     * it's important to remember that the card is already inserted!
+     */
+    public synchronized boolean verificationSetting(Player player, int row, int column, ArrayList<
+            Node> visitedNodes) {
+        //if one corner isn't available
+        if (!checkNotAvailability(player, row, column))
+            return false;
 
-        public boolean checkValidMatrixCardId ( int targetId, Player player){
-            return player.getMatrix().getMatrix().stream().flatMap(col -> col.stream())
-                    .flatMap(node -> node.getCorners().stream()).anyMatch(corner -> corner.getId() == targetId);
-        }
+        Map<Position, int[]> setIncrement = player.getMatrix().parsingPositionCorners();
+        int[] delta = new int[]{0, 0};
 
-        /**
-         * @param player calls the method
-         * @param card to add
-         * @param row row
-         * @param column column
-         * The method that starts the Insertion rules
-         *  sends new PlaceCardResponse with status true if the card passes the tests, at the end he is correctly positioned inside the matrix
-         *  else sends new PlaceCardResponse with status false
-         */
-        public synchronized void checkInsertion (Player player, PlaceableCard card,int row, int column){
-            ArrayList<Node> visitedNodes = new ArrayList<>();
-            if (verificationSetting(player, row, column, visitedNodes)) {
-                setCardResourceOnPlayer(player, card);
-                deleteCoveredResource(player, row, column);
-                addCardPointsOnPlayer(player, card, visitedNodes);
-                checkPatternQuest(player, row, column);
-                player.removeCardOnHand(card);//the player chooses the next card, it's a request!
-                notify(new PlaceCardResponse(card, true, row, column, player.getOnMapResources()), player.getUserHash());
-            } else {
-                player.getMatrix().deleteCard(row, column);
-                notify(new PlaceCardResponse(card, false, row, column, null), player.getUserHash());
-            }
-        }
+        for (Position position : getPossiblePosition()) {
+            //turning to the starting position
+            row -= delta[0];
+            column -= delta[1];
+            delta = setIncrement.get(position);
+            row += delta[0];
+            column += delta[1];
 
-
-        /**
-         * @param row and column are the top left corner of the card
-         * @return true if the card passed all the requirements
-         * it's important to remember that the card is already inserted!
-         */
-        public synchronized boolean verificationSetting (Player player,int row, int column, ArrayList<
-        Node > visitedNodes){
-            //if one corner isn't available
-            if (!checkNotAvailability(player, row, column))
-                return false;
-
-            Map<Position, int[]> setIncrement = player.getMatrix().parsingPositionCorners();
-            int[] delta = new int[]{0, 0};
-
-            for (Position position : getPossiblePosition()) {
-                //turning to the starting position
-                row -= delta[0];
-                column -= delta[1];
-                delta = setIncrement.get(position);
-                row += delta[0];
-                column += delta[1];
-
-                //if in the matrix node there's only the corner of the card that I want to add, there's nothing to check
-                if (player.getMatrix().getNode(row, column).getCorners().size() != 1) {
-                    //Can't be more than 2 cards on a corner!
-                    if (player.getMatrix().getNode(row, column).getCorners().size() == 3)
-                        return false;
-                    // I added the node that I visited inside the arraylist, because it has 2 corners in the node
-                    visitedNodes.add(player.getMatrix().getNode(row, column));
-                    // If I visited more than 1 node with 2 corners
-                    if (visitedNodes.size() > 1) {
-                        for (int x = 0; x < visitedNodes.size() - 1; x++) {
-                            for (int y = x + 1; y < visitedNodes.size(); y++) {
-                                if (visitedNodes.get(x).getCorners().getFirst().getId() == visitedNodes.get(y).getCorners().getFirst().getId())
-                                    return false;
-                            }
+            //if in the matrix node there's only the corner of the card that I want to add, there's nothing to check
+            if (player.getMatrix().getNode(row, column).getCorners().size() != 1) {
+                //Can't be more than 2 cards on a corner!
+                if (player.getMatrix().getNode(row, column).getCorners().size() == 3)
+                    return false;
+                // I added the node that I visited inside the arraylist, because it has 2 corners in the node
+                visitedNodes.add(player.getMatrix().getNode(row, column));
+                // If I visited more than 1 node with 2 corners
+                if (visitedNodes.size() > 1) {
+                    for (int x = 0; x < visitedNodes.size() - 1; x++) {
+                        for (int y = x + 1; y < visitedNodes.size(); y++) {
+                            if (visitedNodes.get(x).getCorners().getFirst().getId() == visitedNodes.get(y).getCorners().getFirst().getId())
+                                return false;
                         }
                     }
                 }
             }
-            //if the card doesn't cover at least one card, it's an error
-            return !visitedNodes.isEmpty();
         }
+        //if the card doesn't cover at least one card, it's an error
+        return !visitedNodes.isEmpty();
+    }
 
-        public synchronized boolean checkActivationCost (Player player, PlaceableCard card){
-            if (card.getStateCardActivationCost().isEmpty())
-                return true;
-            for (Map.Entry<Resource, Integer> entry : card.getStateCardActivationCost().entrySet())
-                if (player.getResourceQuantity(entry.getKey()) < entry.getValue()) return false;
+    public synchronized boolean checkActivationCost(Player player, PlaceableCard card) {
+        if (card.getStateCardActivationCost().isEmpty())
             return true;
+        for (Map.Entry<Resource, Integer> entry : card.getStateCardActivationCost().entrySet())
+            if (player.getResourceQuantity(entry.getKey()) < entry.getValue()) return false;
+        return true;
+    }
+
+    public synchronized boolean checkNotAvailability(Player player, int row, int column) {
+        Map<Position, int[]> setIncrement = player.getMatrix().parsingPositionCorners();
+
+        for (Position position : getPossiblePosition()) {
+            int[] delta = setIncrement.get(position);
+            if (player.getMatrix().getNode(row + delta[0], column + delta[1]).checkIsNotAvailable())
+                return false;
         }
+        return true;
+    }
 
-        public synchronized boolean checkNotAvailability (Player player,int row, int column){
-            Map<Position, int[]> setIncrement = player.getMatrix().parsingPositionCorners();
+    public synchronized void deleteCoveredResource(Player player, int row, int column) {
+        Map<Position, int[]> setIncrement = player.getMatrix().parsingPositionCorners();
 
-            for (Position position : getPossiblePosition()) {
-                int[] delta = setIncrement.get(position);
-                if (player.getMatrix().getNode(row + delta[0], column + delta[1]).checkIsNotAvailable())
-                    return false;
-            }
-            return true;
+        for (Position position : getPossiblePosition()) {
+            int[] delta = setIncrement.get(position);
+            if (player.getMatrix().getNode(row + delta[0], column + delta[1]).getCorners().size() == 2)
+                player.deleteOnMapResources(player.getMatrix().getNode(row + delta[0], column + delta[1]).getCorners().getFirst().getResource());
         }
+    }
 
-        public synchronized void deleteCoveredResource (Player player,int row, int column){
-            Map<Position, int[]> setIncrement = player.getMatrix().parsingPositionCorners();
 
-            for (Position position : getPossiblePosition()) {
-                int[] delta = setIncrement.get(position);
-                if (player.getMatrix().getNode(row + delta[0], column + delta[1]).getCorners().size() == 2)
-                    player.deleteOnMapResources(player.getMatrix().getNode(row + delta[0], column + delta[1]).getCorners().getFirst().getResource());
-            }
+    /**
+     * @param card         it's the card to add
+     * @param visitedNodes are the nodes that have been visited in the current iteration.
+     *                     This method adds the card's points in the counter of the player.
+     *                     It controls all the different cases.
+     **/
+    public void addCardPointsOnPlayer(Player player, PlaceableCard card, ArrayList<Node> visitedNodes) {
+        Resource goldenResource = card.getStateCardGoldenBuffResource();
+        if (goldenResource.equals(Resource.NULL))
+            player.addPoints(card.getStateCardPoints());
+        else if (goldenResource.equals(Resource.PATTERN))
+            player.addPoints(card.getStateCardPoints() * visitedNodes.size());
+        else if (goldenResource.equals(Resource.FEATHER) || goldenResource.equals(Resource.PERGAMENA) || goldenResource.equals(Resource.POTION))
+            player.addPoints(card.getStateCardPoints() * player.getResourceQuantity(goldenResource));
+        else
+            player.addPoints(card.getStateCardPoints());
+        visitedNodes = new ArrayList<>();
+        notifyAll(new PlayerPointsUpdateResponse(player.getUsername(), player.getPoints()));
+    }
+
+
+    private Position[] getPossiblePosition() {
+        return new Position[]{Position.TOPLEFT, Position.TOPRIGHT, Position.BOTTOMRIGHT, Position.BOTTOMLEFT};
+    }
+
+
+    public void startTurns() {
+        onTurnPlayer = players.getFirst();
+        notifyAll(new ChatMessageResponse("Server", "it's " + onTurnPlayer.getUsername() + "'s turn, make your move!"));
+    }
+
+
+    private void endGame() {
+        Server.log("[ " + id + "]" + ">>match terminated");
+        players.forEach(player -> notify(new EndGameResponse(player, players), player.getUserHash()));
+        terminated = true;
+        notifyAll(new TerminatedMatchResponse());
+    }
+
+
+    /**
+     * @param player who has the turn
+     *               This method is called at the end of the game!
+     */
+    public void checkCounterQuestPoints(Player player) {
+        ArrayList<Quest> quests = new ArrayList<>(getCommonQuests());
+        quests.add(player.getPrivateQuest());
+        for (Quest quest : quests) {
+            if (quest instanceof QuestCounter)
+                player.addQuestPoints(((QuestCounter) quest).questAlgorithm(player.getOnMapResources()));
         }
+    }
 
-
-        /**
-         * @param card it's the card to add
-         * @param visitedNodes are the nodes that have been visited in the current iteration.
-         *                     This method adds the card's points in the counter of the player.
-         *                     It controls all the different cases.
-         *
-         **/
-        public void addCardPointsOnPlayer (Player player, PlaceableCard card, ArrayList < Node > visitedNodes){
-            Resource goldenResource = card.getStateCardGoldenBuffResource();
-            if (goldenResource.equals(Resource.NULL))
-                player.addPoints(card.getStateCardPoints());
-            else if (goldenResource.equals(Resource.PATTERN))
-                player.addPoints(card.getStateCardPoints() * visitedNodes.size());
-            else if (goldenResource.equals(Resource.FEATHER) || goldenResource.equals(Resource.PERGAMENA) || goldenResource.equals(Resource.POTION))
-                player.addPoints(card.getStateCardPoints() * player.getResourceQuantity(goldenResource));
-            else
-                player.addPoints(card.getStateCardPoints());
-            visitedNodes = new ArrayList<>();
-            notifyAll(new PlayerPointsUpdateResponse(player.getUsername(), player.getPoints()));
-        }
-
-
-        private Position[] getPossiblePosition () {
-            return new Position[]{Position.TOPLEFT, Position.TOPRIGHT, Position.BOTTOMRIGHT, Position.BOTTOMLEFT};
-        }
-
-
-        public void startTurns () {
-            onTurnPlayer = players.getFirst();
-            notifyAll(new ChatMessageResponse("Server", "it's " + onTurnPlayer.getUsername() + "'s turn, make your move!"));
-        }
-
-
-        private void endGame () {
-            Server.log("[ "  + id + "]" + ">>match terminated");
-            players.forEach(player -> notify(new EndGameResponse(player, players), player.getUserHash()));
-            terminated = true;
-            notifyAll(new TerminatedMatchResponse());
-        }
-
-
-        /**
-         * @param player who has the turn
-         *  This method is called at the end of the game!
-         */
-        public void checkCounterQuestPoints (Player player){
-            ArrayList<Quest> quests = new ArrayList<>(getCommonQuests());
-            quests.add(player.getPrivateQuest());
-            for (Quest quest : quests) {
-                if (quest instanceof QuestCounter)
-                    player.addQuestPoints(((QuestCounter) quest).questAlgorithm(player.getOnMapResources()));
-            }
-        }
-
-        /**
-         * @param row and the column is the top left corner of the card,
-         *  This method is called each turn to avoid implementing an algorithm of research inside the matrix.
-         *  If there's a pattern, it will be return true;
-         *  the corners of the cards that will be useful for the patterns are marked as visited.
-         *  After the verification of the pattern are added the points.
-         */
-        public void checkPatternQuest (Player player,int row, int column){
-            ArrayList<Quest> quests = new ArrayList<>(getCommonQuests());
-            quests.add(player.getPrivateQuest());
-            for (Quest quest : quests)
-                if (quest instanceof TypeDiagonal || quest instanceof LJPattern)
-                    if (quest.isPattern(player.getMatrix(), row, column))
-                        player.addQuestPoints(quest.getPoints());
-        }
+    /**
+     * @param row and the column is the top left corner of the card,
+     *            This method is called each turn to avoid implementing an algorithm of research inside the matrix.
+     *            If there's a pattern, it will be return true;
+     *            the corners of the cards that will be useful for the patterns are marked as visited.
+     *            After the verification of the pattern are added the points.
+     */
+    public void checkPatternQuest(Player player, int row, int column) {
+        ArrayList<Quest> quests = new ArrayList<>(getCommonQuests());
+        quests.add(player.getPrivateQuest());
+        for (Quest quest : quests)
+            if (quest instanceof TypeDiagonal || quest instanceof LJPattern)
+                if (quest.isPattern(player.getMatrix(), row, column))
+                    player.addQuestPoints(quest.getPoints());
+    }
 
 }

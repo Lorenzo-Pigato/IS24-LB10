@@ -2,11 +2,9 @@ package it.polimi.ingsw.lb10.network.response.match;
 
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.server.model.Player;
-import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.ResponseVisitor;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class EndGameResponse extends Response {
 
@@ -23,6 +21,11 @@ public class EndGameResponse extends Response {
         handler.visit(this);
     }
 
-    public Player getPlayer() {return player;}
-    public ArrayList<Player> getPlayers() {return players;}
+    public Player getPlayer() {
+        return player;
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
 }

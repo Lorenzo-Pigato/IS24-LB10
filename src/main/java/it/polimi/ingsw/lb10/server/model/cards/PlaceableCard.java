@@ -1,4 +1,5 @@
 package it.polimi.ingsw.lb10.server.model.cards;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,12 +21,12 @@ public abstract class PlaceableCard extends BaseCard implements Serializable {
     @JsonProperty("goldenBuffResource")
     private Resource goldenBuffResource;
     @JsonProperty("activationCost")
-    private HashMap<Resource,Integer> activationCost;
+    private HashMap<Resource, Integer> activationCost;
     @JsonIgnore
     private StateOfTheCard stateOfTheCard;
 
-@JsonCreator
-    public PlaceableCard(int id,  Color colorCard,  ArrayList<Corner> corners,  int points, Resource resource, Resource goldenBuffResource, HashMap<Resource,Integer> activationCost) {
+    @JsonCreator
+    public PlaceableCard(int id, Color colorCard, ArrayList<Corner> corners, int points, Resource resource, Resource goldenBuffResource, HashMap<Resource, Integer> activationCost) {
         super(id, colorCard, corners);
         this.points = points;
         this.resource = resource;
@@ -34,7 +35,7 @@ public abstract class PlaceableCard extends BaseCard implements Serializable {
 
     }
 
-    public void swapState(){
+    public void swapState() {
         if (getCardState() instanceof FrontOfTheCard)
             setFlippedState();
         else
@@ -54,37 +55,49 @@ public abstract class PlaceableCard extends BaseCard implements Serializable {
     // --------> METHODS FOR THE STATE  <--------
 
     public abstract int getStateCardPoints();
+
     public abstract Resource getStateCardGoldenBuffResource();
+
     public abstract ArrayList<Corner> getStateCardCorners();
+
     public abstract Resource getStateCardMiddleResource();
+
     public abstract HashMap<Resource, Integer> getStateCardActivationCost();
 
     // --------> GETTER <--------
     public int getPoints() {
         return points;
     }
+
     public Resource getResource() {
         return resource;
     }
+
     public Resource getGoldenBuffResource() {
         return goldenBuffResource;
     }
+
     public HashMap<Resource, Integer> getActivationCost() {
         return activationCost;
     }
+
     public StateOfTheCard getCardState() {
         return stateOfTheCard;
     }
+
     // --------> SETTER <--------
     public void setPoints(int points) {
         this.points = points;
     }
+
     public void setResource(Resource resource) {
         this.resource = resource;
     }
+
     public void setGoldenBuffResource(Resource goldenBuffResource) {
         this.goldenBuffResource = goldenBuffResource;
     }
+
     public void setActivationCost(HashMap<Resource, Integer> activationCost) {
         this.activationCost = activationCost;
     }

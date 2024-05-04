@@ -14,8 +14,10 @@ public class PlayerLeftResponse extends Response {
 
     @Override
     public void accept(ResponseVisitor handler) {
-    handler.visit(this);
+        handler.visit(this);
     }
 
-    public String getUsername() {return username;}
+    public String getUsername() {
+        return username;
+    }
 }

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.lb10.network.response.match;
 
 import it.polimi.ingsw.lb10.network.response.Response;
-import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.ResponseVisitor;
 
 public class JoinMatchResponse extends Response {
@@ -19,6 +18,11 @@ public class JoinMatchResponse extends Response {
         handler.visit(this);
     }
 
-    public boolean getJoined() {return joined;}
-    public int getMatchId() {return matchId;}
+    public boolean getJoined() {
+        return joined;
+    }
+
+    public int getMatchId() {
+        return matchId;
+    }
 }

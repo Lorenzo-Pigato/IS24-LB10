@@ -23,34 +23,35 @@ public abstract class CLICommand {
         System.out.flush();
     }
 
-    public static void clearLineAfterCursor(){
+    public static void clearLineAfterCursor() {
         System.out.print("\033[0K");
         System.out.flush();
     }
 
-    public static void clearLineUntilCursor(){
+    public static void clearLineUntilCursor() {
         System.out.print("\033[1K");
         System.out.flush();
     }
 
-    public static void clearLine(){
+    public static void clearLine() {
         System.out.print("\033[2K");
         System.out.flush();
     }
 
-    public static void clearNextLines(int lineCount){
-        for(int i = 0; i < lineCount; i++) {
+    public static void clearNextLines(int lineCount) {
+        for (int i = 0; i < lineCount; i++) {
             clearLine();
-            System.out.println("\n");;
+            System.out.println("\n");
+            ;
         }
     }
 
-    public static void clearScreenAfterCursor(){
+    public static void clearScreenAfterCursor() {
         System.out.print("\033[0J");
         System.out.flush();
     }
 
-    public static void clearUserInput(String input){
+    public static void clearUserInput(String input) {
         CLICommand.restoreCursorPosition();     //Pushing back cursor to the beginning of the input
 
         for (int i = 0; i < input.length(); i++) System.out.print(" ");     //Overwriting input with spaces
@@ -61,11 +62,12 @@ public abstract class CLICommand {
 
     /**
      * This method sets current terminal windows size
+     *
      * @param cols number of terminal columns
      * @param rows number of terminal rows
      */
     public static void setScreenSize(int cols, int rows) {
-        System.out.print("\033[8;"+rows+";"+cols+"t");
+        System.out.print("\033[8;" + rows + ";" + cols + "t");
     }
 
     /**
@@ -73,7 +75,7 @@ public abstract class CLICommand {
      * clear window, cursor in (1,1)
      */
     public static void initialize(int width, int height) {
-        setScreenSize(width,height);
+        setScreenSize(width, height);
         home();
         clearScreen();
     }
@@ -89,21 +91,22 @@ public abstract class CLICommand {
 
     /**
      * Set cursor position inside window
+     *
      * @param col column position - starting at 1
      * @param row row position - starting at 1
      */
     public static void setPosition(int col, int row) {
-        if(row < 1) row = 1;
-        if(col < 1) col = 1;
+        if (row < 1) row = 1;
+        if (col < 1) col = 1;
         System.out.print("\033[" + row + ";" + col + "H");
     }
 
-    public static void saveCursorPosition(){
+    public static void saveCursorPosition() {
         System.out.print("\0337");
         System.out.flush();
     }
 
-    public static void restoreCursorPosition(){
+    public static void restoreCursorPosition() {
         System.out.print("\0338");
         System.out.flush();
     }
@@ -118,14 +121,14 @@ public abstract class CLICommand {
     }
 
 
-    public static void setInvisibleInput(){
+    public static void setInvisibleInput() {
         System.out.print("\u001B[8m");
         System.out.flush();
         System.out.print("\u001b[?25l");
         System.out.flush();
     }
 
-    public static void resetInvisibleInput(){
+    public static void resetInvisibleInput() {
         System.out.print("\u001B[28m");
         System.out.flush();
         System.out.print("\u001b[?25h");

@@ -1,9 +1,7 @@
 package it.polimi.ingsw.lb10.server.visitors.requestDispatch;
 
 
-import it.polimi.ingsw.lb10.network.requests.match.MoveBoardRequest;
 import it.polimi.ingsw.lb10.network.requests.match.*;
-import it.polimi.ingsw.lb10.network.requests.match.DrawGoldenFromDeckRequest;
 
 public interface MatchRequestVisitor {
 

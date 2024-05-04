@@ -44,13 +44,13 @@ public class CLIStartMatchPage implements CLIPage {
             CLICommand.initialize();
             CLIBanner.displayChooseQuest();
 
-            for(int i=0; i < 2; i++){
-                CLIBox.draw(23 + i*59,21,55,23,AnsiColor.WHITE);
-                CLIBox.draw(23 + i*59,41,55,3,"["+ (i+1) +"]", AnsiColor.CYAN, AnsiColor.WHITE, AnsiFormat.BOLD);
-                CLIBox.draw(45 + i*59,21,11,8,AnsiColor.YELLOW);
+            for (int i = 0; i < 2; i++) {
+                CLIBox.draw(23 + i * 59, 21, 55, 23, AnsiColor.WHITE);
+                CLIBox.draw(23 + i * 59, 41, 55, 3, "[" + (i + 1) + "]", AnsiColor.CYAN, AnsiColor.WHITE, AnsiFormat.BOLD);
+                CLIBox.draw(45 + i * 59, 21, 11, 8, AnsiColor.YELLOW);
 
-                CLIBanner.displayNumber(47 + 59*i, 22, ((Quest)args[i]).getPoints(), AnsiColor.YELLOW);
-                CLIBanner.displayQuest(args[i], 40 + 59*i,32);
+                CLIBanner.displayNumber(47 + 59 * i, 22, ((Quest) args[i]).getPoints(), AnsiColor.YELLOW);
+                CLIBanner.displayQuest(args[i], 40 + 59 * i, 32);
             }
 
             chooseQuest.centerPrint();

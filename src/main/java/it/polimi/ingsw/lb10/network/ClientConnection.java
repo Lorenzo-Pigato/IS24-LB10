@@ -7,7 +7,6 @@ import it.polimi.ingsw.lb10.server.view.RemoteView;
 import it.polimi.ingsw.lb10.server.visitors.requestDispatch.LobbyRequestVisitor;
 import it.polimi.ingsw.lb10.util.Observable;
 import it.polimi.ingsw.lb10.server.Server;
-import net.bytebuddy.implementation.bytecode.Throw;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -18,19 +17,17 @@ public class ClientConnection extends Observable implements Runnable {
     private final Socket socket;
     private ObjectInputStream input;
     private Boolean active = true;
-    private Server server;
     private final RemoteView remoteView;
-    private LobbyRequestVisitor requestHandler;
+    private final LobbyRequestVisitor requestHandler;
     private final int userHash;
 
 
-    public ClientConnection(Socket socket, Server server){
+    public ClientConnection(Socket socket) {
         this.socket = socket;
-        this.server = server;
         this.remoteView = new RemoteView(socket);
         this.requestHandler = LobbyController.instance();
         LobbyController.addRemoteView(remoteView);
-         userHash = socket.hashCode();
+        userHash = socket.hashCode();
     }
 
     public void setActive(Boolean active) {
@@ -41,30 +38,30 @@ public class ClientConnection extends Observable implements Runnable {
         return active;
     }
 
-    public void close(){
-        try{
+    public void close() {
+        try {
             input.close();
-        }catch(IOException e){
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void run(){
+    public void run() {
         setUp();//creates input Stream
 
-        try{
+        try {
             remoteView.setUp();  //sets up remote view opening output streams
             LobbyController.addRemoteView(remoteView);
-        }catch(IOException e){
+        } catch (IOException e) {
             close(); //closes the socket, client will handle an IOException
         }
         remoteView.send(new HashResponse(socket.hashCode()));
         Server.log(">>new client, assigned hashcode: " + socket.hashCode());
-        while(isActive()){
-            try{
+        while (isActive()) {
+            try {
                 Request request = (Request) (input.readObject());
                 request.accept(requestHandler);
-            }catch(Exception e){
+            } catch (Exception e) {
                 Server.log(">>client " + userHash + " closed connection");
                 LobbyController.disconnectClient(userHash); //disconnects client from lobby, which deletes player from match too!
                 setActive(false);
@@ -76,16 +73,11 @@ public class ClientConnection extends Observable implements Runnable {
     /**
      * Sets up the streams to communicate with client
      */
-    public void setUp(){
-        try{
+    public void setUp() {
+        try {
             input = new ObjectInputStream(socket.getInputStream());
-        }catch(IOException e){
+        } catch (IOException e) {
             close();
         }
     }
-
-    public int getUserHash() {
-        return userHash;
-    }
-
 }

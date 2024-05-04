@@ -4,7 +4,7 @@ import it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitor;
 
 import java.io.Serial;
 
-public class ChatRequest extends MatchRequest{
+public class ChatRequest extends MatchRequest {
     @Serial
     private static final long serialVersionUID = 17L;
 
@@ -15,7 +15,9 @@ public class ChatRequest extends MatchRequest{
         this.message = message;
     }
 
-    public String getMessage() {return this.message;}
+    public String getMessage() {
+        return this.message;
+    }
 
     /**
      * @param visitor

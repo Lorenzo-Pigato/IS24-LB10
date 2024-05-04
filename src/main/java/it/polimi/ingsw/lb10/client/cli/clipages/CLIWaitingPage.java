@@ -7,7 +7,7 @@ import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
 import org.jetbrains.annotations.NotNull;
 
-public class CLIWaitingPage implements CLIPage{
+public class CLIWaitingPage implements CLIPage {
 
     private CLIState state = new Default();
 
@@ -28,7 +28,7 @@ public class CLIWaitingPage implements CLIPage{
             CLIBanner.displayWaitingRoom();
 
             new CLIString(">> Waiting for other players to join <<", AnsiColor.CYAN, AnsiFormat.BOLD, 1, 33).centerPrint();
-            new CLIString(">> Match ID: " + args[0] + " <<" , AnsiColor.CYAN, 1, 35).centerPrint();
+            new CLIString(">> Match ID: " + args[0] + " <<", AnsiColor.CYAN, 1, 35).centerPrint();
         }
     }
 }

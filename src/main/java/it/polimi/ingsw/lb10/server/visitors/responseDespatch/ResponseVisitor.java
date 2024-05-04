@@ -5,7 +5,7 @@ import it.polimi.ingsw.lb10.network.response.match.*;
 
 public interface ResponseVisitor {
 
-    void visit (JoinMatchResponse response);
+    void visit(JoinMatchResponse response);
 
     void visit(BooleanResponse response);
 

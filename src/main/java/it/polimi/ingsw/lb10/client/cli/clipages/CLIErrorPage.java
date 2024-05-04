@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class CLIErrorPage implements CLIPage {
     private CLIState state = new Default();
+
     @Override
     public void changeState(@NotNull CLIState state) {
         this.state = state;
@@ -21,11 +22,11 @@ public class CLIErrorPage implements CLIPage {
 
     public static class Default implements CLIState {
         @Override
-        public void apply(Object @NotNull [] args){
+        public void apply(Object @NotNull [] args) {
             CLICommand.initialize();
             CLIBanner.displayError();
-           new CLIString(args[0] != null ? (String)args[0] : "", AnsiColor.RED, AnsiFormat.BOLD, 1, 33).centerPrint();
-           new CLIString(args[1] != null ? (String)args[1] : "", AnsiColor.RED, 1, 35).centerPrint();
+            new CLIString(args[0] != null ? (String) args[0] : "", AnsiColor.RED, AnsiFormat.BOLD, 1, 33).centerPrint();
+            new CLIString(args[1] != null ? (String) args[1] : "", AnsiColor.RED, 1, 35).centerPrint();
 
             CLICommand.setPosition(1, 50);
         }

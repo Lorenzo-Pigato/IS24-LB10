@@ -19,6 +19,11 @@ public class PlayerPointsUpdateResponse extends Response {
         handler.visit(this);
     }
 
-    public String getUsername() {return username;}
-    public int getPoints() {return points;}
+    public String getUsername() {
+        return username;
+    }
+
+    public int getPoints() {
+        return points;
+    }
 }

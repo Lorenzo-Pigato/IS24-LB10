@@ -1,12 +1,14 @@
 package it.polimi.ingsw.lb10.network.requests.match;
 
-import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import it.polimi.ingsw.lb10.server.visitors.requestDispatch.LobbyRequestVisitor;
 import it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitor;
 
-public class PrivateQuestSelectedRequest extends MatchRequest{
-    private static final long serialVersionUID = 26L;
+import java.io.Serial;
+
+public class PrivateQuestSelectedRequest extends MatchRequest {
+    @Serial
+    private static final long serialVersionUID = 27L;
     private Quest selectedQuest;
 
     public PrivateQuestSelectedRequest(int matchId, Quest selectedQuest) {
@@ -30,5 +32,7 @@ public class PrivateQuestSelectedRequest extends MatchRequest{
         visitor.visit(this);
     }
 
-    public Quest getSelectedQuest(){return selectedQuest;}
+    public Quest getSelectedQuest() {
+        return selectedQuest;
+    }
 }

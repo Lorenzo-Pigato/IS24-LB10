@@ -9,23 +9,23 @@ import java.net.UnknownHostException;
 
 public abstract class ExceptionHandler {
 
-    public static void handle(Exception e, ClientView view){
+    public static void handle(Exception e, ClientView view) {
         view.setPage(new CLIErrorPage());
         view.displayPage(new String[]{">> Server closed connection<<", e.getMessage()});
     }
 
-    public static void handle(UnknownHostException e, ClientView view){
+    public static void handle(UnknownHostException e, ClientView view) {
         view.setPage(new CLIErrorPage());
         view.displayPage(new String[]{">> Error closing sockets <<", e.getMessage()});
     }
 
-    public static void handle(IOException e, ClientView view){
+    public static void handle(IOException e, ClientView view) {
         view.setPage(new CLIErrorPage());
-        view.displayPage(new String[] {">> Server closed connection <<", e.getMessage()});
+        view.displayPage(new String[]{">> Server closed connection <<", e.getMessage()});
     }
 
-    public static void handle(ConnectionErrorException e, ClientView view){
+    public static void handle(ConnectionErrorException e, ClientView view) {
         view.setPage(new CLI404Page());
-        view.displayPage(new String[] {">> Server closed connection <<", e.getMessage()});
+        view.displayPage(new String[]{">> Server closed connection <<", e.getMessage()});
     }
 }

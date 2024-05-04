@@ -3,7 +3,6 @@ package it.polimi.ingsw.lb10.network.response.match;
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
-import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.ResponseVisitor;
 
 import java.io.Serializable;
@@ -24,6 +23,11 @@ public class GameSetupResponse extends Response implements Serializable {
         handler.visit(this);
     }
 
-    public ArrayList<Player> getPlayers() {return players;}
-    public ArrayList<Quest> getPublicQuests() {return publicQuests;}
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    public ArrayList<Quest> getPublicQuests() {
+        return publicQuests;
+    }
 }

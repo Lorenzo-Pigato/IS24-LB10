@@ -11,9 +11,9 @@ import java.util.NoSuchElementException;
 
 public class ResourceDeck {
 
-    private ArrayList<ResourceCard> cards ;
+    private ArrayList<ResourceCard> cards;
 
-    public ResourceDeck(){
+    public ResourceDeck() {
         cards = new ArrayList<>();
     }
 
@@ -23,8 +23,8 @@ public class ResourceDeck {
     }
 
     public ResourceCard drawCard() throws NoSuchElementException {
-            ResourceCard card = cards.getLast();
-            cards.removeLast();
+        ResourceCard card = cards.getLast();
+        cards.removeLast();
         return card;
     }
 
@@ -35,13 +35,14 @@ public class ResourceDeck {
     /**
      * This method calls the json with the complete resource cards' deck
      */
-    public void fillDeck(){
+    public void fillDeck() {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("resourceDeck.json");
-            cards = objectMapper.readValue(inputStream , new TypeReference<ArrayList<ResourceCard>>() {});
-        }catch (Exception e){
-            throw  new RuntimeException("Error loading json");
+            cards = objectMapper.readValue(inputStream, new TypeReference<ArrayList<ResourceCard>>() {
+            });
+        } catch (Exception e) {
+            throw new RuntimeException("Error loading json");
         }
     }
 

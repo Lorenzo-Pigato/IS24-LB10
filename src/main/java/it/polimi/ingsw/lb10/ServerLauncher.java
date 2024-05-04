@@ -20,7 +20,7 @@ public class ServerLauncher {
             serverThread.join();
         } catch (Exception e) {
             CLICommand.initialize(80, 50);
-            CLIBanner.displayError(17,2);
+            CLIBanner.displayError(17, 2);
 
             CLICommand.setPosition(2, 14);
 

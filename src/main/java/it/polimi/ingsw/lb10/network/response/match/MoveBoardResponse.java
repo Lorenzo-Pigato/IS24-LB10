@@ -2,7 +2,6 @@ package it.polimi.ingsw.lb10.network.response.match;
 
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.server.model.Matrix;
-import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.ResponseVisitor;
 
 public class MoveBoardResponse extends Response {
@@ -22,8 +21,15 @@ public class MoveBoardResponse extends Response {
         handler.visit(this);
     }
 
-    public Matrix getBoard() {return board;}
+    public Matrix getBoard() {
+        return board;
+    }
 
-    public int getxOffset() {return xOffset;}
-    public int getyOffset() {return yOffset;}
+    public int getxOffset() {
+        return xOffset;
+    }
+
+    public int getyOffset() {
+        return yOffset;
+    }
 }
