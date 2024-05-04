@@ -156,15 +156,19 @@ public class LobbyController implements LobbyRequestVisitor {
                 .findFirst().orElse(null);
     }
 
-    public void  terminateMatch(int matchId){
-        matches.stream().filter(matchController-> matchController.getMatchId() == matchId).findFirst().get().getPlayers().forEach(player -> disconnectClient(player.getUserHash()));
+    private static void  terminateMatch(int matchId){
+//        matches.stream().filter(matchController-> matchController.getMatchId() == matchId).findFirst().get().getPlayers().forEach(player -> disconnectClient(player.getUserHash()));
         matches.remove(matches.stream().filter(matchController -> matchController.getMatchId() == matchId).findFirst().get());
     }
     public static synchronized void disconnectClient(int userHash){
         Server.log(">>disconnecting client [username : " + getPlayer(userHash).getUsername() + "]");
         Player player = getPlayer(userHash);
+        MatchController controller = getController(userHash);
        if (player.isInMatch()){
-           getController(userHash).removePlayer(player);
+           controller.removePlayer(player);
+           if(controller.isTerminated()){
+               terminateMatch(controller.getMatchId());
+           }
        }
        signedPlayers.remove(getPlayer(userHash));
         try {

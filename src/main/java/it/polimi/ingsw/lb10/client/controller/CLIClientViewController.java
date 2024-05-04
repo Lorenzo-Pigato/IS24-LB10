@@ -66,7 +66,7 @@ public class CLIClientViewController implements ClientViewController{
     public ArrayList<PlaceableCard> getHand() {return hand;}
     public StartingCard getStartingCard() {return startingCard;}
     public void setStartingCardHasBeenPlaced(boolean status){this.startingCardHasBeenPlaced = status;}
-    public boolean startingCardHasBeenPlaced(){return startingCardHasBeenPlaced;}
+    public boolean startingCardHasBeenPlaced(){return !startingCardHasBeenPlaced;}
     /**
      *
      */
@@ -182,9 +182,13 @@ public class CLIClientViewController implements ClientViewController{
                    String[] splitInput = input.split(" ");
 
                    if (splitInput[0].equalsIgnoreCase("join") && splitInput.length == 2) {
-                       send(new LobbyToMatchRequest(Integer.parseInt(splitInput[1])));
-                       syncReceive().accept(responseHandler);
-
+                       try{
+                           Integer.parseInt(splitInput[1]);
+                           send(new LobbyToMatchRequest(Integer.parseInt(splitInput[1])));
+                           syncReceive().accept(responseHandler);
+                       }catch(NumberFormatException e){
+                           view.updatePageState(new CLILobbyPage.InvalidInput());
+                       }
                        if (!client.isInMatch()) view.updatePageState(new CLILobbyPage.InvalidInput());
 
                    } else if (splitInput[0].equalsIgnoreCase("new") && splitInput.length == 2) {

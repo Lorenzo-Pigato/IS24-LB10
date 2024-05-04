@@ -7,6 +7,8 @@ import it.polimi.ingsw.lb10.server.view.RemoteView;
 import it.polimi.ingsw.lb10.server.visitors.requestDispatch.LobbyRequestVisitor;
 import it.polimi.ingsw.lb10.util.Observable;
 import it.polimi.ingsw.lb10.server.Server;
+import net.bytebuddy.implementation.bytecode.Throw;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
@@ -43,13 +45,13 @@ public class ClientConnection extends Observable implements Runnable {
         try{
             input.close();
         }catch(IOException e){
-            close();
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
     public void run(){
         setUp();//creates input Stream
+
         try{
             remoteView.setUp();  //sets up remote view opening output streams
             LobbyController.addRemoteView(remoteView);

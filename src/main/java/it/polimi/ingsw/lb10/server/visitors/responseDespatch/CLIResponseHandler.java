@@ -81,7 +81,6 @@ public class CLIResponseHandler implements ResponseVisitor {
             controller.getHand().add(pickedCardResponse.getCard());
             controller.getView().getPage().changeState(new CLIMatchPage.Default());
             controller.getView().getPage().print(null);
-
             CLIMatchPage.printBoard(pickedCardResponse.getMatrix());
             CLIMatchPage.displayHand(controller.getHand());
 

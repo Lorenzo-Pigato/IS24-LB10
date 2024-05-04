@@ -43,6 +43,9 @@ public class MatchModel extends Observable {
     private final ArrayList<GoldenCard> goldenUncovered = new ArrayList<>();
     private final ArrayList<ResourceCard> resourceUncovered = new ArrayList<>();
 
+    private boolean terminated = false;
+
+
 
     public MatchModel(int numberOfPlayers, ArrayList<Player> players) {
         this.resourceDeck = new ResourceDeck();
@@ -59,6 +62,8 @@ public class MatchModel extends Observable {
     public StartingDeck getStartingDeck() {return startingDeck;}
     public ResourceDeck getResourceDeck(){return resourceDeck;}
     public GoldenDeck getGoldenDeck(){return goldenDeck;}
+    public boolean isTerminated(){return terminated;}
+    public void terminate(){Server.log("[" + id + "]" + ">>match terminated");terminated = true; notifyAll(new TerminatedMatchResponse());}
 
 
     public Player getOnTurnPlayer() {return onTurnPlayer;}
@@ -146,6 +151,12 @@ public class MatchModel extends Observable {
         notify(new PlaceStartingCardResponse(player.getStartingCard(), player.getOnMapResources(), player.getMatrix()), player.getUserHash());
     }
 
+    /**
+     * @param userHash player userHash
+     * @param points player points
+     * this method provides logic to end a player's turn by selecting next "onTurnPlayer", checking if given player has reached 20 points,
+     * checks if game has to end by checking equaliance with "finalTurnPlayer", then
+     */
     public void endTurn(int userHash, int points) {
         onTurnPlayer = players.get((players.indexOf(onTurnPlayer) + 1) % players.size());
         checkFinalTurn(getPlayer(userHash));
@@ -154,20 +165,30 @@ public class MatchModel extends Observable {
         notifyAll(new ChatMessageResponse("Server", "it's " + onTurnPlayer.getUsername() + "'s turn"));
     }
 
+    /**
+     * @param p player to check on
+     * this method provides logic to check if a given player p has got to 20 or more points: in this case each one of the other players has one last turn left
+     * before game termination.
+     */
     private void checkFinalTurn(Player p) {
+        Server.log("[ "  + id + "]" + ">>checking final turn");
         if(!finalTurn && p.getPoints() >= 20){
             finalTurnPlayer = p;
             finalTurn = true;
+            Server.log("[ "  + id + "]" + ">>final turn started, " + p.getUsername() + " reached 20 pts");
         }
     }
 
+    /**
+     * this method provides logic to check if the game has turned to his end by checking if "onTurnPlayer" equals to the "finalTurnPlayer"
+     * the adds all quest points to each player setting his final score, notifies each player of each other player final scores, and notifies game end.
+     */
     private void checkEndGame() {
         if (finalTurn && onTurnPlayer.equals(finalTurnPlayer)) {
             players.forEach(player -> checkCounterQuestPoints(player));
             players.forEach(player -> player.setFinalScore());
             players.forEach(player -> notifyAll(new PlayerPointsUpdateResponse(player.getUsername(), player.getPoints())));
             endGame();
-
         }
     }
 
@@ -236,6 +257,7 @@ public class MatchModel extends Observable {
         if (resourceDeckIsEmpty && goldenDeckIsEmpty) {
             finalTurn = true;
             finalTurnPlayer = onTurnPlayer;
+            Server.log("[ "  + id + "]" + ">>final turn started, both decks are empty!");
             new ChatMessageResponse("Server", "It's your final turn, both decks are empty!");
         }
     }
@@ -251,7 +273,7 @@ public class MatchModel extends Observable {
         GoldenCard picked = null;
         try {
             picked = goldenUncovered.get(index);
-            goldenUncovered.add(picked);
+            goldenUncovered.remove(picked);
             if (!goldenDeckIsEmpty) {
                 goldenUncovered.add(index, goldenDeck.drawCard());
             }
@@ -297,12 +319,12 @@ public class MatchModel extends Observable {
             return players;
         }
 
-        public Player getPlayer ( int userHash){
+        public Player getPlayer (int userHash){
             try {
                 return players.stream().filter(player -> player.getUserHash() == userHash).findFirst().orElseThrow(() -> new Exception(">>player not found in match model"));
 
             } catch (Exception e) {
-                Server.log(e.getMessage());
+                Server.log("["  + id + "]" + e.getMessage());
                 return null;
             }
         }
@@ -470,7 +492,9 @@ public class MatchModel extends Observable {
 
 
         private void endGame () {
+            Server.log("[ "  + id + "]" + ">>match terminated");
             players.forEach(player -> notify(new EndGameResponse(player, players), player.getUserHash()));
+            terminated = true;
             notifyAll(new TerminatedMatchResponse());
         }
 

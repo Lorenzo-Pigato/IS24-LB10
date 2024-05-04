@@ -81,6 +81,8 @@ public class CLIMatchPage implements CLIPage{
     private static int onFocusRow = defaultOnFocusRow;
 
     public static void printBoard(Matrix board){
+
+        clearRegion(2, 5, 110, 27);
         for (int col = onFocusCol; col < onFocusCol + onFocusWidth; col++)
             for (int row = onFocusRow; row < onFocusRow + onFocusHeight; row ++)
                 if(!board.getNode(row, col).getCorners().isEmpty())
@@ -270,7 +272,6 @@ public class CLIMatchPage implements CLIPage{
         @Override
         public void apply(Object[] args) {
             // Clear board
-            clearRegion(2, 2, 113, 30);
             CLIBox.draw(2,2,113,30, AnsiColor.CYAN);
             CLIBox.draw(2,2, "Player Board: " + (clientPlayer != null ? clientPlayer.getUsername() : "Unknown") ,
                     AnsiColor.CYAN,
