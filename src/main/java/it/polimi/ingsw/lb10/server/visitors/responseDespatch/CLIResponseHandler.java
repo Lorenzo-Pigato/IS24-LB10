@@ -144,7 +144,7 @@ public class CLIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(NotYourTurnResponse notYourTurnResponse) {
-        CLIMatchPage.serverReply("It's " + notYourTurnResponse.getUsername() + ", wait for your turn...");
+        CLIMatchPage.serverReply("It's " + notYourTurnResponse.getUsername() + ",s turn, wait for your turn...");
     }
 
     /**
@@ -166,18 +166,16 @@ public class CLIResponseHandler implements ResponseVisitor {
     public void visit(EndGameResponse endGameResponse) {
         controller.getView().setPage(new CLIEndOfMatchPage());
         controller.getView().getPage().print(new Object[]{endGameResponse.getPlayer(), endGameResponse.getPlayers()});
-
-
     }
 
     /**
      * prints server message on view
      *
-     * @param badRequestResponse response sent by the server
+     * @param serverNotification response sent by the server
      */
     @Override
-    public void visit(BadRequestResponse badRequestResponse) {
-        CLIMatchPage.serverReply(badRequestResponse.getMessage());
+    public void visit(ServerNotification serverNotification) {
+        CLIMatchPage.serverReply(serverNotification.getMessage());
     }
 
 

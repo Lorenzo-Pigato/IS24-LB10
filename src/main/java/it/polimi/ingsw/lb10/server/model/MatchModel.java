@@ -187,6 +187,7 @@ public class MatchModel extends Observable {
         checkEndGame();
         notifyAll(new PlayerPointsUpdateResponse(getPlayer(userHash).getUsername(), points));
         notifyAll(new ChatMessageResponse("Server", "it's " + onTurnPlayer.getUsername() + "'s turn"));
+        notify(new ServerNotification("It's your turn, place your card!"), onTurnPlayer.getUserHash());
     }
 
     /**
