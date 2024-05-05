@@ -1,8 +1,12 @@
 package it.polimi.ingsw.lb10.client;
 
 import it.polimi.ingsw.lb10.client.controller.ClientViewController;
+import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
+import it.polimi.ingsw.lb10.client.view.GUIClientView;
+import javafx.application.Application;
+import javafx.stage.Stage;
 
 import java.util.Scanner;
 
@@ -36,10 +40,15 @@ public class Client implements Runnable {
      * all of these processes are procedural.
      */
     public void run() {
-        //we have instantiated both view and view controller
-        //we set the client reference to our controller
+        //instantiated both view and view controller
+        //Set client reference to the controller
         controller.setClient(this);
         //server connection
+
+        // if the controller is a GUI controller, launch GUI
+        if(this.controller instanceof GUIClientViewController)
+            GUIClientView.launch();
+
         try {
             controller.initializeConnection();
         } catch (ConnectionErrorException e) {

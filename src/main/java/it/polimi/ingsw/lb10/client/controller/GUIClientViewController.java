@@ -1,10 +1,14 @@
 package it.polimi.ingsw.lb10.client.controller;
 
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
+import it.polimi.ingsw.lb10.client.gui.GUIConnectionPage;
+import it.polimi.ingsw.lb10.client.gui.GUILoginPage;
 import it.polimi.ingsw.lb10.client.view.GUIClientView;
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.GUIResponseHandler;
+
+import java.net.Socket;
 
 public class GUIClientViewController extends ClientViewController {
 
@@ -44,8 +48,17 @@ public class GUIClientViewController extends ClientViewController {
     }
 
     @Override
-    public void login() {
+    public void initializeConnection() throws ConnectionErrorException {
+        view.setPage(new GUIConnectionPage());
+        view.displayPage(null);
+    }
 
+    @Override
+    public void login() {
+        if(client.isActive()) {
+            view.setPage(new GUILoginPage());
+            view.displayPage(null);
+        }
     }
 
     @Override
@@ -67,16 +80,6 @@ public class GUIClientViewController extends ClientViewController {
     public void game() {
 
     }
-
-
-
-    @Override
-    public void initializeConnection() throws ConnectionErrorException {
-        //Socket cliSocket;
-
-        //setSocket(cliSocket);
-    }
-
 
 }
 

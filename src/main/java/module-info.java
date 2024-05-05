@@ -8,6 +8,8 @@ module it.polimi.ingsw.lb10 {
 
 
     opens it.polimi.ingsw.lb10 to javafx.fxml;
+    opens it.polimi.ingsw.lb10.client.view to javafx.graphics;
+
     exports it.polimi.ingsw.lb10;
     exports it.polimi.ingsw.lb10.server.model;
     exports it.polimi.ingsw.lb10.server.model.cards;

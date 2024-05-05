@@ -56,6 +56,39 @@ public class CLIClientViewController extends ClientViewController {
     }
 
     @Override
+    public void initializeConnection() throws ConnectionErrorException { //------> Tested | OK <------//
+        Socket cliSocket;
+        Scanner in = new Scanner(System.in);
+        String input;
+        String[] parsed;
+        //x.y.z.w:k
+
+        view.setPage(new CLIConnectionPage());
+        view.displayPage(null);
+
+        do {
+            input = in.nextLine();
+            parsed = input.split(":");
+
+            if (parsed.length != 2 ||
+                    InputVerifier.isNotValidIP(parsed[0]) && InputVerifier.isNotValidPort(parsed[1])) { //invalid input, none of the fields is correct (ip:port)
+                view.updatePageState(new CLIConnectionPage.InvalidInput());
+            } else if (InputVerifier.isNotValidIP(parsed[0])) {
+                view.updatePageState(new CLIConnectionPage.InvalidIP());
+            } else if (InputVerifier.isNotValidPort(parsed[1])) {
+                view.updatePageState(new CLIConnectionPage.InvalidPort());
+            }
+            view.displayPage(new String[]{input});
+        } while (parsed.length != 2 || InputVerifier.isNotValidPort(parsed[1]) || InputVerifier.isNotValidIP(parsed[0]));
+        try {
+            cliSocket = new Socket(parsed[0], Integer.parseInt(parsed[1]));
+        } catch (Exception e) {
+            throw new ConnectionErrorException();
+        }
+        setSocket(cliSocket);
+    }
+
+    @Override
     public void login() {
         if (client.isActive()) {
             view.setPage(new CLILoginPage());
@@ -222,42 +255,6 @@ public class CLIClientViewController extends ClientViewController {
             }
         });
     }
-
-
-    @Override
-    public void initializeConnection() throws ConnectionErrorException { //------> Tested | OK <------//
-        Socket cliSocket;
-        Scanner in = new Scanner(System.in);
-        String input;
-        String[] parsed;
-        //x.y.z.w:k
-
-        view.setPage(new CLIConnectionPage());
-        view.displayPage(null);
-
-        do {
-            input = in.nextLine();
-            parsed = input.split(":");
-
-            if (parsed.length != 2 ||
-                    InputVerifier.isNotValidIP(parsed[0]) && InputVerifier.isNotValidPort(parsed[1])) { //invalid input, none of the fields is correct (ip:port)
-                view.updatePageState(new CLIConnectionPage.InvalidInput());
-            } else if (InputVerifier.isNotValidIP(parsed[0])) {
-                view.updatePageState(new CLIConnectionPage.InvalidIP());
-            } else if (InputVerifier.isNotValidPort(parsed[1])) {
-                view.updatePageState(new CLIConnectionPage.InvalidPort());
-            }
-            view.displayPage(new String[]{input});
-        } while (parsed.length != 2 || InputVerifier.isNotValidPort(parsed[1]) || InputVerifier.isNotValidIP(parsed[0]));
-        try {
-            cliSocket = new Socket(parsed[0], Integer.parseInt(parsed[1]));
-        } catch (Exception e) {
-            throw new ConnectionErrorException();
-        }
-        setSocket(cliSocket);
-    }
-
-
 }
 
 
