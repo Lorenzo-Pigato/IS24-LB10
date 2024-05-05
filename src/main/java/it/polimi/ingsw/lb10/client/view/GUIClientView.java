@@ -1,6 +1,9 @@
 package it.polimi.ingsw.lb10.client.view;
 
-public class GUIClientView implements ClientView {
+import javafx.application.Application;
+import javafx.stage.Stage;
+
+public class GUIClientView extends Application implements ClientView {
 
     @Override
     public void setPage(Page page) {
@@ -22,4 +25,8 @@ public class GUIClientView implements ClientView {
         return null;
     }
 
+    @Override
+    public void start(Stage stage) throws Exception {
+
+    }
 }

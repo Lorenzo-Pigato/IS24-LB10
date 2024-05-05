@@ -1,8 +1,8 @@
 package it.polimi.ingsw.lb10.client.controller;
 
-import it.polimi.ingsw.lb10.client.Client;
 import it.polimi.ingsw.lb10.client.cli.CLICommand;
 import it.polimi.ingsw.lb10.client.cli.clipages.*;
+import it.polimi.ingsw.lb10.client.exception.CLIExceptionHandler;
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
 import it.polimi.ingsw.lb10.client.util.InputParser;
@@ -15,35 +15,21 @@ import it.polimi.ingsw.lb10.network.requests.preMatch.LobbyToMatchRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.LoginRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.NewMatchRequest;
 import it.polimi.ingsw.lb10.network.response.Response;
-import it.polimi.ingsw.lb10.network.response.lobby.HashResponse;
 import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
-import it.polimi.ingsw.lb10.server.Server;
-import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
-import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.Scanner;
 
-public class CLIClientViewController implements ClientViewController {
+public class CLIClientViewController extends ClientViewController {
 
     private static CLIClientViewController instance;
     private CLIClientView view;
-    private Socket socket;
-    private Client client;
-    private ObjectInputStream socketIn;
-    private ObjectOutputStream socketOut;
-    private int hash;
-    private static final CLIResponseHandler responseHandler = CLIResponseHandler.instance();
-    private int matchId;
-    private ArrayList<PlaceableCard> hand;
-    private StartingCard startingCard;
 
-    private boolean startingCardHasBeenPlaced = false;
+    private static final CLIResponseHandler responseHandler = CLIResponseHandler.instance();
 
     public static CLIClientViewController instance() {
         if (instance == null) instance = new CLIClientViewController();
@@ -51,134 +37,27 @@ public class CLIClientViewController implements ClientViewController {
     }
 
     // ------------------ SETTERS ------------------ //
-    public void setCliClientView(CLIClientView cliClientView) {
-        this.view = cliClientView;
-    }
+    public void setCliClientView(CLIClientView cliClientView) {this.view = cliClientView;}
+
+    // ------------------ GETTERS ------------------ //
+    public CLIClientView getView() {return view;}
+
+
+    // ------------------ METHODS ------------------ //
 
     @Override
-    public void setSocket(Socket socket) {
-        this.socket = socket;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
-    }
-
-    public void setStartingCard(StartingCard startingCard) {
-        this.startingCard = startingCard;
-    }
-
-    public Socket getSocket() {
-        return socket;
-    }
-
-    public Client getClient() {
-        return client;
-    }
-
-    public CLIClientView getView() {
-        return view;
-    }
-
-    public void setHand(ArrayList<PlaceableCard> hand) {
-        this.hand = hand;
-    }
-
-    public void flipCard(int index) {
-        hand.get(index).swapState();
-    }
-
-    public ArrayList<PlaceableCard> getHand() {
-        return hand;
-    }
-
-    public StartingCard getStartingCard() {
-        return startingCard;
-    }
-
-    public void setStartingCardHasBeenPlaced(boolean status) {
-        this.startingCardHasBeenPlaced = status;
-    }
-
-    public boolean startingCardHasBeenPlaced() {
-        return !startingCardHasBeenPlaced;
-    }
-
-    /**
-     *
-     */
-    @Override
-    public void flipStarting() {
-        startingCard.swapState();
-    }
-
-
-    @Override
-    public void setHash() {
-        try {
-            HashResponse hashResponse = (HashResponse) socketIn.readObject();
-            this.hash = hashResponse.getHash();
-        } catch (Exception e) {
-            Server.log(e.getMessage());
-            close();
-        }
-    }
-
-    @Override
-    public void setMatchId(int matchId) {
-        this.matchId = matchId;
-    }
-
-    @Override
-    public int getMatchId() {
-        return matchId;
-    }
-
-    public int getUserHash() {
-        return hash;
-    }
-
-    @Override
-    public void close() {
-        if (!socket.isClosed()) {
+    public Thread asyncReadFromSocket() {
+        return new Thread(() -> {
             try {
-                socketIn.close();
-                socketOut.close();
-                socket.close();
-            } catch (IOException e) {
-                ExceptionHandler.handle(e, view);
-            } finally {
-                client.setActive(false);
+                while (client.isActive()) {
+                    Response response = (Response) socketIn.readObject();
+                    response.accept(responseHandler);
+                }
+            } catch (Exception e) {
+                exceptionHandler.handle(e);
+                close();
             }
-        }
-    }
-
-
-    @Override
-    public void setUp() {
-        try {
-            socketOut = new ObjectOutputStream(socket.getOutputStream());
-            socketOut.flush();
-        } catch (IOException e) {
-            ExceptionHandler.handle(e, view);
-        }
-        try {
-            socketIn = new ObjectInputStream(socket.getInputStream());
-        } catch (IOException e) {
-            ExceptionHandler.handle(e, view);
-        }
-    }
-
-    /**
-     * This asynchronous method provides a thread to send asynchronous requests to the network layer through
-     * serialization
-     *
-     * @param message the request
-     * @return the thread
-     */
-    @Override
-    public Thread asyncWriteToSocket(Request message) {
-        return new Thread(() -> send(message));
+        });
     }
 
     @Override
@@ -315,56 +194,6 @@ public class CLIClientViewController implements ClientViewController {
 
     }
 
-    public void send(Request request) {
-        request.setUserHash(hash); //wraps hashcode inside request, very important!!
-        try {
-            socketOut.reset();
-            socketOut.writeObject(request);
-            socketOut.flush();
-        } catch (IOException e) {
-            ExceptionHandler.handle(e, view);
-            close();
-        }
-    }
-
-    public Response syncReceive() {
-        Response response = null;
-        try {
-            response = (Response) socketIn.readObject();
-        } catch (Exception e) {
-            ExceptionHandler.handle(e, view);
-            close();
-        }
-        return response;
-    }
-
-    @Override
-    public void showUserOutput(Object o) {
-        Thread viewChanger = asyncWriteToTerminal();
-        viewChanger.start();
-    }
-
-
-    /**
-     * This asynchronous method is run by a separated thread to receive asynchronous requests from user command line (commands)
-     * This method uses CommandParser class' static method parse(String input) to figure out the command given and reacts by invoking
-     * the handler method "..."
-     */
-    public Thread asyncReadFromSocket() {
-        return new Thread(() -> {
-            try {
-                while (client.isActive()) {
-                    Response response = (Response) socketIn.readObject();
-                    response.accept(responseHandler);
-                }
-            } catch (Exception e) {
-                ExceptionHandler.handle(e, view);
-                close();
-            }
-        });
-    }
-
-
     /**
      * This asynchronous method is run by a separated thread to receive asynchronous requests from user command line (commands)
      * This method uses CommandParser class' static method parse(String input) to figure out the command given and reacts by invoking
@@ -399,11 +228,6 @@ public class CLIClientViewController implements ClientViewController {
         });
     }
 
-    public Thread asyncWriteToTerminal() {
-        return new Thread(() -> {
-            //show view via the VIEW
-        });
-    }
 
     @Override
     public void initializeConnection() throws ConnectionErrorException { //------> Tested | OK <------//
