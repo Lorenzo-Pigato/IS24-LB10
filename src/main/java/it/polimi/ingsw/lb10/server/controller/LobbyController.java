@@ -1,8 +1,8 @@
 package it.polimi.ingsw.lb10.server.controller;
 
 import it.polimi.ingsw.lb10.network.requests.QuitRequest;
-import it.polimi.ingsw.lb10.network.requests.match.MatchRequest;
 import it.polimi.ingsw.lb10.network.requests.match.JoinMatchRequest;
+import it.polimi.ingsw.lb10.network.requests.match.MatchRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.LobbyToMatchRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.LoginRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.NewMatchRequest;
@@ -49,6 +49,7 @@ public class LobbyController implements LobbyRequestVisitor {
     public synchronized static void addRemoteView(RemoteView remoteView) {
         remoteViews.add(remoteView);
     }
+
     public synchronized static void removeRemoteView(RemoteView remoteView) {
         remoteViews.remove(remoteView);
     }
@@ -66,7 +67,9 @@ public class LobbyController implements LobbyRequestVisitor {
 
     // ----------REQUEST HANDLING -------------//
 
-    /**this method handles the login request sent by the client, checking if the requested username is valid
+    /**
+     * this method handles the login request sent by the client, checking if the requested username is valid
+     *
      * @param lr login request sent by the client
      */
     @Override
@@ -78,24 +81,26 @@ public class LobbyController implements LobbyRequestVisitor {
         Server.log(">>boolean response [username : " + lr.getUsername() + ", " + lr.getUserHash() + "] " + validated);
     }
 
-    /**this method handles the request of a client which wants to join a specific match. First thing to do is check if the match is present in the waiting list
-     * then the client remoteview is submitted to the match controller and a new JoinMatchRequest is propagated to the specific match controller which will handle it.
+    /**
+     * this method handles the request of a client which wants to join a specific match. First thing to do is check if the match is present in the waiting list
+     * then the client remote view is submitted to the match controller and a new JoinMatchRequest is propagated to the specific match controller which will handle it.
+     *
      * @param ltmr lobby to match request sent by the client
      */
     @Override
     public synchronized void visit(@NotNull LobbyToMatchRequest ltmr) {
         Server.log(">>join match [username : " + getPlayer(ltmr.getUserHash()).getUsername() + ", id : " + ltmr.getMatchId() + "]");
-        if (matches.stream().filter(matchController -> !matchController.isStarted()).map(MatchController::getMatchId).noneMatch(id -> id == ltmr.getMatchId())){
+        if (matches.stream().filter(matchController -> !matchController.isStarted()).map(MatchController::getMatchId).noneMatch(id -> id == ltmr.getMatchId())) {
             //Predicate : matchId contained in the request is an actual waiting match
             getRemoteView(ltmr.getUserHash()).send(new JoinMatchResponse(false, 0)); //match already started or not existing
             Server.log(">>no match found, join match response [status : false]");
-        }else{
+        } else {
             //envelopes the username of the player to be passed to the controller
             matches.stream().filter(matchController -> (!matchController.isStarted()) && matchController.getMatchId() == ltmr.getMatchId()).findFirst().ifPresent(matchController -> {
                 try {
                     matchController.addRemoteView(getRemoteView(ltmr.getUserHash())); //adds the remote view to Match controller
                     JoinMatchRequest jmr = new JoinMatchRequest(ltmr.getMatchId(), getPlayer(ltmr.getUserHash()));
-                    submitToController(matchController,jmr, ltmr.getUserHash()); //submits request
+                    submitToController(matchController, jmr, ltmr.getUserHash()); //submits request
                 } catch (InterruptedException e) {
                     Server.log(">>match " + ltmr.getMatchId() + "interrupted");
                     disconnectClient(ltmr.getUserHash());
@@ -109,7 +114,7 @@ public class LobbyController implements LobbyRequestVisitor {
         matches.stream().filter(matchController -> matchController.getId() == mr.getMatchId()).findFirst().ifPresent(matchController -> {
             try {
                 matchController.submitRequest(mr);
-            } catch(Exception e){
+            } catch (Exception e) {
                 getRemoteView(mr.getUserHash()).send(new TerminatedMatchResponse());
             }
         });
@@ -132,46 +137,51 @@ public class LobbyController implements LobbyRequestVisitor {
 
     @Override
     public synchronized void visit(@NotNull QuitRequest quitRequest) {
-       Server.log(">>quit request [username : " + getPlayer(quitRequest.getUserHash()).getUsername() + "]");
-       disconnectClient(quitRequest.getUserHash());
+        Server.log(">>quit request [username : " + getPlayer(quitRequest.getUserHash()).getUsername() + "]");
+        disconnectClient(quitRequest.getUserHash());
     }
 
-    public synchronized void submitToController(@NotNull MatchController controller, @NotNull MatchRequest request, int userHash) throws InterruptedException{
+    public synchronized void submitToController(@NotNull MatchController controller, @NotNull MatchRequest request, int userHash) throws InterruptedException {
         request.setUserHash(userHash);
         controller.submitRequest(request);
     }
 
-    private static synchronized RemoteView getRemoteView(int hashCode){
-        return remoteViews.stream().filter(remoteView -> remoteView.getSocket().hashCode() == hashCode).findFirst().get();
+    private static synchronized RemoteView getRemoteView(int hashCode) {
+        return remoteViews.stream().filter(remoteView -> remoteView.getSocket().hashCode() == hashCode).findFirst().orElse(null);
     }
 
-    private static synchronized Player getPlayer (int hashCode){
-        return signedPlayers.stream().filter(player -> player.getUserHash() == hashCode).findFirst().get();
+    private static synchronized Player getPlayer(int hashCode) {
+        return signedPlayers.stream().filter(player -> player.getUserHash() == hashCode).findFirst().orElse(null);
     }
 
     private static synchronized MatchController getController(int userHash) {
-       return matches
+        return matches
                 .stream()
                 .filter(matchController -> matchController.getPlayers().stream().anyMatch(matchPlayer -> matchPlayer.getUserHash() == userHash))
                 .findFirst().orElse(null);
     }
 
-    public void  terminateMatch(int matchId){
-        matches.stream().filter(matchController-> matchController.getMatchId() == matchId).findFirst().get().getPlayers().forEach(player -> disconnectClient(player.getUserHash()));
-        matches.remove(matches.stream().filter(matchController -> matchController.getMatchId() == matchId).findFirst().get());
+    private static void terminateMatch(int matchId) {
+//        matches.stream().filter(matchController-> matchController.getMatchId() == matchId).findFirst().get().getPlayers().forEach(player -> disconnectClient(player.getUserHash()));
+        matches.remove(matches.stream().filter(matchController -> matchController.getMatchId() == matchId).findFirst().orElse(null));
     }
-    public static synchronized void disconnectClient(int userHash){
-        Server.log(">>disconnecting client [username : " + getPlayer(userHash).getUsername() + "]");
+
+    public static synchronized void disconnectClient(int userHash) {
         Player player = getPlayer(userHash);
-       if (player.isInMatch()){
-           getController(userHash).removePlayer(player);
-       }
-       signedPlayers.remove(getPlayer(userHash));
+        if (player.isInMatch()) {
+            MatchController controller = getController(userHash);
+            controller.removePlayer(player);
+            if (controller.isTerminated()) {
+                terminateMatch(controller.getMatchId());
+            }
+        }
+        signedPlayers.remove(getPlayer(userHash));
         try {
             getRemoteView(userHash).getSocket().close();
             removeRemoteView(getRemoteView(userHash));
         } catch (IOException e) {
-                //
+            //
         }
+        Server.log(">>client disconnected : " + userHash);
     }
 }

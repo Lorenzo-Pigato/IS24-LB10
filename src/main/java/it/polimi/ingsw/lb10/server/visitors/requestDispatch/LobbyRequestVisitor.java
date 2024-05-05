@@ -25,7 +25,7 @@ public interface LobbyRequestVisitor {
     void visit(NewMatchRequest newMatchRequest);
 
     /**
-     * @param quitRequest sent by the client whwnwver he wants to leave the match or the match is terminated
+     * @param quitRequest sent by the client whenever he wants to leave the match or the match is terminated
      */
     void visit(QuitRequest quitRequest);
 

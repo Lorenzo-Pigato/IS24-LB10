@@ -7,11 +7,11 @@ import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class BackStartingCard implements StateStartingCard, Serializable{
+public class BackStartingCard implements StateStartingCard, Serializable {
     private final StartingCard startingCard;
 
-    public BackStartingCard(StartingCard startingCard){
-        this.startingCard=startingCard;
+    public BackStartingCard(StartingCard startingCard) {
+        this.startingCard = startingCard;
     }
 
     @Override

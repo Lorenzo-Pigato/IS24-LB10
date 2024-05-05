@@ -4,9 +4,11 @@ import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.server.visitors.requestDispatch.LobbyRequestVisitable;
 import it.polimi.ingsw.lb10.server.visitors.requestDispatch.LobbyRequestVisitor;
 import it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitable;
-import it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitor;
+
+import java.io.Serial;
 
 public abstract class MatchRequest extends Request implements LobbyRequestVisitable, MatchRequestVisitable {
+    @Serial
     private static final long serialVersionUID = 23L;
     private final int matchId;
 
@@ -22,7 +24,6 @@ public abstract class MatchRequest extends Request implements LobbyRequestVisita
     public void accept(LobbyRequestVisitor handler) {
         handler.visit(this);
     }
-
 
 
 }

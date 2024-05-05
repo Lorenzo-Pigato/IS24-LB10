@@ -16,7 +16,7 @@ import it.polimi.ingsw.lb10.server.model.quest.QuestCounter;
  */
 public abstract class CLIBanner {
 
-    public static void displayCodex(int row){
+    public static void displayCodex(int row) {
         new CLIString(
                 """
                                          ░███░                                         \s
@@ -38,31 +38,31 @@ public abstract class CLIBanner {
                               ░░█████████████████░                                     \s
                                   ░██████████░░                                        \s
                         """
-        ,AnsiColor.GREEN, 1, row).centerPrint();
+                , AnsiColor.GREEN, 1, row).centerPrint();
     }
 
-    public static void displayCodex(){
+    public static void displayCodex() {
         displayCodex(15);
     }
 
     public static void displayConnection() {
         new CLIString(
                 """
-                ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
-                │                                                                                                │
-                │ ███████╗██╗███╗   ██╗██████╗      █████╗     ███████╗███████╗██████╗ ██╗   ██╗███████╗██████╗  │
-                │ ██╔════╝██║████╗  ██║██╔══██╗    ██╔══██╗    ██╔════╝██╔════╝██╔══██╗██║   ██║██╔════╝██╔══██╗ │
-                │ █████╗  ██║██╔██╗ ██║██║  ██║    ███████║    ███████╗█████╗  ██████╔╝██║   ██║█████╗  ██████╔╝ │
-                │ ██╔══╝  ██║██║╚██╗██║██║  ██║    ██╔══██║    ╚════██║██╔══╝  ██╔══██╗╚██╗ ██╔╝██╔══╝  ██╔══██╗ │
-                │ ██║     ██║██║ ╚████║██████╔╝    ██║  ██║    ███████║███████╗██║  ██║ ╚████╔╝ ███████╗██║  ██║ │
-                │ ╚═╝     ╚═╝╚═╝  ╚═══╝╚═════╝     ╚═╝  ╚═╝    ╚══════╝╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝╚═╝  ╚═╝ │
-                │                                                                                                │
-                └────────────────────────────────────────────────────────────────────────────────────────────────┘
-                """
+                        ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+                        │                                                                                                │
+                        │ ███████╗██╗███╗   ██╗██████╗      █████╗     ███████╗███████╗██████╗ ██╗   ██╗███████╗██████╗  │
+                        │ ██╔════╝██║████╗  ██║██╔══██╗    ██╔══██╗    ██╔════╝██╔════╝██╔══██╗██║   ██║██╔════╝██╔══██╗ │
+                        │ █████╗  ██║██╔██╗ ██║██║  ██║    ███████║    ███████╗█████╗  ██████╔╝██║   ██║█████╗  ██████╔╝ │
+                        │ ██╔══╝  ██║██║╚██╗██║██║  ██║    ██╔══██║    ╚════██║██╔══╝  ██╔══██╗╚██╗ ██╔╝██╔══╝  ██╔══██╗ │
+                        │ ██║     ██║██║ ╚████║██████╔╝    ██║  ██║    ███████║███████╗██║  ██║ ╚████╔╝ ███████╗██║  ██║ │
+                        │ ╚═╝     ╚═╝╚═╝  ╚═══╝╚═════╝     ╚═╝  ╚═╝    ╚══════╝╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝╚═╝  ╚═╝ │
+                        │                                                                                                │
+                        └────────────────────────────────────────────────────────────────────────────────────────────────┘
+                        """
                 , AnsiColor.CYAN, 1, 20).centerPrint();
     }
 
-    public static void display404(){
+    public static void display404() {
         new CLIString(
                 """
                         ┌───────────────────────────┐
@@ -79,7 +79,7 @@ public abstract class CLIBanner {
                 , AnsiColor.CYAN, 1, 20).centerPrint();
     }
 
-    public static void displayLogin(){
+    public static void displayLogin() {
         new CLIString(
                 """
                         ┌─────────────────────────────────────────┐
@@ -96,7 +96,7 @@ public abstract class CLIBanner {
                 , AnsiColor.GREEN, 1, 20).centerPrint();
     }
 
-    public static void displayError(){
+    public static void displayError() {
         new CLIString(
                 """
                         ┌───────────────────────────────────────────┐
@@ -114,7 +114,7 @@ public abstract class CLIBanner {
 
     }
 
-    public static void displayError(int col, int row){
+    public static void displayError(int col, int row) {
         new CLIString(
                 """
                         ┌───────────────────────────────────────────┐
@@ -132,7 +132,7 @@ public abstract class CLIBanner {
 
     }
 
-    public static void displayServer(){
+    public static void displayServer() {
         new CLIString(
                 """
                         ┌───────────────────────────────────────────────────┐
@@ -149,7 +149,7 @@ public abstract class CLIBanner {
                 AnsiColor.CYAN, 13, 2).print();
     }
 
-    public static void displayWaitingRoom(){
+    public static void displayWaitingRoom() {
         new CLIString(
                 """
                         ┌───────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -180,126 +180,121 @@ public abstract class CLIBanner {
                         │                                                                                                               │
                         └───────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
                         """,
-        AnsiColor.CYAN, 13, 10).centerPrint();
+                AnsiColor.CYAN, 13, 10).centerPrint();
     }
 
-    public static void displayResource(int col, int row, Resource resource){
-        if(resource.equals(Resource.PLANT)){
+    public static void displayResource(int col, int row, Resource resource) {
+        if (resource.equals(Resource.PLANT)) {
             new CLIString(
                     """
-                             ▄▄
-                            ▟▓▒▙
-                           █▓▒▒▒█
-                     ▄▄▄▄▂ █▓▒▒▒█ ▂▄▄▄▄
-                     █▒▓▓▒▇█▒██▒█▇▒▓▓▒█
-                     ▜▒▒▓▓▒▒████▒▒▓▓▒▒▛
-                      ▀█▒▒▓▓▒██▒▓▓▒▒█▀
-                        ▀█▒▒▒██▒▒▒█▀
-                          ▔▀████▀▔
-                             ██
-                    """
+                                     ▄▄
+                                    ▟▓▒▙
+                                   █▓▒▒▒█
+                             ▄▄▄▄▂ █▓▒▒▒█ ▂▄▄▄▄
+                             █▒▓▓▒▇█▒██▒█▇▒▓▓▒█
+                             ▜▒▒▓▓▒▒████▒▒▓▓▒▒▛
+                              ▀█▒▒▓▓▒██▒▓▓▒▒█▀
+                                ▀█▒▒▒██▒▒▒█▀
+                                  ▔▀████▀▔
+                                     ██
+                            """
                     , AnsiColor.GREEN, col, row).print();
-        }
-        else if(resource.equals(Resource.ANIMAL)){
+        } else if (resource.equals(Resource.ANIMAL)) {
             new CLIString(
                     """
-                          ▄      ▄
-                         ▟▒▙    ▟▒▙
-                        ▟▓▒█    █▓▒▙
-                       ▟█▒▒█▙  ▟█▒▒█▙
-                       █▓▓▒▒▓▓▓▓▒▒▓▓█
-                       ▓█████▒▒█████▓
-                       ▜█░▚░█▒▓█░▚░█▛
-                        ▀▜█▓█▒▓█▓█▛▀
-                          ▀▜█▒▓█▛▀
-                            ▜██▛
-                    """
+                                  ▄      ▄
+                                 ▟▒▙    ▟▒▙
+                                ▟▓▒█    █▓▒▙
+                               ▟█▒▒█▙  ▟█▒▒█▙
+                               █▓▓▒▒▓▓▓▓▒▒▓▓█
+                               ▓█████▒▒█████▓
+                               ▜█░▚░█▒▓█░▚░█▛
+                                ▀▜█▓█▒▓█▓█▛▀
+                                  ▀▜█▒▓█▛▀
+                                    ▜██▛
+                            """
                     , AnsiColor.CYAN, col, row).print();
-        }
-        else if(resource.equals(Resource.MUSHROOM)){
+        } else if (resource.equals(Resource.MUSHROOM)) {
             new CLIString(
                     """
-                          ▃██████▃
-                         ▐█▒▓▒▒▒▒█▌
-                         ▟▒▒▓▒▒▒▒▒▙
-                        ▃█▒▒▓▒▒▒▒▒█▃
-                       ▃█▒▒▒▒▓▓▓▓▓▓█▃
-                       ▀▀▀▀▜█▒▒█▛▀▀▀▀
-                           ▐████▌
-                            █▒▒█
-                            █▒▒█
-                            ▜██▛
-                     """
+                                 ▃██████▃
+                                ▐█▒▓▒▒▒▒█▌
+                                ▟▒▒▓▒▒▒▒▒▙
+                               ▃█▒▒▓▒▒▒▒▒█▃
+                              ▃█▒▒▒▒▓▓▓▓▓▓█▃
+                              ▀▀▀▀▜█▒▒█▛▀▀▀▀
+                                  ▐████▌
+                                   █▒▒█
+                                   █▒▒█
+                                   ▜██▛
+                            """
                     , AnsiColor.RED, col, row).print();
-        }
-        else if(resource.equals(Resource.INSECT)){
+        } else if (resource.equals(Resource.INSECT)) {
             new CLIString(
                     """
-                     ▂▄▄   ▐    ▌   ▄▄▂
-                    ▐█▓▓█▄  ▌  ▐  ▄█▓▓█▌
-                     ▜█▓▒▒█ █▌▐█ █▒▒▓█▛
-                      ▜█▓▒▒█▓██▓█▒▒▓█▛
-                       ▜███ ▓██▓ ███▛
-                        ▄ ▜ ▄██▄ ▛ ▄
-                      ▟███▙▄████▄▟███▙
-                     ▐██▒▒▒█▓██▓█▒▒▒██▌
-                      ▜██▓█▛ ▜▛ ▜█▓██▛
-                       ▜██▛      ▜██▛
-                    """
+                             ▂▄▄   ▐    ▌   ▄▄▂
+                            ▐█▓▓█▄  ▌  ▐  ▄█▓▓█▌
+                             ▜█▓▒▒█ █▌▐█ █▒▒▓█▛
+                              ▜█▓▒▒█▓██▓█▒▒▓█▛
+                               ▜███ ▓██▓ ███▛
+                                ▄ ▜ ▄██▄ ▛ ▄
+                              ▟███▙▄████▄▟███▙
+                             ▐██▒▒▒█▓██▓█▒▒▒██▌
+                              ▜██▓█▛ ▜▛ ▜█▓██▛
+                               ▜██▛      ▜██▛
+                            """
                     , AnsiColor.PURPLE, col, row).print();
-        }
-        else if (resource.equals(Resource.POTION)) {
+        } else if (resource.equals(Resource.POTION)) {
             new CLIString(
                     """ 
-                      ▆▆▆▆▆▆▆▆▆▆
-                     ▜▌▀▀▀▀▀▀▀▀▐▛
-                      ▌        ▐
-                      ▜▄▄▄▄▄▄▄▄▛
-                    ▟▀▀        ▀▀▙
-                    ▌▄▂          █
-                    ▌███▄        █
-                    ▌█▓▓██▄▂     █
-                    ▌█░░░▓▓▓█▙▂  █
-                    ██████████████
-                    """
-            , AnsiColor.YELLOW, col, row).print();
+                              ▆▆▆▆▆▆▆▆▆▆
+                             ▜▌▀▀▀▀▀▀▀▀▐▛
+                              ▌        ▐
+                              ▜▄▄▄▄▄▄▄▄▛
+                            ▟▀▀        ▀▀▙
+                            ▌▄▂          █
+                            ▌███▄        █
+                            ▌█▓▓██▄▂     █
+                            ▌█░░░▓▓▓█▙▂  █
+                            ██████████████
+                            """
+                    , AnsiColor.YELLOW, col, row).print();
         } else if (resource.equals(Resource.PERGAMENA)) {
             new CLIString(
                     """
-                     ▃▃▃▃▃▃▃▃▃▃▃▃
-                    █▓░█▒▒▒▒▒▒▒▒██▙
-                    █▓░░█▒▒▒▒▒▒▒▒▒█
-                    ▜████▓▓▓███████▌
-                         ▐██▒▒▒▒▒▒▒█▌
-                         ██▒▒▒▒▒▒▒▒█▌
-                        ▐███████████▙
-                        ▐█░█▒▒▒▒▒▒▒▒▒█▌
-                         ▜██▒▒▒▒▒▒▒▒▒█▌
-                           ▀▀▀▀▀▀▀▀▀▀▀
-                    """
+                             ▃▃▃▃▃▃▃▃▃▃▃▃
+                            █▓░█▒▒▒▒▒▒▒▒██▙
+                            █▓░░█▒▒▒▒▒▒▒▒▒█
+                            ▜████▓▓▓███████▌
+                                 ▐██▒▒▒▒▒▒▒█▌
+                                 ██▒▒▒▒▒▒▒▒█▌
+                                ▐███████████▙
+                                ▐█░█▒▒▒▒▒▒▒▒▒█▌
+                                 ▜██▒▒▒▒▒▒▒▒▒█▌
+                                   ▀▀▀▀▀▀▀▀▀▀▀
+                            """
                     , AnsiColor.YELLOW, col, row).print();
-        }
-        else {
+        } else {
             new CLIString(
                     """
-                               ▟████▙
-                             ▟██░░░░█
-                           ▟██░░▒░░█▛
-                         ▟██░░▒▒░░█▛
-                        ▟██░░▒░░█▛
-                        █░░▒░░█▛
-                       ▟█████▛
-                      ▃██▀
-                     ▃█▀
-                     ▀
-                    """
+                                       ▟████▙
+                                     ▟██░░░░█
+                                   ▟██░░▒░░█▛
+                                 ▟██░░▒▒░░█▛
+                                ▟██░░▒░░█▛
+                                █░░▒░░█▛
+                               ▟█████▛
+                              ▃██▀
+                             ▃█▀
+                             ▀
+                            """
                     , AnsiColor.YELLOW, col, row).print();
         }
 
     }
 
-    public static void displayNumber(int col, int row, int num, AnsiColor color){
-        switch (num){
+    public static void displayNumber(int col, int row, int num, AnsiColor color) {
+        switch (num) {
             case 1:
                 new CLIString(
                         """
@@ -310,7 +305,7 @@ public abstract class CLIBanner {
                                    ██║
                                    ╚═╝
                                 """,
-                color, col, row).print();
+                        color, col, row).print();
                 break;
             case 2:
                 new CLIString(
@@ -322,7 +317,7 @@ public abstract class CLIBanner {
                                 ███████╗
                                 ╚══════╝
                                 """,
-                color, col, row).print();
+                        color, col, row).print();
                 break;
             case 3:
                 new CLIString(
@@ -334,7 +329,7 @@ public abstract class CLIBanner {
                                 ██████╔╝
                                 ╚═════╝\s
                                 """,
-                color, col, row).print();
+                        color, col, row).print();
                 break;
             case 4:
                 new CLIString(
@@ -346,13 +341,13 @@ public abstract class CLIBanner {
                                      ██║
                                      ╚═╝
                                 """,
-                color, col, row).print();
+                        color, col, row).print();
                 break;
         }
     }
 
-    public static void displaySymbol(int col, int row, char ch){
-        switch (ch){
+    public static void displaySymbol(int col, int row, char ch) {
+        switch (ch) {
             case '=':
                 new CLIString(
                         """
@@ -361,7 +356,7 @@ public abstract class CLIBanner {
                                 ███████╗
                                 ╚══════╝
                                 """,
-                AnsiColor.WHITE, col, row).print();
+                        AnsiColor.WHITE, col, row).print();
                 break;
             case 'x':
                 new CLIString(
@@ -371,7 +366,7 @@ public abstract class CLIBanner {
                                 ██╔██╗
                                 ╚═╝╚═╝
                                 """,
-                AnsiColor.WHITE, col, row).print();
+                        AnsiColor.WHITE, col, row).print();
                 break;
         }
     }
@@ -386,9 +381,8 @@ public abstract class CLIBanner {
                             ███████╔════╝     \s
                             ╚══════╝
                             """,
-                    ((BottomLeftDiagonal) quest).getColor().getAnsi(), col+1, row).print();
-        }
-        else if(quest instanceof TopLeftDiagonal) {
+                    ((BottomLeftDiagonal) quest).getColor().getAnsi(), col + 1, row).print();
+        } else if (quest instanceof TopLeftDiagonal) {
             new CLIString(
                     """
                             ███████           \s
@@ -397,16 +391,15 @@ public abstract class CLIBanner {
                                 ╚════╗███████║\s
                                      ╚═══════╝\s
                             """,
-                    ((TopLeftDiagonal) quest).getColor().getAnsi(), col+1, row).print();
-        }
-        else if(quest instanceof BottomRight){
+                    ((TopLeftDiagonal) quest).getColor().getAnsi(), col + 1, row).print();
+        } else if (quest instanceof BottomRight) {
             new CLIString(
                     """
                             ▒▒█████╗\s
                             ███████║\s
                             ╚══════╝\s
                             """,
-                    ((BottomRight) quest).getToeColor().getAnsi(), col+11, row+4).print();
+                    ((BottomRight) quest).getToeColor().getAnsi(), col + 11, row + 4).print();
             new CLIString(
                     """
                             ███████╗
@@ -416,9 +409,8 @@ public abstract class CLIBanner {
                             █████
                             ╚════
                             """,
-                    ((BottomRight) quest).getBodyColor().getAnsi(), col+6, row).print();
-        }
-        else if(quest instanceof BottomLeft){
+                    ((BottomRight) quest).getBodyColor().getAnsi(), col + 6, row).print();
+        } else if (quest instanceof BottomLeft) {
             new CLIString(
                     """
                             ███████╗
@@ -428,16 +420,15 @@ public abstract class CLIBanner {
                               █████║
                               ╔════╝
                             """,
-                    ((BottomLeft) quest).getBodyColor().getAnsi(), col+6, row).print();
+                    ((BottomLeft) quest).getBodyColor().getAnsi(), col + 6, row).print();
             new CLIString(
                     """
                             █████▒▒
                             ███████
                             ╚══════╝
                             """,
-                    ((BottomLeft) quest).getToeColor().getAnsi(), col+1, row+4).print();
-        }
-        else if(quest instanceof TopLeft){
+                    ((BottomLeft) quest).getToeColor().getAnsi(), col + 1, row + 4).print();
+        } else if (quest instanceof TopLeft) {
             new CLIString(
                     """
                             ▒▒█████╗
@@ -447,23 +438,22 @@ public abstract class CLIBanner {
                             ███████║
                             ╚══════╝
                             """,
-                    ((TopLeft) quest).getBodyColor().getAnsi(), col+6, row+1).print();
+                    ((TopLeft) quest).getBodyColor().getAnsi(), col + 6, row + 1).print();
             new CLIString(
                     """
                             ███████
                             █████
                             ╚════
                             """,
-                    ((TopLeft) quest).getToeColor().getAnsi(), col+1, row).print();
-        }
-        else if(quest instanceof TopRight){
+                    ((TopLeft) quest).getToeColor().getAnsi(), col + 1, row).print();
+        } else if (quest instanceof TopRight) {
             new CLIString(
                     """
                             ███████╗
                               █████║
                                ════╝
                             """,
-                    ((TopRight) quest).getToeColor().getAnsi(), col+11, row).print();
+                    ((TopRight) quest).getToeColor().getAnsi(), col + 11, row).print();
             new CLIString(
                     """
                             █████▒▒
@@ -473,10 +463,8 @@ public abstract class CLIBanner {
                             ███████║
                             ╚══════╝
                             """,
-                    ((TopRight) quest).getBodyColor().getAnsi(), col+6, row+1).print();
-        }
-
-        else if (quest instanceof QuestCounter) {
+                    ((TopRight) quest).getBodyColor().getAnsi(), col + 6, row + 1).print();
+        } else if (quest instanceof QuestCounter) {
             if (((QuestCounter) quest).getId() != 94) {
                 int center = col + 7;
                 ((QuestCounter) quest).getActivationCost().keySet()
@@ -484,12 +472,12 @@ public abstract class CLIBanner {
                         .filter(res -> ((QuestCounter) quest).getActivationCost().get(res) > 0)
                         .findFirst()
                         .ifPresent(
-                            res -> {
-                                CLIBanner.displayNumber(center - 12, row, ((QuestCounter) quest).getActivationCost().get(res), AnsiColor.WHITE);
-                                CLIBanner.displaySymbol(center, row + 1, 'x');
-                                CLIBanner.displayResource(center + 8, row - 2, res);
-                            }
-                );
+                                res -> {
+                                    CLIBanner.displayNumber(center - 12, row, ((QuestCounter) quest).getActivationCost().get(res), AnsiColor.WHITE);
+                                    CLIBanner.displaySymbol(center, row + 1, 'x');
+                                    CLIBanner.displayResource(center + 8, row - 2, res);
+                                }
+                        );
 
             } else { // Quest 94 requires a feather, a pergamena and a potion, is the only one not included in the previous pattern
                 int center = col + 2;
@@ -503,36 +491,36 @@ public abstract class CLIBanner {
     public static void displayWinner() {
         new CLIString(
                 """                     
-                ┌──────────────────────────────────────────────────────────────────────┐
-                │                                                                      │
-                │ ██╗    ██╗   ██╗ ██████╗ ██╗   ██╗    ██╗    ██╗██╗███╗   ██╗    ██╗ │
-                │ ██║    ╚██╗ ██╔╝██╔═══██╗██║   ██║    ██║    ██║██║████╗  ██║    ██║ │
-                │ ██║     ╚████╔╝ ██║   ██║██║   ██║    ██║ █╗ ██║██║██╔██╗ ██║    ██║ │
-                │ ╚═╝      ╚██╔╝  ██║   ██║██║   ██║    ██║███╗██║██║██║╚██╗██║    ╚═╝ │
-                │ ██╗       ██║   ╚██████╔╝╚██████╔╝    ╚███╔███╔╝██║██║ ╚████║    ██╗ │
-                │ ╚═╝       ╚═╝    ╚═════╝  ╚═════╝      ╚══╝╚══╝ ╚═╝╚═╝  ╚═══╝    ╚═╝ │
-                │                                                                      │
-                └──────────────────────────────────────────────────────────────────────┘
-                """,
-                AnsiColor.GREEN, 0 , 10).centerPrint();
+                        ┌──────────────────────────────────────────────────────────────────────┐
+                        │                                                                      │
+                        │ ██╗    ██╗   ██╗ ██████╗ ██╗   ██╗    ██╗    ██╗██╗███╗   ██╗    ██╗ │
+                        │ ██║    ╚██╗ ██╔╝██╔═══██╗██║   ██║    ██║    ██║██║████╗  ██║    ██║ │
+                        │ ██║     ╚████╔╝ ██║   ██║██║   ██║    ██║ █╗ ██║██║██╔██╗ ██║    ██║ │
+                        │ ╚═╝      ╚██╔╝  ██║   ██║██║   ██║    ██║███╗██║██║██║╚██╗██║    ╚═╝ │
+                        │ ██╗       ██║   ╚██████╔╝╚██████╔╝    ╚███╔███╔╝██║██║ ╚████║    ██╗ │
+                        │ ╚═╝       ╚═╝    ╚═════╝  ╚═════╝      ╚══╝╚══╝ ╚═╝╚═╝  ╚═══╝    ╚═╝ │
+                        │                                                                      │
+                        └──────────────────────────────────────────────────────────────────────┘
+                        """,
+                AnsiColor.GREEN, 0, 10).centerPrint();
 
     }
 
     public static void displayLoser() {
         new CLIString(
                 """                     
-                 ┌──────────────────────────────────────────────────────────────────┐
-                 │                                                                  │
-                 │ ██╗   ██╗ ██████╗ ██╗   ██╗    ██╗      ██████╗ ███████╗███████╗ │
-                 │ ╚██╗ ██╔╝██╔═══██╗██║   ██║    ██║     ██╔═══██╗██╔════╝██╔════╝ │
-                 │  ╚████╔╝ ██║   ██║██║   ██║    ██║     ██║   ██║███████╗█████╗   │
-                 │   ╚██╔╝  ██║   ██║██║   ██║    ██║     ██║   ██║╚════██║██╔══╝   │
-                 │    ██║   ╚██████╔╝╚██████╔╝    ███████╗╚██████╔╝███████║███████╗ │
-                 │    ╚═╝    ╚═════╝  ╚═════╝     ╚══════╝ ╚═════╝ ╚══════╝╚══════╝ │
-                 │                                                                  │
-                 └──────────────────────────────────────────────────────────────────┘
-                 """,
-                AnsiColor.RED, 0 , 10).centerPrint();
+                        ┌──────────────────────────────────────────────────────────────────┐
+                        │                                                                  │
+                        │ ██╗   ██╗ ██████╗ ██╗   ██╗    ██╗      ██████╗ ███████╗███████╗ │
+                        │ ╚██╗ ██╔╝██╔═══██╗██║   ██║    ██║     ██╔═══██╗██╔════╝██╔════╝ │
+                        │  ╚████╔╝ ██║   ██║██║   ██║    ██║     ██║   ██║███████╗█████╗   │
+                        │   ╚██╔╝  ██║   ██║██║   ██║    ██║     ██║   ██║╚════██║██╔══╝   │
+                        │    ██║   ╚██████╔╝╚██████╔╝    ███████╗╚██████╔╝███████║███████╗ │
+                        │    ╚═╝    ╚═════╝  ╚═════╝     ╚══════╝ ╚═════╝ ╚══════╝╚══════╝ │
+                        │                                                                  │
+                        └──────────────────────────────────────────────────────────────────┘
+                        """,
+                AnsiColor.RED, 0, 10).centerPrint();
 
     }
 }

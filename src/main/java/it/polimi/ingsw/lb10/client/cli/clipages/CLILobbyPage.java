@@ -1,6 +1,9 @@
 package it.polimi.ingsw.lb10.client.cli.clipages;
 
-import it.polimi.ingsw.lb10.client.cli.*;
+import it.polimi.ingsw.lb10.client.cli.CLIBanner;
+import it.polimi.ingsw.lb10.client.cli.CLIBox;
+import it.polimi.ingsw.lb10.client.cli.CLICommand;
+import it.polimi.ingsw.lb10.client.cli.CLIString;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
 import org.jetbrains.annotations.NotNull;
@@ -49,7 +52,7 @@ public class CLILobbyPage implements CLIPage {
             CLICommand.setPosition(1, 38);
             CLICommand.clearLine();
 
-            if( ((String)args[0]).split(" ").length == 2 && ((String)args[0]).split(" ")[0].equals("join"))
+            if (((String) args[0]).split(" ").length == 2 && ((String) args[0]).split(" ")[0].equals("join"))
                 new CLIString(">> Match ID: " + ((String) args[0]).split(" ")[1] + " doesn't exist <<",
                         AnsiColor.RED, AnsiFormat.BOLD, 1, 38).centerPrint();
             else

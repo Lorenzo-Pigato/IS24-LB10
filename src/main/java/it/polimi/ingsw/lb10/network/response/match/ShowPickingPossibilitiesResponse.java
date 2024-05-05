@@ -27,8 +27,19 @@ public class ShowPickingPossibilitiesResponse extends Response {
         handler.visit(this);
     }
 
-    public PlaceableCard getGoldenCard() {return this.goldenCard;}
-    public PlaceableCard getResourceCard() {return this.resourceCard;}
-    public ArrayList<GoldenCard> getGoldenUncovered() {return this.goldenUncovered;}
-    public ArrayList<ResourceCard> getResourceUncovered() {return this.resourceUncovered;}
+    public PlaceableCard getGoldenCard() {
+        return this.goldenCard;
+    }
+
+    public PlaceableCard getResourceCard() {
+        return this.resourceCard;
+    }
+
+    public ArrayList<GoldenCard> getGoldenUncovered() {
+        return this.goldenUncovered;
+    }
+
+    public ArrayList<ResourceCard> getResourceUncovered() {
+        return this.resourceUncovered;
+    }
 }

@@ -11,6 +11,7 @@ public class CLIClientView implements ClientView {
 
     /**
      * This method sets the page of which states will be displayed
+     *
      * @param page to be set
      */
     @Override
@@ -20,6 +21,7 @@ public class CLIClientView implements ClientView {
 
     /**
      * This method updates the state of the page
+     *
      * @param state to be displayed
      */
     @Override
@@ -29,6 +31,7 @@ public class CLIClientView implements ClientView {
 
     /**
      * This method applies the state of the page, effectively printing the page or the updated elements
+     *
      * @param args to provide to the state, when needed
      */
     @Override

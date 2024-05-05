@@ -5,7 +5,7 @@ import it.polimi.ingsw.lb10.network.response.match.*;
 
 public interface ResponseVisitor {
 
-    void visit (JoinMatchResponse response);
+    void visit(JoinMatchResponse response);
 
     void visit(BooleanResponse response);
 
@@ -33,7 +33,9 @@ public interface ResponseVisitor {
 
     void visit(EndGameResponse endGameResponse);
 
-    void visit(BadRequestResponse badRequestResponse);
+    void visit(ServerNotification serverNotification);
 
     void visit(MoveBoardResponse moveBoardResponse);
+
+    void visit(PlayerLeftResponse playerLeftResponse);
 }

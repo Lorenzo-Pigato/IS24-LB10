@@ -11,15 +11,17 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class BackOfTheCard implements StateOfTheCard, Serializable {
-    private  PlaceableCard placeableCard;
+    private PlaceableCard placeableCard;
     private ArrayList<Corner> flippedCorners = new ArrayList<>();
-    public BackOfTheCard(PlaceableCard placeableCard){
-        this.placeableCard=placeableCard;
-         flippedCorners= new ArrayList<>(Arrays.asList(new Corner(placeableCard.getId(),true,Position.TOPLEFT,Resource.EMPTY,placeableCard.getColorCard()),
-                new Corner(placeableCard.getId(),true,Position.TOPRIGHT,Resource.EMPTY,placeableCard.getColorCard()),
-                new Corner(placeableCard.getId(),true,Position.BOTTOMLEFT,Resource.EMPTY,placeableCard.getColorCard()),
-                new Corner(placeableCard.getId(),true,Position.BOTTOMRIGHT,Resource.EMPTY,placeableCard.getColorCard())));
+
+    public BackOfTheCard(PlaceableCard placeableCard) {
+        this.placeableCard = placeableCard;
+        flippedCorners = new ArrayList<>(Arrays.asList(new Corner(placeableCard.getId(), true, Position.TOPLEFT, Resource.EMPTY, placeableCard.getColorCard()),
+                new Corner(placeableCard.getId(), true, Position.TOPRIGHT, Resource.EMPTY, placeableCard.getColorCard()),
+                new Corner(placeableCard.getId(), true, Position.BOTTOMLEFT, Resource.EMPTY, placeableCard.getColorCard()),
+                new Corner(placeableCard.getId(), true, Position.BOTTOMRIGHT, Resource.EMPTY, placeableCard.getColorCard())));
     }
+
     @Override
     public ArrayList<Corner> getCorners() {
         return flippedCorners;

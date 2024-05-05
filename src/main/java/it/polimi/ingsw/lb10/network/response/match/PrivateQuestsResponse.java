@@ -11,7 +11,10 @@ public class PrivateQuestsResponse extends Response {
     private static final long serialVersionUID = 8L;
     private final ArrayList<Quest> privateQuests;
 
-    public PrivateQuestsResponse(ArrayList<Quest> privateQuests) {this.privateQuests = privateQuests;}
+    public PrivateQuestsResponse(ArrayList<Quest> privateQuests) {
+        this.privateQuests = privateQuests;
+    }
+
     /**
      * @param handler
      */
@@ -21,5 +24,7 @@ public class PrivateQuestsResponse extends Response {
 
     }
 
-    public ArrayList<Quest> getPrivateQuests() {return privateQuests;}
+    public ArrayList<Quest> getPrivateQuests() {
+        return privateQuests;
+    }
 }

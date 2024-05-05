@@ -10,8 +10,9 @@ import java.util.HashMap;
 
 public class FrontOfTheCard implements StateOfTheCard, Serializable {
     PlaceableCard placeableCard;
-    public FrontOfTheCard(PlaceableCard placeableCard){
-        this.placeableCard=placeableCard;
+
+    public FrontOfTheCard(PlaceableCard placeableCard) {
+        this.placeableCard = placeableCard;
     }
 
     @Override

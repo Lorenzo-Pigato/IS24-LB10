@@ -2,7 +2,6 @@ package it.polimi.ingsw.lb10.client.controller;
 
 import it.polimi.ingsw.lb10.client.Client;
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
-import it.polimi.ingsw.lb10.client.view.CLIClientView;
 import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
@@ -10,7 +9,6 @@ import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
 
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Map;
 
 public interface ClientViewController {
 
@@ -18,8 +16,8 @@ public interface ClientViewController {
 
     void setClient(Client client);
 
-    /**This method closes all Socket streams used to communicate
-     *
+    /**
+     * This method closes all Socket streams used to communicate
      */
     void close();
 
@@ -30,21 +28,25 @@ public interface ClientViewController {
     void setUp();
 
     /**
-     *  This asynchronous method provides a thread to send asynchronous requests to the network layer through
-     *  serialization
+     * This asynchronous method provides a thread to send asynchronous requests to the network layer through
+     * serialization
+     *
      * @param message the request
      * @return the thread
      */
     Thread asyncWriteToSocket(Request message);
 
 
-
-    /**This method is used to set the view output changes
+    /**
+     * This method is used to set the view output changes
+     *
      * @param o a general parameter to show the output on the UI
      */
     void showUserOutput(Object o);
 
-    /** This method provides a thread to read asynchronously from the Socket
+    /**
+     * This method provides a thread to read asynchronously from the Socket
+     *
      * @return the thread to be run
      */
     Thread asyncReadFromSocket();
@@ -83,6 +85,7 @@ public interface ClientViewController {
 
 
     ArrayList<PlaceableCard> getHand();
+
     StartingCard getStartingCard();
 
     void flipStarting();

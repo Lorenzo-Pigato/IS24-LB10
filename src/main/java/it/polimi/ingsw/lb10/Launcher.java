@@ -13,7 +13,7 @@ public class Launcher {
         // LauncherView returns the String "mode", which is formatted as client:ui or server:port
         String mode = LauncherView.runLauncherPage();
 
-        if(mode.split(":")[0].equals("client")) ClientLauncher.main(mode.split(":"));
+        if (mode.split(":")[0].equals("client")) ClientLauncher.main(mode.split(":"));
         else ServerLauncher.main(mode.split(":"));
     }
 }

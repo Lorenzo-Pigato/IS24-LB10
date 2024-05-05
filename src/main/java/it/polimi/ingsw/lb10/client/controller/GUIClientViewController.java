@@ -1,8 +1,8 @@
 package it.polimi.ingsw.lb10.client.controller;
 
+import it.polimi.ingsw.lb10.client.Client;
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.view.GUIClientView;
-import it.polimi.ingsw.lb10.client.Client;
 import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
@@ -23,8 +23,8 @@ public class GUIClientViewController implements ClientViewController {
     private ObjectOutputStream socketOut;
     private int matchId;
 
-    public static GUIClientViewController instance (){
-        if(instance == null) return new GUIClientViewController();
+    public static GUIClientViewController instance() {
+        if (instance == null) return new GUIClientViewController();
         return instance;
     }
 
@@ -43,7 +43,8 @@ public class GUIClientViewController implements ClientViewController {
 
     }
 
-    public void setUp(){}
+    public void setUp() {
+    }
 
     @Override
     public Thread asyncWriteToSocket(Request message) {
@@ -77,7 +78,7 @@ public class GUIClientViewController implements ClientViewController {
     }
 
     /**
-     * @return 
+     * @return
      */
     @Override
     public int getMatchId() {
@@ -85,7 +86,7 @@ public class GUIClientViewController implements ClientViewController {
     }
 
     /**
-     * @param id 
+     * @param id
      */
     @Override
     public void setMatchId(int id) {
@@ -93,7 +94,7 @@ public class GUIClientViewController implements ClientViewController {
     }
 
     /**
-     * @param response 
+     * @param response
      */
     @Override
     public void privateQuestSelection(PrivateQuestsResponse response) {
@@ -109,10 +110,14 @@ public class GUIClientViewController implements ClientViewController {
     }
 
     @Override
-    public ArrayList<PlaceableCard> getHand() {return null;}
+    public ArrayList<PlaceableCard> getHand() {
+        return null;
+    }
 
     @Override
-    public StartingCard getStartingCard() {return null;}
+    public StartingCard getStartingCard() {
+        return null;
+    }
 
     /**
      *
@@ -128,7 +133,8 @@ public class GUIClientViewController implements ClientViewController {
     }
 
     @Override
-    public void waitingRoom(){}
+    public void waitingRoom() {
+    }
 
     public void setGuiClientView(GUIClientView guiClientView) {
         this.guiClientView = guiClientView;

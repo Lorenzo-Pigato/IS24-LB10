@@ -11,19 +11,19 @@ import java.util.Scanner;
 
 //Singleton?!
 
-public class Client implements Runnable{
+public class Client implements Runnable {
     //Client can choose from command line which type of interface he wants(TUI/GUI), in the ClientLauncher
     //a command will be provided to choose the interface he wants and then instantiating the right type of view and view controller
 
     private static Client instance;
-    private  ClientViewController controller = CLIClientViewController.instance();
-    private  boolean active = true;
-    private  boolean logged = false;
-    private  boolean inMatch = false;
+    private ClientViewController controller = CLIClientViewController.instance();
+    private boolean active = true;
+    private boolean logged = false;
+    private boolean inMatch = false;
     private boolean startedMatch = false;
 
-    public static Client instance(){
-        if(instance == null) instance =  new Client();
+    public static Client instance() {
+        if (instance == null) instance = new Client();
         return instance;
     }
 
@@ -66,7 +66,10 @@ public class Client implements Runnable{
         if (active) {
             controller.game();
         }
+        controller.close();
+        new Scanner(System.in).nextLine();
     }
+
     /**
      * @return the client state
      */
@@ -74,25 +77,26 @@ public class Client implements Runnable{
         return active;
     }
 
-    public  boolean isLogged(){
-        return logged;
+    public boolean isLogged() {
+        return !logged;
     }
 
-    public boolean isInMatch(){
-        return inMatch;
+    public boolean isInMatch() {
+        return !inMatch;
     }
 
-    public void setLogged(Boolean state){
+    public void setLogged(Boolean state) {
         logged = state;
     }
-    public void setInMatch(Boolean state){
+
+    public void setInMatch(Boolean state) {
         inMatch = state;
     }
 
     /**
      * @param active sets the client state, which will be evaluated by communication threads
      */
-    public  void setActive(boolean active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 
@@ -100,9 +104,9 @@ public class Client implements Runnable{
         this.controller = controller;
     }
 
-    public boolean isStartedMatch() {return startedMatch;}
-
-    public void setStartedMatch(boolean startedMatch) {this.startedMatch = startedMatch;}
+    public void setStartedMatch(boolean startedMatch) {
+        this.startedMatch = startedMatch;
+    }
 
 }
 

@@ -10,5 +10,6 @@ import org.jetbrains.annotations.NotNull;
  */
 public interface Page {
     public void changeState(@NotNull CLIState state);
+
     public void print(Object[] args);
 }

@@ -1,10 +1,13 @@
 package it.polimi.ingsw.lb10.network.requests.match;
 
-import it.polimi.ingsw.lb10.server.visitors.requestDispatch.LobbyRequestVisitor;
 import it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitor;
 
+import java.io.Serial;
+
 public class PrivateQuestsRequest extends MatchRequest {
-    private static final long serialVersionUID = 27L;
+    @Serial
+    private static final long serialVersionUID = 28L;
+
     public PrivateQuestsRequest(int matchId) {
         super(matchId);
     }

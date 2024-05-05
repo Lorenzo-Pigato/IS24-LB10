@@ -24,7 +24,7 @@ public class CLILoginPage implements CLIPage {
     }
 
     @Override
-    public void print(Object[] args){
+    public void print(Object[] args) {
         state.apply(args);
     }
 
@@ -43,7 +43,7 @@ public class CLILoginPage implements CLIPage {
     public static class invalidLength implements CLIState {
         @Override
         public void apply(Object @NotNull [] args) {
-            if(alreadyTaken.isVisible()) CLIString.replace(alreadyTaken, invalidLength);
+            if (alreadyTaken.isVisible()) CLIString.replace(alreadyTaken, invalidLength);
             else invalidLength.centerPrint();
 
             CLICommand.restoreCursorPosition();
@@ -54,7 +54,7 @@ public class CLILoginPage implements CLIPage {
     public static class alreadyTaken implements CLIState {
         @Override
         public void apply(Object @NotNull [] args) {
-            if(invalidLength.isVisible()) CLIString.replace(invalidLength, alreadyTaken);
+            if (invalidLength.isVisible()) CLIString.replace(invalidLength, alreadyTaken);
             else alreadyTaken.centerPrint();
 
             CLICommand.restoreCursorPosition();

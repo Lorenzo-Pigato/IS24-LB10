@@ -1,24 +1,17 @@
 package it.polimi.ingsw.lb10.server.controller;
-import it.polimi.ingsw.lb10.network.requests.match.MoveBoardRequest;
+
 import it.polimi.ingsw.lb10.network.requests.match.*;
-import it.polimi.ingsw.lb10.network.requests.match.DrawGoldenFromDeckRequest;
 import it.polimi.ingsw.lb10.network.response.match.*;
 import it.polimi.ingsw.lb10.server.Server;
 import it.polimi.ingsw.lb10.server.model.MatchModel;
-import it.polimi.ingsw.lb10.server.model.Node;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
-import it.polimi.ingsw.lb10.server.model.Resource;
-import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
-import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
-import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
 import it.polimi.ingsw.lb10.server.view.RemoteView;
-import java.io.IOException;
-
 import it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitor;
 import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -49,76 +42,86 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         this.numberOfPlayers = numberOfPlayers;
     }
 
-    public boolean isActive(){return active;}
+    public boolean isActive() {
+        return active;
+    }
 
-    public int getId(){return id;}
-    public boolean isStarted(){return started;}
-    public void setActive(boolean status){this.active = status;}
+    public int getId() {
+        return id;
+    }
+
+    public boolean isStarted() {
+        return started;
+    }
+
+    public void setActive(boolean status) {
+        this.active = status;
+    }
+
+    public boolean isTerminated() {
+        return model.isTerminated();
+    }
 
 
     @Override
     public void run() {
-        try{
-            while(isActive()){
+        try {
+            while (isActive()) {
                 MatchRequest request = requests.take();
                 request.accept(this);
             }
-        }catch(Throwable e){
-            Server.log(">> " + e.getMessage());
+        } catch (Throwable e) {
+            Server.log("[" + id + "]" + ">> " + e.getMessage());
+            remoteViews.forEach(remoteView -> remoteView.send(new TerminatedMatchResponse()));
         }
-        finally {
-            remoteViews.forEach(remoteView -> remoteView.send(new TerminatedMatchResponse())); //either match model or match controller send this, better match model via obs
-        }
-    }
 
-    public void addPlayer(Player player){
-        players.add(player);
     }
 
     // --------> GETTER <--------
-    public Position[] getPossiblePosition() {
-        return new Position[]{Position.TOPLEFT, Position.TOPRIGHT, Position.BOTTOMRIGHT, Position.BOTTOMLEFT};
-    }
 
-    /** this method puts the request in the BlockingQueue object to be handled by the MatchController
+    /**
+     * this method puts the request in the BlockingQueue object to be handled by the MatchController
+     *
      * @param request request sent by the client, which is referred to the specific match.
      * @throws InterruptedException in case MatchController thread terminates.
      */
-    public synchronized void submitRequest(MatchRequest request) throws InterruptedException{
+    public synchronized void submitRequest(MatchRequest request) throws InterruptedException {
         requests.put(request);
     }
 
     /**
      * @return match id
      */
-    public int getMatchId(){
+    public int getMatchId() {
         return id;
     }
 
-    /** This method is used to handle the "JoinMatchRequest"
-     *  sent by the client to the LobbyController, and from the LobbyController to the MatchController
+    /**
+     * This method is used to handle the "JoinMatchRequest"
+     * sent by the client to the LobbyController, and from the LobbyController to the MatchController
      * in this method MatchController adds the player to his players, sends positive response and checks if the match can start. In case the match can start, sends a
      * broadcast message to all the players waiting.
+     *
      * @param jmr join match request
      */
     @Override
-    public synchronized  void visit(@NotNull JoinMatchRequest jmr) {
+    public synchronized void visit(@NotNull JoinMatchRequest jmr) {
         players.add(jmr.getPlayer()); //adds new player, safe because LobbyController checked if it's possible
         getRemoteView(jmr.getUserHash()).send(new JoinMatchResponse(true, getMatchId())); //sends response
-        Server.log(">>match joined [username : " + getPlayer(jmr.getUserHash()).getUsername() + ", match : " + getMatchId());
-        if(players.size() == numberOfPlayers) start();
+        Server.log("[ " + id + "]" + ">>match joined [username : " + getPlayer(jmr.getUserHash()).getUsername());
+        if (players.size() == numberOfPlayers) start();
     }
 
     /**
      * @param privateQuestsRequest request sent by the client to view and choose his private quests
      */
     @Override
-    public synchronized  void visit(@NotNull PrivateQuestsRequest privateQuestsRequest) {
-        try{
-            Server.log(">>private quests request [username : " + getPlayer(privateQuestsRequest.getUserHash()).getUsername() + "]");
+    public synchronized void visit(@NotNull PrivateQuestsRequest privateQuestsRequest) {
+        try {
+            Server.log("[ " + id + "]" + ">>private quests request [username : " + getPlayer(privateQuestsRequest.getUserHash()).getUsername() + "]");
             getRemoteView(privateQuestsRequest.getUserHash()).send(new PrivateQuestsResponse(getPlayer(privateQuestsRequest.getUserHash()).getPrivateQuests()));
-        }catch(Exception e){
-            Server.log(e.getMessage());
+        } catch (Exception e) {
+            Server.log("[ " + id + "]" + e.getMessage());
         }
     }
 
@@ -127,7 +130,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     @Override
     public synchronized void visit(@NotNull PrivateQuestSelectedRequest privateQuestSelectedRequest) {
-        Server.log(">>private quest selected request [username : " + getPlayer(privateQuestSelectedRequest.getUserHash()).getUsername() + "]");
+        Server.log("[ " + id + "]" + ">>private quest selected request [username : " + getPlayer(privateQuestSelectedRequest.getUserHash()).getUsername() + "]");
         getPlayer(privateQuestSelectedRequest.getUserHash()).setPrivateQuest(privateQuestSelectedRequest.getSelectedQuest());
         model.assignPrivateQuest(getPlayer(privateQuestSelectedRequest.getUserHash()), privateQuestSelectedRequest.getSelectedQuest());
     }
@@ -137,8 +140,8 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     @Override
     public void visit(@NotNull ChatRequest chatRequest) {
-        Server.log(">> chat message from " + getPlayer(chatRequest.getUserHash()).getUsername());
-        model.notifyAll(new ChatMessageResponse( getPlayer(chatRequest.getUserHash()).getUsername(), chatRequest.getMessage()));
+        Server.log("[ " + id + "]" + ">>chat message from " + getPlayer(chatRequest.getUserHash()).getUsername());
+        model.notifyAll(new ChatMessageResponse(getPlayer(chatRequest.getUserHash()).getUsername(), chatRequest.getMessage()));
     }
 
     /**
@@ -154,12 +157,18 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     @Override
     public void visit(DrawGoldenFromTableRequest drawGoldenFromTableRequest) {
-        if(isOnTurnPlayer(drawGoldenFromTableRequest.getUserHash()) && hasToPick(drawGoldenFromTableRequest.getUserHash())){
+        Server.log("[ " + id + "]" + ">>draw golden card from table request from " + getPlayer(drawGoldenFromTableRequest.getUserHash()).getUsername());
+        if (isOnTurnPlayer(drawGoldenFromTableRequest.getUserHash()) && hasToPick(drawGoldenFromTableRequest.getUserHash())) {
             model.drawGoldenFromTable(getPlayer(drawGoldenFromTableRequest.getUserHash()), drawGoldenFromTableRequest.getIndex());
-        }else if (!isOnTurnPlayer(drawGoldenFromTableRequest.getUserHash())){
+            model.endTurn(drawGoldenFromTableRequest.getUserHash(), getPlayer(drawGoldenFromTableRequest.getUserHash()).getPoints());
+            model.checkDeckEmptiness();
+            Server.log("[ " + id + "]" + ">>draw request valid");
+        } else if (!isOnTurnPlayer(drawGoldenFromTableRequest.getUserHash())) {
             model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), drawGoldenFromTableRequest.getUserHash());
-        }else if(!hasToPick(drawGoldenFromTableRequest.getUserHash())){
-            model.notify(new BadRequestResponse("You must place a card before picking one! "), drawGoldenFromTableRequest.getUserHash());
+            Server.log("[ " + id + "]" + ">>draw request not valid");
+        } else if (!hasToPick(drawGoldenFromTableRequest.getUserHash())) {
+            Server.log("[ " + id + "]" + ">>draw request not valid");
+            model.notify(new ServerNotification("You must place a card before picking one! "), drawGoldenFromTableRequest.getUserHash());
         }
     }
 
@@ -168,12 +177,18 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     @Override
     public void visit(DrawResourceFromTableRequest drawResourceFromTableRequest) {
-        if(isOnTurnPlayer(drawResourceFromTableRequest.getUserHash()) && hasToPick(drawResourceFromTableRequest.getUserHash())){
+        Server.log("[ " + id + "]" + ">>draw resource card from table request from " + getPlayer(drawResourceFromTableRequest.getUserHash()).getUsername());
+        if (isOnTurnPlayer(drawResourceFromTableRequest.getUserHash()) && hasToPick(drawResourceFromTableRequest.getUserHash())) {
             model.drawResourceFromTable(getPlayer(drawResourceFromTableRequest.getUserHash()), drawResourceFromTableRequest.getIndex());
-        }else if (!isOnTurnPlayer(drawResourceFromTableRequest.getUserHash())){
+            model.endTurn(drawResourceFromTableRequest.getUserHash(), getPlayer(drawResourceFromTableRequest.getUserHash()).getPoints());
+            model.checkDeckEmptiness();
+            Server.log("[ " + id + "]" + ">>draw request valid");
+        } else if (!isOnTurnPlayer(drawResourceFromTableRequest.getUserHash())) {
             model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), drawResourceFromTableRequest.getUserHash());
-        }else if(!hasToPick(drawResourceFromTableRequest.getUserHash())){
-            model.notify(new BadRequestResponse("You must place a card before picking one! "), drawResourceFromTableRequest.getUserHash());
+            Server.log("[ " + id + "]" + ">>draw request not valid");
+        } else if (!hasToPick(drawResourceFromTableRequest.getUserHash())) {
+            model.notify(new ServerNotification("You must place a card before picking one! "), drawResourceFromTableRequest.getUserHash());
+            Server.log("[ " + id + "]" + ">>draw request not valid");
         }
 
     }
@@ -183,12 +198,18 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     @Override
     public void visit(DrawResourceFromDeckRequest drawResourceFromDeckRequest) {
-        if(isOnTurnPlayer(drawResourceFromDeckRequest.getUserHash()) && hasToPick(drawResourceFromDeckRequest.getUserHash())){
+        Server.log("[ " + id + "]" + ">>draw resource card from deck request from " + getPlayer(drawResourceFromDeckRequest.getUserHash()).getUsername());
+        if (isOnTurnPlayer(drawResourceFromDeckRequest.getUserHash()) && hasToPick(drawResourceFromDeckRequest.getUserHash())) {
             model.drawResourceFromDeck(getPlayer(drawResourceFromDeckRequest.getUserHash()));
-        }else if (!isOnTurnPlayer(drawResourceFromDeckRequest.getUserHash())){
+            model.endTurn(drawResourceFromDeckRequest.getUserHash(), getPlayer(drawResourceFromDeckRequest.getUserHash()).getPoints());
+            model.checkDeckEmptiness();
+            Server.log("[ " + id + "]" + ">>draw request valid");
+        } else if (!isOnTurnPlayer(drawResourceFromDeckRequest.getUserHash())) {
             model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), drawResourceFromDeckRequest.getUserHash());
-        }else if(!hasToPick(drawResourceFromDeckRequest.getUserHash())){
-            model.notify(new BadRequestResponse("You must place a card before picking one! "), drawResourceFromDeckRequest.getUserHash());
+            Server.log("[ " + id + "]" + ">>draw request not valid");
+        } else if (!hasToPick(drawResourceFromDeckRequest.getUserHash())) {
+            model.notify(new ServerNotification("You must place a card before picking one! "), drawResourceFromDeckRequest.getUserHash());
+            Server.log("[ " + id + "]" + ">>draw request not valid");
         }
 
     }
@@ -198,32 +219,40 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     @Override
     public void visit(@NotNull DrawGoldenFromDeckRequest drawGoldenFromDeckRequest) {
-        if(isOnTurnPlayer(drawGoldenFromDeckRequest.getUserHash()) && hasToPick(drawGoldenFromDeckRequest.getUserHash())){
+        Server.log("[ " + id + "]" + ">>draw resource card from deck request from " + getPlayer(drawGoldenFromDeckRequest.getUserHash()).getUsername());
+        if (isOnTurnPlayer(drawGoldenFromDeckRequest.getUserHash()) && hasToPick(drawGoldenFromDeckRequest.getUserHash())) {
             model.drawGoldenFromDeck(getPlayer(drawGoldenFromDeckRequest.getUserHash()));
-        }else if (!isOnTurnPlayer(drawGoldenFromDeckRequest.getUserHash())){
+            model.endTurn(drawGoldenFromDeckRequest.getUserHash(), getPlayer(drawGoldenFromDeckRequest.getUserHash()).getPoints());
+            model.checkDeckEmptiness();
+            Server.log("[ " + id + "]" + ">>draw request valid");
+        } else if (!isOnTurnPlayer(drawGoldenFromDeckRequest.getUserHash())) {
             model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), drawGoldenFromDeckRequest.getUserHash());
-        }else if(!hasToPick(drawGoldenFromDeckRequest.getUserHash())){
-            model.notify(new BadRequestResponse("You must place a card before picking one! "), drawGoldenFromDeckRequest.getUserHash());
+            Server.log("[ " + id + "]" + ">>draw request not valid");
+        } else if (!hasToPick(drawGoldenFromDeckRequest.getUserHash())) {
+            model.notify(new ServerNotification("You must place a card before picking one! "), drawGoldenFromDeckRequest.getUserHash());
+            Server.log("[ " + id + "]" + ">>draw request not valid");
         }
     }
 
     @Override
-    public void visit( @NotNull PlaceStartingCardRequest placeStartingCardRequest) {
-        Server.log("player " + getPlayer(placeStartingCardRequest.getUserHash()).getUsername() + "placed starting card");
+    public void visit(@NotNull PlaceStartingCardRequest placeStartingCardRequest) {
+        Server.log("[ " + id + "]" + "player " + getPlayer(placeStartingCardRequest.getUserHash()).getUsername() + " placed starting card");
         model.getPlayer(placeStartingCardRequest.getUserHash()).setStartingCard(placeStartingCardRequest.getStartingCard());
         model.insertStartingCard(getPlayer(placeStartingCardRequest.getUserHash()));
-        if(players.stream().allMatch(player ->  !player.getMatrix().getNode(41, 41).getCorners().isEmpty())) model.startTurns();
+        if (players.stream().noneMatch(player -> player.getMatrix().getNode(41, 41).getCorners().isEmpty()))
+            model.startTurns();
     }
 
     /**
-     *See PlaceCardRequest constructor for more info on placing stream.
+     * See PlaceCardRequest constructor for more info on placing stream.
+     *
      * @param placeCardRequest request sent by the client at the beginning of his turn when he wants to place a card on his matrix
      */
     @Override
-    public void visit(PlaceCardRequest placeCardRequest){
-        Server.log(">>new place card request");
-        if(model.getPlayer(placeCardRequest.getUserHash()).equals(model.getOnTurnPlayer())){
-            if(model.checkValidMatrixCardId(placeCardRequest.getMatrixCardId(), getPlayer(placeCardRequest.getUserHash()))) {
+    public void visit(PlaceCardRequest placeCardRequest) {
+        Server.log("[ " + id + "]" + ">>new place card request");
+        if (model.getPlayer(placeCardRequest.getUserHash()).equals(model.getOnTurnPlayer())) {
+            if (model.checkValidMatrixCardId(placeCardRequest.getMatrixCardId(), getPlayer(placeCardRequest.getUserHash()))) {
                 Position position = placeCardRequest.getPosition();
                 switch (position) {
                     case TOPLEFT ->
@@ -236,11 +265,11 @@ public class MatchController implements Runnable, MatchRequestVisitor {
                             model.insertCard(getPlayer(placeCardRequest.getUserHash()), placeCardRequest.getCard(), getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardRow(placeCardRequest.getMatrixCardId()) - 1, getPlayer(placeCardRequest.getUserHash()).getMatrix().getCardColumn(placeCardRequest.getMatrixCardId()) - 1);
                 }
 
-            }else{
-                    model.notify(new PickedCardResponse(null, false, "Invalid card id", null), placeCardRequest.getUserHash());
-                }
+            } else {
+                model.notify(new PickedCardResponse(null, false, "Invalid card id", null), placeCardRequest.getUserHash());
+            }
 
-        }else{
+        } else {
             model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), placeCardRequest.getUserHash());
         }
 
@@ -248,93 +277,108 @@ public class MatchController implements Runnable, MatchRequestVisitor {
 
     @Override
     public void visit(PickRequest pickRequest) { //TEST !!
-        Server.log(">> new pick request");
-            model.notify(new ShowPickingPossibilitiesResponse(model.getGoldenDeck().getCards().getLast(), model.getResourceDeck().getCards().getLast(), model.getGoldenUncovered(), model.getResourceUncovered()), pickRequest.getUserHash());
+        Server.log("[ " + id + "]" + ">>new pick request");
+        model.notify(new ShowPickingPossibilitiesResponse(!model.getGoldenDeck().getCards().isEmpty() ? model.getGoldenDeck().getCards().getLast() : null, !model.getResourceDeck().getCards().isEmpty() ? model.getResourceDeck().getCards().getLast() : null, model.getGoldenUncovered(), model.getResourceUncovered()), pickRequest.getUserHash());
     }
 
     /**
-     * @param moveBoardRequest
+     * @param moveBoardRequest request sent by the client to move his board
      */
     @Override
-    public void visit(MoveBoardRequest moveBoardRequest){
-        model.notify( new MoveBoardResponse(model.getPlayer(moveBoardRequest.getUserHash()).getMatrix(), moveBoardRequest.getxOffset(), moveBoardRequest.getyOffset()), moveBoardRequest.getUserHash());
+    public void visit(MoveBoardRequest moveBoardRequest) {
+        Server.log("[ " + id + "]" + ">>move board request");
+        model.notify(new MoveBoardResponse(model.getPlayer(moveBoardRequest.getUserHash()).getMatrix(), moveBoardRequest.getxOffset(), moveBoardRequest.getyOffset()), moveBoardRequest.getUserHash());
     }
 
-    /** this method adds the remote view to the MatchController whenever a new client joins the match
+    /**
+     * this method adds the remote view to the MatchController whenever a new client joins the match
+     *
      * @param remoteView the client remote view
      */
-    public synchronized void addRemoteView(RemoteView remoteView){
+    public synchronized void addRemoteView(RemoteView remoteView) {
         remoteViews.add(remoteView);
     }
 
-    public synchronized RemoteView getRemoteView(int hashCode){
+    public synchronized RemoteView getRemoteView(int hashCode) {
         try {
             return remoteViews
                     .stream()
                     .filter(remoteView -> remoteView.getSocket().hashCode() == hashCode)
                     .findFirst()
-                    .orElseThrow(() -> new Exception(">> RemoteView not found [hash : " + hashCode + "]"));
+                    .orElseThrow(() -> new Exception(">>RemoteView not found [hash : " + hashCode + "]"));
         } catch (Exception e) {
-            Server.log(e.getMessage());
+            Server.log("[ " + id + "]" + e.getMessage());
             return null;
         }
 
     }
 
-    /** this method removes a player and his remote view from the match in case the client sends a QuitRequest or disconnects from the socket, in this case the method
+    /**
+     * this method removes a player and his remote view from the match in case the client sends a QuitRequest or disconnects from the socket, in this case the method
      * is triggered by an IOException in ClientConnection thread, who is the first thread to notice the disconnection, calling LobbyController static method *disconnectClient()*
      * which will handle removing the client from his match, in case the player is in a started match.
+     *
      * @param p the player to be removed
      */
-    public synchronized void removePlayer(Player p){
+    public synchronized void removePlayer(Player p) {
         players.remove(p);
         try {
             getRemoteView(p.getUserHash()).getSocket().close();
-        }catch(IOException e){
-            Server.log(e.getMessage());
+        } catch (IOException e) {
+            Server.log("[" + id + "]" + e.getMessage());
         }
-        remoteViews.remove(getRemoteView(p.getUserHash()));
+        model.removeObserver(getRemoteView(p.getUserHash()));
         model.removePlayer(p);
-        if((players.isEmpty() && !isStarted()) || (players.size() == 1 && isStarted())){
+        p.setInMatch(false);
+        remoteViews.remove(getRemoteView(p.getUserHash()));
+
+
+        if (((players.size() < 2 && isStarted()) && !model.isTerminated())) { //logic : if match has STARTED but is not TERMINATED, all players have left apart from one -> notify endGame and close, if is
+            //STARTED and TERMINATED -> game is correctly terminated -> all players are quitting correctly
             setActive(false);
-            //WINNER???????????????????????????????????????????????????????????????????????????????????????????????????????
+            model.notify(new EndGameResponse(players.getFirst(), players), players.getFirst().getUserHash());
+            model.terminate();
         }
     }
+
     /**
      * this method sets started state to true whenever the match reaches the prefixed number of players, sends a broadcast message
      * to all clients in the starting match
      */
-    private synchronized void start(){
-        Server.log(">>match started [id : " + getMatchId() + "]");
+    private synchronized void start() {
+        Server.log("[ " + id + "]" + ">>match started");
         try {
             started = true;
             model = new MatchModel(numberOfPlayers, players);
             remoteViews.forEach(r -> model.addObserver(r));
             model.setId(id);
             model.gameSetup(); //initializer for decks, table cards , players hand and colors.
-        }catch(Exception e){Server.log(e.getMessage());}
+        } catch (Exception e) {
+            Server.log("[ " + id + "]" + e.getMessage());
+        }
     }
 
 
     public synchronized ArrayList<Player> getPlayers() {
         return players;
     }
-    public synchronized Player getPlayer(int userHash){
+
+    public synchronized Player getPlayer(int userHash) {
         try {
             return players.stream().filter(player -> player.getUserHash() == userHash)
-                                   .findFirst()
-                                   .orElseThrow(() -> new Exception(">> Player not found [hash : " + userHash + "]"));
+                    .findFirst()
+                    .orElseThrow(() -> new Exception(">> Player not found [hash : " + userHash + "]"));
         } catch (Exception e) {
-            Server.log(e.getMessage());
+            Server.log("[" + id + "]" + e.getMessage());
         }
         return null;
     }
 
-    public boolean isOnTurnPlayer(int userHash){
+    public boolean isOnTurnPlayer(int userHash) {
         return getPlayer(userHash).equals(model.getOnTurnPlayer());
     }
 
-    public boolean hasToPick(int userHash){
+    public boolean hasToPick(int userHash) {
         return model.getPlayer(userHash).getHand().size() == 2;
     }
 }

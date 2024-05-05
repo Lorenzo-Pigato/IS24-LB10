@@ -11,17 +11,17 @@ public class ClientLauncher {
     /**
      * Main method launches the Client thread after parsing args passed by Launcher to determine
      * if cli or gui should be used.
+     *
      * @param args client:ui - ui can be "cli" or "gui"
      */
 
-    public static void main( String @NotNull [] args )
-    {
+    public static void main(String @NotNull [] args) {
         Client client = Client.instance();
-        if(args[1].equals("cli")){
+        if (args[1].equals("cli")) {
             CLIClientViewController controller = CLIClientViewController.instance();
             controller.setCliClientView(new CLIClientView());
             client.setController(controller);
-        }else{
+        } else {
             GUIClientViewController controller = GUIClientViewController.instance();
             controller.setGuiClientView(new GUIClientView());
             client.setController(controller);

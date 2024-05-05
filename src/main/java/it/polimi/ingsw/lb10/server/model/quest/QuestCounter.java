@@ -1,11 +1,11 @@
 package it.polimi.ingsw.lb10.server.model.quest;
 
-import it.polimi.ingsw.lb10.server.model.Matrix;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import it.polimi.ingsw.lb10.server.model.Matrix;
 import it.polimi.ingsw.lb10.server.model.Resource;
+
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -14,11 +14,12 @@ import java.util.Map;
 
 public class QuestCounter extends Quest implements Serializable {
 
-    private Map<Resource,Integer> activationCost = new HashMap<>();
+
+    private Map<Resource, Integer> activationCost;
 
 
-@JsonCreator
-    public QuestCounter(@JsonProperty("id") int id, @JsonProperty("points") int points, @JsonProperty("activationCost") Map<Resource,Integer> activationCost) {
+    @JsonCreator
+    public QuestCounter(@JsonProperty("id") int id, @JsonProperty("points") int points, @JsonProperty("activationCost") Map<Resource, Integer> activationCost) {
         super(id, points);
         this.activationCost = activationCost;
     }
@@ -27,7 +28,7 @@ public class QuestCounter extends Quest implements Serializable {
         return activationCost;
     }
 
-    public void setActivationCost( Map<Resource, Integer> activationCost) {
+    public void setActivationCost(Map<Resource, Integer> activationCost) {
         this.activationCost = activationCost;
     }
 
@@ -37,17 +38,17 @@ public class QuestCounter extends Quest implements Serializable {
      * This algorithm works with the simple case of three same resources and with the case where are all different
      */
     public int questAlgorithm(Map<Resource, Integer> onMapResources) {
-        int minimum=Integer.MAX_VALUE;
+        int minimum = Integer.MAX_VALUE;
         for (Resource resource : onMapResources.keySet()) {
 
-            int value=onMapResources.getOrDefault(resource, 0);
-            if (activationCost.containsKey(resource) && activationCost.get(resource) != 0 ) {
-                minimum=Math.min(minimum, value / activationCost.get(resource));
+            int value = onMapResources.getOrDefault(resource, 0);
+            if (activationCost.containsKey(resource) && activationCost.get(resource) != 0) {
+                minimum = Math.min(minimum, value / activationCost.get(resource));
             }
         }
-        if(minimum==Integer.MAX_VALUE)
+        if (minimum == Integer.MAX_VALUE)
             return 0;
-        return minimum*getPoints();
+        return minimum * getPoints();
     }
 
     @Override
