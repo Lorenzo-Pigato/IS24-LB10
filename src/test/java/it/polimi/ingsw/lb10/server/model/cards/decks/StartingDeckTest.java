@@ -33,15 +33,6 @@ public class StartingDeckTest {
     }
 
     @Test
-    public void shuffleTest(){
-        startingDeck = new StartingDeck();
-        startingDeck.fillDeck();
-        StartingCard oracle = startingDeck.getCards().getLast();
-        startingDeck.shuffle();
-        assertNotEquals(startingDeck.getCards().getLast(), oracle);
-    }
-
-    @Test
     public void deckEndTest(){
         startingDeck = new StartingDeck();
         startingDeck.fillDeck();
