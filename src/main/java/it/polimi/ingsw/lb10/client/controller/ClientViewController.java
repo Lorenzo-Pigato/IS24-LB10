@@ -38,7 +38,7 @@ public abstract class ClientViewController {
 
     // ------------------ SETTERS ------------------ //
 
-    public void setSocket(Socket socket) {this.socket = socket;};
+    public void setSocket(Socket socket) {this.socket = socket;}
     public void setClient(Client client) {this.client = client;}
     public void setExceptionHandler(ExceptionHandler exceptionHandler) {this.exceptionHandler = exceptionHandler;}
     public void setMatchId(int matchId) {this.matchId = matchId;}

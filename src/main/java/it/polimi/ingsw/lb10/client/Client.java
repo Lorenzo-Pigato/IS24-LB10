@@ -88,9 +88,7 @@ public class Client implements Runnable {
         return !inMatch;
     }
 
-    public boolean isStartedMatch() { return startedMatch; }
-
-    public ExceptionHandler getExceptionHandler() { return exceptionHandler; }
+    public boolean matchIsStarted() { return startedMatch; }
 
 
     //-------------- SETTERS -------------- //
