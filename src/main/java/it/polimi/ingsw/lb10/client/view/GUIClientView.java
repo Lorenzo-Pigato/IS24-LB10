@@ -5,7 +5,6 @@ import it.polimi.ingsw.lb10.client.exception.CLIExceptionHandler;
 import it.polimi.ingsw.lb10.client.gui.GUIConnectionPage;
 import it.polimi.ingsw.lb10.client.gui.GUIPage;
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,48 +12,42 @@ import javafx.stage.Stage;
 
 import java.util.Objects;
 
-public class GUIClientView extends Application implements ClientView {
+public class GUIClientView extends Application {
 
-    private GUIPage page;
-    private Stage stage;
+    private static GUIPage page;
+    private static Stage stage;
+    private static boolean active = true;
+
+    private static GUIClientView instance;
+
+    public static GUIClientView instance() {
+        if(instance == null) {
+            instance = new GUIClientView();
+        }
+        return instance;
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
-        this.stage = stage;
+        GUIClientView.stage = stage;
 
-        setPage(new GUIConnectionPage());
-        updatePageState(null);
+        GUIClientView.stage.setHeight(850);
+        GUIClientView.stage.setWidth(1600);
+        GUIClientView.stage.setResizable(false);
 
-        stage.setHeight(850);
-        stage.setWidth(1600);
-        stage.setResizable(false);
-
-        displayPage(null);
     }
 
-    @Override
-    public void setPage(Page page) {
-        this.page = (GUIPage) page;
-    }
-
-    @Override
-    public void updatePageState(State state) {
+    public void setPage(GUIPage page) {
+        GUIClientView.page = page;
         try {
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(page.getFXML())));
             Scene scene = new Scene(root);
+
             stage.setScene(scene);
+            stage.show();
         } catch (Exception e) {
             new CLIExceptionHandler(new CLIClientView()).handle(e);
         }
     }
 
-    @Override
-    public void displayPage(Object[] args) {
-        stage.show();
-    }
-
-    @Override
-    public Page getPage() {
-        return page;
-    }
 }

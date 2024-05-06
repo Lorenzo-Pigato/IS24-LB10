@@ -1,8 +1,6 @@
 package it.polimi.ingsw.lb10.client.gui;
 
-import it.polimi.ingsw.lb10.client.view.Page;
-
-public interface GUIPage extends Page {
+public interface GUIPage {
     String getFXML();
 
     String getCSS();

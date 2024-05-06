@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lb10.client.gui;
 
+import it.polimi.ingsw.lb10.client.Client;
 import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
 import it.polimi.ingsw.lb10.client.util.InputVerifier;
 import javafx.event.ActionEvent;
@@ -10,12 +11,6 @@ import javafx.scene.control.TextField;
 import java.net.Socket;
 
 public class GUIConnectionPage implements GUIPage {
-
-    @Override
-    public void print(Object[] args) {
-
-    }
-
     @Override
     public String getFXML() {
         return "/fxml/ConnectionPage.fxml";
@@ -34,7 +29,7 @@ public class GUIConnectionPage implements GUIPage {
     @FXML
     private TextField serverPort;
 
-    public void submitIpValidation(ActionEvent event) {
+    public synchronized void submitIpValidation(ActionEvent event) {
         String ip = serverIP.getText();
         String port = serverPort.getText();
 
@@ -47,9 +42,11 @@ public class GUIConnectionPage implements GUIPage {
             connect.setText("Invalid Port");
         } else {
             try {
-                GUIClientViewController.instance().setSocket(new Socket(ip, 1234));
+                GUIClientViewController.instance().setSocket(new Socket(ip, Integer.parseInt(port)));
+                this.notifyAll();
             } catch (Exception e) {
-                connect.setText("Connection error");
+                e.printStackTrace();
+                connect.setText("Error");
             }
         }
     }
