@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lb10.client;
 
+import it.polimi.ingsw.lb10.client.cli.CLICommand;
 import it.polimi.ingsw.lb10.client.controller.ClientViewController;
 import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
@@ -44,10 +45,6 @@ public class Client implements Runnable {
         //Set client reference to the controller
         controller.setClient(this);
         //server connection
-
-        // if the controller is a GUI controller, launch GUI
-        if(this.controller instanceof GUIClientViewController)
-            GUIClientView.launch();
 
         try {
             controller.initializeConnection();

@@ -7,6 +7,7 @@ import it.polimi.ingsw.lb10.client.view.GUIClientView;
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.GUIResponseHandler;
+import javafx.application.Application;
 
 import java.net.Socket;
 
@@ -49,8 +50,7 @@ public class GUIClientViewController extends ClientViewController {
 
     @Override
     public void initializeConnection() throws ConnectionErrorException {
-        view.setPage(new GUIConnectionPage());
-        view.displayPage(null);
+        Application.launch(GUIClientView.class);
     }
 
     @Override
