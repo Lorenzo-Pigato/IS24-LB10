@@ -174,7 +174,7 @@ public class CLIResponseHandler implements ResponseVisitor {
      * @param serverNotification response sent by the server
      */
     @Override
-    public void visit(ServerNotification serverNotification) {
+    public void visit(BadRequestResponse serverNotification) {
         CLIMatchPage.serverReply(serverNotification.getMessage());
     }
 
