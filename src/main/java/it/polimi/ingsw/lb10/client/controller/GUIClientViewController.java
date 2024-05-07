@@ -1,21 +1,30 @@
 package it.polimi.ingsw.lb10.client.controller;
 
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
-import it.polimi.ingsw.lb10.client.gui.GUIConnectionPage;
-import it.polimi.ingsw.lb10.client.gui.GUILoginPage;
-import it.polimi.ingsw.lb10.client.gui.GUIPage;
-import it.polimi.ingsw.lb10.client.view.GUIClientView;
+import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
+import it.polimi.ingsw.lb10.client.exception.GUIExceptionHandler;
+import it.polimi.ingsw.lb10.client.gui.GUIConnectionPageController;
+import it.polimi.ingsw.lb10.client.gui.GUIPageController;
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.GUIResponseHandler;
-import javafx.application.Application;
-import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.util.Objects;
+
 
 public class GUIClientViewController extends ClientViewController {
 
     private static GUIClientViewController instance;
-    private GUIClientView view = GUIClientView.instance();
-    private GUIPage page;
+    private GUIPageController page;
+    private Stage stage;
+    private Scene scene;
+    private final ExceptionHandler exceptionHandler = new GUIExceptionHandler(this);
 
     private static final GUIResponseHandler responseHandler = GUIResponseHandler.instance();
 
@@ -24,22 +33,40 @@ public class GUIClientViewController extends ClientViewController {
         return instance;
     }
 
-    // ------------------ SETTERS ------------------ //
-    public void setGuiClientView(GUIClientView guiClientVIew) {
-        this.view = guiClientVIew;
+    public void changeScene(GUIPageController page) {
+        setPage(page);
+        FXMLLoader fxmlLoader = new FXMLLoader(GUIClientViewController.class.getResource(page.getFXML()));
+        try{
+            Parent root = fxmlLoader.load();
+            scene.setRoot(root);
+            stage.show();
+        }catch (IOException e){
+            exceptionHandler.handle(e);
+        }
     }
 
-    // ------------------ GETTERS ------------------ //
-    public GUIClientView getView() {
-        return view;
-    }
+    public void initialize(Stage stage) {
+        this.stage = stage;
+        stage.setResizable(false);
+        stage.setTitle("Codex Naturalis");
+        stage.setWidth(1600);
+        stage.setHeight(900);
+        stage.getIcons().add(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/images/icon.png"))));
 
-    // ------------------ METHODS ------------------ //
-    public void changePage(GUIPage page) {
+        setPage(new GUIConnectionPageController());
+        FXMLLoader fxmlLoader = new FXMLLoader(GUIClientViewController.class.getResource(page.getFXML()));
+
+        try {
+            scene = new Scene(fxmlLoader.load());
+        } catch (IOException e) {
+            exceptionHandler.handle(e);
+        }
+        stage.setScene(scene);
+        stage.show();
+    }
+    private void setPage(GUIPageController page){
         this.page = page;
-        Platform.runLater(() -> {view.setPage(page);});
     }
-
 
     @Override
     public Thread asyncReadFromSocket() {
@@ -56,28 +83,14 @@ public class GUIClientViewController extends ClientViewController {
         });
     }
 
-    public void fxInitialize(){
-        Application.launch(GUIClientView.class);
-    }
-
     @Override
     public void initializeConnection() throws ConnectionErrorException {
-        fxInitialize();
-        changePage(new GUIConnectionPage());
-        synchronized(page){
-            try{
-                page.wait();
-            } catch (InterruptedException e){
-                exceptionHandler.handle(e);
-            }
-        }
+
     }
 
     @Override
     public void login() {
-        if (client.isActive()) {
-            changePage(new GUILoginPage());
-        }
+
     }
 
     @Override
@@ -99,6 +112,8 @@ public class GUIClientViewController extends ClientViewController {
     public void game() {
 
     }
+
+
 
 }
 

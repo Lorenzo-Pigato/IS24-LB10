@@ -1,6 +1,5 @@
 package it.polimi.ingsw.lb10.client.gui;
 
-import it.polimi.ingsw.lb10.client.Client;
 import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
 import it.polimi.ingsw.lb10.client.util.InputVerifier;
 import javafx.event.ActionEvent;
@@ -10,7 +9,7 @@ import javafx.scene.control.TextField;
 
 import java.net.Socket;
 
-public class GUIConnectionPage implements GUIPage {
+public class GUIConnectionPageController implements GUIPageController {
     @Override
     public String getFXML() {
         return "/fxml/ConnectionPage.fxml";
@@ -35,7 +34,6 @@ public class GUIConnectionPage implements GUIPage {
 
         if(InputVerifier.isNotValidIP(ip) && InputVerifier.isNotValidPort(port))
             connect.setText("Invalid IP and Port");
-
         else if (InputVerifier.isNotValidIP(ip)) {
             connect.setText("Invalid IP");
         } else if (InputVerifier.isNotValidPort(port)) {
@@ -43,9 +41,8 @@ public class GUIConnectionPage implements GUIPage {
         } else {
             try {
                 GUIClientViewController.instance().setSocket(new Socket(ip, Integer.parseInt(port)));
-                this.notifyAll();
+                GUIClientViewController.instance().changeScene(new GUILoginPage());
             } catch (Exception e) {
-                e.printStackTrace();
                 connect.setText("Error");
             }
         }
