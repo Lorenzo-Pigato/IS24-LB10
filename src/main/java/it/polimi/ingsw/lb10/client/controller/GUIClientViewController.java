@@ -36,6 +36,7 @@ public class GUIClientViewController extends ClientViewController {
     public void changeScene(GUIPageController page) {
         setPage(page);
         FXMLLoader fxmlLoader = new FXMLLoader(GUIClientViewController.class.getResource(page.getFXML()));
+
         try{
             Parent root = fxmlLoader.load();
             scene.setRoot(root);
@@ -51,7 +52,7 @@ public class GUIClientViewController extends ClientViewController {
         this.stage = stage;
         stage.setResizable(false);
         stage.setTitle("Codex Naturalis");
-        stage.setWidth(1600);
+        stage.setWidth(600);
         stage.setHeight(900);
         stage.getIcons().add(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/images/icon.png"))));
 
