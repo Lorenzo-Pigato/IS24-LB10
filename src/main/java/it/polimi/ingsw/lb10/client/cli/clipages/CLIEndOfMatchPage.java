@@ -44,11 +44,11 @@ public class CLIEndOfMatchPage implements CLIPage {
 
             for (Player player : allPlayers)
                 scoreboard.append((allPlayers.indexOf(player) + 1))
-                        .append("- ")
-                        .append(player.getUsername())
-                        .append("\t POINTS: ")
-                        .append(player.getPoints())
-                        .append("\n\n");
+                            .append("- ")
+                            .append(player.getUsername())
+                            .append("\t POINTS: ")
+                            .append(player.getPoints())
+                            .append("\n\n");
 
             CLIBox.draw(60, 25, 40, 15, scoreboard.toString(), AnsiColor.CYAN, AnsiColor.WHITE, AnsiFormat.BOLD);
             CLIBox.draw(60, 25, 40, 3, "SCOREBOARD", AnsiColor.PURPLE, AnsiColor.WHITE, AnsiFormat.BOLD);

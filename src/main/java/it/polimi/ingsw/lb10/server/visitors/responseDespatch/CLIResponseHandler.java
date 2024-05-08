@@ -51,8 +51,11 @@ public class CLIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(PrivateQuestsResponse response) {
-        controller.privateQuestSelection(response);
-        controller.syncReceive().accept(this); //GameSetUp response
+        Thread t = new Thread(() -> {
+            controller.privateQuestSelection(response);
+            controller.syncReceive().accept(this);
+        });
+        t.start();
     }
 
     @Override

@@ -56,7 +56,7 @@ public class CLIClientViewController extends ClientViewController {
     }
 
     @Override
-    public void initializeConnection() throws ConnectionErrorException { //------> Tested | OK <------//
+    public void initializeConnection() throws ConnectionErrorException {
         Socket cliSocket;
         Scanner in = new Scanner(System.in);
         String input;
