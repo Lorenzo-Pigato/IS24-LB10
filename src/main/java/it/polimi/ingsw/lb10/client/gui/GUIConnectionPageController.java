@@ -4,8 +4,10 @@ import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
 import it.polimi.ingsw.lb10.client.util.InputVerifier;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 
 import java.net.Socket;
 
@@ -22,7 +24,11 @@ public class GUIConnectionPageController implements GUIPageController {
 
 
     @FXML
-    private Label connect;
+    private Text unreachableServer;
+    @FXML
+    private Text invalidIPLabel;
+    @FXML
+    private Text invalidPortLabel;
     @FXML
     private TextField serverIP;
     @FXML
@@ -32,18 +38,22 @@ public class GUIConnectionPageController implements GUIPageController {
         String ip = serverIP.getText();
         String port = serverPort.getText();
 
-        if(InputVerifier.isNotValidIP(ip) && InputVerifier.isNotValidPort(port))
-            connect.setText("Invalid IP and Port");
-        else if (InputVerifier.isNotValidIP(ip)) {
-            connect.setText("Invalid IP");
-        } else if (InputVerifier.isNotValidPort(port)) {
-            connect.setText("Invalid Port");
-        } else {
+        unreachableServer.setVisible(false);
+        invalidIPLabel.setVisible(false);
+        invalidPortLabel.setVisible(false);
+
+        if (InputVerifier.isNotValidIP(ip))
+            invalidIPLabel.setVisible(true);
+
+        if (InputVerifier.isNotValidPort(port))
+            invalidPortLabel.setVisible(true);
+
+        if (!InputVerifier.isNotValidIP(ip) && !InputVerifier.isNotValidPort(port)) {
             try {
                 GUIClientViewController.instance().setSocket(new Socket(ip, Integer.parseInt(port)));
                 GUIClientViewController.instance().changeScene(new GUILoginPage());
             } catch (Exception e) {
-                connect.setText("Error");
+                unreachableServer.setVisible(true);
             }
         }
     }
