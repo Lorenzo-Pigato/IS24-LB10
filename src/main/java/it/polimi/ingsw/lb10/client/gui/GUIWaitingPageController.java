@@ -1,18 +1,14 @@
 package it.polimi.ingsw.lb10.client.gui;
 
-
-
-
-public class GUILoginPage implements GUIPageController {
+public class GUIWaitingPageController implements GUIPageController {
 
     @Override
     public String getFXML() {
-        return "/fxml/LoginPage.fxml";
+        return "";
     }
 
     @Override
     public String getCSS() {
-        return "/css/LoginPage.css";
+        return "";
     }
-
 }

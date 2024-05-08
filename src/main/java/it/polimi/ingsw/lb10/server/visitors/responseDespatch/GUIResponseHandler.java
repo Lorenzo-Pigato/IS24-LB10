@@ -22,7 +22,7 @@ public class GUIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(BooleanResponse response) {
-
+        controller.getClient().setLogged(response.getResponseState());
     }
 
     @Override

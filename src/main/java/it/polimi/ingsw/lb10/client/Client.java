@@ -1,13 +1,8 @@
 package it.polimi.ingsw.lb10.client;
 
-import it.polimi.ingsw.lb10.client.cli.CLICommand;
 import it.polimi.ingsw.lb10.client.controller.ClientViewController;
-import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
-import it.polimi.ingsw.lb10.client.view.GUIClientView;
-import javafx.application.Application;
-import javafx.stage.Stage;
 
 import java.util.Scanner;
 
@@ -86,11 +81,11 @@ public class Client implements Runnable {
         return active;
     }
 
-    public boolean isLogged() {
+    public boolean isNotLogged() {
         return !logged;
     }
 
-    public boolean isInMatch() {
+    public boolean isNotInMatch() {
         return !inMatch;
     }
 
