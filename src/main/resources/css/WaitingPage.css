@@ -16,10 +16,3 @@
     -fx-background-position: center;
 }
 
-
-.error-message {
-    -fx-text-fill: red;
-    -fx-font-family: "Alegreya SC";
-    -fx-text-alignment: center;
-    -fx-font-size: 30;
-}

@@ -25,11 +25,7 @@ public class GUILoginPageController implements GUIPageController {
     @FXML
     private TextField username;
     @FXML
-    private Text usernameAlreadyTaken;
-    @FXML
-    private Text usernameTooLong;
-    @FXML
-    private Text usernameTooShort;
+    private Text errorMessage;
     @FXML
     private AnchorPane errorAnchorPane;
 
@@ -52,8 +48,14 @@ public class GUILoginPageController implements GUIPageController {
                 resetErrorPane();
                 if (playerUsername.length() < 2 || playerUsername.length() > 15) {
                     errorAnchorPane.setVisible(true);
-                    if (playerUsername.length() < 2) usernameTooShort.setVisible(true);
-                    else usernameTooLong.setVisible(true);
+                    if (playerUsername.length() < 2){
+                        errorMessage.setText("Username too short");
+                        errorMessage.setVisible(true);
+                    }
+                    else{
+                        errorMessage.setText("Username too long");
+                        errorMessage.setVisible(true);
+                    }
                 }else{
                     resetErrorPane();
                     controller.send(new LoginRequest(playerUsername));
@@ -61,7 +63,8 @@ public class GUILoginPageController implements GUIPageController {
 
                     if (client.isNotLogged()) {
                         errorAnchorPane.setVisible(true);
-                        usernameAlreadyTaken.setVisible(true);
+                        errorMessage.setText("Username already taken");
+                        errorMessage.setVisible(true);
                     }
 
                     if(!client.isNotLogged()){

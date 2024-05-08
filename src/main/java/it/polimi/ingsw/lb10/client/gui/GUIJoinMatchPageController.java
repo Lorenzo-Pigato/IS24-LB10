@@ -1,15 +1,17 @@
 package it.polimi.ingsw.lb10.client.gui;
-
-import it.polimi.ingsw.lb10.client.controller.ClientViewController;
 import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
 import it.polimi.ingsw.lb10.network.requests.preMatch.LobbyToMatchRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.NewMatchRequest;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.GUIResponseHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.effect.*;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 public class GUIJoinMatchPageController implements GUIPageController{
@@ -109,6 +111,5 @@ public class GUIJoinMatchPageController implements GUIPageController{
         }
 
     }
-
 
 }

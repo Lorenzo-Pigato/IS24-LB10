@@ -9,20 +9,19 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"  prefHeight="900.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.lb10.client.gui.GUIJoinMatchPageController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="600.0" styleClass="anchor" stylesheets="@../css/JoinMatchPage.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.lb10.client.gui.GUIJoinMatchPageController">
    <children>
-      <Separator layoutX="180.0" layoutY="579.0" prefHeight="2.0" prefWidth="225.0" />
-      <AnchorPane layoutX="122.0" layoutY="347.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="216.0" prefWidth="340.0">
+      <AnchorPane layoutX="126.0" layoutY="303.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="216.0" prefWidth="340.0">
          <children>
-            <Button layoutX="4.0" layoutY="13.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#newMatch" prefHeight="104.0" prefWidth="307.0" text="New Match" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0">
+            <Button layoutX="4.0" layoutY="13.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#newMatch" prefHeight="104.0" prefWidth="307.0" stylesheets="@../css/JoinMatchPage.css" text="New Match" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0">
                <font>
                   <Font name="System Bold Italic" size="31.0" />
                </font>
             </Button>
-            <RadioButton fx:id="twoPlayers" layoutX="184.0" layoutY="138.0" mnemonicParsing="false" onAction="#setMatchSize" text="2" />
-            <RadioButton fx:id="threePlayers" layoutX="238.0" layoutY="138.0" mnemonicParsing="false" onAction="#setMatchSize" text="3" />
-            <RadioButton fx:id="fourPlayers" layoutX="294.0" layoutY="138.0" mnemonicParsing="false" onAction="#setMatchSize" text="4" />
-            <Label layoutX="8.0" layoutY="132.0" prefHeight="30.0" prefWidth="160.0" text="Number of players :">
+            <RadioButton fx:id="twoPlayers" layoutX="210.0" layoutY="138.0" mnemonicParsing="false" onAction="#setMatchSize" text="2" />
+            <RadioButton fx:id="threePlayers" layoutX="250.0" layoutY="138.0" mnemonicParsing="false" onAction="#setMatchSize" text="3" />
+            <RadioButton fx:id="fourPlayers" layoutX="290.0" layoutY="138.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setMatchSize" text="4" />
+            <Label layoutX="7.0" layoutY="105.0" prefHeight="82.0" prefWidth="183.0" styleClass="numOfPlayers" stylesheets="@../css/JoinMatchPage.css" text="Number of players :">
                <font>
                   <Font size="16.0" />
                </font>
@@ -30,15 +29,15 @@
             <Text fx:id="numberOfPlayersError" layoutX="14.0" layoutY="196.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You have to choose the number of players first" visible="false" />
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="175.0" layoutY="646.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="140.0" AnchorPane.rightAnchor="140.0">
+      <AnchorPane layoutX="143.0" layoutY="601.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="143.0" AnchorPane.rightAnchor="137.0">
          <children>
-            <Button layoutX="4.0" layoutY="-2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#joinMatch" prefHeight="104.0" prefWidth="307.0" text="Join Match" textAlignment="CENTER">
+            <Button layoutX="4.0" layoutY="-2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#joinMatch" prefHeight="104.0" prefWidth="307.0" stylesheets="@../css/JoinMatchPage.css" text="Join Match" textAlignment="CENTER">
                <font>
                   <Font name="System Bold Italic" size="31.0" />
                </font>
             </Button>
-            <TextField fx:id="matchId" layoutX="126.0" layoutY="136.0" onAction="#joinMatch" prefHeight="24.0" prefWidth="180.0" />
-            <Label layoutX="8.0" layoutY="138.0" prefHeight="18.0" prefWidth="92.0" text="Match ID :">
+            <TextField fx:id="matchId" layoutX="160.0" layoutY="136.0" onAction="#joinMatch" prefHeight="24.0" prefWidth="146.0" />
+            <Label layoutX="10.0" layoutY="132.0" prefHeight="29.0" prefWidth="146.0" styleClass="matchId" stylesheets="@../css/JoinMatchPage.css" text="Match ID :">
                <font>
                   <Font size="16.0" />
                </font>
@@ -47,11 +46,12 @@
             <Text fx:id="matchIdNotInsertedError" layoutX="38.0" layoutY="186.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You have to insert your match ID first" visible="false" />
          </children>
       </AnchorPane>
-      <Text layoutX="141.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lobby" wrappingWidth="306.0627746582031">
+      <Text layoutX="215.0" layoutY="164.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label" text="Lobby" wrappingWidth="168.75">
          <font>
             <Font size="96.0" />
          </font>
       </Text>
-      <Separator layoutX="179.0" layoutY="282.0" prefHeight="2.0" prefWidth="225.0" />
+      <Separator layoutX="184.0" layoutY="244.0" prefHeight="2.0" prefWidth="225.0" stylesheets="@../css/JoinMatchPage.css" />
+      <Separator layoutX="179.0" layoutY="514.0" prefHeight="29.0" prefWidth="245.0" stylesheets="@../css/JoinMatchPage.css" />
    </children>
 </AnchorPane>
