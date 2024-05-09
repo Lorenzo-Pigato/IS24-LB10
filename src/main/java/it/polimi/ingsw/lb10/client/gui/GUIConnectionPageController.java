@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lb10.client.gui;
 
+import it.polimi.ingsw.lb10.client.controller.ClientViewController;
 import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
 import it.polimi.ingsw.lb10.client.util.InputVerifier;
 import javafx.event.ActionEvent;
@@ -12,6 +13,8 @@ import javafx.scene.text.Text;
 import java.net.Socket;
 
 public class GUIConnectionPageController implements GUIPageController {
+    private final GUIClientViewController controller = GUIClientViewController.instance();
+
     @Override
     public String getFXML() {
         return "/fxml/ConnectionPage.fxml";
@@ -50,8 +53,10 @@ public class GUIConnectionPageController implements GUIPageController {
 
         if (!InputVerifier.isNotValidIP(ip) && !InputVerifier.isNotValidPort(port)) {
             try {
-                GUIClientViewController.instance().setSocket(new Socket(ip, Integer.parseInt(port)));
-                GUIClientViewController.instance().changeScene(new GUILoginPage());
+                controller.setSocket(new Socket(ip, Integer.parseInt(port)));
+                controller.setUp();
+                controller.setHash();
+                controller.changeScene(new GUILoginPageController());
             } catch (Exception e) {
                 unreachableServer.setVisible(true);
             }

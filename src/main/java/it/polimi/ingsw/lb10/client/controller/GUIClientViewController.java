@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lb10.client.controller;
 
+import it.polimi.ingsw.lb10.client.Client;
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
 import it.polimi.ingsw.lb10.client.exception.GUIExceptionHandler;
@@ -25,7 +26,6 @@ public class GUIClientViewController extends ClientViewController {
     private Stage stage;
     private Scene scene;
     private final ExceptionHandler exceptionHandler = new GUIExceptionHandler(this);
-
     private static final GUIResponseHandler responseHandler = GUIResponseHandler.instance();
 
     public static GUIClientViewController instance() {
@@ -47,6 +47,8 @@ public class GUIClientViewController extends ClientViewController {
     }
 
     public void initialize(Stage stage) {
+        setClient(new Client());
+
         this.stage = stage;
         stage.setResizable(false);
         stage.setTitle("Codex Naturalis");
@@ -113,9 +115,6 @@ public class GUIClientViewController extends ClientViewController {
     public void game() {
 
     }
-
-
-
 }
 
 

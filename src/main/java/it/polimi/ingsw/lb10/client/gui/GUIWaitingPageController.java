@@ -31,6 +31,4 @@ public class GUIWaitingPageController implements GUIPageController{
         private void quit(ActionEvent event) {
             /// QUIT REQUEST???
         }
-
-
 }

@@ -105,7 +105,9 @@ public class LobbyController implements LobbyRequestVisitor {
                     Server.log(">>match " + ltmr.getMatchId() + "interrupted");
                     disconnectClient(ltmr.getUserHash());
                 }
-            }); //submit the request to the controller of the requested match
+            });//submit the request to the controller of the requested match
+
+            getPlayer(ltmr.getUserHash()).setInMatch(true);
 
         }
     }
@@ -128,6 +130,7 @@ public class LobbyController implements LobbyRequestVisitor {
         controller.addRemoteView(getRemoteView(newMatchRequest.getUserHash())); //adds the view to the new controller
         controllersPool.submit(controller); //runs new controller thread
         Server.log("created new match [id : " + controller.getMatchId());
+        getPlayer(newMatchRequest.getUserHash()).setInMatch(true);
         try {
             submitToController(controller, new JoinMatchRequest(controller.getMatchId(), getPlayer(newMatchRequest.getUserHash())), newMatchRequest.getUserHash());
         } catch (InterruptedException e) {

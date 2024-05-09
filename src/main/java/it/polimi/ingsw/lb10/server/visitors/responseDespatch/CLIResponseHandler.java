@@ -51,12 +51,16 @@ public class CLIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(PrivateQuestsResponse response) {
-        controller.privateQuestSelection(response);
-        controller.syncReceive().accept(this); //GameSetUp response
+        Thread t = new Thread(() -> {
+            controller.privateQuestSelection(response);
+            controller.syncReceive().accept(this);
+        });
+        t.start();
     }
 
     @Override
     public void visit(GameSetupResponse response) {
+        controller.setMatchStarted(true);
         Player player = ((response.getPlayers().stream().filter(p -> p.getUserHash() == controller.getUserHash())).findFirst().orElseThrow(RuntimeException::new));
         controller.setHand(player.getHand());
         controller.setStartingCard(player.getStartingCard());
@@ -67,6 +71,7 @@ public class CLIResponseHandler implements ResponseVisitor {
 
         controller.getView().updatePageState(new CLIMatchPage.StartingTurn());
         controller.getView().displayPage(new Object[]{player, player.getStartingCard(), player.getPrivateQuest(), response.getPublicQuests(), player.getHand()});
+
     }
 
     @Override
@@ -166,6 +171,7 @@ public class CLIResponseHandler implements ResponseVisitor {
     public void visit(EndGameResponse endGameResponse) {
         controller.getView().setPage(new CLIEndOfMatchPage());
         controller.getView().getPage().print(new Object[]{endGameResponse.getPlayer(), endGameResponse.getPlayers()});
+        controller.getClient().setActive(false);
     }
 
     /**

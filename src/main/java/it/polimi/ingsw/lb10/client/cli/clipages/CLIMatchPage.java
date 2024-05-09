@@ -63,8 +63,11 @@ public class CLIMatchPage implements CLIPage {
     }
 
     public static void removePlayer(String username) {
-        allPlayers.remove(allPlayers.stream().filter(player -> player.getUsername().equals(username)).findFirst().orElse(null));
-        updateScoreBoard();
+        try{
+            allPlayers.remove(allPlayers.stream().filter(player -> player.getUsername().equals(username)).findFirst().orElse(null));
+            updateScoreBoard();
+        }catch(NullPointerException e){
+        }
     }
 
 
@@ -446,7 +449,7 @@ public class CLIMatchPage implements CLIPage {
         return allPlayers.stream().filter(player -> player.getUsername().equals(username)).findAny().orElse(null);
     }
 
-    private static void updateScoreBoard() {
+    private static void updateScoreBoard(){
 
         allPlayers.sort(Comparator.comparingInt(Player::getPoints).reversed());  // Lambda for sorting players to make scoreboard
         clearRegion(97, 35, 17, 7);
