@@ -1,8 +1,10 @@
 package it.polimi.ingsw.lb10.server.visitors.responseDespatch;
 
 import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
+import it.polimi.ingsw.lb10.client.gui.GUIMatchPageController;
 import it.polimi.ingsw.lb10.network.response.lobby.BooleanResponse;
 import it.polimi.ingsw.lb10.network.response.match.*;
+import javafx.application.Platform;
 
 public class GUIResponseHandler implements ResponseVisitor {
 
@@ -42,12 +44,14 @@ public class GUIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(GameSetupResponse response) {
-
+        controller.setPlayers(response.getPlayers());
     }
 
     @Override
     public void visit(ChatMessageResponse response) {
-
+        Platform.runLater(()-> {
+            ((GUIMatchPageController)(GUIClientViewController.instance().getPage())).newMessage(response.getSender(), response.getMessage());
+        });
     }
 
     @Override

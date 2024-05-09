@@ -68,6 +68,7 @@ public class GUILoginPageController implements GUIPageController {
                     }
 
                     if(!client.isNotLogged()){
+                        controller.getClient().setUsername(playerUsername);
                         controller.changeScene(new GUIJoinMatchPageController());
                     }
                 }

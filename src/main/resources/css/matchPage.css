@@ -1,0 +1,37 @@
+@font-face {
+    font-family: 'Alegreya SC';
+    src: url('../fonts/AlegreyaSC-Bold.ttf');
+}
+
+.background-anchor {
+    -fx-background-image:url('../images/pattern.png');
+    -fx-background-repeat: repeat;
+    -fx-background-size: 2700px 2700px;
+    -fx-background-position: center;
+}
+
+
+.error-message {
+    -fx-text-fill: red;
+    -fx-font-family: "Alegreya SC";
+-fx-font-size: 15;
+}
+
+.card-anchor{
+
+
+}
+
+.quest-anchor{
+
+}
+
+.hand-card{
+    -fx-effect: dropshadow(three-pass-box, black, 10, 0, 5, 5);
+}
+
+.chat-label{
+    -fx-font-family: "Alegreya SC";
+    -fx-font-size: 40;
+    -fx-alignment: center;
+}
