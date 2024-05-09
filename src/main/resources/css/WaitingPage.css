@@ -5,7 +5,8 @@
 
 .label {
     -fx-font-family: "Alegreya SC";
-    -fx-font-size: 40;
+
+    -fx-font-size: 45;
     -fx-alignment: center;
 }
 
@@ -15,4 +16,3 @@
     -fx-background-size: 2700px 2700px;
     -fx-background-position: center;
 }
-

@@ -105,11 +105,6 @@ public class GUIClientViewController extends ClientViewController {
 
     }
 
-    @Override
-    public void privateQuestSelection(PrivateQuestsResponse response) {
-
-    }
-
 
     @Override
     public void game() {

@@ -2,6 +2,7 @@ package it.polimi.ingsw.lb10.server.visitors.responseDespatch;
 
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIEndOfMatchPage;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIMatchPage;
+import it.polimi.ingsw.lb10.client.cli.clipages.CLIStartMatchPage;
 import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
 import it.polimi.ingsw.lb10.network.requests.QuitRequest;
 import it.polimi.ingsw.lb10.network.requests.match.PickRequest;
@@ -46,16 +47,14 @@ public class CLIResponseHandler implements ResponseVisitor {
         controller.getClient().setStartedMatch(true);
         controller.setMatchId(response.getMatchId());
         controller.send(new PrivateQuestsRequest(controller.getMatchId()));
-        controller.syncReceive().accept(this); //PrivateQuestResponse
+        //controller.syncReceive().accept(this); //PrivateQuestResponse
     }
 
     @Override
     public void visit(PrivateQuestsResponse response) {
-        Thread t = new Thread(() -> {
-            controller.privateQuestSelection(response);
-            controller.syncReceive().accept(this);
-        });
-        t.start();
+        controller.setQuests(response.getPrivateQuests());
+        controller.getView().setPage(new CLIStartMatchPage());
+        controller.getView().displayPage(new Object[]{response.getPrivateQuests().get(0), response.getPrivateQuests().get(1)});
     }
 
     @Override

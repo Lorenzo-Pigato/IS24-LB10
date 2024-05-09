@@ -9,103 +9,30 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane
-        maxHeight="900"
-        maxWidth="600.0"
-        minHeight="900.0"
-        minWidth="600.0"
-        prefHeight="900.0"
-        prefWidth="600.0"
-        styleClass="anchor"
-        stylesheets="@../css/ConnectionPage.css"
-        xmlns="http://javafx.com/javafx/21"
-        xmlns:fx="http://javafx.com/fxml/1"
-        fx:controller="it.polimi.ingsw.lb10.client.gui.GUIConnectionPageController">
+<AnchorPane maxHeight="900" maxWidth="600.0" minHeight="900.0" minWidth="600.0" prefHeight="900.0" prefWidth="600.0" styleClass="anchor" stylesheets="@../css/ConnectionPage.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.lb10.client.gui.GUIConnectionPageController">
 
-   <Label
-           layoutX="128.0"
-           layoutY="615.0"
-           styleClass="label"
-           stylesheets="@../css/ConnectionPage.css"
-           text="Connect to a Server">
+   <Label layoutX="128.0" layoutY="615.0" styleClass="label" stylesheets="@../css/ConnectionPage.css" text="Connect to a Server">
    </Label>
 
-   <ImageView
-           fitHeight="503.0"
-           fitWidth="505.0"
-           layoutX="49.0"
-           layoutY="94.0"
-           pickOnBounds="true"
-           preserveRatio="true">
+   <ImageView fitHeight="503.0" fitWidth="505.0" layoutX="49.0" layoutY="94.0" pickOnBounds="true" preserveRatio="true">
       <Image url="@../images/logo.png" />
    </ImageView>
 
-   <Text
-           fx:id="unreachableServer"
-           fill="#c91c1c"
-           fontSmoothingType="LCD"
-           layoutX="151.0"
-           layoutY="678.0"
-           nodeOrientation="LEFT_TO_RIGHT"
-           strokeType="OUTSIDE"
-           strokeWidth="0.0"
-           styleClass="error-log-big"
-           text="The server you chose can't be reached"
-           visible="false"
-           wrappingWidth="300.34130859375">
+   <Text fx:id="unreachableServer" fill="#c91c1c" fontSmoothingType="LCD" layoutX="151.0" layoutY="678.0" nodeOrientation="LEFT_TO_RIGHT" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="error-log-big" text="The server you chose can't be reached" visible="false" wrappingWidth="300.34130859375">
    </Text>
 
-   <Text fx:id="invalidIPLabel"
-         fill="#c91c1c"
-         layoutX="183.0"
-         layoutY="748.0"
-         strokeType="OUTSIDE"
-         strokeWidth="0.0"
-         styleClass="error-log-small"
-         text="Invalid IP Address"
-         textAlignment="CENTER"
-         visible="false"
-         wrappingWidth="234.0">
+   <Text fx:id="invalidIPLabel" fill="#c91c1c" layoutX="183.0" layoutY="748.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="error-log-small" text="Invalid IP Address" textAlignment="CENTER" visible="false" wrappingWidth="234.0">
    </Text>
 
-   <Text fx:id="invalidPortLabel"
-         fill="#c91c1c"
-         layoutX="184.0"
-         layoutY="819.0"
-         strokeType="OUTSIDE"
-         strokeWidth="0.0"
-         styleClass="error-log-small"
-         text="Invalid Port"
-         textAlignment="CENTER"
-         visible="false"
-         wrappingWidth="148.0">;
+   <Text fx:id="invalidPortLabel" fill="#c91c1c" layoutX="184.0" layoutY="819.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="error-log-small" text="Invalid Port" textAlignment="CENTER" visible="false" wrappingWidth="148.0">;
    </Text>
 
-   <HBox
-           alignment="CENTER"
-           layoutX="184.0"
-           layoutY="762.0"
-           prefHeight="41.0"
-           prefWidth="234.0"
-           spacing="10.0">
+   <HBox alignment="CENTER" layoutX="184.0" layoutY="762.0" prefHeight="41.0" prefWidth="234.0" spacing="10.0">
 
-      <TextField
-              fx:id="serverPort"
-              prefHeight="38.0"
-              prefWidth="148.0"
-              text="1234"/>
+      <TextField fx:id="serverPort" alignment="CENTER" maxHeight="58.0" maxWidth="148.0" minHeight="45.0" minWidth="148.0" prefHeight="58.0" prefWidth="148.0" styleClass="input" stylesheets="@../css/ConnectionPage.css" text="1234" />
 
-      <Button
-              mnemonicParsing="false"
-              onAction="#submitIpValidation"
-              prefHeight="41.0" prefWidth="76.0"
-              text="Connect"/>
+      <Button mnemonicParsing="false" onAction="#submitIpValidation" prefHeight="41.0" prefWidth="76.0" text="Connect" />
    </HBox>
 
-   <TextField fx:id="serverIP"
-              layoutX="184.0"
-              layoutY="693.0"
-              prefHeight="38.0"
-              prefWidth="234.0"
-              text="127.0.0.1" />
+   <TextField fx:id="serverIP" alignment="CENTER" layoutX="184.0" layoutY="691.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="45.0" minWidth="234.0" prefHeight="43.0" prefWidth="234.0" styleClass="input" stylesheets="@../css/ConnectionPage.css" text="127.0.0.1" />
 </AnchorPane>
