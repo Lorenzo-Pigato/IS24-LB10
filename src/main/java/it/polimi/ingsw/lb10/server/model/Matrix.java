@@ -53,7 +53,7 @@ public class Matrix implements Serializable {
     public void setCard(StartingCard card) {
 
         Map<Position, int[]> setIncrement = parsingPositionCorners();
-        for (Corner corner : card.getFlippedCardCorners()) {
+        for (Corner corner : card.getStateCardCorners()) {
             int[] delta = setIncrement.get(corner.getPosition());
             getNode(41 + delta[0], 41 + delta[1]).addCorner(corner);
         }
