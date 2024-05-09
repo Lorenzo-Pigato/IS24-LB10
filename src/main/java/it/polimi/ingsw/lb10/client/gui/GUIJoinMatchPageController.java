@@ -50,7 +50,7 @@ public class GUIJoinMatchPageController implements GUIPageController{
 
     @Override
     public String getCSS() {
-        return "";
+        return "/fxml/JoinMatchPage.css";
     }
 
     @FXML
@@ -80,7 +80,15 @@ public class GUIJoinMatchPageController implements GUIPageController{
             numberOfPlayersError.setVisible(true);
         }
 
-        if(!controller.getClient().isNotInMatch()) controller.changeScene(new GUIWaitingPageController());
+        if(!controller.getClient().isNotInMatch()){
+            Thread socketReader = GUIClientViewController.instance().asyncReadFromSocket();
+            socketReader.start();
+
+            controller.changeScene(new GUIWaitingPageController());
+        } else {
+            invalidMatchIdError.setVisible(true);
+
+        }
 
     }
 
@@ -101,7 +109,7 @@ public class GUIJoinMatchPageController implements GUIPageController{
                 controller.send(new LobbyToMatchRequest(id));
                 matchId.clear();
                 controller.syncReceive().accept(GUIResponseHandler.instance());
-                if(!controller.getClient().isNotInMatch()) controller.changeScene(new GUIWaitingPageController());
+                if(controller.getClient().isNotInMatch()) controller.changeScene(new GUIWaitingPageController());
                 else invalidMatchIdError.setVisible(true);
             }catch(NumberFormatException e){
                 invalidMatchIdError.setVisible(true);

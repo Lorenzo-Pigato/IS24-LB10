@@ -1,6 +1,8 @@
 package it.polimi.ingsw.lb10.server.visitors.responseDespatch;
 
 import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
+import it.polimi.ingsw.lb10.client.gui.GUIChooseQuestPageController;
+import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestsRequest;
 import it.polimi.ingsw.lb10.network.response.lobby.BooleanResponse;
 import it.polimi.ingsw.lb10.network.response.match.*;
 
@@ -17,7 +19,8 @@ public class GUIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(JoinMatchResponse response) {
-
+        controller.getClient().setInMatch(response.getJoined());
+        controller.setMatchId(response.getMatchId());
     }
 
     @Override
@@ -32,12 +35,14 @@ public class GUIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(StartedMatchResponse response) {
-
+        controller.send(new PrivateQuestsRequest(controller.getMatchId()));
     }
 
     @Override
     public void visit(PrivateQuestsResponse response) {
-
+        controller.setGameSize();
+        controller.changeScene(new GUIChooseQuestPageController());
+        GUIChooseQuestPageController.setQuests(response.getPrivateQuests().getFirst(), response.getPrivateQuests().getLast());
     }
 
     @Override

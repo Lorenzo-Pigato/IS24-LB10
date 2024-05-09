@@ -110,6 +110,11 @@ public class GUIClientViewController extends ClientViewController {
     public void game() {
 
     }
+
+    public void setGameSize() {
+        stage.setHeight(900);
+        stage.setWidth(1600);
+    }
 }
 
 

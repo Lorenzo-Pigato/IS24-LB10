@@ -1,11 +1,24 @@
 package it.polimi.ingsw.lb10.client.gui;
 
+import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
+import it.polimi.ingsw.lb10.network.requests.QuitRequest;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.fxml.Initializable;
 import javafx.scene.text.Text;
 
-public class GUIWaitingPageController implements GUIPageController{
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class GUIWaitingPageController implements GUIPageController, Initializable {
+
+        @FXML
+        private Text matchId;
+
+        @Override
+        public void initialize(URL url, ResourceBundle resourceBundle) {
+            matchId.setText(String.valueOf(GUIClientViewController.instance().getMatchId()));
+        }
 
         @Override
         public String getFXML() {
@@ -18,17 +31,8 @@ public class GUIWaitingPageController implements GUIPageController{
         }
 
         @FXML
-        private Text matchID;
-
-        @FXML
-        private Button quitButton;
-
-        public void setMatchID(String matchID) {
-            this.matchID.setText(matchID);
-        }
-
-        @FXML
         private void quit(ActionEvent event) {
-            /// QUIT REQUEST???
+            GUIClientViewController.instance().send(new QuitRequest());
+            GUIClientViewController.instance().changeScene(new GUIConnectionPageController());
         }
 }

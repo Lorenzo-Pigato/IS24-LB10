@@ -29,11 +29,11 @@
    <ImageView fitHeight="434.0" fitWidth="616.0" layoutX="-3.0" layoutY="469.0" pickOnBounds="true" preserveRatio="true">
       <Image url="@../images/treeDecoration.png" />
    </ImageView>
-   <Text fx:id="matchID" fill="#3c310b" layoutX="132.0" layoutY="427.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label" text="WAITING ROOM" textAlignment="CENTER" />
+   <Text fx:id="matchId" fill="#3c310b" layoutX="103.0" layoutY="428.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label" text="WAITING ROOM" textAlignment="CENTER" wrappingWidth="404.0" />
    <Text fill="#544615" layoutX="249.0" layoutY="379.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your MatchID is:" textAlignment="CENTER">
       <font>
          <Font name="System Bold" size="12.0" />
       </font>
    </Text>
-   <Button fx:id="quitButton" layoutX="523.0" layoutY="21.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="70.0" text="QUIT" />
+   <Button layoutX="523.0" layoutY="21.0" mnemonicParsing="false" onAction="#quit" prefHeight="37.0" prefWidth="70.0" text="QUIT" />
 </AnchorPane>
