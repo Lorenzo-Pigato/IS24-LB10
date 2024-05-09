@@ -3,7 +3,9 @@ package it.polimi.ingsw.lb10.server.model.cards;
 import it.polimi.ingsw.lb10.server.model.Resource;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
+import it.polimi.ingsw.lb10.server.model.cards.decks.ResourceDeck;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import java.util.HashMap;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ResourceCardTest {
+    static ResourceDeck resourceDeck= new ResourceDeck();
     private static ResourceCard resourceCardV1;
     private static final int points=1;
 
@@ -24,9 +27,12 @@ class ResourceCardTest {
     ));
 
     static HashMap<Resource, Integer> activationCost;
+
     @BeforeAll
     static void setUp() {
         resourceCardV1=new ResourceCard(0,Color.GREEN,corners,points,Resource.NULL,new HashMap<>());
+
+        resourceDeck.fillDeck();
     }
 
     /**
@@ -89,4 +95,23 @@ class ResourceCardTest {
     void getStateCardActivationCost() {
         assertTrue(resourceCardV1.getStateCardActivationCost().isEmpty());
     }
+
+    @RepeatedTest(40)
+    void checkCorners(){
+        PlaceableCard card= resourceDeck.drawCard();
+            for(Corner corner : card.getStateCardCorners()){
+                if(!corner.isAvailable())
+                    assertEquals(Resource.EMPTY, corner.getResource());
+            }
+        }
+
+        @Test
+        void checkCardColor(){
+        resourceDeck.fillDeck();
+            for(PlaceableCard card : resourceDeck.getCards())
+                for(Corner corner : card.getStateCardCorners())
+                        assertEquals(card.getColorCard(), corner.getCardColor());
+        }
+
+
 }
