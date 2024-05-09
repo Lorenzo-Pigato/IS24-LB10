@@ -9,7 +9,5 @@ import org.jetbrains.annotations.NotNull;
  * Page is used to represent a container for State objects, which are the actual content to display.
  */
 public interface Page {
-    public void changeState(@NotNull CLIState state);
-
-    public void print(Object[] args);
+    void print(Object[] args);
 }

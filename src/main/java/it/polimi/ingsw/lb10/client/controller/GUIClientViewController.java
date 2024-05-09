@@ -1,130 +1,64 @@
 package it.polimi.ingsw.lb10.client.controller;
 
-import it.polimi.ingsw.lb10.client.Client;
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
+import it.polimi.ingsw.lb10.client.gui.GUIConnectionPage;
+import it.polimi.ingsw.lb10.client.gui.GUILoginPage;
 import it.polimi.ingsw.lb10.client.view.GUIClientView;
-import it.polimi.ingsw.lb10.network.requests.Request;
+import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
-import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
-import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
+import it.polimi.ingsw.lb10.server.visitors.responseDespatch.GUIResponseHandler;
+import javafx.application.Application;
 
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
 
-public class GUIClientViewController implements ClientViewController {
+public class GUIClientViewController extends ClientViewController {
 
     private static GUIClientViewController instance;
-    private GUIClientView guiClientView;
-    private Socket socket;
-    private Client client;
-    private ObjectInputStream socketIn;
-    private ObjectOutputStream socketOut;
-    private int matchId;
+    private GUIClientView view;
+
+    private static final GUIResponseHandler responseHandler = GUIResponseHandler.instance();
 
     public static GUIClientViewController instance() {
-        if (instance == null) return new GUIClientViewController();
+        if (instance == null) instance = new GUIClientViewController();
         return instance;
     }
 
-    @Override
-    public void setSocket(Socket socket) {
-
+    // ------------------ SETTERS ------------------ //
+    public void setGuiClientView(GUIClientView guiClientVIew) {
+        this.view = guiClientVIew;
     }
 
-    @Override
-    public void setClient(Client client) {
+    // ------------------ GETTERS ------------------ //
+    public GUIClientView getView() {return view;}
 
-    }
 
-    @Override
-    public void close() {
-
-    }
-
-    public void setUp() {
-    }
-
-    @Override
-    public Thread asyncWriteToSocket(Request message) {
-        return null;
-    }
-
-    @Override
-    public void showUserOutput(Object o) {
-
-    }
-
+    // ------------------ METHODS ------------------ //
     @Override
     public Thread asyncReadFromSocket() {
-        return null;
+        return new Thread(() -> {
+            try {
+                while (client.isActive()) {
+                    Response response = (Response) socketIn.readObject();
+                    response.accept(responseHandler);
+                }
+            } catch (Exception e) {
+                exceptionHandler.handle(e);
+                close();
+            }
+        });
     }
-
 
     @Override
     public void initializeConnection() throws ConnectionErrorException {
-
+        Application.launch(GUIClientView.class);
     }
 
     @Override
     public void login() {
-
-    }
-
-    @Override
-    public void setHash() {
-
-    }
-
-    /**
-     * @return
-     */
-    @Override
-    public int getMatchId() {
-        return matchId;
-    }
-
-    /**
-     * @param id
-     */
-    @Override
-    public void setMatchId(int id) {
-        this.matchId = matchId;
-    }
-
-    /**
-     * @param response
-     */
-    @Override
-    public void privateQuestSelection(PrivateQuestsResponse response) {
-
-    }
-
-    /**
-     *
-     */
-    @Override
-    public void game() {
-
-    }
-
-    @Override
-    public ArrayList<PlaceableCard> getHand() {
-        return null;
-    }
-
-    @Override
-    public StartingCard getStartingCard() {
-        return null;
-    }
-
-    /**
-     *
-     */
-    @Override
-    public void flipStarting() {
-
+        if(client.isActive()) {
+            view.setPage(new GUILoginPage());
+            view.displayPage(null);
+        }
     }
 
     @Override
@@ -132,11 +66,21 @@ public class GUIClientViewController implements ClientViewController {
 
     }
 
-    @Override
     public void waitingRoom() {
+
     }
 
-    public void setGuiClientView(GUIClientView guiClientView) {
-        this.guiClientView = guiClientView;
+    @Override
+    public void privateQuestSelection(PrivateQuestsResponse response) {
+
     }
+
+
+    @Override
+    public void game() {
+
+    }
+
 }
+
+

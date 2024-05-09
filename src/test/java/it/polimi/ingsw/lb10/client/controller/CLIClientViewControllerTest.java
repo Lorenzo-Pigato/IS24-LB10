@@ -1,21 +1,19 @@
 package it.polimi.ingsw.lb10.client.controller;
 
 import it.polimi.ingsw.lb10.client.Client;
-import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
+import it.polimi.ingsw.lb10.client.exception.CLIExceptionHandler;
 import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
 import it.polimi.ingsw.lb10.client.util.InputVerifier;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
-import org.junit.jupiter.api.AfterAll;
+
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.io.ByteArrayInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 
 public class CLIClientViewControllerTest {
 
@@ -24,6 +22,7 @@ public class CLIClientViewControllerTest {
      static Socket localSocket;
      static ObjectOutputStream outputStream;
      static Client client = Client.instance();
+     static CLIExceptionHandler exceptionHandler = new CLIExceptionHandler(new CLIClientView());
 
      //@AfterAll
      static void close(){
@@ -32,7 +31,7 @@ public class CLIClientViewControllerTest {
              localSocket.close();
              serverSocket.close();
          }catch (Exception e){
-             ExceptionHandler.handle(e, new CLIClientView());
+             exceptionHandler.handle(e);
          }
 
      }
@@ -55,7 +54,9 @@ public class CLIClientViewControllerTest {
                         outputStream.flush();
 
 
-                    } catch (Exception e) {ExceptionHandler.handle(e, new CLIClientView());}
+                    } catch (Exception e) {
+                        exceptionHandler.handle(e);
+                    }
                 }
             });
             listener.start();

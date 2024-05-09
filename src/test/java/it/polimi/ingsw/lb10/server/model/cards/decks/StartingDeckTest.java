@@ -32,7 +32,10 @@ public class StartingDeckTest {
         assertEquals(5, startingDeck.getCards().size());
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/dev-gui
     @Test
     public void deckEndTest(){
         startingDeck = new StartingDeck();

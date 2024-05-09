@@ -87,7 +87,7 @@ public class CLIMatchPage implements CLIPage {
 
     public static void printBoard(Matrix board) {
 
-        clearRegion(2, 5, 110, 27);
+        clearRegion(boardStartCol, boardStartRow - 1, onFocusWidth * 3 + 2, onFocusHeight * 2 + 1);
         for (int col = onFocusCol; col < onFocusCol + onFocusWidth; col++)
             for (int row = onFocusRow; row < onFocusRow + onFocusHeight; row++)
                 if (!board.getNode(row, col).getCorners().isEmpty())
@@ -102,7 +102,7 @@ public class CLIMatchPage implements CLIPage {
     }
 
     public static void moveBoard(Matrix board, int colOffset, int rowOffset) {
-        clearRegion(boardStartCol - 1, boardStartRow - 1, onFocusWidth * 3, onFocusHeight * 2 + 2);
+        clearRegion(boardStartCol, boardStartRow - 1, onFocusWidth * 3 + 2, onFocusHeight * 2 + 1);
 
         onFocusCol += colOffset;
         onFocusRow += rowOffset;
