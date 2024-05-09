@@ -3,7 +3,7 @@
     "id" 			        : "81",
     "color"			        : "STARTER",
     "corners"		        : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 81, "color" : "STARTER"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "PLANT" , "id" : 81, "color" : "STARTER"}, {"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "INSECT" , "id" : 81, "color" : "STARTER"}, {"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 81, "color" : "STARTER"}],
-    "flippedCardCorners"    : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "MUSHROOM" , "id" : 81, "color" : "RED"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "PLANT" , "id" : 81, "color" : "GREEN"}, {"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "INSECT" , "id" : 81 , "color" : "STARTER"}, {"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "ANIMAL" , "id" : 81,  "color" : "BLUE"}],
+    "flippedCardCorners"    : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "MUSHROOM" , "id" : 81, "color" : "STARTER"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "PLANT" , "id" : 81, "color" : "STARTER"}, {"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "INSECT" , "id" : 81 , "color" : "STARTER"}, {"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "ANIMAL" , "id" : 81,  "color" : "STARTER"}],
     "middleResources"       : ["INSECT"]
   },
   

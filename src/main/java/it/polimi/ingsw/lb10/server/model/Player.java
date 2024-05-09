@@ -32,6 +32,7 @@ public class Player implements Serializable {
 
     private final ArrayList<PlaceableCard> hand = new ArrayList<>();
     private StartingCard startingCard;
+    private boolean ready = false;
 
     public Player(int hashCode, String username) {
         this.hashCode = hashCode;
@@ -180,4 +181,7 @@ public class Player implements Serializable {
         inMatch = status;
     }
 
+    public boolean isReady() {return ready;}
+
+    public void setReady(boolean status) {ready = status;}
 }

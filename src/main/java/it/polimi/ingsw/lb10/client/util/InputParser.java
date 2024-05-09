@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lb10.client.util;
 
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIMatchPage;
+import it.polimi.ingsw.lb10.client.cli.clipages.CLIStartMatchPage;
 import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
 import it.polimi.ingsw.lb10.network.requests.QuitRequest;
 import it.polimi.ingsw.lb10.network.requests.Request;
@@ -11,25 +12,44 @@ import org.jetbrains.annotations.Contract;
 public class InputParser {
 
     public static CLIClientViewController controller = CLIClientViewController.instance();
-
+    private static boolean questSelected = false;
 
     public static Request parse(String input) {
         String[] parsed = input.split(" ");
-        if (controller.getClient().isActive()) {
+        if(questSelected) {
+            if (controller.getClient().isActive()) {
 
-            if (parsed[0].equalsIgnoreCase("chat") && !parsed[1].isEmpty()) {
-                String message = input.substring(5);
-                return new ChatRequest(controller.getMatchId(), message);
+                if (parsed[0].equalsIgnoreCase("chat") && !parsed[1].isEmpty()) {
+                    String message = input.substring(5);
+                    return new ChatRequest(controller.getMatchId(), message);
+                }
+
+                return switch (parsed.length) {
+                    case 1 -> parseOneWordCommand(parsed);
+                    case 2 -> parseTwoWordsCommand(parsed);
+                    case 3 -> parseThreeWordCommand(parsed);
+                    case 4 -> parseFourWordsCommand(parsed);
+                    default -> null;
+                };
+            } else return null;
+        }else{
+            int parsedInt;
+            try{
+                parsedInt = Integer.parseInt(parsed[0]);
+            } catch (Exception e) {
+                controller.getView().getPage().changeState(new CLIStartMatchPage.InvalidInput());
+                return null;
             }
-
-            return switch (parsed.length) {
-                case 1 -> parseOneWordCommand(parsed);
-                case 2 -> parseTwoWordsCommand(parsed);
-                case 3 -> parseThreeWordCommand(parsed);
-                case 4 -> parseFourWordsCommand(parsed);
-                default -> null;
-            };
-        } else return null;
+            if(parsed.length == 1 && (parsedInt == 1 || parsedInt == 2)){
+                questSelected = true;
+                    controller.getView().updatePageState(new CLIStartMatchPage.WaitPage());
+                    controller.getView().displayPage(new Object[]{input});
+                return new PrivateQuestSelectedRequest(controller.getMatchId(), controller.getQuests().get(parsedInt - 1));
+            }else {
+                controller.getView().getPage().changeState(new CLIStartMatchPage.InvalidInput());
+                return null;
+            }
+        }
     }
 
     private static Request parseThreeWordCommand(String[] parsed) {

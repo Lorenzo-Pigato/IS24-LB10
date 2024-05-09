@@ -1,0 +1,25 @@
+@font-face {
+    font-family: 'Alegreya SC';
+    src: url('../fonts/AlegreyaSC-Bold.ttf');
+}
+
+.label {
+    -fx-font-family: "Alegreya SC";
+    -fx-font-size: 60;
+    -fx-alignment: center;
+}
+
+.anchor {
+    -fx-background-image:url('../images/pattern.png');
+    -fx-background-repeat: repeat;
+    -fx-background-size: 2700px 2700px;
+    -fx-background-position: center;
+}
+
+
+.error-message {
+    -fx-text-fill: red;
+    -fx-font-family: "Alegreya SC";
+    -fx-text-alignment: center;
+    -fx-font-size: 30;
+}

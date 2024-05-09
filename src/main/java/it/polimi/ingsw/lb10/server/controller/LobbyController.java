@@ -98,6 +98,7 @@ public class LobbyController implements LobbyRequestVisitor {
             //envelopes the username of the player to be passed to the controller
             matches.stream().filter(matchController -> (!matchController.isStarted()) && matchController.getMatchId() == ltmr.getMatchId()).findFirst().ifPresent(matchController -> {
                 try {
+                    getPlayer(ltmr.getUserHash()).setInMatch(true);
                     matchController.addRemoteView(getRemoteView(ltmr.getUserHash())); //adds the remote view to Match controller
                     JoinMatchRequest jmr = new JoinMatchRequest(ltmr.getMatchId(), getPlayer(ltmr.getUserHash()));
                     submitToController(matchController, jmr, ltmr.getUserHash()); //submits request
@@ -105,7 +106,7 @@ public class LobbyController implements LobbyRequestVisitor {
                     Server.log(">>match " + ltmr.getMatchId() + "interrupted");
                     disconnectClient(ltmr.getUserHash());
                 }
-            }); //submit the request to the controller of the requested match
+            });//submit the request to the controller of the requested match
 
         }
     }
@@ -129,6 +130,7 @@ public class LobbyController implements LobbyRequestVisitor {
         controllersPool.submit(controller); //runs new controller thread
         Server.log("created new match [id : " + controller.getMatchId());
         try {
+            getPlayer(newMatchRequest.getUserHash()).setInMatch(true);
             submitToController(controller, new JoinMatchRequest(controller.getMatchId(), getPlayer(newMatchRequest.getUserHash())), newMatchRequest.getUserHash());
         } catch (InterruptedException e) {
             getRemoteView(newMatchRequest.getUserHash()).send(new TerminatedMatchResponse()); //match interrupted

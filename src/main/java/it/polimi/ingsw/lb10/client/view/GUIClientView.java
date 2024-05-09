@@ -1,25 +1,15 @@
 package it.polimi.ingsw.lb10.client.view;
+import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
+import javafx.application.Application;
+import javafx.stage.Stage;
 
-public class GUIClientView implements ClientView {
+public class GUIClientView extends Application {
 
-    @Override
-    public void setPage(Page page) {
-
-    }
-
-    @Override
-    public void updatePageState(State state) {
-
-    }
+    private final GUIClientViewController controller = GUIClientViewController.instance();
 
     @Override
-    public void displayPage(Object[] args) {
-
-    }
-
-    @Override
-    public Page getPage() {
-        return null;
+    public void start(Stage stage) throws Exception {
+        controller.initialize(stage);
     }
 
 }

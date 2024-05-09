@@ -1,0 +1,50 @@
+@font-face {
+    font-family: 'Alegreya SC';
+    src: url('../fonts/AlegreyaSC-Bold.ttf');
+}
+
+.label {
+    -fx-font-family: "Alegreya SC";
+    -fx-font-size: 60;
+    -fx-alignment: center;
+}
+
+.anchor {
+    -fx-background-image:url('../images/pattern.png');
+    -fx-background-repeat: repeat;
+    -fx-background-size: 2700px 2700px;
+    -fx-background-position: center;
+}
+
+
+.error-message {
+    -fx-text-fill: red;
+    -fx-font-family: "Alegreya SC";
+    -fx-text-alignment: center;
+    -fx-font-size: 30;
+}
+
+.numOfPlayers {
+    -fx-font-family: "Alegreya SC";
+    -fx-font-size: 20;
+}
+
+.matchId{
+    -fx-font-family: "Alegreya SC";
+    -fx-font-size: 20;
+}
+
+
+.button {
+
+    -fx-border-color: #000000;
+    -fx-border-width: 2;
+    -fx-border-radius: 40;
+    -fx-background-radius: 45;
+    -fx-background-color: #edd295;
+
+    -fx-font-size: 40px;
+    -fx-text-fill: #333333;
+    -fx-font-family: "Alegreya SC";
+    -fx-effect: dropshadow(one-pass-box, rgba(48, 37, 25, 0.29), 3, 3, 10, 10);
+}

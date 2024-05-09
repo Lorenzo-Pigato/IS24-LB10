@@ -1,10 +1,8 @@
 package it.polimi.ingsw.lb10.client.controller;
 
-import it.polimi.ingsw.lb10.client.Client;
 import it.polimi.ingsw.lb10.client.cli.CLICommand;
 import it.polimi.ingsw.lb10.client.cli.clipages.*;
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
-import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
 import it.polimi.ingsw.lb10.client.util.InputParser;
 import it.polimi.ingsw.lb10.client.util.InputVerifier;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
@@ -15,35 +13,22 @@ import it.polimi.ingsw.lb10.network.requests.preMatch.LobbyToMatchRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.LoginRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.NewMatchRequest;
 import it.polimi.ingsw.lb10.network.response.Response;
-import it.polimi.ingsw.lb10.network.response.lobby.HashResponse;
 import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
-import it.polimi.ingsw.lb10.server.Server;
-import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
-import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
+import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class CLIClientViewController implements ClientViewController {
+public class CLIClientViewController extends ClientViewController {
 
     private static CLIClientViewController instance;
     private CLIClientView view;
-    private Socket socket;
-    private Client client;
-    private ObjectInputStream socketIn;
-    private ObjectOutputStream socketOut;
-    private int hash;
-    private static final CLIResponseHandler responseHandler = CLIResponseHandler.instance();
-    private int matchId;
-    private ArrayList<PlaceableCard> hand;
-    private StartingCard startingCard;
 
-    private boolean startingCardHasBeenPlaced = false;
+    private static final CLIResponseHandler responseHandler = CLIResponseHandler.instance();
+    private boolean matchStarted = false;
+    private ArrayList<Quest> quests;
 
     public static CLIClientViewController instance() {
         if (instance == null) instance = new CLIClientViewController();
@@ -51,134 +36,63 @@ public class CLIClientViewController implements ClientViewController {
     }
 
     // ------------------ SETTERS ------------------ //
-    public void setCliClientView(CLIClientView cliClientView) {
-        this.view = cliClientView;
-    }
+    public void setMatchStarted(boolean status){this.matchStarted = status;}
+    public void setCliClientView(CLIClientView cliClientView) {this.view = cliClientView;}
+    public void setQuests(ArrayList<Quest> quests) {this.quests = quests;}
+
+
+    // ------------------ GETTERS ------------------ //
+    public CLIClientView getView() {return view;}
+    public ArrayList<Quest> getQuests(){return quests;}
+
+    // ------------------ METHODS ------------------ //
 
     @Override
-    public void setSocket(Socket socket) {
-        this.socket = socket;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
-    }
-
-    public void setStartingCard(StartingCard startingCard) {
-        this.startingCard = startingCard;
-    }
-
-    public Socket getSocket() {
-        return socket;
-    }
-
-    public Client getClient() {
-        return client;
-    }
-
-    public CLIClientView getView() {
-        return view;
-    }
-
-    public void setHand(ArrayList<PlaceableCard> hand) {
-        this.hand = hand;
-    }
-
-    public void flipCard(int index) {
-        hand.get(index).swapState();
-    }
-
-    public ArrayList<PlaceableCard> getHand() {
-        return hand;
-    }
-
-    public StartingCard getStartingCard() {
-        return startingCard;
-    }
-
-    public void setStartingCardHasBeenPlaced(boolean status) {
-        this.startingCardHasBeenPlaced = status;
-    }
-
-    public boolean startingCardHasBeenPlaced() {
-        return !startingCardHasBeenPlaced;
-    }
-
-    /**
-     *
-     */
-    @Override
-    public void flipStarting() {
-        startingCard.swapState();
-    }
-
-
-    @Override
-    public void setHash() {
-        try {
-            HashResponse hashResponse = (HashResponse) socketIn.readObject();
-            this.hash = hashResponse.getHash();
-        } catch (Exception e) {
-            Server.log(e.getMessage());
-            close();
-        }
-    }
-
-    @Override
-    public void setMatchId(int matchId) {
-        this.matchId = matchId;
-    }
-
-    @Override
-    public int getMatchId() {
-        return matchId;
-    }
-
-    public int getUserHash() {
-        return hash;
-    }
-
-    @Override
-    public void close() {
-        if (!socket.isClosed()) {
+    public Thread asyncReadFromSocket() {
+        return new Thread(() -> {
             try {
-                socketIn.close();
-                socketOut.close();
-                socket.close();
-            } catch (IOException e) {
-                ExceptionHandler.handle(e, view);
-            } finally {
-                client.setActive(false);
+                while (client.isActive()) {
+                    Response response = (Response) socketIn.readObject();
+                    response.accept(responseHandler);
+                }
+            } catch (Exception e) {
+                exceptionHandler.handle(e);
+                close();
             }
-        }
+        });
     }
 
-
     @Override
-    public void setUp() {
-        try {
-            socketOut = new ObjectOutputStream(socket.getOutputStream());
-            socketOut.flush();
-        } catch (IOException e) {
-            ExceptionHandler.handle(e, view);
-        }
-        try {
-            socketIn = new ObjectInputStream(socket.getInputStream());
-        } catch (IOException e) {
-            ExceptionHandler.handle(e, view);
-        }
-    }
+    public void initializeConnection() throws ConnectionErrorException {
+        Socket cliSocket;
+        Scanner in = new Scanner(System.in);
+        String input;
+        String[] parsed;
+        //x.y.z.w:k
 
-    /**
-     * This asynchronous method provides a thread to send asynchronous requests to the network layer through
-     * serialization
-     *
-     * @param message the request
-     * @return the thread
-     */
-    @Override
-    public Thread asyncWriteToSocket(Request message) {
-        return new Thread(() -> send(message));
+        view.setPage(new CLIConnectionPage());
+        view.displayPage(null);
+
+        do {
+            input = in.nextLine();
+            parsed = input.split(":");
+
+            if (parsed.length != 2 ||
+                    InputVerifier.isNotValidIP(parsed[0]) && InputVerifier.isNotValidPort(parsed[1])) { //invalid input, none of the fields is correct (ip:port)
+                view.updatePageState(new CLIConnectionPage.InvalidInput());
+            } else if (InputVerifier.isNotValidIP(parsed[0])) {
+                view.updatePageState(new CLIConnectionPage.InvalidIP());
+            } else if (InputVerifier.isNotValidPort(parsed[1])) {
+                view.updatePageState(new CLIConnectionPage.InvalidPort());
+            }
+            view.displayPage(new String[]{input});
+        } while (parsed.length != 2 || InputVerifier.isNotValidPort(parsed[1]) || InputVerifier.isNotValidIP(parsed[0]));
+        try {
+            cliSocket = new Socket(parsed[0], Integer.parseInt(parsed[1]));
+        } catch (Exception e) {
+            throw new ConnectionErrorException();
+        }
+        setSocket(cliSocket);
     }
 
     @Override
@@ -199,11 +113,11 @@ public class CLIClientViewController implements ClientViewController {
                     } while (username.length() < 2 || username.length() > 15);
                     send(new LoginRequest(username));
                     syncReceive().accept(responseHandler);
-                    if (client.isLogged()) {
+                    if (client.isNotLogged()) {
                         view.updatePageState(new CLILoginPage.alreadyTaken());
                         view.displayPage(new String[]{username});
                     }
-                } while (client.isLogged());
+                } while (client.isNotLogged());
             } catch (NullPointerException e) {
                 close();
             }
@@ -231,7 +145,7 @@ public class CLIClientViewController implements ClientViewController {
                         } catch (NumberFormatException e) {
                             view.updatePageState(new CLILobbyPage.InvalidInput());
                         }
-                        if (client.isInMatch()) view.updatePageState(new CLILobbyPage.InvalidInput());
+                        if (client.isNotInMatch()) view.updatePageState(new CLILobbyPage.InvalidInput());
 
                     } else if (splitInput[0].equalsIgnoreCase("new") && splitInput.length == 2) {
                         try {
@@ -251,7 +165,7 @@ public class CLIClientViewController implements ClientViewController {
                     } else view.updatePageState(new CLILobbyPage.InvalidInput());
 
                     view.displayPage(new String[]{input});
-                } while (client.isInMatch());
+                } while (client.isNotInMatch());
             } catch (NullPointerException e) {
                 close();
             }
@@ -271,32 +185,32 @@ public class CLIClientViewController implements ClientViewController {
         }
     }
 
-    @Override
-    public void privateQuestSelection(PrivateQuestsResponse response) {
-        Scanner in = new Scanner(System.in);
-        String input;
-        view.setPage(new CLIStartMatchPage());
-        view.displayPage(new Object[]{response.getPrivateQuests().get(0), response.getPrivateQuests().get(1)});
-        String[] parsed;
-        boolean valid;
-        do {
-            input = in.nextLine();
-            parsed = input.split(" ");
-            valid = parsed.length == 1 && ((parsed[0].equalsIgnoreCase("1")) || (parsed[0].equalsIgnoreCase("2")));
-            if (parsed[0].equalsIgnoreCase("quit")) send(new QuitRequest());
-            if (!valid) {
-                view.updatePageState(new CLIStartMatchPage.InvalidInput());
-                view.displayPage(new Object[]{input});
-            } else if ("1".equalsIgnoreCase(parsed[0])) {
-                send(new PrivateQuestSelectedRequest(matchId, response.getPrivateQuests().getFirst()));
-            } else if ("2".equalsIgnoreCase(parsed[0])) {
-                send(new PrivateQuestSelectedRequest(matchId, response.getPrivateQuests().get(1)));
-            }
-        } while (!valid);
-        view.updatePageState(new CLIStartMatchPage.WaitPage());
-        view.displayPage(new Object[]{input});
-    }
-
+    //@Override
+    //public void privateQuestSelection(PrivateQuestsResponse response) {
+    //    Scanner in = new Scanner(System.in);
+    //    String input;
+    //    view.setPage(new CLIStartMatchPage());
+    //    view.displayPage(new Object[]{response.getPrivateQuests().get(0), response.getPrivateQuests().get(1)});
+    //    String[] parsed;
+    //    boolean valid;
+    //    do {
+    //        input = in.nextLine();
+    //        parsed = input.split(" ");
+    //        valid = parsed.length == 1 && ((parsed[0].equalsIgnoreCase("1")) || (parsed[0].equalsIgnoreCase("2")));
+    //        if (parsed[0].equalsIgnoreCase("quit")) send(new QuitRequest());
+    //        if (!valid) {
+    //            view.updatePageState(new CLIStartMatchPage.InvalidInput());
+    //            view.displayPage(new Object[]{input});
+    //        } else if ("1".equalsIgnoreCase(parsed[0])) {
+    //            send(new PrivateQuestSelectedRequest(matchId, response.getPrivateQuests().getFirst()));
+    //        } else if ("2".equalsIgnoreCase(parsed[0])) {
+    //            send(new PrivateQuestSelectedRequest(matchId, response.getPrivateQuests().get(1)));
+    //        }
+    //    } while (!valid);
+    //    view.updatePageState(new CLIStartMatchPage.WaitPage());
+    //    view.displayPage(new Object[]{input});
+    //}
+//
 
     @Override
     public void game() {
@@ -314,56 +228,6 @@ public class CLIClientViewController implements ClientViewController {
         }
 
     }
-
-    public void send(Request request) {
-        request.setUserHash(hash); //wraps hashcode inside request, very important!!
-        try {
-            socketOut.reset();
-            socketOut.writeObject(request);
-            socketOut.flush();
-        } catch (IOException e) {
-            ExceptionHandler.handle(e, view);
-            close();
-        }
-    }
-
-    public Response syncReceive() {
-        Response response = null;
-        try {
-            response = (Response) socketIn.readObject();
-        } catch (Exception e) {
-            ExceptionHandler.handle(e, view);
-            close();
-        }
-        return response;
-    }
-
-    @Override
-    public void showUserOutput(Object o) {
-        Thread viewChanger = asyncWriteToTerminal();
-        viewChanger.start();
-    }
-
-
-    /**
-     * This asynchronous method is run by a separated thread to receive asynchronous requests from user command line (commands)
-     * This method uses CommandParser class' static method parse(String input) to figure out the command given and reacts by invoking
-     * the handler method "..."
-     */
-    public Thread asyncReadFromSocket() {
-        return new Thread(() -> {
-            try {
-                while (client.isActive()) {
-                    Response response = (Response) socketIn.readObject();
-                    response.accept(responseHandler);
-                }
-            } catch (Exception e) {
-                ExceptionHandler.handle(e, view);
-                close();
-            }
-        });
-    }
-
 
     /**
      * This asynchronous method is run by a separated thread to receive asynchronous requests from user command line (commands)
@@ -398,47 +262,6 @@ public class CLIClientViewController implements ClientViewController {
             }
         });
     }
-
-    public Thread asyncWriteToTerminal() {
-        return new Thread(() -> {
-            //show view via the VIEW
-        });
-    }
-
-    @Override
-    public void initializeConnection() throws ConnectionErrorException { //------> Tested | OK <------//
-        Socket cliSocket;
-        Scanner in = new Scanner(System.in);
-        String input;
-        String[] parsed;
-        //x.y.z.w:k
-
-        view.setPage(new CLIConnectionPage());
-        view.displayPage(null);
-
-        do {
-            input = in.nextLine();
-            parsed = input.split(":");
-
-            if (parsed.length != 2 ||
-                    InputVerifier.isNotValidIP(parsed[0]) && InputVerifier.isNotValidPort(parsed[1])) { //invalid input, none of the fields is correct (ip:port)
-                view.updatePageState(new CLIConnectionPage.InvalidInput());
-            } else if (InputVerifier.isNotValidIP(parsed[0])) {
-                view.updatePageState(new CLIConnectionPage.InvalidIP());
-            } else if (InputVerifier.isNotValidPort(parsed[1])) {
-                view.updatePageState(new CLIConnectionPage.InvalidPort());
-            }
-            view.displayPage(new String[]{input});
-        } while (parsed.length != 2 || InputVerifier.isNotValidPort(parsed[1]) || InputVerifier.isNotValidIP(parsed[0]));
-        try {
-            cliSocket = new Socket(parsed[0], Integer.parseInt(parsed[1]));
-        } catch (Exception e) {
-            throw new ConnectionErrorException();
-        }
-        setSocket(cliSocket);
-    }
-
-
 }
 
 

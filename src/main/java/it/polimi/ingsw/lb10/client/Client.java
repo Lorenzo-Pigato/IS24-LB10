@@ -1,10 +1,8 @@
 package it.polimi.ingsw.lb10.client;
 
-import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
 import it.polimi.ingsw.lb10.client.controller.ClientViewController;
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
-import it.polimi.ingsw.lb10.client.view.CLIClientView;
 
 import java.util.Scanner;
 
@@ -16,11 +14,13 @@ public class Client implements Runnable {
     //a command will be provided to choose the interface he wants and then instantiating the right type of view and view controller
 
     private static Client instance;
-    private ClientViewController controller = CLIClientViewController.instance();
+    private ClientViewController controller;
     private boolean active = true;
     private boolean logged = false;
     private boolean inMatch = false;
     private boolean startedMatch = false;
+
+    private ExceptionHandler exceptionHandler;
 
     public static Client instance() {
         if (instance == null) instance = new Client();
@@ -36,14 +36,15 @@ public class Client implements Runnable {
      * all of these processes are procedural.
      */
     public void run() {
-        //we have instantiated both view and view controller
-        //we set the client reference to our controller
+        //instantiated both view and view controller
+        //Set client reference to the controller
         controller.setClient(this);
         //server connection
+
         try {
             controller.initializeConnection();
         } catch (ConnectionErrorException e) {
-            ExceptionHandler.handle(e, new CLIClientView());
+            exceptionHandler.handle(e);
             return;
         }
 
@@ -70,6 +71,9 @@ public class Client implements Runnable {
         new Scanner(System.in).nextLine();
     }
 
+
+    //-------------- GETTERS -------------- //
+
     /**
      * @return the client state
      */
@@ -77,13 +81,18 @@ public class Client implements Runnable {
         return active;
     }
 
-    public boolean isLogged() {
+    public boolean isNotLogged() {
         return !logged;
     }
 
-    public boolean isInMatch() {
+    public boolean isNotInMatch() {
         return !inMatch;
     }
+
+    public boolean matchIsStarted() { return startedMatch; }
+
+
+    //-------------- SETTERS -------------- //
 
     public void setLogged(Boolean state) {
         logged = state;
@@ -104,9 +113,9 @@ public class Client implements Runnable {
         this.controller = controller;
     }
 
-    public void setStartedMatch(boolean startedMatch) {
-        this.startedMatch = startedMatch;
-    }
+    public void setExceptionHandler(ExceptionHandler exceptionHandler) {this.exceptionHandler = exceptionHandler;}
+
+    public void setStartedMatch(boolean startedMatch) { this.startedMatch = startedMatch; }
 
 }
 

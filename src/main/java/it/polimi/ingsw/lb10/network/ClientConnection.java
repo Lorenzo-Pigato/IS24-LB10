@@ -51,7 +51,6 @@ public class ClientConnection extends Observable implements Runnable {
 
         try {
             remoteView.setUp();  //sets up remote view opening output streams
-            LobbyController.addRemoteView(remoteView);
         } catch (IOException e) {
             close(); //closes the socket, client will handle an IOException
         }
