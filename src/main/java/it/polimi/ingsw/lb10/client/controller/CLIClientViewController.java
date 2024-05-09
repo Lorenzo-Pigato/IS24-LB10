@@ -25,6 +25,7 @@ public class CLIClientViewController extends ClientViewController {
     private CLIClientView view;
 
     private static final CLIResponseHandler responseHandler = CLIResponseHandler.instance();
+    private boolean matchStarted = false;
 
     public static CLIClientViewController instance() {
         if (instance == null) instance = new CLIClientViewController();
@@ -32,6 +33,7 @@ public class CLIClientViewController extends ClientViewController {
     }
 
     // ------------------ SETTERS ------------------ //
+    public void setMatchStarted(boolean status){this.matchStarted = status;}
     public void setCliClientView(CLIClientView cliClientView) {this.view = cliClientView;}
 
     // ------------------ GETTERS ------------------ //
