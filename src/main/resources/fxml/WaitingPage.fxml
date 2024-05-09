@@ -27,7 +27,7 @@
       </children>
    </Group>
    <ImageView fitHeight="434.0" fitWidth="616.0" layoutX="-3.0" layoutY="469.0" pickOnBounds="true" preserveRatio="true">
-      <Image url="@../images/leggio_mani.png" />
+      <Image url="@../images/treeDecoration.png" />
    </ImageView>
    <Text fx:id="matchID" fill="#3c310b" layoutX="132.0" layoutY="427.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label" text="WAITING ROOM" textAlignment="CENTER" />
    <Text fill="#544615" layoutX="249.0" layoutY="379.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your MatchID is:" textAlignment="CENTER">

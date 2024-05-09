@@ -33,12 +33,16 @@ public class CLIEndOfMatchPage implements CLIPage {
         @Override
         public void apply(Object[] args) {
             CLICommand.initialize();
-            if(CLIClientViewController.instance().getClient().matchIsStarted()) {
+
+            if(((ArrayList<Player>)args[1]).size() > 1){
                 Player thisPlayer = (Player) args[0];
                 ArrayList<Player> allPlayers = (ArrayList<Player>) args[1];
+
                 allPlayers.sort(Comparator.comparingInt(Player::getPoints).reversed());
+
                 if (thisPlayer.getUsername().equals(allPlayers.getFirst().getUsername())) CLIBanner.displayWinner();
                 else CLIBanner.displayLoser();
+
                 StringBuilder scoreboard = new StringBuilder();
                 for (Player player : allPlayers)
                     scoreboard.append((allPlayers.indexOf(player) + 1))
@@ -47,13 +51,15 @@ public class CLIEndOfMatchPage implements CLIPage {
                             .append("\t POINTS: ")
                             .append(player.getPoints())
                             .append("\n\n");
+
                 CLIBox.draw(60, 25, 40, 15, scoreboard.toString(), AnsiColor.CYAN, AnsiColor.WHITE, AnsiFormat.BOLD);
                 CLIBox.draw(60, 25, 40, 3, "SCOREBOARD", AnsiColor.PURPLE, AnsiColor.WHITE, AnsiFormat.BOLD);
-                CLICommand.setPosition(1, 49);
             }
             else{
-
+                CLIBanner.displayAllPlayersLeft();
             }
+
+            CLICommand.setPosition(1, 49);
         }
     }
 }
