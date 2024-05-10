@@ -76,9 +76,9 @@ public class GUIChooseQuestPageController implements GUIPageController , Initial
     @FXML
     private void chooseQuest(MouseEvent event){
         Quest chosen = event.getSource().equals(firstQuest) ? firstQuestCard : secondQuestCard;
-        GUIClientViewController.instance().send(new PrivateQuestSelectedRequest(GUIClientViewController.instance().getMatchId(), chosen));
-
         GUIMatchPageController.setPrivateQuest(chosen);
+
+        GUIClientViewController.instance().send(new PrivateQuestSelectedRequest(GUIClientViewController.instance().getMatchId(), chosen));
 
     }
 
