@@ -5,10 +5,8 @@ import it.polimi.ingsw.lb10.network.requests.match.ChatRequest;
 import it.polimi.ingsw.lb10.network.requests.match.PlaceCardRequest;
 import it.polimi.ingsw.lb10.network.requests.match.PlaceStartingCardRequest;
 import it.polimi.ingsw.lb10.server.model.Player;
-import it.polimi.ingsw.lb10.server.model.cards.Color;
-import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
+import it.polimi.ingsw.lb10.server.model.cards.*;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCardState.BackOfTheCard;
-import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import javafx.beans.value.ChangeListener;
@@ -32,6 +30,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import org.jetbrains.annotations.NotNull;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -336,14 +335,13 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         int cardWidth;
         int cardHeight;
 
-        ImageView cardOnTable = new ImageView(new Image(String.valueOf(Objects.requireNonNull(this.getClass()
-                .getResourceAsStream(
-                        "/cards/" +
-                                (card.getCardState() instanceof BackOfTheCard ? "retro" : "") +
-                                card.getId() +
-                                ".png"
-                )
-        ))));
+        String path = getResourcePath(card);
+
+        ImageView cardOnTable = new ImageView(new Image(
+                String.valueOf(Objects
+                      .requireNonNull(this.getClass()
+                      .getResourceAsStream(path + ".png"))))
+        );
 
         ImageView cardOnBoard = boardScrollPane.getChildrenUnmodifiable().stream()
                 .filter(ch -> ch.getClass().equals(ImageView.class))
@@ -358,6 +356,22 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
         boardScrollPane.setContent(cardOnTable);
 
+    }
+
+    private static @NotNull String getResourcePath(PlaceableCard card) {
+        String path = "/cards/";
+        if(card.getCardState() instanceof BackOfTheCard && (card instanceof GoldenCard || card instanceof ResourceCard))
+        {
+            path += "retro";
+            if(card instanceof GoldenCard) path += "Golden";
+            else path += "Resource";
+
+            path += card.getResource().getResourceString();
+        }
+        else if(card.getCardState() instanceof BackOfTheCard) path += "retro" + card.getId();
+
+        else path += card.getId();
+        return path;
     }
 
     @FXML
