@@ -74,6 +74,10 @@ class BottonRightTest {
         matrix.setCard(resourceDeck.getCards().get(19),44,42);
 
         assertTrue(bottomRightQuest.isPattern(matrix,41,41));
+
+        matrix.setCard(resourceDeck.getCards().get(3),45,41);
+        matrix.setCard(resourceDeck.getCards().get(18),46,42);
+        assertFalse(bottomRightQuest.isPattern(matrix,45,41));
     }
 
     @Test

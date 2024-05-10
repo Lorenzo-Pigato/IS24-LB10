@@ -538,8 +538,8 @@ public abstract class CLIBanner {
                         │                                                                                                                            │
                         └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
                         """,
-                AnsiColor.RED, 0, 20).centerPrint();
+                AnsiColor.PURPLE, 0, 20).centerPrint();
 
-        new CLIString( "your match is over, all other players have left", AnsiColor.RED, 0, 33).centerPrint();
+        new CLIString( "your match is over, all other players have left", AnsiColor.PURPLE, 0, 33).centerPrint();
     }
 }

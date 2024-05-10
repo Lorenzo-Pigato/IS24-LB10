@@ -41,9 +41,6 @@ public class Node implements Serializable {
     public boolean checkIsNotAvailable() {
         if (corners.size() == 1)
             return false;
-        if (!corners.get(0).isAvailable() || !corners.get(1).isAvailable())
-            return true;
-        return false;
+        return !corners.getFirst().isAvailable();
     }
-
 }

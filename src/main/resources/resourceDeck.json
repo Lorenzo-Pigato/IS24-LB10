@@ -237,7 +237,7 @@
 
     {
       "id" 			    : "27",
-      "corners"	        : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "PERGAMENA" , "id" : 27, "color" : "PURPLE"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "INSECT" , "id" : 27, "color" : "PURPLE"},{"available" : false , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 27, "color" : "PURPLE"},{"available" : false , "position" : "BOTTOMRIGHT" , "resource"  : "MUSHROOM" , "id" : 27, "color" : "PURPLE"}],
+      "corners"	        : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "PERGAMENA" , "id" : 27, "color" : "PURPLE"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "INSECT" , "id" : 27, "color" : "PURPLE"},{"available" : false , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 27, "color" : "PURPLE"},{"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "MUSHROOM" , "id" : 27, "color" : "PURPLE"}],
       "resource"        : "INSECT" , 
       "points"          : 0 ,
       "color"			: "PURPLE",

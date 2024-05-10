@@ -53,7 +53,7 @@ public class Matrix implements Serializable {
     public void setCard(StartingCard card) {
 
         Map<Position, int[]> setIncrement = parsingPositionCorners();
-        for (Corner corner : card.getFlippedCardCorners()) {
+        for (Corner corner : card.getStateCardCorners()) {
             int[] delta = setIncrement.get(corner.getPosition());
             getNode(41 + delta[0], 41 + delta[1]).addCorner(corner);
         }
@@ -95,11 +95,9 @@ public class Matrix implements Serializable {
      * @param row and the column must be the top left corner of the card!
      */
     public void setUsedForQuest(int row, int column) {
-
-        Position[] possiblePosition = {Position.TOPLEFT, Position.TOPRIGHT, Position.BOTTOMRIGHT, Position.BOTTOMLEFT};
         Map<Position, int[]> setIncrement = parsingPositionCorners();
 
-        for (Position position : possiblePosition) {
+        for (Position position : getPossiblePosition()) {
             int[] delta = setIncrement.get(position);
             for (Corner corner : getNode(row + delta[0], column + delta[1]).getCorners())
                 if (corner.getPosition().equals(position))
@@ -136,4 +134,7 @@ public class Matrix implements Serializable {
                 ).orElse(null);
     }
 
+    private Position[] getPossiblePosition() {
+        return new Position[]{Position.TOPLEFT, Position.TOPRIGHT, Position.BOTTOMRIGHT, Position.BOTTOMLEFT};
+    }
 }

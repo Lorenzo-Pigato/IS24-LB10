@@ -382,6 +382,7 @@ public class MatchModel extends Observable {
         boolean responseStatus = checkActivationCost(player, card);
         if (responseStatus) {
             player.getMatrix().setCard(card, row, column);
+            //if one of the two-parameter row and column is > 82 return false!
             checkInsertion(player, card, row, column);
         } else notify(new PlaceCardResponse(card, false, row, column, null), player.getUserHash());
     }
@@ -417,12 +418,11 @@ public class MatchModel extends Observable {
 
 
     /**
-     * @param row and column are the top left corner of the card
+     * @param row and the column is the top left corner of the card
      * @return true if the card passed all the requirements
      * it's important to remember that the card is already inserted!
      */
-    public synchronized boolean verificationSetting(Player player, int row, int column, ArrayList<
-            Node> visitedNodes) {
+    public synchronized boolean verificationSetting(Player player, int row, int column, ArrayList<Node> visitedNodes) {
         //if one corner isn't available
         if (!checkNotAvailability(player, row, column))
             return false;
@@ -456,6 +456,7 @@ public class MatchModel extends Observable {
                 }
             }
         }
+
         //if the card doesn't cover at least one card, it's an error
         return !visitedNodes.isEmpty();
     }
@@ -498,15 +499,12 @@ public class MatchModel extends Observable {
      **/
     public void addCardPointsOnPlayer(Player player, PlaceableCard card, ArrayList<Node> visitedNodes) {
         Resource goldenResource = card.getStateCardGoldenBuffResource();
-        if (goldenResource.equals(Resource.NULL))
-            player.addPoints(card.getStateCardPoints());
-        else if (goldenResource.equals(Resource.PATTERN))
+        if (goldenResource.equals(Resource.PATTERN))
             player.addPoints(card.getStateCardPoints() * visitedNodes.size());
         else if (goldenResource.equals(Resource.FEATHER) || goldenResource.equals(Resource.PERGAMENA) || goldenResource.equals(Resource.POTION))
             player.addPoints(card.getStateCardPoints() * player.getResourceQuantity(goldenResource));
         else
             player.addPoints(card.getStateCardPoints());
-        visitedNodes = new ArrayList<>();
         notifyAll(new PlayerPointsUpdateResponse(player.getUsername(), player.getPoints()));
     }
 
