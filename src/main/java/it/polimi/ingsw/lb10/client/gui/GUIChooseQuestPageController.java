@@ -77,8 +77,9 @@ public class GUIChooseQuestPageController implements GUIPageController , Initial
     private void chooseQuest(MouseEvent event){
         Quest chosen = event.getSource().equals(firstQuest) ? firstQuestCard : secondQuestCard;
         GUIMatchPageController.setPrivateQuest(chosen);
-
         GUIClientViewController.instance().send(new PrivateQuestSelectedRequest(GUIClientViewController.instance().getMatchId(), chosen));
+        firstQuest.setDisable(true);
+        secondQuest.setDisable(true);
 
     }
 

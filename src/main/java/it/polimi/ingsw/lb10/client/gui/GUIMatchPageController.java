@@ -3,11 +3,11 @@ package it.polimi.ingsw.lb10.client.gui;
 import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
 import it.polimi.ingsw.lb10.network.requests.match.ChatRequest;
 import it.polimi.ingsw.lb10.network.requests.match.PlaceCardRequest;
+import it.polimi.ingsw.lb10.network.requests.match.PlaceStartingCardRequest;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.cards.Color;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCardState.BackOfTheCard;
-import it.polimi.ingsw.lb10.server.model.cards.PlaceableCardState.StateOfTheCard;
 import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
@@ -26,6 +26,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -44,10 +45,11 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     private static ArrayList<Player> otherPlayers;
     private static Quest privateQuest;
     private static ArrayList<Quest> commonQuests;
-    private ArrayList<AnchorPane> handCardAnchorPanes;
+    private final ArrayList<AnchorPane> handCardAnchorPanes = new ArrayList<>();
     private int matrixCardId;
     private Rectangle clickedRectangle;
     private static StartingCard startingCard;
+    private StackPane boardStackPane;
 
     @FXML
     private Button chatButton;
@@ -68,49 +70,60 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
     @Override
     public String getFXML() {
-        return "";
+        return "/fxml/matchPage.fxml";
     }
 
     @Override
     public String getCSS() {
-        return "";
+        return "/css/matchPage.css";
     }
 
     public static void setPrivateQuest(Quest privateQuest){GUIMatchPageController.privateQuest = privateQuest;}
     public static void setCommonQuests(ArrayList<Quest> commonQuests){ GUIMatchPageController.commonQuests = commonQuests;}
     public static void setThisPlayer(Player player){GUIMatchPageController.thisPlayer = player;}
     public static void setOtherPlayers (ArrayList<Player> otherPlayers){GUIMatchPageController.otherPlayers = otherPlayers;}
+    public static void setStartingCard(StartingCard startingCard){GUIMatchPageController.startingCard = startingCard;}
 
-    public void setAndShowStartingCard(StartingCard startingCard){
+    public void showStartingCard(StartingCard startingCard){
 
-        setScrollNotDraggable();
+        setScrollNotPannable();
 
         GUIMatchPageController.startingCard = startingCard;
 
-        ImageView startingImageView = new ImageView( new Image((Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/" + startingCard.getId() + ".png")))));
+        ImageView startingCardImageView = new ImageView( new Image((Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/" + startingCard.getId() + ".png")))));
 
-        startingImageView.setUserData(startingCard);
-        startingImageView.setFitHeight(80D);
-        startingImageView.setFitHeight(130D);
-        AnchorPane startingCardAnchorPane = new AnchorPane(startingImageView);
-        AnchorPane.setTopAnchor(startingCardAnchorPane, 0D);
-        AnchorPane.setLeftAnchor(startingCardAnchorPane, 0D);
+        startingCardImageView.setUserData(startingCard);
+        startingCardImageView.setFitHeight(90D);
+        startingCardImageView.setFitWidth(150D);
+
+        Button place = new Button();
+        place.setPrefHeight(30);
+        place.setPrefWidth(30);
+        place.setText("Place");
+        place.setOnAction(event -> {
+            controller.send(new PlaceStartingCardRequest(controller.getMatchId(), startingCard));
+        });
         Button flip = new Button();
-        flip.setPrefHeight(20);
-        flip.setPrefWidth(20);
+        flip.setPrefHeight(30);
+        flip.setPrefWidth(30);
         flip.setText("Flip");
         flip.setOnAction(event ->  {
-            startingImageView.setImage(new Image((Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/retro" + startingCard.getId() + ".png")))));
-            startingCard.setFlippedState();
+            startingCardImageView.setImage(new Image((Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/retro" + startingCard.getId() + ".png")))));
+            startingCard.swapState();
         });
-
-        boardScrollPane.setContent(startingImageView);
-
+        VBox buttonsBox = new VBox();
+        buttonsBox.getChildren().addAll(flip, place);
+        VBox.setMargin(flip, new Insets(0, 20, 10, 0));
+        VBox.setMargin(place, new Insets(10, 20, 0, 0));
+        boardStackPane.getChildren().addAll(startingCardImageView, buttonsBox);
     }
 
-    private void setScrollNotDraggable() {
-        boardScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        boardScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+    private void setScrollNotPannable() {
+        boardScrollPane.setPannable(false);
+    }
+
+    private void setScrollPannable(){
+        boardScrollPane.setPannable(true);
     }
 
     @Override
@@ -121,12 +134,17 @@ public class GUIMatchPageController implements GUIPageController , Initializable
                 chatScrollPane.setVvalue((Double) newValue);
             }
         });
+        boardStackPane = new StackPane();
+        boardStackPane.setAlignment(Pos.CENTER);
+        boardScrollPane.setContent(boardStackPane);
+
 
         handCardAnchorPanes.add(handCardOnePane);
         handCardAnchorPanes.add(handCardTwoPane);
         handCardAnchorPanes.add(handCardThreePane);
 
         initializePanes();
+        showStartingCard(startingCard);
     }
 
     private void initializePanes() {
