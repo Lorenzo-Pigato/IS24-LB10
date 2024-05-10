@@ -7,12 +7,17 @@ import it.polimi.ingsw.lb10.network.requests.match.PlaceStartingCardRequest;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.cards.Color;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
+import it.polimi.ingsw.lb10.server.model.cards.PlaceableCardState.BackOfTheCard;
 import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
+import it.polimi.ingsw.lb10.server.model.cards.StartingCardState.BackStartingCard;
+import it.polimi.ingsw.lb10.server.model.cards.StartingCardState.FrontStartingCard;
+import it.polimi.ingsw.lb10.server.model.cards.StartingCardState.StateStartingCard;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -21,10 +26,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -46,7 +48,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     private int matrixCardId;
     private Rectangle clickedRectangle;
     private static StartingCard startingCard;
-    private StackPane boardStackPane;
+    private AnchorPane boardAnchorPane;
 
     @FXML
     private Button chatButton;
@@ -100,19 +102,24 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         place.setOnAction(event -> {
             controller.send(new PlaceStartingCardRequest(controller.getMatchId(), startingCard));
         });
+
         Button flip = new Button();
         flip.setPrefHeight(30);
         flip.setPrefWidth(30);
         flip.setText("Flip");
         flip.setOnAction(event ->  {
-            startingCardImageView.setImage(new Image((Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/retro" + startingCard.getId() + ".png")))));
+            if(startingCard.getStateStartingCard().getClass().equals(FrontStartingCard.class)) startingCardImageView.setImage(new Image((Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/retro" + startingCard.getId() + ".png")))));
+            else startingCardImageView.setImage(new Image((Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/" + startingCard.getId() + ".png")))));
             startingCard.swapState();
         });
+
         VBox buttonsBox = new VBox();
         buttonsBox.getChildren().addAll(flip, place);
         VBox.setMargin(flip, new Insets(0, 20, 10, 0));
         VBox.setMargin(place, new Insets(10, 20, 0, 0));
-        boardStackPane.getChildren().addAll(startingCardImageView, buttonsBox);
+
+        boardAnchorPane.getChildren().addAll(startingCardImageView, buttonsBox);
+
     }
 
     private void setScrollNotPannable() {
@@ -131,9 +138,12 @@ public class GUIMatchPageController implements GUIPageController , Initializable
                 chatScrollPane.setVvalue((Double) newValue);
             }
         });
-        boardStackPane = new StackPane();
-        boardStackPane.setAlignment(Pos.CENTER);
-        boardScrollPane.setContent(boardStackPane);
+
+        boardAnchorPane = new AnchorPane();
+
+        boardAnchorPane.getBoundsInParent();
+
+        boardScrollPane.setContent(boardAnchorPane);
 
 
         handCardAnchorPanes.add(handCardOnePane);
