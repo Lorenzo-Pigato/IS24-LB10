@@ -38,6 +38,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     private static Player thisPlayer;
     private static ArrayList<Player> otherPlayers;
     private static Quest privateQuest;
+    private static ArrayList<Quest> commonQuests;
     private ArrayList<AnchorPane> handCardAnchorPanes;
     private int matrixCardId;
     private Rectangle clickedRectangle;
@@ -71,9 +72,11 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     }
 
     public static void setPrivateQuest(Quest privateQuest){GUIMatchPageController.privateQuest = privateQuest;}
+    public static void setCommonQuests(ArrayList<Quest> commonQuests){ GUIMatchPageController.commonQuests = commonQuests;}
     public static void setThisPlayer(Player player){GUIMatchPageController.thisPlayer = player;}
     public static void setOtherPlayers (ArrayList<Player> otherPlayers){GUIMatchPageController.otherPlayers = otherPlayers;}
-    public void setAndShowStartingCard (StartingCard startingCard){
+
+    public void setAndShowStartingCard(StartingCard startingCard){
 
         setScrollNotDraggable();
 

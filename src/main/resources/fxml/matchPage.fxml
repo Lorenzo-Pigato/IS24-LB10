@@ -115,7 +115,7 @@
       <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#6b59224d" height="687.0" layoutX="13.0" layoutY="13.0" stroke="#463e02" strokeType="INSIDE" strokeWidth="5.0" width="1204.0" />
       <AnchorPane layoutX="17.0" layoutY="16.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="679.0" prefWidth="1195.0">
          <children>
-            <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.0" prefHeight="679.0" prefWidth="1195.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <ScrollPane fx:id="boardScrollPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.0" prefHeight="679.0" prefWidth="1195.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children></AnchorPane>
 
    </children>
