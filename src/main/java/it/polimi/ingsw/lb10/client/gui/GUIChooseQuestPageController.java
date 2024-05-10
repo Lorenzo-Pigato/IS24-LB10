@@ -19,13 +19,10 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class GUIChooseQuestPageController implements GUIPageController, Initializable {
+public class GUIChooseQuestPageController implements GUIPageController , Initializable{
 
     private static Quest firstQuestCard;
     private static Quest secondQuestCard;
-
-    private Image firstQuestImage;
-    private Image secondQuestImage;
 
     @Override
     public String getFXML() {
@@ -38,10 +35,10 @@ public class GUIChooseQuestPageController implements GUIPageController, Initiali
     }
 
     @FXML
-    private static ImageView firstQuest;
+    private ImageView firstQuest;
 
     @FXML
-    private static ImageView secondQuest;
+    private ImageView secondQuest;
 
     @FXML
     private static Rectangle firstQuestContainer;
@@ -49,17 +46,10 @@ public class GUIChooseQuestPageController implements GUIPageController, Initiali
     @FXML
     private static Rectangle secondQuestContainer;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        GUIClientViewController.instance().send(new PrivateQuestsRequest(GUIClientViewController.instance().getMatchId()));
-    }
 
     public static void setQuests(Quest firstQuestCard, Quest secondQuestCard){
         GUIChooseQuestPageController.firstQuestCard = firstQuestCard;
         GUIChooseQuestPageController.secondQuestCard = secondQuestCard;
-
-        firstQuest.setImage(new Image(Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/" + firstQuestCard.getId() + ".png"))));
-        secondQuest.setImage(new Image(Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/" + secondQuestCard.getId() + ".png"))));
     }
 
     @FXML
@@ -90,5 +80,10 @@ public class GUIChooseQuestPageController implements GUIPageController, Initiali
         //to be completed
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        firstQuest.setImage(new Image(Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/" + firstQuestCard.getId() + ".png"))));
+        secondQuest.setImage(new Image(Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/" + secondQuestCard.getId() + ".png"))));
 
+    }
 }

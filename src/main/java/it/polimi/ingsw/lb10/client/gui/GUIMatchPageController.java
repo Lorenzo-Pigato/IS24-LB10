@@ -4,25 +4,40 @@ import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
 import it.polimi.ingsw.lb10.network.requests.match.ChatRequest;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.cards.Color;
+import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-
+import org.jetbrains.annotations.NotNull;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class GUIMatchPageController implements GUIPageController , Initializable {
     private final GUIClientViewController controller = GUIClientViewController.instance();
+    private Player thisPlayer;
+    private ArrayList<Player> otherPlayers;
+    private ArrayList<AnchorPane> handCardAnchorPanes;
+    private int matrixCardId;
+    private Rectangle clickedRectangle;
+
     @FXML
     private Button chatButton;
     @FXML
@@ -31,6 +46,14 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     private VBox chatVBox;
     @FXML
     private TextField chatText;
+    @FXML
+    private AnchorPane handCardOnePane;
+    @FXML
+    private AnchorPane handCardTwoPane;
+    @FXML
+    private AnchorPane handCardThreePane;
+
+
 
     /**
      * @return 
@@ -56,6 +79,99 @@ public class GUIMatchPageController implements GUIPageController , Initializable
                 chatScrollPane.setVvalue((Double) newValue);
             }
         });
+
+        handCardAnchorPanes.add(handCardOnePane);
+        handCardAnchorPanes.add(handCardTwoPane);
+        handCardAnchorPanes.add(handCardThreePane);
+        initializePanes();
+    }
+
+    private void initializePanes() {
+        handCardAnchorPanes.forEach(pane -> {
+            pane.setVisible(false);
+            ImageView disabledView = new ImageView();
+            disabledView.setDisable(true);
+            pane.getChildren().add(disabledView);
+            ArrayList<Rectangle> hooverRectangles = rectangles();
+
+            for (int i = 0; i < 4; i++){
+                pane.getChildren().add(hooverRectangles.get(i));
+            }
+        });
+    }
+
+    private @NotNull ArrayList<Rectangle> rectangles() {
+        Rectangle hooverRectangleTopLeft = new Rectangle();
+        AnchorPane.setTopAnchor(hooverRectangleTopLeft, 0D);
+        AnchorPane.setLeftAnchor(hooverRectangleTopLeft, 0D);
+
+        Rectangle hooverRectangleTopRight = new Rectangle();
+        AnchorPane.setTopAnchor(hooverRectangleTopRight, 0D);
+        AnchorPane.setRightAnchor(hooverRectangleTopRight, 0D );
+
+        Rectangle hooverRectangleBottomRight = new Rectangle();
+        AnchorPane.setBottomAnchor(hooverRectangleBottomRight, 0D);
+        AnchorPane.setRightAnchor(hooverRectangleBottomRight, 0D );
+
+        Rectangle hooverRectangleBottomLeft = new Rectangle();
+        AnchorPane.setBottomAnchor(hooverRectangleBottomLeft, 0D);
+        AnchorPane.setLeftAnchor(hooverRectangleBottomLeft, 0D );
+
+        ArrayList<Rectangle> hooverRectangles = new ArrayList<>();
+
+        hooverRectangles.add(hooverRectangleBottomRight);
+        hooverRectangles.add(hooverRectangleTopRight);
+        hooverRectangles.add(hooverRectangleBottomLeft);
+        hooverRectangles.add(hooverRectangleTopLeft);
+
+        hooverRectangles.forEach(hr -> {
+
+            hr.setStyle("-fx-background-color: #d6af00");
+            hr.setVisible(false);
+
+            hr.setOnMouseEntered(mouseEvent -> {
+                hr.setVisible(true);
+            });
+
+            hr.setOnMouseExited(mouseEvent -> {
+                hr.setVisible(isClicked(hr));
+            });
+
+            hr.setOnMouseClicked(mouseEvent -> {
+                if(!isClicked(hr)){
+                    hr.setVisible(true);
+                    clickedRectangle = hr;
+                }
+            });
+        });
+
+        return hooverRectangles;
+    }
+    private  boolean isClicked(Rectangle rec){
+        return clickedRectangle == null || rec.equals(clickedRectangle);
+    }
+    public void setThisPlayer(Player thisPlayer) {
+        this.thisPlayer = thisPlayer;
+    }
+
+    public void setOtherPlayers (ArrayList<Player> otherPlayers){
+        this.otherPlayers = otherPlayers;
+    }
+
+    public void insertCardOnHand(PlaceableCard card){
+        Optional<AnchorPane> emptyPane = handCardAnchorPanes.stream().filter(Node::isDisabled).findFirst();
+        emptyPane.ifPresent(anchorPane -> addHandCard(anchorPane, card));
+    }
+
+    private void addHandCard(AnchorPane anchorPane, PlaceableCard card) {
+        anchorPane.setDisable(false);
+        Image cardImage = new Image(String.valueOf(Objects.requireNonNull(this.getClass().getResourceAsStream("/cards/" + card.getId() + ".png"))));
+        ImageView cardView = (ImageView) anchorPane.getChildren().stream().filter(ch -> ch.getClass().equals(ImageView.class)).findAny().orElseThrow(RuntimeException::new);
+        cardView.setImage(cardImage);
+        AnchorPane.setTopAnchor(cardView, 0D);
+        AnchorPane.setLeftAnchor(cardView, 0D);
+        AnchorPane.setBottomAnchor(cardView, 0D);
+        AnchorPane.setRightAnchor(cardView, 0D);
     }
 
     @FXML
@@ -120,4 +236,6 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         hBox.getChildren().add(textFlow);
         chatVBox.getChildren().add(hBox);
     }
+
+
 }

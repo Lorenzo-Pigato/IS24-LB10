@@ -42,9 +42,12 @@ public class GUIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(PrivateQuestsResponse response) {
-        controller.setGameSize();
-        controller.changeScene(new GUIChooseQuestPageController());
         GUIChooseQuestPageController.setQuests(response.getPrivateQuests().getFirst(), response.getPrivateQuests().getLast());
+        Platform.runLater(() -> {
+            controller.setGameSize();
+            controller.changeScene(new GUIChooseQuestPageController());
+
+        });
     }
 
     @Override
