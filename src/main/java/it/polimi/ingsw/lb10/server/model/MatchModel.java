@@ -84,6 +84,7 @@ public class MatchModel extends Observable {
     public void terminate() {
         Server.log("[" + id + "]" + ">>match terminated");
         terminated = true;
+        players.forEach(p -> p.setInMatch(false));
         notifyAll(new TerminatedMatchResponse());
     }
 
@@ -338,6 +339,11 @@ public class MatchModel extends Observable {
         players.remove(player);
         notifyAll(new PlayerLeftResponse(player.getUsername()));
         notifyAll(new ChatMessageResponse("Server", player.getUsername() + "left"));
+        if(player.equals(onTurnPlayer)){
+            onTurnPlayer = players.get((players.indexOf(onTurnPlayer) + 1) % players.size());
+            notifyAll(new ChatMessageResponse("Server", "it's " + onTurnPlayer.getUsername() + "'s turn"));
+            notify(new ServerNotification("It's your turn, place your card!"), onTurnPlayer.getUserHash());
+        }
     }
 
     public List<Player> getPlayers() {

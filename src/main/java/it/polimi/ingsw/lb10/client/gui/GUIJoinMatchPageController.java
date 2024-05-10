@@ -109,7 +109,7 @@ public class GUIJoinMatchPageController implements GUIPageController{
                 controller.send(new LobbyToMatchRequest(id));
                 matchId.clear();
                 controller.syncReceive().accept(GUIResponseHandler.instance());
-                if(controller.getClient().isNotInMatch()) controller.changeScene(new GUIWaitingPageController());
+                if(!controller.getClient().isNotInMatch()) controller.changeScene(new GUIWaitingPageController());
                 else invalidMatchIdError.setVisible(true);
             }catch(NumberFormatException e){
                 invalidMatchIdError.setVisible(true);

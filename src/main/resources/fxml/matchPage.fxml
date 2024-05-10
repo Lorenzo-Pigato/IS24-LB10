@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -15,7 +20,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" styleClass="background-anchor" stylesheets="@../css/matchPage.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.lb10.client.gui.GUIMatchPageController">
    <children>
       <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#6b59224d" height="684.0" layoutX="10.0" layoutY="13.0" stroke="#463e02" strokeType="INSIDE" strokeWidth="5.0" width="1208.0" />
-      <AnchorPane fx:id="cardsAnchor" layoutX="22.0" layoutY="709.0" prefHeight="174.0" prefWidth="791.0" styleClass="card-anchor" stylesheets="@../css/matchPage.css">
+      <AnchorPane fx:id="cardsAnchor" layoutX="22.0" layoutY="709.0" prefHeight="175.0" prefWidth="790.0" styleClass="card-anchor" stylesheets="@../css/matchPage.css">
          <children>
             <Rectangle arcHeight="30.0" arcWidth="30.0" fill="#2214006b" height="182.0" layoutX="-9.0" layoutY="-4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="799.0" />
             <ImageView fitHeight="187.0" fitWidth="234.0" layoutX="8.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true" styleClass="hand-card">
@@ -37,11 +42,25 @@
       <AnchorPane layoutX="1228.0" layoutY="15.0" prefHeight="461.0" prefWidth="352.0" styleClass="label" stylesheets="@../css/matchPage.css" AnchorPane.leftAnchor="1228.0" AnchorPane.rightAnchor="20.0">
          <children>
             <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#6b59224d" height="467.0" layoutY="-2.0" stroke="#463e02" strokeType="INSIDE" strokeWidth="5.0" width="356.0" />
+            <TabPane layoutX="14.0" layoutY="11.0" prefHeight="442.0" prefWidth="331.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab text="Untitled Tab 1">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  </content>
+                </Tab>
+                <Tab text="Untitled Tab 2">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  </content>
+                </Tab>
+              </tabs>
+            </TabPane>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="818.0" layoutY="709.0" prefHeight="170.0" prefWidth="398.0">
+      <AnchorPane layoutX="818.0" layoutY="709.0" prefHeight="175.0" prefWidth="398.0">
          <children>
-            <Rectangle arcHeight="30.0" arcWidth="30.0" fill="#2214006b" height="171.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="400.0" />
+            <Rectangle arcHeight="30.0" arcWidth="30.0" fill="#2214006b" height="182.0" layoutX="-1.0" layoutY="-4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="401.0" />
             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fitHeight="30.0" fitWidth="31.0" layoutX="116.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fitHeight="30.0" fitWidth="31.0" layoutX="202.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" />
@@ -53,14 +72,20 @@
       </AnchorPane>
       <AnchorPane layoutX="1228.0" layoutY="492.0" prefHeight="385.0" prefWidth="352.0">
          <children>
-            <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#6957214d" height="341.0" layoutX="-1.0" layoutY="1.0" stroke="#463e02" strokeType="INSIDE" strokeWidth="5.0" width="353.0" AnchorPane.topAnchor="1.0" />
+            <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#6957214d" height="390.0" layoutX="-1.0" stroke="#463e02" strokeType="INSIDE" strokeWidth="5.0" width="356.0" AnchorPane.topAnchor="0.0" />
             <ScrollPane fx:id="chatScrollPane" hbarPolicy="NEVER" layoutX="6.0" layoutY="42.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.0" prefHeight="293.0" prefWidth="339.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="42.0">
                <content>
-                  <VBox fx:id="chatVBox" prefHeight="280.0" prefWidth="336.0" />
+                  <VBox fx:id="chatVBox" prefHeight="294.0" prefWidth="336.0" />
                </content>
             </ScrollPane>
-            <TextField fx:id="chatText" alignment="BOTTOM_CENTER" layoutY="344.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="41.0" prefWidth="288.0" />
-            <Button fx:id="chatButton" layoutX="291.0" layoutY="349.0" mnemonicParsing="false" onAction="#send" prefHeight="30.0" prefWidth="59.0" text="Send">
+            <TextField fx:id="chatText" alignment="BOTTOM_CENTER" layoutX="8.0" layoutY="345.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="281.0">
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+               <effect>
+                  <Glow />
+               </effect></TextField>
+            <Button fx:id="chatButton" layoutX="291.0" layoutY="352.0" mnemonicParsing="false" onAction="#send" prefHeight="25.0" prefWidth="54.0" text="Send">
                <effect>
                   <DropShadow blurType="GAUSSIAN" />
                </effect>
@@ -70,7 +95,10 @@
                   <Font size="30.0" />
                </font>
             </Label>
+            <Separator layoutX="10.0" layoutY="338.0" prefHeight="5.0" prefWidth="331.0" />
          </children>
       </AnchorPane>
+      <TabPane layoutX="514.0" layoutY="155.0" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" />
+
    </children>
 </AnchorPane>

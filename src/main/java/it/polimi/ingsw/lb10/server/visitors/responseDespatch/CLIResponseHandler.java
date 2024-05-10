@@ -38,7 +38,6 @@ public class CLIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(TerminatedMatchResponse response) {
-        controller.send(new QuitRequest());
         controller.close();
     }
 
@@ -170,7 +169,6 @@ public class CLIResponseHandler implements ResponseVisitor {
     public void visit(EndGameResponse endGameResponse) {
         controller.getView().setPage(new CLIEndOfMatchPage());
         controller.getView().getPage().print(new Object[]{endGameResponse.getPlayer(), endGameResponse.getPlayers()});
-        controller.getClient().setActive(false);
     }
 
     /**
