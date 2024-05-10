@@ -63,6 +63,8 @@ public class CLIMatchPage implements CLIPage {
     }
 
     public static void removePlayer(String username) {
+        if(allPlayers == null) return;
+
         allPlayers.remove(allPlayers.stream().filter(player -> player.getUsername().equals(username)).findFirst().orElse(null));
         updateScoreBoard();
     }
@@ -443,10 +445,11 @@ public class CLIMatchPage implements CLIPage {
 
 
     private static Player findPlayer(String username) {
+        if(allPlayers == null) return null;
         return allPlayers.stream().filter(player -> player.getUsername().equals(username)).findAny().orElse(null);
     }
 
-    private static void updateScoreBoard() {
+    private static void updateScoreBoard(){
 
         allPlayers.sort(Comparator.comparingInt(Player::getPoints).reversed());  // Lambda for sorting players to make scoreboard
         clearRegion(97, 35, 17, 7);
@@ -475,7 +478,14 @@ public class CLIMatchPage implements CLIPage {
 
     // ---------------- CHAT ------------------- //
     public static void chatLog(@NotNull String sender, String message) {
-        Player senderPlayer = allPlayers.stream().filter(p -> p.getUsername().equals(sender)).findFirst().orElse(new Player(0, "Server"));
+        Player senderPlayer;
+
+        try {
+            senderPlayer = allPlayers.stream().filter(p -> p.getUsername().equals(sender)).findFirst().orElse(new Player(0, "Server"));
+        } catch (NullPointerException e) {
+            senderPlayer = new Player(0, "Server");
+        }
+
         if (senderPlayer.getUserHash() == 0) senderPlayer.setColor(Color.GREEN);
         messages.addLast(new CLIString[]{
 

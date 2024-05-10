@@ -152,7 +152,6 @@ public abstract class ClientViewController {
         }
     }
 
-    public abstract void privateQuestSelection(PrivateQuestsResponse response);
 
     public void flipStarting() {startingCard.swapState();}
 

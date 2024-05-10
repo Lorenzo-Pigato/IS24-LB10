@@ -14,9 +14,11 @@ import it.polimi.ingsw.lb10.network.requests.preMatch.LoginRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.NewMatchRequest;
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
+import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class CLIClientViewController extends ClientViewController {
@@ -25,6 +27,8 @@ public class CLIClientViewController extends ClientViewController {
     private CLIClientView view;
 
     private static final CLIResponseHandler responseHandler = CLIResponseHandler.instance();
+    private boolean matchStarted = false;
+    private ArrayList<Quest> quests;
 
     public static CLIClientViewController instance() {
         if (instance == null) instance = new CLIClientViewController();
@@ -32,11 +36,14 @@ public class CLIClientViewController extends ClientViewController {
     }
 
     // ------------------ SETTERS ------------------ //
+    public void setMatchStarted(boolean status){this.matchStarted = status;}
     public void setCliClientView(CLIClientView cliClientView) {this.view = cliClientView;}
+    public void setQuests(ArrayList<Quest> quests) {this.quests = quests;}
+
 
     // ------------------ GETTERS ------------------ //
     public CLIClientView getView() {return view;}
-
+    public ArrayList<Quest> getQuests(){return quests;}
 
     // ------------------ METHODS ------------------ //
 
@@ -56,7 +63,7 @@ public class CLIClientViewController extends ClientViewController {
     }
 
     @Override
-    public void initializeConnection() throws ConnectionErrorException { //------> Tested | OK <------//
+    public void initializeConnection() throws ConnectionErrorException {
         Socket cliSocket;
         Scanner in = new Scanner(System.in);
         String input;
@@ -106,11 +113,11 @@ public class CLIClientViewController extends ClientViewController {
                     } while (username.length() < 2 || username.length() > 15);
                     send(new LoginRequest(username));
                     syncReceive().accept(responseHandler);
-                    if (client.isLogged()) {
+                    if (client.isNotLogged()) {
                         view.updatePageState(new CLILoginPage.alreadyTaken());
                         view.displayPage(new String[]{username});
                     }
-                } while (client.isLogged());
+                } while (client.isNotLogged());
             } catch (NullPointerException e) {
                 close();
             }
@@ -138,7 +145,7 @@ public class CLIClientViewController extends ClientViewController {
                         } catch (NumberFormatException e) {
                             view.updatePageState(new CLILobbyPage.InvalidInput());
                         }
-                        if (client.isInMatch()) view.updatePageState(new CLILobbyPage.InvalidInput());
+                        if (client.isNotInMatch()) view.updatePageState(new CLILobbyPage.InvalidInput());
 
                     } else if (splitInput[0].equalsIgnoreCase("new") && splitInput.length == 2) {
                         try {
@@ -158,7 +165,7 @@ public class CLIClientViewController extends ClientViewController {
                     } else view.updatePageState(new CLILobbyPage.InvalidInput());
 
                     view.displayPage(new String[]{input});
-                } while (client.isInMatch());
+                } while (client.isNotInMatch());
             } catch (NullPointerException e) {
                 close();
             }
@@ -178,32 +185,32 @@ public class CLIClientViewController extends ClientViewController {
         }
     }
 
-    @Override
-    public void privateQuestSelection(PrivateQuestsResponse response) {
-        Scanner in = new Scanner(System.in);
-        String input;
-        view.setPage(new CLIStartMatchPage());
-        view.displayPage(new Object[]{response.getPrivateQuests().get(0), response.getPrivateQuests().get(1)});
-        String[] parsed;
-        boolean valid;
-        do {
-            input = in.nextLine();
-            parsed = input.split(" ");
-            valid = parsed.length == 1 && ((parsed[0].equalsIgnoreCase("1")) || (parsed[0].equalsIgnoreCase("2")));
-            if (parsed[0].equalsIgnoreCase("quit")) send(new QuitRequest());
-            if (!valid) {
-                view.updatePageState(new CLIStartMatchPage.InvalidInput());
-                view.displayPage(new Object[]{input});
-            } else if ("1".equalsIgnoreCase(parsed[0])) {
-                send(new PrivateQuestSelectedRequest(matchId, response.getPrivateQuests().getFirst()));
-            } else if ("2".equalsIgnoreCase(parsed[0])) {
-                send(new PrivateQuestSelectedRequest(matchId, response.getPrivateQuests().get(1)));
-            }
-        } while (!valid);
-        view.updatePageState(new CLIStartMatchPage.WaitPage());
-        view.displayPage(new Object[]{input});
-    }
-
+    //@Override
+    //public void privateQuestSelection(PrivateQuestsResponse response) {
+    //    Scanner in = new Scanner(System.in);
+    //    String input;
+    //    view.setPage(new CLIStartMatchPage());
+    //    view.displayPage(new Object[]{response.getPrivateQuests().get(0), response.getPrivateQuests().get(1)});
+    //    String[] parsed;
+    //    boolean valid;
+    //    do {
+    //        input = in.nextLine();
+    //        parsed = input.split(" ");
+    //        valid = parsed.length == 1 && ((parsed[0].equalsIgnoreCase("1")) || (parsed[0].equalsIgnoreCase("2")));
+    //        if (parsed[0].equalsIgnoreCase("quit")) send(new QuitRequest());
+    //        if (!valid) {
+    //            view.updatePageState(new CLIStartMatchPage.InvalidInput());
+    //            view.displayPage(new Object[]{input});
+    //        } else if ("1".equalsIgnoreCase(parsed[0])) {
+    //            send(new PrivateQuestSelectedRequest(matchId, response.getPrivateQuests().getFirst()));
+    //        } else if ("2".equalsIgnoreCase(parsed[0])) {
+    //            send(new PrivateQuestSelectedRequest(matchId, response.getPrivateQuests().get(1)));
+    //        }
+    //    } while (!valid);
+    //    view.updatePageState(new CLIStartMatchPage.WaitPage());
+    //    view.displayPage(new Object[]{input});
+    //}
+//
 
     @Override
     public void game() {

@@ -1,19 +1,16 @@
 package it.polimi.ingsw.lb10.client.exception;
 
-import it.polimi.ingsw.lb10.client.cli.clipages.CLI404Page;
-import it.polimi.ingsw.lb10.client.cli.clipages.CLIErrorPage;
-import it.polimi.ingsw.lb10.client.view.ClientView;
-import it.polimi.ingsw.lb10.client.view.GUIClientView;
+import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
 
 public class GUIExceptionHandler implements ExceptionHandler{
 
-    private final GUIClientView view;
+    private final GUIClientViewController guiClientViewController;
 
-    public GUIExceptionHandler(ClientView view) {
-        this.view = (GUIClientView) view;
+    public GUIExceptionHandler(GUIClientViewController guiClientViewController) {
+        this.guiClientViewController = guiClientViewController;
     }
 
     @Override

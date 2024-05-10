@@ -6,7 +6,7 @@ import it.polimi.ingsw.lb10.client.cli.clipages.CLIState;
 /**
  * This class provides the implementation of the ClientView interface (for the Command Line version of UI)
  */
-public class CLIClientView implements ClientView {
+public class CLIClientView {
     private CLIPage page;
 
     /**
@@ -14,9 +14,8 @@ public class CLIClientView implements ClientView {
      *
      * @param page to be set
      */
-    @Override
-    public void setPage(Page page) {
-        this.page = (CLIPage) page;
+    public void setPage(CLIPage page) {
+        this.page = page;
     }
 
     /**
@@ -24,9 +23,8 @@ public class CLIClientView implements ClientView {
      *
      * @param state to be displayed
      */
-    @Override
-    public void updatePageState(State state) {
-        page.changeState((CLIState) state);
+    public void updatePageState(CLIState state) {
+        page.changeState(state);
     }
 
     /**
@@ -34,7 +32,6 @@ public class CLIClientView implements ClientView {
      *
      * @param args to provide to the state, when needed
      */
-    @Override
     public void displayPage(Object[] args) {
         page.print(args);
     }

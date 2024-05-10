@@ -2,6 +2,7 @@ package it.polimi.ingsw.lb10.server.visitors.responseDespatch;
 
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIEndOfMatchPage;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIMatchPage;
+import it.polimi.ingsw.lb10.client.cli.clipages.CLIStartMatchPage;
 import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
 import it.polimi.ingsw.lb10.network.requests.QuitRequest;
 import it.polimi.ingsw.lb10.network.requests.match.PickRequest;
@@ -46,17 +47,19 @@ public class CLIResponseHandler implements ResponseVisitor {
         controller.getClient().setStartedMatch(true);
         controller.setMatchId(response.getMatchId());
         controller.send(new PrivateQuestsRequest(controller.getMatchId()));
-        controller.syncReceive().accept(this); //PrivateQuestResponse
+        //controller.syncReceive().accept(this); //PrivateQuestResponse
     }
 
     @Override
     public void visit(PrivateQuestsResponse response) {
-        controller.privateQuestSelection(response);
-        controller.syncReceive().accept(this); //GameSetUp response
+        controller.setQuests(response.getPrivateQuests());
+        controller.getView().setPage(new CLIStartMatchPage());
+        controller.getView().displayPage(new Object[]{response.getPrivateQuests().get(0), response.getPrivateQuests().get(1)});
     }
 
     @Override
     public void visit(GameSetupResponse response) {
+        controller.setMatchStarted(true);
         Player player = ((response.getPlayers().stream().filter(p -> p.getUserHash() == controller.getUserHash())).findFirst().orElseThrow(RuntimeException::new));
         controller.setHand(player.getHand());
         controller.setStartingCard(player.getStartingCard());
@@ -67,6 +70,7 @@ public class CLIResponseHandler implements ResponseVisitor {
 
         controller.getView().updatePageState(new CLIMatchPage.StartingTurn());
         controller.getView().displayPage(new Object[]{player, player.getStartingCard(), player.getPrivateQuest(), response.getPublicQuests(), player.getHand()});
+
     }
 
     @Override
@@ -166,6 +170,7 @@ public class CLIResponseHandler implements ResponseVisitor {
     public void visit(EndGameResponse endGameResponse) {
         controller.getView().setPage(new CLIEndOfMatchPage());
         controller.getView().getPage().print(new Object[]{endGameResponse.getPlayer(), endGameResponse.getPlayers()});
+        controller.getClient().setActive(false);
     }
 
     /**
