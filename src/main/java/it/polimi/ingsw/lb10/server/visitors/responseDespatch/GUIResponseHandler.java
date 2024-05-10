@@ -6,7 +6,10 @@ import it.polimi.ingsw.lb10.client.gui.GUIChooseQuestPageController;
 import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestsRequest;
 import it.polimi.ingsw.lb10.network.response.lobby.BooleanResponse;
 import it.polimi.ingsw.lb10.network.response.match.*;
+import it.polimi.ingsw.lb10.server.model.Player;
 import javafx.application.Platform;
+
+import java.util.ArrayList;
 
 public class GUIResponseHandler implements ResponseVisitor {
 
@@ -52,7 +55,14 @@ public class GUIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(GameSetupResponse response) {
-        controller.setPlayers(response.getPlayers());
+        Platform.runLater(() -> {
+            controller.changeScene(new GUIMatchPageController());
+            Player thisPlayer = response.getPlayers().stream().filter(p -> p.getUsername().equals(controller.getClient().getUsername())).findFirst().orElseThrow(RuntimeException::new);
+            GUIMatchPageController.setStartingCard(thisPlayer.getStartingCard());
+            GUIMatchPageController.setCommonQuests(response.getPublicQuests());
+            response.getPlayers().remove(thisPlayer);
+            GUIMatchPageController.setOtherPlayers(response.getPlayers());
+        });
     }
 
     @Override

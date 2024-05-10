@@ -5,6 +5,8 @@ import it.polimi.ingsw.lb10.network.requests.match.ChatRequest;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.cards.Color;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
+import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
+import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -31,12 +33,16 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class GUIMatchPageController implements GUIPageController , Initializable {
+
     private final GUIClientViewController controller = GUIClientViewController.instance();
-    private Player thisPlayer;
-    private ArrayList<Player> otherPlayers;
+    private static Player thisPlayer;
+    private static ArrayList<Player> otherPlayers;
+    private static Quest privateQuest;
+    private static ArrayList<Quest> commonQuests;
     private ArrayList<AnchorPane> handCardAnchorPanes;
     private int matrixCardId;
     private Rectangle clickedRectangle;
+    private static StartingCard startingCard;
 
     @FXML
     private Button chatButton;
@@ -52,23 +58,54 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     private AnchorPane handCardTwoPane;
     @FXML
     private AnchorPane handCardThreePane;
+    @FXML
+    private ScrollPane boardScrollPane;
 
-
-
-    /**
-     * @return 
-     */
     @Override
     public String getFXML() {
         return "";
     }
 
-    /**
-     * @return 
-     */
     @Override
     public String getCSS() {
         return "";
+    }
+
+    public static void setPrivateQuest(Quest privateQuest){GUIMatchPageController.privateQuest = privateQuest;}
+    public static void setCommonQuests(ArrayList<Quest> commonQuests){ GUIMatchPageController.commonQuests = commonQuests;}
+    public static void setThisPlayer(Player player){GUIMatchPageController.thisPlayer = player;}
+    public static void setOtherPlayers (ArrayList<Player> otherPlayers){GUIMatchPageController.otherPlayers = otherPlayers;}
+
+    public void setAndShowStartingCard(StartingCard startingCard){
+
+        setScrollNotDraggable();
+
+        GUIMatchPageController.startingCard = startingCard;
+
+        ImageView startingImageView = new ImageView( new Image((Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/" + startingCard.getId() + ".png")))));
+
+        startingImageView.setUserData(startingCard);
+        startingImageView.setFitHeight(80D);
+        startingImageView.setFitHeight(130D);
+        AnchorPane startingCardAnchorPane = new AnchorPane(startingImageView);
+        AnchorPane.setTopAnchor(startingCardAnchorPane, 0D);
+        AnchorPane.setLeftAnchor(startingCardAnchorPane, 0D);
+        Button flip = new Button();
+        flip.setPrefHeight(20);
+        flip.setPrefWidth(20);
+        flip.setText("Flip");
+        flip.setOnAction(event ->  {
+            startingImageView.setImage(new Image((Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/retro" + startingCard.getId() + ".png")))));
+            startingCard.setFlippedState();
+        });
+
+        boardScrollPane.setContent(startingImageView);
+
+    }
+
+    private void setScrollNotDraggable() {
+        boardScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        boardScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     }
 
     @Override
@@ -83,6 +120,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         handCardAnchorPanes.add(handCardOnePane);
         handCardAnchorPanes.add(handCardTwoPane);
         handCardAnchorPanes.add(handCardThreePane);
+
         initializePanes();
     }
 
@@ -150,13 +188,6 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     private  boolean isClicked(Rectangle rec){
         return clickedRectangle == null || rec.equals(clickedRectangle);
     }
-    public void setThisPlayer(Player thisPlayer) {
-        this.thisPlayer = thisPlayer;
-    }
-
-    public void setOtherPlayers (ArrayList<Player> otherPlayers){
-        this.otherPlayers = otherPlayers;
-    }
 
     public void insertCardOnHand(PlaceableCard card){
         Optional<AnchorPane> emptyPane = handCardAnchorPanes.stream().filter(Node::isDisabled).findFirst();
@@ -168,6 +199,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         Image cardImage = new Image(String.valueOf(Objects.requireNonNull(this.getClass().getResourceAsStream("/cards/" + card.getId() + ".png"))));
         ImageView cardView = (ImageView) anchorPane.getChildren().stream().filter(ch -> ch.getClass().equals(ImageView.class)).findAny().orElseThrow(RuntimeException::new);
         cardView.setImage(cardImage);
+        cardView.setUserData(card);
         AnchorPane.setTopAnchor(cardView, 0D);
         AnchorPane.setLeftAnchor(cardView, 0D);
         AnchorPane.setBottomAnchor(cardView, 0D);

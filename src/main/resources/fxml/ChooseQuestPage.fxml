@@ -11,77 +11,70 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="900.0" maxWidth="1600.0" minHeight="900.0" minWidth="1600.0" prefHeight="900.0"
-            prefWidth="1600.0" styleClass="anchor" stylesheets="@../css/ChooseQuestPage.css"
-            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="it.polimi.ingsw.lb10.client.gui.GUIChooseQuestPageController">
-   <Text fill="#52460e" layoutX="452.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title"
-         text="Choose your Quest">
+<AnchorPane maxHeight="900.0" maxWidth="1600.0" minHeight="900.0" minWidth="1600.0" prefHeight="900.0" prefWidth="1600.0" styleClass="anchor" stylesheets="@../css/ChooseQuestPage.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.lb10.client.gui.GUIChooseQuestPageController">
+   <Text fill="#52460e" layoutX="452.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Choose your Quest">
       <effect>
-         <Glow/>
+         <Glow />
       </effect>
    </Text>
-   <ImageView fitHeight="285.0" fitWidth="415.0" layoutX="606.0" layoutY="616.0" pickOnBounds="true"
-              preserveRatio="true">
+   <ImageView fitHeight="285.0" fitWidth="415.0" layoutX="606.0" layoutY="616.0" pickOnBounds="true" preserveRatio="true">
       <effect>
-         <DropShadow height="10.0" radius="4.5" width="10.0"/>
+         <DropShadow height="10.0" radius="4.5" width="10.0" />
       </effect>
-      <Image url="@../images/owl.png"/>
+      <Image url="@../images/owl.png" />
    </ImageView>
-   <Rectangle fx:id="firstQuestContainer" arcHeight="30.0" arcWidth="30.0" height="284.0" layoutX="263.0"
-              layoutY="317.0" stroke="#654911" strokeType="INSIDE" strokeWidth="2.5" width="429.0">
+   <Rectangle fx:id="firstQuestContainer" arcHeight="30.0" arcWidth="30.0" height="284.0" layoutX="263.0" layoutY="317.0" stroke="#654911" strokeType="INSIDE" strokeWidth="2.5" width="429.0">
       <fill>
          <LinearGradient endX="0.8857142857142857" startX="0.3904761904761905">
             <stops>
                <Stop>
                   <color>
-                     <Color red="0.550000011920929" green="0.5237833261489868" blue="0.40700000524520874"
-                            opacity="0.0"/>
+                     <Color red="0.550000011920929" green="0.5237833261489868" blue="0.40700000524520874" opacity="0.0" />
                   </color>
                </Stop>
                <Stop offset="1.0">
                   <color>
-                     <Color red="0.32894736528396606" green="0.2616349756717682" blue="0.09137427061796188"
-                            opacity="0.2199999988079071"/>
+                     <Color red="0.32894736528396606" green="0.2616349756717682" blue="0.09137427061796188" opacity="0.2199999988079071" />
                   </color>
                </Stop>
             </stops>
          </LinearGradient>
       </fill>
    </Rectangle>
-   <Rectangle fx:id="secondQuestContainer" arcHeight="30.0" arcWidth="30.0" height="284.0" layoutX="935.0"
-              layoutY="316.0" stroke="#654911" strokeType="INSIDE" strokeWidth="2.5" width="429.0">
+   <Rectangle fx:id="secondQuestContainer" arcHeight="30.0" arcWidth="30.0" height="284.0" layoutX="935.0" layoutY="316.0" stroke="#654911" strokeType="INSIDE" strokeWidth="2.5" width="429.0">
       <fill>
          <LinearGradient endX="0.8857142857142857" startX="0.3904761904761905">
             <stops>
                <Stop>
                   <color>
-                     <Color red="0.550000011920929" green="0.5237833261489868" blue="0.40700000524520874"
-                            opacity="0.0"/>
+                     <Color red="0.550000011920929" green="0.5237833261489868" blue="0.40700000524520874" opacity="0.0" />
                   </color>
                </Stop>
                <Stop offset="1.0">
                   <color>
-                     <Color red="0.32894736528396606" green="0.2616349756717682" blue="0.09137427061796188"
-                            opacity="0.2199999988079071"/>
+                     <Color red="0.32894736528396606" green="0.2616349756717682" blue="0.09137427061796188" opacity="0.2199999988079071" />
                   </color>
                </Stop>
             </stops>
          </LinearGradient>
       </fill>
    </Rectangle>
-   <ImageView fx:id="firstQuest" fitHeight="235.0" fitWidth="395.0" layoutX="277.0" layoutY="343.0"
-              onDragEntered="#focusFirstQuest" onDragExited="#unfocusFirstQuest" onMouseClicked="#chooseQuest"
-              pickOnBounds="true" preserveRatio="true">
+   <ImageView fx:id="firstQuest" fitHeight="235.0" fitWidth="395.0" layoutX="301.0" layoutY="343.0" onMouseClicked="#chooseQuest" onMouseEntered="#focusFirstQuest" onMouseExited="#unfocusFirstQuest" pickOnBounds="true" preserveRatio="true">
       <effect>
-         <DropShadow offsetX="5.0" offsetY="5.0"/>
+         <DropShadow>
+            <color>
+               <Color opacity="0.7662835121154785" />
+            </color>
+         </DropShadow>
       </effect>
    </ImageView>
-   <ImageView fx:id="secondQuest" fitHeight="235.0" fitWidth="395.0" layoutX="951.0" layoutY="340.0"
-              onDragEntered="#focusSecondQuest" onDragExited="#unfocusSecondQuest" onMouseClicked="#chooseQuest"
-              pickOnBounds="true" preserveRatio="true">
+   <ImageView fx:id="secondQuest" fitHeight="235.0" fitWidth="395.0" layoutX="973.0" layoutY="343.0" onMouseClicked="#chooseQuest" onMouseEntered="#focusSecondQuest" onMouseExited="#unfocusSecondQuest" pickOnBounds="true" preserveRatio="true">
       <effect>
-         <DropShadow offsetX="5.0" offsetY="5.0"/>
+         <DropShadow>
+            <color>
+               <Color opacity="0.7432950139045715" />
+            </color>
+         </DropShadow>
       </effect>
    </ImageView>
 </AnchorPane>

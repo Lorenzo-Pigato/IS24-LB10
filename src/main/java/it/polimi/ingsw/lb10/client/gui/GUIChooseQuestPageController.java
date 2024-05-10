@@ -4,6 +4,7 @@ import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
 import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestSelectedRequest;
 import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestsRequest;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.effect.BlurType;
@@ -53,37 +54,37 @@ public class GUIChooseQuestPageController implements GUIPageController , Initial
     }
 
     @FXML
-    private void focusFirstQuest(DragEvent event){
-        firstQuest.setEffect(new DropShadow(BlurType.THREE_PASS_BOX, new Color(205, 167, 0, 1), 10, 10, 0,0));
+    private void focusFirstQuest(MouseEvent event){
+        firstQuest.setEffect(new DropShadow(BlurType.THREE_PASS_BOX, new Color(0.85, 0.65, 0, 0.75), 10, 0.3, 0,0));
     }
 
     @FXML
-    private void focusSecondQuest(DragEvent event){
-        secondQuest.setEffect(new DropShadow(BlurType.THREE_PASS_BOX, new Color(205, 167, 0, 1), 10, 10, 0,0));
+    private void focusSecondQuest(MouseEvent event){
+        secondQuest.setEffect(new DropShadow(BlurType.THREE_PASS_BOX, new Color(0.85, 0.65, 0, 0.75), 10, 0.3, 0,0));
     }
 
     @FXML
-    private void unfocusFirstQuest(DragEvent event){
-        firstQuest.setEffect(new DropShadow(BlurType.THREE_PASS_BOX, new Color(0, 0, 0, 0.5), 5, 5, 0,0));
+    private void unfocusFirstQuest(MouseEvent event){
+        firstQuest.setEffect(new DropShadow(BlurType.THREE_PASS_BOX, new Color(0, 0, 0, 0.6), 10, 0, 0,0));
     }
 
     @FXML
-    private void unfocusSecondQuest(DragEvent event){
-        secondQuest.setEffect(new DropShadow(BlurType.THREE_PASS_BOX, new Color(0, 0, 0, 0.5), 5, 5, 0,0));
+    private void unfocusSecondQuest(MouseEvent event){
+        secondQuest.setEffect(new DropShadow(BlurType.THREE_PASS_BOX, new Color(0, 0, 0, 0.6), 10, 0, 0,0));
     }
 
     @FXML
     private void chooseQuest(MouseEvent event){
         Quest chosen = event.getSource().equals(firstQuest) ? firstQuestCard : secondQuestCard;
+        GUIMatchPageController.setPrivateQuest(chosen);
+
         GUIClientViewController.instance().send(new PrivateQuestSelectedRequest(GUIClientViewController.instance().getMatchId(), chosen));
 
-        //to be completed
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         firstQuest.setImage(new Image(Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/" + firstQuestCard.getId() + ".png"))));
         secondQuest.setImage(new Image(Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/" + secondQuestCard.getId() + ".png"))));
-
     }
 }
