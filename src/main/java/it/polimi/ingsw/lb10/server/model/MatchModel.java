@@ -547,8 +547,11 @@ public class MatchModel extends Observable {
         quests.add(player.getPrivateQuest());
         for (Quest quest : quests)
             if (quest instanceof TypeDiagonal || quest instanceof LJPattern)
-                if (quest.isPattern(player.getMatrix(), row, column))
+                if (quest.isPattern(player.getMatrix(), row, column)){
                     player.addQuestPoints(quest.getPoints());
+                    if(quest instanceof TypeDiagonal)
+                        ((TypeDiagonal) quest).setUsedForQuest(player.getMatrix());
+                }
     }
 
 }

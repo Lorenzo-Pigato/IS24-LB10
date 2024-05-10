@@ -6,7 +6,12 @@ import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public abstract class TypeDiagonal extends Quest {
+
+    private ArrayList<Integer> coordinatePositions= new ArrayList<>();
     private final Color color;
 
     public TypeDiagonal(int id, int points, Color color) {
@@ -36,7 +41,15 @@ public abstract class TypeDiagonal extends Quest {
         if (cornerToCheck == null)
             return false;
         return !cornerToCheck.isUsedForQuest() && cornerToCheck.getCardColor().equals(color);
+    }
 
+    public void setUsedForQuest(Matrix matrix){
+        for(int i=0;i<3;i++)
+            matrix.setUsedForQuest(coordinatePositions.get(2*i), coordinatePositions.get((2*i)+1));
+    }
+
+    public void addCoordinatePos(ArrayList<Integer> coordinatePositions, int row, int column){
+        coordinatePositions.addAll(Arrays.asList(row,column));
     }
 
     /**
@@ -44,5 +57,9 @@ public abstract class TypeDiagonal extends Quest {
      */
     public Color getColor() {
         return color;
+    }
+
+    public ArrayList<Integer> getCoordinatePositions() {
+        return coordinatePositions;
     }
 }
