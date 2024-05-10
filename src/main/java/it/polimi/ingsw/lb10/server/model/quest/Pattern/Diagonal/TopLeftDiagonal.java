@@ -13,10 +13,10 @@ public class TopLeftDiagonal extends TypeDiagonal {
     public TopLeftDiagonal(int id, int points, Color color) {
         super(id, points, color);
     }
+
     /**
-     * this method is called after the insertion of a card, there are three different type of pattern to check
-     * if the card it's on the top, in the middle or bottom
-     *
+     * this method is called after the insertion of a card, there are three different types of a pattern to check
+     * we do not know if we start from the top, bottom or middle of the pattern
      * @return true if the cards respect the pattern and the rules.
      */
     @Override

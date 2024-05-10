@@ -15,6 +15,10 @@ public class GoldenDeck {
 
     private ArrayList<GoldenCard> cards;
 
+    /**
+     * Complete deck of GoldenCard, it has 40 cards
+     * The cards are taken from the json in resource.
+     */
     public GoldenDeck() {
         cards = new ArrayList<>();
     }

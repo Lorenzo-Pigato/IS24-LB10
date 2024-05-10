@@ -26,6 +26,7 @@ public class Matrix implements Serializable {
     }
 
     /**
+     * Initialization of the matrix
      * we work with the worst case, 83x83
      */
     public void startingMatrix() {
@@ -38,6 +39,9 @@ public class Matrix implements Serializable {
         }
     }
 
+    /**
+     * @return it's useful to switch between the different corners in algorithms
+     */
     public Map<Position, int[]> parsingPositionCorners() {
         Map<Position, int[]> setIncrement = new HashMap<>();
         setIncrement.put(Position.TOPLEFT, new int[]{0, 0});
@@ -47,8 +51,9 @@ public class Matrix implements Serializable {
         return setIncrement;
     }
 
+
     /**
-     * This method is used on the test for testing stuff, in the std game is useless and unused.
+     * @param card is the starting card to insert at the start of the game by each player
      */
     public void setCard(StartingCard card) {
 
@@ -59,18 +64,18 @@ public class Matrix implements Serializable {
         }
     }
 
+    /**
+     * This method is used on the test for testing stuff, in the std game is useless and unused.
+     */
     public void setCard(PlaceableCard card) {
         setCard(card, 41, 41);
     }
 
     /**
-     * @param card to set inside the matrix, it's not the staring
-     *             i and j are the top-left node.
+     * @param card to set inside the matrix, it's a Playable Card (Resource and Golden),
+     *             i and j are the top-left corner of the card inside the matrix.
      */
     public void setCard(PlaceableCard card, int row, int column) {
-        if (row > 82 || column > 82) {
-            return;
-        }
         Map<Position, int[]> setIncrement = parsingPositionCorners();
         for (Corner corner : card.getStateCardCorners()) {
             int[] delta = setIncrement.get(corner.getPosition());
@@ -93,6 +98,8 @@ public class Matrix implements Serializable {
 
     /**
      * @param row and the column must be the top left corner of the card!
+     *            this method sets the Corners of the cards to make them all usedForQuest,
+     *            not to be reused in other patterns
      */
     public void setUsedForQuest(int row, int column) {
         Map<Position, int[]> setIncrement = parsingPositionCorners();

@@ -12,10 +12,9 @@ public class BottomLeftDiagonal extends TypeDiagonal {
     }
 
     /**
-     * @param matrix of the player
-     * @param row    and column are the top-left corner of the card!
-     * @return true, if the card above the one that we placed exists, it's not used for another pattern quest and if it's of the same color of the card that it's placed
-     * cornetToCheck can't be null because we pass the coordinate of the top left corner of the card
+     * this method is called after the insertion of a card, there are three different types of a pattern to check
+     * we do not know if we start from the top, bottom or middle of the pattern
+     * @return true if the cards respect the pattern and the rules.
      */
     @Override
     public boolean isPattern(Matrix matrix, int row, int column) {

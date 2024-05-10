@@ -28,6 +28,7 @@ public class Player implements Serializable {
     private final ArrayList<Quest> privateQuests = new ArrayList<>();
 
     private int questPoints = 0;
+    private int counterQuest =0;
     private Color color;
 
     private final ArrayList<PlaceableCard> hand = new ArrayList<>();
@@ -41,6 +42,9 @@ public class Player implements Serializable {
 
     // --------> METHODS <--------
 
+    /**
+     * @param resource to add inside the onMapResource of the player
+     */
     public void addOnMapResources(Resource resource) {
         if (resource != Resource.EMPTY && resource != Resource.NULL) {
             if (onMapResources.containsKey(resource)) {
@@ -50,6 +54,9 @@ public class Player implements Serializable {
         }
     }
 
+    /**
+     * @param resource to remove from the onMapResource of the player
+     */
     public void deleteOnMapResources(Resource resource) {
         if (resource != Resource.EMPTY && resource != Resource.NULL) {
             if (onMapResources.containsKey(resource)) {
@@ -87,6 +94,9 @@ public class Player implements Serializable {
         getHand().remove(getHand().stream().filter(placeableCard -> placeableCard.getId() == cardToRemove.getId()).findFirst().orElse(null));
     }
 
+    public void addCounterOfTheQuest(){
+        counterQuest++;
+    }
 
     // --------> GETTER <--------
 
@@ -136,6 +146,10 @@ public class Player implements Serializable {
 
     public ArrayList<PlaceableCard> getHand() {
         return hand;
+    }
+
+    public int getCounterQuest() {
+        return counterQuest;
     }
 
     public StartingCard getStartingCard() {
