@@ -84,6 +84,5 @@ public class GUIChooseQuestPageController implements GUIPageController , Initial
     public void initialize(URL url, ResourceBundle resourceBundle) {
         firstQuest.setImage(new Image(Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/" + firstQuestCard.getId() + ".png"))));
         secondQuest.setImage(new Image(Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/" + secondQuestCard.getId() + ".png"))));
-
     }
 }
