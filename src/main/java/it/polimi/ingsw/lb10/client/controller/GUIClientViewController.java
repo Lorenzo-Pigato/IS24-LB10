@@ -70,7 +70,7 @@ public class GUIClientViewController extends ClientViewController {
         stage.setScene(scene);
         stage.show();
     }
-    private synchronized void setPage(GUIPageController page){
+    public synchronized void setPage(GUIPageController page){
         this.page = page;
     }
     public synchronized  GUIPageController getPage(){return page;}

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -9,20 +10,25 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.Glow?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" styleClass="background-anchor" stylesheets="@../css/matchPage.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.lb10.client.gui.GUIMatchPageController">
    <children>
+      <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#6b59224d" height="687.0" layoutX="13.0" layoutY="13.0" stroke="#463e02" strokeType="INSIDE" strokeWidth="5.0" width="1204.0" />
+      <ScrollPane fx:id="boardScrollPane" fitToHeight="true" fitToWidth="true" layoutX="25.0" layoutY="25.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minViewportHeight="664.0" minViewportWidth="1181.0" minWidth="-Infinity" pannable="true" prefHeight="664.0" prefViewportHeight="664.0" prefViewportWidth="1181.0" prefWidth="1181.0" styleClass="player-board" stylesheets="@../css/matchPage.css" AnchorPane.bottomAnchor="211.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="394.0" AnchorPane.topAnchor="25.0" />
       <AnchorPane fx:id="cardsAnchor" layoutX="22.0" layoutY="709.0" prefHeight="175.0" prefWidth="790.0" styleClass="card-anchor" stylesheets="@../css/matchPage.css">
          <children>
-            <Rectangle arcHeight="30.0" arcWidth="30.0" fill="#2214006b" height="182.0" layoutX="-9.0" layoutY="-4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="799.0" />
-            <AnchorPane fx:id="handCardOnePane" layoutX="3.0" layoutY="5.0" prefHeight="159.0" prefWidth="241.0" />
-            <AnchorPane fx:id="handCardTwoPane" layoutX="270.0" layoutY="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="240.0" />
-            <AnchorPane fx:id="handCardThreePane" layoutX="536.0" layoutY="4.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="240.0" />
+            <Rectangle arcHeight="30.0" arcWidth="30.0" fill="#2214006b" height="175.0" layoutX="-9.0" layoutY="-4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="790.0" />
+            <StackPane fx:id="handCardOnePane" layoutX="15.0" layoutY="10.0" prefHeight="150.0" prefWidth="230.0" />
+            <StackPane fx:id="handCardThreePane" layoutX="533.0" layoutY="11.0" prefHeight="150.0" prefWidth="230.0" />
+            <StackPane fx:id="handCardTwoPane" layoutX="270.0" layoutY="10.0" prefHeight="150.0" prefWidth="230.0" />
          </children></AnchorPane>
       <AnchorPane layoutX="1228.0" layoutY="15.0" prefHeight="461.0" prefWidth="352.0" styleClass="label" stylesheets="@../css/matchPage.css" AnchorPane.leftAnchor="1228.0" AnchorPane.rightAnchor="20.0">
          <children>
@@ -48,16 +54,116 @@
             </TabPane>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="818.0" layoutY="709.0" prefHeight="175.0" prefWidth="398.0">
+      <AnchorPane fx:id="resourcePane" layoutX="818.0" layoutY="709.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="398.0">
          <children>
             <Rectangle arcHeight="30.0" arcWidth="30.0" fill="#2214006b" height="182.0" layoutX="-1.0" layoutY="-4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="401.0" />
-            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="30.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fitHeight="30.0" fitWidth="31.0" layoutX="116.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fitHeight="30.0" fitWidth="31.0" layoutX="202.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fitHeight="30.0" fitWidth="31.0" layoutX="290.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fitHeight="30.0" fitWidth="31.0" layoutX="60.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fitHeight="30.0" fitWidth="31.0" layoutX="180.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fitHeight="30.0" fitWidth="31.0" layoutX="310.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true" />
+            <HBox layoutX="30.0" layoutY="40.0" prefHeight="44.0" prefWidth="64.0">
+               <children>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/plant.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="plantResourceLabel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="0">
+                     <HBox.margin>
+                        <Insets left="15.0" top="12.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox layoutX="116.0" layoutY="40.0">
+               <children>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/mushroom.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="mushroomResourceLabel" text="0">
+                     <HBox.margin>
+                        <Insets left="15.0" top="12.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox layoutX="202.0" layoutY="40.0">
+               <children>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/insect.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="insectResourceLabel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="0">
+                     <HBox.margin>
+                        <Insets left="15.0" top="12.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox layoutX="290.0" layoutY="40.0">
+               <children>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/animal.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="animalResourceLabel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="0">
+                     <HBox.margin>
+                        <Insets left="15.0" top="12.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox layoutX="62.0" layoutY="120.0">
+               <children>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="featherResourceLabel" text="0">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="15.0" top="12.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox layoutX="182.0" layoutY="118.0">
+               <children>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="pergamenaResourceLabel" text="0">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="15.0" top="12.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox layoutX="286.0" layoutY="117.0">
+               <children>
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="potionResourceLabel" text="0">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="15.0" top="12.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
          </children>
       </AnchorPane>
       <AnchorPane layoutX="1228.0" layoutY="492.0" prefHeight="385.0" prefWidth="352.0">
@@ -87,8 +193,6 @@
             </Label>
          </children>
       </AnchorPane>
-      <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#6b59224d" height="687.0" layoutX="13.0" layoutY="13.0" stroke="#463e02" strokeType="INSIDE" strokeWidth="5.0" width="1204.0" />
-      <ScrollPane fx:id="boardScrollPane" fitToHeight="true" fitToWidth="true" layoutX="25.0" layoutY="25.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minViewportHeight="664.0" minViewportWidth="1181.0" minWidth="-Infinity" opacity="0.28" pannable="true" prefHeight="664.0" prefViewportHeight="664.0" prefViewportWidth="1181.0" prefWidth="1181.0" AnchorPane.bottomAnchor="211.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="394.0" AnchorPane.topAnchor="25.0" />
 
    </children>
 </AnchorPane>

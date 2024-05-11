@@ -57,10 +57,13 @@ public class GUIResponseHandler implements ResponseVisitor {
         Player thisPlayer = response.getPlayers().stream().filter(p -> p.getUsername().equals(controller.getClient().getUsername())).findFirst().orElseThrow(RuntimeException::new);
         GUIMatchPageController.setStartingCard(thisPlayer.getStartingCard());
         GUIMatchPageController.setCommonQuests(response.getPublicQuests());
+        GUIMatchPageController.setThisPlayer(thisPlayer);
         response.getPlayers().remove(thisPlayer);
         GUIMatchPageController.setOtherPlayers(response.getPlayers());
+
         Platform.runLater(() -> {
             controller.changeScene(new GUIMatchPageController());
+            thisPlayer.getHand().forEach(GUIMatchPageController::insertCardOnHand);
         });
     }
 

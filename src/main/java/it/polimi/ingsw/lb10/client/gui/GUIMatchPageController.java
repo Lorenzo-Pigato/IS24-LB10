@@ -5,6 +5,7 @@ import it.polimi.ingsw.lb10.network.requests.match.ChatRequest;
 import it.polimi.ingsw.lb10.network.requests.match.PlaceCardRequest;
 import it.polimi.ingsw.lb10.network.requests.match.PlaceStartingCardRequest;
 import it.polimi.ingsw.lb10.server.model.Player;
+import it.polimi.ingsw.lb10.server.model.Resource;
 import it.polimi.ingsw.lb10.server.model.cards.Color;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCardState.BackOfTheCard;
@@ -21,6 +22,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -28,6 +30,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -45,9 +48,9 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     private static ArrayList<Player> otherPlayers;
     private static Quest privateQuest;
     private static ArrayList<Quest> commonQuests;
-    private final ArrayList<AnchorPane> handCardAnchorPanes = new ArrayList<>();
+    private static final ArrayList<StackPane> handCardStackPanes = new ArrayList<>();
     private int matrixCardId;
-    private Rectangle clickedRectangle;
+    private Rectangle clickedRectangle = null;
     private static StartingCard startingCard;
     private AnchorPane boardAnchorPane;
 
@@ -60,13 +63,31 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     @FXML
     private TextField chatText;
     @FXML
-    private AnchorPane handCardOnePane;
+    private StackPane handCardOnePane;
     @FXML
-    private AnchorPane handCardTwoPane;
+    private StackPane handCardTwoPane;
     @FXML
-    private AnchorPane handCardThreePane;
+    private StackPane handCardThreePane;
+    @FXML
+    private AnchorPane resourcePane;
     @FXML
     private ScrollPane boardScrollPane;
+    @FXML
+    private Label plantResourceLabel;
+    @FXML
+    private Label mushroomResourceLabel;
+    @FXML
+    private Label animalResourceLabel;
+    @FXML
+    private Label insectResourceLabel;
+    @FXML
+    private Label pergamenaResourceLabel;
+    @FXML
+    private Label potionResourceLabel;
+    @FXML
+    private Label featherResourceLabel;
+    private ArrayList<Label> resourceLabels;
+
 
     @Override
     public String getFXML() {
@@ -83,8 +104,9 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     public static void setThisPlayer(Player player){GUIMatchPageController.thisPlayer = player;}
     public static void setOtherPlayers (ArrayList<Player> otherPlayers){GUIMatchPageController.otherPlayers = otherPlayers;}
     public static void setStartingCard(StartingCard startingCard){GUIMatchPageController.startingCard = startingCard;}
+    private void clearBoard(){boardAnchorPane.getChildren().removeAll();}
 
-    public void showStartingCard(StartingCard startingCard){
+    public void showStartingCard(@NotNull StartingCard startingCard){
 
         setScrollNotPannable();
 
@@ -93,20 +115,21 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         ImageView startingCardImageView = new ImageView( new Image((Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/" + startingCard.getId() + ".png")))));
 
         startingCardImageView.setUserData(startingCard);
-        startingCardImageView.setFitHeight(90D);
-        startingCardImageView.setFitWidth(150D);
+        startingCardImageView.setPreserveRatio(true);
+        startingCardImageView.setFitHeight(200D);
+        startingCardImageView.setFitWidth(200D);
 
         Button place = new Button();
-        place.setPrefHeight(30);
-        place.setPrefWidth(30);
+        place.setPrefHeight(60);
+        place.setPrefWidth(120);
         place.setText("Place");
         place.setOnAction(event -> {
             controller.send(new PlaceStartingCardRequest(controller.getMatchId(), startingCard));
         });
 
         Button flip = new Button();
-        flip.setPrefHeight(30);
-        flip.setPrefWidth(30);
+        flip.setPrefHeight(60);
+        flip.setPrefWidth(120);
         flip.setText("Flip");
         flip.setOnAction(event ->  {
             if(startingCard.getStateStartingCard().getClass().equals(FrontStartingCard.class)) startingCardImageView.setImage(new Image((Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/retro" + startingCard.getId() + ".png")))));
@@ -116,10 +139,14 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
         VBox buttonsBox = new VBox();
         buttonsBox.getChildren().addAll(flip, place);
-        VBox.setMargin(flip, new Insets(0, 20, 10, 0));
-        VBox.setMargin(place, new Insets(10, 20, 0, 0));
+        VBox.setMargin(flip, new Insets(0, 200, 10, 20));
+        VBox.setMargin(place, new Insets(10, 200, 0, 20));
 
-        boardAnchorPane.getChildren().addAll(startingCardImageView, buttonsBox);
+        HBox hBox = new HBox(startingCardImageView, buttonsBox);
+        AnchorPane.setTopAnchor(hBox, boardAnchorPane.getPrefHeight()/2 - startingCardImageView.getFitHeight()/2 - 20);
+        AnchorPane.setLeftAnchor(hBox, boardAnchorPane.getPrefWidth()/2 - startingCardImageView.getFitWidth()/2 - 20);
+
+        boardAnchorPane.getChildren().addAll(hBox);
 
     }
 
@@ -139,34 +166,61 @@ public class GUIMatchPageController implements GUIPageController , Initializable
                 chatScrollPane.setVvalue((Double) newValue);
             }
         });
-
-        boardAnchorPane = new AnchorPane();
-
-        boardAnchorPane.getBoundsInParent();
-
-        boardScrollPane.setContent(boardAnchorPane);
-
-
-        handCardAnchorPanes.add(handCardOnePane);
-        handCardAnchorPanes.add(handCardTwoPane);
-        handCardAnchorPanes.add(handCardThreePane);
-
-        initializePanes();
+        boardPanesSetup();
+        handPanesSetup();
+        resourcePaneSetup();
+        controller.setPag
         showStartingCard(startingCard);
     }
 
-    private void initializePanes() {
-        handCardAnchorPanes.forEach(pane -> {
-            pane.setVisible(false);
+    private void resourcePaneSetup() {
+        resourceLabels = new ArrayList<>();
+        plantResourceLabel.setUserData(Resource.PLANT);
+        resourceLabels.add(plantResourceLabel);
+        animalResourceLabel.setUserData(Resource.ANIMAL);
+        resourceLabels.add(animalResourceLabel);
+        mushroomResourceLabel.setUserData(Resource.MUSHROOM);
+        resourceLabels.add(mushroomResourceLabel);
+        insectResourceLabel.setUserData(Resource.INSECT);
+        resourceLabels.add(insectResourceLabel);
+        featherResourceLabel.setUserData(Resource.FEATHER);
+        resourceLabels.add(featherResourceLabel);
+        pergamenaResourceLabel.setUserData(Resource.PERGAMENA);
+        resourceLabels.add(pergamenaResourceLabel);
+        potionResourceLabel.setUserData(Resource.POTION);
+        resourceLabels.add(potionResourceLabel);
+    }
+
+    private void handPanesSetup() {
+        handCardStackPanes.add(handCardOnePane);
+        handCardStackPanes.add(handCardTwoPane);
+        handCardStackPanes.add(handCardThreePane);
+
+        handCardStackPanes.forEach(pane -> {
             ImageView disabledView = new ImageView();
-            disabledView.setDisable(true);
+            disabledView.setPreserveRatio(true);
+            disabledView.setFitHeight(pane.getPrefHeight());
+            disabledView.setFitWidth(pane.getPrefWidth());
+            pane.setDisable(true);
             pane.getChildren().add(disabledView);
             ArrayList<Rectangle> hooverRectangles = rectangles();
-
-            for (int i = 0; i < 4; i++){
-                pane.getChildren().add(hooverRectangles.get(i));
-            }
+            pane.getChildren().addAll(hooverRectangles);
         });
+
+    }
+
+    private void boardPanesSetup() {
+
+        boardAnchorPane = new AnchorPane();
+        boardScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        boardScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        boardScrollPane.setPrefHeight(664);
+        boardScrollPane.setPrefWidth(1181);
+        boardAnchorPane.setPrefSize(boardScrollPane.getPrefWidth(), boardScrollPane.getPrefHeight());
+
+        boardScrollPane.setContent(boardAnchorPane);
+        boardScrollPane.setStyle("-fx-background-color: transparent");
+        boardAnchorPane.setVisible(true);
     }
 
     private @NotNull ArrayList<Rectangle> rectangles() {
@@ -176,41 +230,38 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         for (Position position : Position.values()){
             Rectangle hooverRectangle = new Rectangle();
 
+            hooverRectangle.setWidth(60);
+            hooverRectangle.setHeight(60);
+
             switch (position){
                 case TOPLEFT:
-                    AnchorPane.setTopAnchor(hooverRectangle, 0D);
-                    AnchorPane.setLeftAnchor(hooverRectangle, 0D);
+                    StackPane.setAlignment(hooverRectangle, Pos.TOP_LEFT);
                     break;
                 case TOPRIGHT:
-                    AnchorPane.setTopAnchor(hooverRectangle, 0D);
-                    AnchorPane.setRightAnchor(hooverRectangle, 0D);
+                    StackPane.setAlignment(hooverRectangle, Pos.TOP_RIGHT);
                     break;
                 case BOTTOMRIGHT:
-                    AnchorPane.setBottomAnchor(hooverRectangle, 0D);
-                    AnchorPane.setRightAnchor(hooverRectangle, 0D);
+                    StackPane.setAlignment(hooverRectangle, Pos.BOTTOM_RIGHT);
                     break;
                 case BOTTOMLEFT:
-                    AnchorPane.setBottomAnchor(hooverRectangle, 0D);
-                    AnchorPane.setLeftAnchor(hooverRectangle, 0D);
+                    StackPane.setAlignment(hooverRectangle, Pos.BOTTOM_LEFT);
                     break;
             }
 
             hooverRectangle.setUserData(position);
 
             hooverRectangles.add(hooverRectangle);
+            hooverRectangle.setDisable(false);
 
-            hooverRectangle.setStyle("-fx-background-color: #d6af00");
+            hooverRectangle.setFill(javafx.scene.paint.Color.rgb(10, 123, 123));
             hooverRectangle.setVisible(false);
 
-            hooverRectangle.setOnMouseEntered(mouseEvent -> {
-                hooverRectangle.setVisible(true);
-            });
+            hooverRectangle.setOnMouseEntered(_ -> hooverRectangle.setVisible(true));
 
-            hooverRectangle.setOnMouseExited(mouseEvent -> {
-                hooverRectangle.setVisible(isClicked(hooverRectangle));
-            });
+            hooverRectangle.setOnMouseExited(_ -> hooverRectangle.setVisible(isClicked(hooverRectangle)));
 
-            hooverRectangle.setOnMouseClicked(mouseEvent -> {
+            hooverRectangle.setOnMouseClicked(_ -> {
+                System.out.println("cccc");
                 if(!isClicked(hooverRectangle)){
                     hooverRectangle.setVisible(true);
                     clickedRectangle = hooverRectangle;
@@ -228,20 +279,23 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         return clickedRectangle == null || rec.equals(clickedRectangle);
     }
 
-    public void insertCardOnHand(PlaceableCard card){
-        Optional<AnchorPane> emptyPane = handCardAnchorPanes.stream().filter(Node::isDisabled).findFirst();
-        emptyPane.ifPresent(anchorPane -> addHandCard(anchorPane, card));
+    public static void insertCardOnHand(PlaceableCard card){
+        Optional<StackPane> emptyPane = handCardStackPanes.stream().filter(Node::isDisabled).findFirst();
+        emptyPane.ifPresent(stackPane -> {
+            if(!stackPane.isVisible()) stackPane.setVisible(true);
+            addHandCard(stackPane, card);
+        });
+
     }
 
-    private void addHandCard(AnchorPane anchorPane, PlaceableCard card) {
-        anchorPane.setDisable(false);
+    private static void addHandCard(StackPane stackPane, PlaceableCard card) {
+        stackPane.setDisable(false);
 
-        Image cardImage = new Image(String.valueOf(Objects.requireNonNull(this.getClass().getResourceAsStream("/cards/" + card.getId() + ".png"))));
-        ImageView cardView = (ImageView) anchorPane.getChildren().stream().filter(ch -> ch.getClass().equals(ImageView.class)).findAny().orElseThrow(RuntimeException::new);
+        Image cardImage = new Image(Objects.requireNonNull(GUIMatchPageController.class.getResourceAsStream(getResourcePath(card))));
+        ImageView cardView = (ImageView) stackPane.getChildren().stream().filter(ch -> ch.getClass().equals(ImageView.class)).findFirst().orElseThrow(RuntimeException::new);
 
         cardView.setImage(cardImage);
         cardView.setUserData(card);
-
         AnchorPane.setTopAnchor(cardView, 0D);
         AnchorPane.setLeftAnchor(cardView, 0D);
         AnchorPane.setBottomAnchor(cardView, 0D);
@@ -257,7 +311,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     }
 
     public void newMessage(String username, String message){
-        Player senderPlayer = controller.getPlayers().stream().filter(p -> p.getUsername().equals(username)).findFirst().orElse(new Player(0, "Server"));
+        Player senderPlayer = otherPlayers.stream().filter(p -> p.getUsername().equals(username)).findFirst().orElse(new Player(0, "Server"));
 
         if(senderPlayer.getUserHash() == 0) senderPlayer.setColor(Color.GREEN);
 
@@ -380,7 +434,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         else if(card.getCardState() instanceof BackOfTheCard) path += "retro" + card.getId();
 
         else path += card.getId();
-        return path;
+        return path + ".png";
     }
 
     @FXML
