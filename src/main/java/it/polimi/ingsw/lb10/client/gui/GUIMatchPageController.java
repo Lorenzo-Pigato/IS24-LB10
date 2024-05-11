@@ -9,15 +9,14 @@ import it.polimi.ingsw.lb10.server.model.cards.Color;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCardState.BackOfTheCard;
 import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
-import it.polimi.ingsw.lb10.server.model.cards.StartingCardState.BackStartingCard;
 import it.polimi.ingsw.lb10.server.model.cards.StartingCardState.FrontStartingCard;
-import it.polimi.ingsw.lb10.server.model.cards.StartingCardState.StateStartingCard;
+import it.polimi.ingsw.lb10.server.model.cards.*;
+import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -26,7 +25,10 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -36,7 +38,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
 public class GUIMatchPageController implements GUIPageController , Initializable {
 
     private final GUIClientViewController controller = GUIClientViewController.instance();
@@ -169,52 +170,60 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     }
 
     private @NotNull ArrayList<Rectangle> rectangles() {
-        Rectangle hooverRectangleTopLeft = new Rectangle();
-        AnchorPane.setTopAnchor(hooverRectangleTopLeft, 0D);
-        AnchorPane.setLeftAnchor(hooverRectangleTopLeft, 0D);
-
-        Rectangle hooverRectangleTopRight = new Rectangle();
-        AnchorPane.setTopAnchor(hooverRectangleTopRight, 0D);
-        AnchorPane.setRightAnchor(hooverRectangleTopRight, 0D );
-
-        Rectangle hooverRectangleBottomRight = new Rectangle();
-        AnchorPane.setBottomAnchor(hooverRectangleBottomRight, 0D);
-        AnchorPane.setRightAnchor(hooverRectangleBottomRight, 0D );
-
-        Rectangle hooverRectangleBottomLeft = new Rectangle();
-        AnchorPane.setBottomAnchor(hooverRectangleBottomLeft, 0D);
-        AnchorPane.setLeftAnchor(hooverRectangleBottomLeft, 0D );
 
         ArrayList<Rectangle> hooverRectangles = new ArrayList<>();
 
-        hooverRectangles.add(hooverRectangleBottomRight);
-        hooverRectangles.add(hooverRectangleTopRight);
-        hooverRectangles.add(hooverRectangleBottomLeft);
-        hooverRectangles.add(hooverRectangleTopLeft);
+        for (Position position : Position.values()){
+            Rectangle hooverRectangle = new Rectangle();
 
-        hooverRectangles.forEach(hr -> {
+            switch (position){
+                case TOPLEFT:
+                    AnchorPane.setTopAnchor(hooverRectangle, 0D);
+                    AnchorPane.setLeftAnchor(hooverRectangle, 0D);
+                    break;
+                case TOPRIGHT:
+                    AnchorPane.setTopAnchor(hooverRectangle, 0D);
+                    AnchorPane.setRightAnchor(hooverRectangle, 0D);
+                    break;
+                case BOTTOMRIGHT:
+                    AnchorPane.setBottomAnchor(hooverRectangle, 0D);
+                    AnchorPane.setRightAnchor(hooverRectangle, 0D);
+                    break;
+                case BOTTOMLEFT:
+                    AnchorPane.setBottomAnchor(hooverRectangle, 0D);
+                    AnchorPane.setLeftAnchor(hooverRectangle, 0D);
+                    break;
+            }
 
-            hr.setStyle("-fx-background-color: #d6af00");
-            hr.setVisible(false);
+            hooverRectangle.setUserData(position);
 
-            hr.setOnMouseEntered(mouseEvent -> {
-                hr.setVisible(true);
+            hooverRectangles.add(hooverRectangle);
+
+            hooverRectangle.setStyle("-fx-background-color: #d6af00");
+            hooverRectangle.setVisible(false);
+
+            hooverRectangle.setOnMouseEntered(mouseEvent -> {
+                hooverRectangle.setVisible(true);
             });
 
-            hr.setOnMouseExited(mouseEvent -> {
-                hr.setVisible(isClicked(hr));
+            hooverRectangle.setOnMouseExited(mouseEvent -> {
+                hooverRectangle.setVisible(isClicked(hooverRectangle));
             });
 
-            hr.setOnMouseClicked(mouseEvent -> {
-                if(!isClicked(hr)){
-                    hr.setVisible(true);
-                    clickedRectangle = hr;
+            hooverRectangle.setOnMouseClicked(mouseEvent -> {
+                if(!isClicked(hooverRectangle)){
+                    hooverRectangle.setVisible(true);
+                    clickedRectangle = hooverRectangle;
+                }else {
+                    hooverRectangle.setVisible(false);
+                    clickedRectangle = null;
                 }
-            });
-        });
 
+            });
+        }
         return hooverRectangles;
     }
+
     private  boolean isClicked(Rectangle rec){
         return clickedRectangle == null || rec.equals(clickedRectangle);
     }
@@ -226,10 +235,13 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
     private void addHandCard(AnchorPane anchorPane, PlaceableCard card) {
         anchorPane.setDisable(false);
+
         Image cardImage = new Image(String.valueOf(Objects.requireNonNull(this.getClass().getResourceAsStream("/cards/" + card.getId() + ".png"))));
         ImageView cardView = (ImageView) anchorPane.getChildren().stream().filter(ch -> ch.getClass().equals(ImageView.class)).findAny().orElseThrow(RuntimeException::new);
+
         cardView.setImage(cardImage);
         cardView.setUserData(card);
+
         AnchorPane.setTopAnchor(cardView, 0D);
         AnchorPane.setLeftAnchor(cardView, 0D);
         AnchorPane.setBottomAnchor(cardView, 0D);
@@ -299,5 +311,81 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         chatVBox.getChildren().add(hBox);
     }
 
+    /**
+     * This method must be assigned to all cards on the table when inserted inside the board.
+     * Starting card must have this method assigned.
+     * @param event mouse click event
+     */
+    @FXML
+    private void selectCardOnTable(MouseEvent event){
+        if(clickedRectangle != null){
+
+            matrixCardId = ((PlaceableCard) event.getSource()).getId();
+
+            controller.send(new PlaceCardRequest(
+                    controller.getMatchId(),
+                    (PlaceableCard) clickedRectangle.getParent().getChildrenUnmodifiable().stream()
+                            .filter(ch -> ch.getClass().equals(ImageView.class))
+                            .findFirst()
+                            .orElseThrow(RuntimeException::new)
+                            .getUserData(),
+
+                    (Position) clickedRectangle.getUserData(),
+                    ((PlaceableCard) event.getSource()).getId()
+                    )
+            );
+
+            clickedRectangle.setVisible(false);
+            clickedRectangle = null;
+        }
+    }
+
+    public void placeCardOnTable(PlaceableCard card, Position position){
+        int cardWidth;
+        int cardHeight;
+
+        String path = getResourcePath(card);
+
+        ImageView cardOnTable = new ImageView(new Image(
+                String.valueOf(Objects
+                      .requireNonNull(this.getClass()
+                      .getResourceAsStream(path + ".png"))))
+        );
+
+        ImageView cardOnBoard = boardScrollPane.getChildrenUnmodifiable().stream()
+                .filter(ch -> ch.getClass().equals(ImageView.class))
+                .map(ch -> (ImageView) ch)
+                .filter(ch -> ch.getUserData().equals(card))
+                .findFirst()
+                .orElseThrow(RuntimeException::new);
+
+        // ATTENTION! Modify offset values to match the card size!!
+        cardOnTable.setLayoutX(cardOnBoard.getLayoutX() + position.getGuiOffsetX());
+        cardOnTable.setLayoutY(cardOnBoard.getLayoutY() + position.getGuiOffsetY());
+
+        boardScrollPane.setContent(cardOnTable);
+
+    }
+
+    private static @NotNull String getResourcePath(PlaceableCard card) {
+        String path = "/cards/";
+        if(card.getCardState() instanceof BackOfTheCard && (card instanceof GoldenCard || card instanceof ResourceCard))
+        {
+            path += "retro";
+            if(card instanceof GoldenCard) path += "Golden";
+            else path += "Resource";
+
+            path += card.getResource().getResourceString();
+        }
+        else if(card.getCardState() instanceof BackOfTheCard) path += "retro" + card.getId();
+
+        else path += card.getId();
+        return path;
+    }
+
+    @FXML
+    private void hooverCardOnTable(MouseEvent event){
+
+    }
 
 }
