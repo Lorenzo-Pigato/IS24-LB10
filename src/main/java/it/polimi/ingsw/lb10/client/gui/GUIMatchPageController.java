@@ -27,6 +27,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -35,9 +36,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -87,6 +91,9 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     private Label potionResourceLabel;
     @FXML
     private Label featherResourceLabel;
+    @FXML
+    private VBox questsVBox;
+
     private ArrayList<Label> resourceLabels;
 
 
@@ -173,8 +180,46 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         boardPanesSetup();
         handPanesSetup();
         resourcePaneSetup();
+        questsSetup();
 
         showStartingCard(startingCard);
+    }
+
+    private void questsSetup()  {
+        Insets standardInsets = new Insets(10, chatVBox.getPrefWidth()/2 - 40, 20, chatVBox.getPrefWidth()/2- 40);
+        Label privateQuests = new Label("Private Quests");
+        setStandardFont(privateQuests);
+        VBox.setMargin(privateQuests, standardInsets);
+        Label publicQuests = new Label("Private Quests");
+        setStandardFont(publicQuests);
+        VBox.setMargin(publicQuests, standardInsets);
+
+        questsVBox.getChildren().add(privateQuests);
+
+        ImageView privateQuestImageView = new ImageView(new Image(Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/" + privateQuest.getId() + ".png")))););
+
+        VBox.setMargin(privateQuestImageView, standardInsets);
+
+        questsVBox.getChildren().add(privateQuestImageView);
+
+        ImageView publicQuestOne = new ImageView(new Image(Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/" + commonQuests.getFirst().getId() + ".png"))));
+        VBox.setMargin(publicQuestOne, standardInsets);
+
+        ImageView publicQuestTwo = new ImageView(new Image(Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/" + commonQuests.get(1).getId() + ".png"))));
+        VBox.setMargin(publicQuestTwo, standardInsets);
+
+        questsVBox.getChildren().add(publicQuests);
+        questsVBox.getChildren().add(publicQuestOne);
+        questsVBox.getChildren().add(publicQuestTwo);
+
+    }
+
+    private void setStandardFont(Label label) {
+        try{
+            label.setFont(Font.loadFont(Objects.requireNonNull(getClass().getResource("/fonts/AlegreyaSC-ExtraBold.ttf")).openStream(), 20));
+        }catch(IOException e){
+            e.printStackTrace();
+        }
     }
 
     private void resourcePaneSetup() {
@@ -267,6 +312,8 @@ public class GUIMatchPageController implements GUIPageController , Initializable
             hooverRectangle.setOnMouseClicked(_ -> {
                 if(!isClicked(hooverRectangle)){
                     clickedRectangle = hooverRectangle;
+                    handCardStackPanes.forEach(stackPane -> stackPane.getChildren().stream().filter(node -> node.getClass().equals(Rectangle.class)).map(node -> ((Rectangle) (node))).forEach(rectangle -> {
+                        if(!rectangle.equals(clickedRectangle)) rectangle.setOpacity(0);}));
                 }else {
                     clickedRectangle = null;
                 }
@@ -277,8 +324,9 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     }
 
     private static void hooverRectangleStyleSetup(Rectangle hooverRectangle) {
-        hooverRectangle.setWidth(60);
-        hooverRectangle.setHeight(70);
+        hooverRectangle.setWidth(58);
+        hooverRectangle.setHeight(65);
+        hooverRectangle.setEffect(new GaussianBlur(1));
         hooverRectangle.setArcHeight(20);
         hooverRectangle.setArcWidth(20);
         hooverRectangle.setStroke(javafx.scene.paint.Color.rgb(218,241,0));
@@ -339,7 +387,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         if(senderPlayer.getUserHash() == 0) senderPlayer.setColor(Color.GREEN);
 
         if(username.equals(controller.getClient().getUsername())){
-            showLocalMessage(message, senderPlayer);
+            showLocalMessage(message, thisPlayer);
         }else{
             showOuterMessage(message, senderPlayer);
         }
