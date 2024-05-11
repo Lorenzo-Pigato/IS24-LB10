@@ -12,6 +12,7 @@ import it.polimi.ingsw.lb10.server.model.cards.PlaceableCardState.BackOfTheCard;
 import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
 import it.polimi.ingsw.lb10.server.model.cards.StartingCardState.FrontStartingCard;
 import it.polimi.ingsw.lb10.server.model.cards.*;
+import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import javafx.beans.value.ChangeListener;
@@ -37,10 +38,9 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import org.jetbrains.annotations.NotNull;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.stream.Collectors;
+
 public class GUIMatchPageController implements GUIPageController , Initializable {
 
     private final GUIClientViewController controller = GUIClientViewController.instance();
@@ -169,7 +169,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         boardPanesSetup();
         handPanesSetup();
         resourcePaneSetup();
-        controller.setPag
+        controller.setPage(this);
         showStartingCard(startingCard);
     }
 
@@ -230,8 +230,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         for (Position position : Position.values()){
             Rectangle hooverRectangle = new Rectangle();
 
-            hooverRectangle.setWidth(60);
-            hooverRectangle.setHeight(60);
+            hooverRectangleStyleSetup(hooverRectangle);
 
             switch (position){
                 case TOPLEFT:
@@ -253,20 +252,18 @@ public class GUIMatchPageController implements GUIPageController , Initializable
             hooverRectangles.add(hooverRectangle);
             hooverRectangle.setDisable(false);
 
-            hooverRectangle.setFill(javafx.scene.paint.Color.rgb(10, 123, 123));
-            hooverRectangle.setVisible(false);
 
-            hooverRectangle.setOnMouseEntered(_ -> hooverRectangle.setVisible(true));
 
-            hooverRectangle.setOnMouseExited(_ -> hooverRectangle.setVisible(isClicked(hooverRectangle)));
+            hooverRectangle.setOnMouseEntered(_ -> hooverRectangle.setOpacity(0.3));
+
+            hooverRectangle.setOnMouseExited(_ ->{
+                if(!isClicked(hooverRectangle)) hooverRectangle.setOpacity(0);
+            });
 
             hooverRectangle.setOnMouseClicked(_ -> {
-                System.out.println("cccc");
                 if(!isClicked(hooverRectangle)){
-                    hooverRectangle.setVisible(true);
                     clickedRectangle = hooverRectangle;
                 }else {
-                    hooverRectangle.setVisible(false);
                     clickedRectangle = null;
                 }
 
@@ -275,8 +272,20 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         return hooverRectangles;
     }
 
+    private static void hooverRectangleStyleSetup(Rectangle hooverRectangle) {
+        hooverRectangle.setWidth(60);
+        hooverRectangle.setHeight(70);
+        hooverRectangle.setArcHeight(20);
+        hooverRectangle.setArcWidth(20);
+        hooverRectangle.setStroke(javafx.scene.paint.Color.rgb(218,241,0));
+        hooverRectangle.setStrokeWidth(2);
+        hooverRectangle.setFill(javafx.scene.paint.Color.rgb(10, 123, 123));
+        hooverRectangle.setVisible(true);
+        hooverRectangle.setOpacity(0);
+    }
+
     private  boolean isClicked(Rectangle rec){
-        return clickedRectangle == null || rec.equals(clickedRectangle);
+        return clickedRectangle != null && rec.equals(clickedRectangle);
     }
 
     public static void insertCardOnHand(PlaceableCard card){
@@ -300,6 +309,16 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         AnchorPane.setLeftAnchor(cardView, 0D);
         AnchorPane.setBottomAnchor(cardView, 0D);
         AnchorPane.setRightAnchor(cardView, 0D);
+
+        stackPane.getChildren().stream().filter(node -> node.getClass().equals(Rectangle.class)).forEach(rectangle -> {
+            if(card.getStateCardCorners().stream().filter(corner -> !corner.isAvailable()).anyMatch(corner -> corner.getPosition().equals(rectangle.getUserData()))){
+                rectangle.setDisable(true);
+                rectangle.setOpacity(0);
+            }else{
+                rectangle.setDisable(false);
+            }
+        });
+
     }
 
     @FXML
