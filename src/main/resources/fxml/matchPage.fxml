@@ -57,16 +57,19 @@
       <AnchorPane fx:id="resourcePane" layoutX="818.0" layoutY="709.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="398.0">
          <children>
             <Rectangle arcHeight="30.0" arcWidth="30.0" fill="#2214006b" height="182.0" layoutX="-1.0" layoutY="-4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="401.0" />
-            <HBox layoutX="30.0" layoutY="40.0" prefHeight="44.0" prefWidth="64.0">
+            <HBox layoutX="18.0" layoutY="40.0" prefHeight="44.0" prefWidth="64.0">
                <children>
                   <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/plant.png" />
                      </image>
+                     <effect>
+                        <DropShadow />
+                     </effect>
                   </ImageView>
-                  <Label fx:id="plantResourceLabel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="0">
+                  <Label fx:id="plantResourceLabel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="points-label" stylesheets="@../css/matchPage.css" text="0">
                      <HBox.margin>
-                        <Insets left="15.0" top="12.0" />
+                        <Insets left="7.0" top="3.0" />
                      </HBox.margin>
                      <font>
                         <Font size="20.0" />
@@ -80,10 +83,13 @@
                      <image>
                         <Image url="@../images/mushroom.png" />
                      </image>
+                     <effect>
+                        <DropShadow />
+                     </effect>
                   </ImageView>
-                  <Label fx:id="mushroomResourceLabel" text="0">
+                  <Label fx:id="mushroomResourceLabel" styleClass="points-label" stylesheets="@../css/matchPage.css" text="0">
                      <HBox.margin>
-                        <Insets left="15.0" top="12.0" />
+                        <Insets left="7.0" top="3.0" />
                      </HBox.margin>
                      <font>
                         <Font size="20.0" />
@@ -91,16 +97,19 @@
                   </Label>
                </children>
             </HBox>
-            <HBox layoutX="202.0" layoutY="40.0">
+            <HBox layoutX="211.0" layoutY="40.0">
                <children>
                   <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/insect.png" />
                      </image>
+                     <effect>
+                        <DropShadow />
+                     </effect>
                   </ImageView>
-                  <Label fx:id="insectResourceLabel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="0">
+                  <Label fx:id="insectResourceLabel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="points-label" stylesheets="@../css/matchPage.css" text="0">
                      <HBox.margin>
-                        <Insets left="15.0" top="12.0" />
+                        <Insets left="7.0" top="3.0" />
                      </HBox.margin>
                      <font>
                         <Font size="20.0" />
@@ -108,16 +117,19 @@
                   </Label>
                </children>
             </HBox>
-            <HBox layoutX="290.0" layoutY="40.0">
+            <HBox layoutX="299.0" layoutY="40.0">
                <children>
                   <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/animal.png" />
                      </image>
+                     <effect>
+                        <DropShadow />
+                     </effect>
                   </ImageView>
-                  <Label fx:id="animalResourceLabel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="0">
+                  <Label fx:id="animalResourceLabel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="points-label" stylesheets="@../css/matchPage.css" text="0">
                      <HBox.margin>
-                        <Insets left="15.0" top="12.0" />
+                        <Insets left="7.0" top="3.0" />
                      </HBox.margin>
                      <font>
                         <Font size="20.0" />
@@ -125,41 +137,59 @@
                   </Label>
                </children>
             </HBox>
-            <HBox layoutX="62.0" layoutY="120.0">
+            <HBox layoutX="56.0" layoutY="112.0">
                <children>
-                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
-                  <Label fx:id="featherResourceLabel" text="0">
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/mappa.png" />
+                     </image>
+                     <effect>
+                        <DropShadow />
+                     </effect></ImageView>
+                  <Label fx:id="featherResourceLabel" styleClass="points-label" stylesheets="@../css/matchPage.css" text="0">
                      <font>
                         <Font size="20.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="15.0" top="12.0" />
+                        <Insets left="7.0" top="3.0" />
                      </HBox.margin>
                   </Label>
                </children>
             </HBox>
-            <HBox layoutX="182.0" layoutY="118.0">
+            <HBox layoutX="176.0" layoutY="110.0">
                <children>
-                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
-                  <Label fx:id="pergamenaResourceLabel" text="0">
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/potion.png" />
+                     </image>
+                     <effect>
+                        <DropShadow />
+                     </effect></ImageView>
+                  <Label fx:id="pergamenaResourceLabel" styleClass="points-label" stylesheets="@../css/matchPage.css" text="0">
                      <font>
                         <Font size="20.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="15.0" top="12.0" />
+                        <Insets left="7.0" top="3.0" />
                      </HBox.margin>
                   </Label>
                </children>
             </HBox>
-            <HBox layoutX="286.0" layoutY="117.0">
+            <HBox layoutX="271.0" layoutY="110.0">
                <children>
-                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
-                  <Label fx:id="potionResourceLabel" text="0">
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/feather.png" />
+                     </image>
+                     <effect>
+                        <DropShadow />
+                     </effect></ImageView>
+                  <Label fx:id="potionResourceLabel" styleClass="points-label" stylesheets="@../css/matchPage.css" text="0">
                      <font>
                         <Font size="20.0" />
                      </font>
                      <HBox.margin>
-                        <Insets left="15.0" top="12.0" />
+                        <Insets left="7.0" top="3.0" />
                      </HBox.margin>
                   </Label>
                </children>

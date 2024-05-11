@@ -41,3 +41,8 @@
 .player-board {
     -fx-background-color: transparent;
 }
+
+.points-label{
+    -fx-font-family: "Alegreya SC";
+    -fx-font-size: 30;
+}
