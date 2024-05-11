@@ -16,6 +16,7 @@ import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -160,16 +161,18 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        controller.setPage(this);
+
         chatVBox.heightProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
                 chatScrollPane.setVvalue((Double) newValue);
             }
         });
+
         boardPanesSetup();
         handPanesSetup();
         resourcePaneSetup();
-        controller.setPag
         showStartingCard(startingCard);
     }
 
@@ -303,7 +306,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     }
 
     @FXML
-    private void send(){
+    private void send(ActionEvent event){
         if(!chatText.getText().isEmpty()){
             controller.send(new ChatRequest(GUIClientViewController.instance().getMatchId(), chatText.getText()));
             chatText.clear();
@@ -315,7 +318,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
         if(senderPlayer.getUserHash() == 0) senderPlayer.setColor(Color.GREEN);
 
-        if(senderPlayer.getUsername().equals(controller.getClient().getUsername())){
+        if(username.equals(controller.getClient().getUsername())){
             showLocalMessage(message, senderPlayer);
         }else{
             showOuterMessage(message, senderPlayer);
@@ -362,6 +365,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
         textFlow.setPadding(new Insets(5, 10, 5, 10));
         hBox.getChildren().add(textFlow);
+
         chatVBox.getChildren().add(hBox);
     }
 

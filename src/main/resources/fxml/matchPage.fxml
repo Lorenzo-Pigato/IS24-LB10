@@ -169,7 +169,7 @@
       <AnchorPane layoutX="1228.0" layoutY="492.0" prefHeight="385.0" prefWidth="352.0">
          <children>
             <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#6957214d" height="390.0" layoutX="-1.0" stroke="#463e02" strokeType="INSIDE" strokeWidth="5.0" width="356.0" AnchorPane.topAnchor="0.0" />
-            <ScrollPane fx:id="chatScrollPane" hbarPolicy="NEVER" layoutX="6.0" layoutY="42.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.0" prefHeight="293.0" prefWidth="339.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="42.0">
+            <ScrollPane fx:id="chatScrollPane" hbarPolicy="NEVER" layoutX="6.0" layoutY="42.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="293.0" prefWidth="339.0" styleClass="player-board" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="42.0">
                <content>
                   <VBox fx:id="chatVBox" prefHeight="294.0" prefWidth="336.0" />
                </content>
