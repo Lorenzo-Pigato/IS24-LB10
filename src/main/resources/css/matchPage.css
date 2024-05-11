@@ -46,3 +46,9 @@
     -fx-font-family: "Alegreya SC";
     -fx-font-size: 30;
 }
+
+.quest-label{
+    -fx-font-family: "Alegreya SC";
+    -fx-font-size: 30;
+    -fx-alignment: center;
+}

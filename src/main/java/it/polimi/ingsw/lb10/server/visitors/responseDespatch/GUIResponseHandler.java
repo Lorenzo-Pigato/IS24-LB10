@@ -81,11 +81,7 @@ public class GUIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(PlaceStartingCardResponse placeStartingCardResponse) {
-        GUIMatchPageController.setStartingCard(placeStartingCardResponse.getStartingCard());
-        GUIMatchPageController.setThisPlayer(controller.getPlayers().stream()
-                .filter(p -> p.getUsername().equals(controller.getClient().getUsername()))
-                .findFirst()
-                .orElseThrow(RuntimeException::new));
+        ((GUIMatchPageController)(controller.getPage())).placeStartingCard();
         Platform.runLater(() -> {
             ((GUIMatchPageController) controller.getPage()).updateResources(placeStartingCardResponse.getResources());
         });

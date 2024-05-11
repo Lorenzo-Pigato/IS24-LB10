@@ -58,6 +58,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     private Rectangle clickedRectangle = null;
     private static StartingCard startingCard;
     private AnchorPane boardAnchorPane;
+    private final int boardCardDimension = 0xfa;
 
     @FXML
     private Button chatButton;
@@ -92,7 +93,11 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     @FXML
     private Label featherResourceLabel;
     @FXML
-    private VBox questsVBox;
+    private ImageView questCardOne;
+    @FXML
+    private ImageView questCardTwo;
+    @FXML
+    private ImageView questCardThree;
 
     private ArrayList<Label> resourceLabels;
 
@@ -124,16 +129,14 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
         startingCardImageView.setUserData(startingCard);
         startingCardImageView.setPreserveRatio(true);
-        startingCardImageView.setFitHeight(200D);
-        startingCardImageView.setFitWidth(200D);
+        startingCardImageView.setFitHeight(boardCardDimension);
+        startingCardImageView.setFitWidth(boardCardDimension);
 
         Button place = new Button();
         place.setPrefHeight(60);
         place.setPrefWidth(120);
         place.setText("Place");
-        place.setOnAction(event -> {
-            controller.send(new PlaceStartingCardRequest(controller.getMatchId(), startingCard));
-        });
+        place.setOnAction(_ -> controller.send(new PlaceStartingCardRequest(controller.getMatchId(), startingCard)));
 
         Button flip = new Button();
         flip.setPrefHeight(60);
@@ -186,41 +189,11 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     }
 
     private void questsSetup()  {
-        Insets standardInsets = new Insets(10, chatVBox.getPrefWidth()/2 - 40, 20, chatVBox.getPrefWidth()/2- 40);
-        Label privateQuests = new Label("Private Quests");
-        setStandardFont(privateQuests);
-        VBox.setMargin(privateQuests, standardInsets);
-        Label publicQuests = new Label("Private Quests");
-        setStandardFont(publicQuests);
-        VBox.setMargin(publicQuests, standardInsets);
-
-        questsVBox.getChildren().add(privateQuests);
-
-        ImageView privateQuestImageView = new ImageView(new Image(Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/" + privateQuest.getId() + ".png"))));
-
-        VBox.setMargin(privateQuestImageView, standardInsets);
-
-        questsVBox.getChildren().add(privateQuestImageView);
-
-        ImageView publicQuestOne = new ImageView(new Image(Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/" + commonQuests.getFirst().getId() + ".png"))));
-        VBox.setMargin(publicQuestOne, standardInsets);
-
-        ImageView publicQuestTwo = new ImageView(new Image(Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/" + commonQuests.get(1).getId() + ".png"))));
-        VBox.setMargin(publicQuestTwo, standardInsets);
-
-        questsVBox.getChildren().add(publicQuests);
-        questsVBox.getChildren().add(publicQuestOne);
-        questsVBox.getChildren().add(publicQuestTwo);
-
+        questCardOne.setImage(new Image((Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/" + privateQuest.getId() + ".png")))));
+        questCardTwo.setImage(new Image((Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/" + commonQuests.getFirst().getId() + ".png")))));
+        questCardThree.setImage(new Image((Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/" + commonQuests.get(1).getId() + ".png")))));
     }
 
-    private void setStandardFont(Label label) {
-        try{
-            label.setFont(Font.loadFont(Objects.requireNonNull(getClass().getResource("/fonts/AlegreyaSC-ExtraBold.ttf")).openStream(), 20));
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-    }
 
     private void resourcePaneSetup() {
         resourceLabels = new ArrayList<>();
@@ -380,6 +353,13 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
     }
 
+    public void placeStartingCard(){
+        clearBoard();
+        setScrollPannable();
+        ImageView startingCardImageView = new ImageView(new Image((Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/retro" + startingCard.getId() + ".png")))));
+        AnchorPane.setTopAnchor();
+    }
+
     @FXML
     private void send(ActionEvent event){
         if(!chatText.getText().isEmpty()){
@@ -486,7 +466,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         );
 
         ImageView cardOnBoard = boardScrollPane.getChildrenUnmodifiable().stream()
-                .filter(ch -> ch.getClass().equals(ImageView.class))
+                .filter(ch -> ch.getClass().equals(AnchorPane.class))
                 .map(ch -> (ImageView) ch)
                 .filter(ch -> ch.getUserData().equals(card))
                 .findFirst()
@@ -516,9 +496,5 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         return path + ".png";
     }
 
-    @FXML
-    private void hooverCardOnTable(MouseEvent event){
-
-    }
 
 }

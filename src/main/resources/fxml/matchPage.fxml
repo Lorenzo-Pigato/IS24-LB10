@@ -32,18 +32,60 @@
          </children></AnchorPane>
       <AnchorPane layoutX="1228.0" layoutY="15.0" prefHeight="450.0" prefWidth="340.0" styleClass="label" stylesheets="@../css/matchPage.css" AnchorPane.leftAnchor="1228.0" AnchorPane.rightAnchor="20.0">
          <children>
-            <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#6b59224d" height="465.0" layoutY="-2.0" stroke="#463e02" strokeType="INSIDE" strokeWidth="5.0" width="354.0" />
-            <TabPane layoutX="4.0" layoutY="-2.0" prefHeight="455.0" prefWidth="357.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#6b59224d" height="470.0" layoutY="-2.0" stroke="#463e02" strokeType="INSIDE" strokeWidth="5.0" width="354.0" />
+            <TabPane layoutX="4.0" layoutY="8.0" prefHeight="460.0" prefWidth="352.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="8.0">
               <tabs>
                 <Tab text="Quests">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="438.0" prefWidth="339.0">
                            <children>
-                              <VBox fx:id="questsVbox" layoutX="1.0" prefHeight="430.0" prefWidth="357.0" />
+                              <VBox fx:id="questsVBox" layoutX="1.0" prefHeight="430.0" prefWidth="357.0">
+                                 <children>
+                                    <Label layoutX="50.0" prefHeight="33.0" prefWidth="296.0" styleClass="quest-label" stylesheets="@../css/matchPage.css" text="Private Quests">
+                                       <font>
+                                          <Font size="20.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets left="30.0" />
+                                       </VBox.margin>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </Label>
+                                    <ImageView fx:id="questCardOne" fitHeight="114.0" fitWidth="165.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets left="100.0" />
+                                       </VBox.margin>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </ImageView>
+                                    <Label alignment="CENTER" styleClass="quest-label" stylesheets="@../css/matchPage.css" text="Public Quests">
+                                       <VBox.margin>
+                                          <Insets left="90.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <ImageView fx:id="questCardTwo" fitHeight="114.0" fitWidth="165.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets left="10.0" />
+                                       </VBox.margin>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </ImageView>
+                                    <ImageView fx:id="questCardThree" fitHeight="114.0" fitWidth="165.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets left="176.0" right="10.0" />
+                                       </VBox.margin>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </ImageView>
+                                 </children></VBox>
                            </children></AnchorPane>
                   </content>
                 </Tab>
-                <Tab text="Untitled Tab 2">
+                <Tab text="Score Board">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                   </content>
