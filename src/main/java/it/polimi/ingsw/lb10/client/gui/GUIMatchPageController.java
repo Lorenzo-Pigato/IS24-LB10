@@ -240,6 +240,13 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         resourceLabels.add(potionResourceLabel);
     }
 
+    public void updateResources(Map<Resource, Integer> resources){
+        for(Resource resource : resources.keySet()){
+            Label label = resourceLabels.stream().filter(l -> l.getUserData().equals(resource)).findFirst().orElseThrow(RuntimeException::new);
+            label.setText(resources.get(resource).toString());
+        }
+    }
+
     private void handPanesSetup() {
         handCardStackPanes.add(handCardOnePane);
         handCardStackPanes.add(handCardTwoPane);
