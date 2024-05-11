@@ -279,13 +279,13 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         hooverRectangle.setArcWidth(20);
         hooverRectangle.setStroke(javafx.scene.paint.Color.rgb(218,241,0));
         hooverRectangle.setStrokeWidth(2);
-        hooverRectangle.setFill(javafx.scene.paint.Color.rgb(10, 123, 123));
+        hooverRectangle.setFill(javafx.scene.paint.Color.rgb(255, 253, 0));
         hooverRectangle.setVisible(true);
         hooverRectangle.setOpacity(0);
     }
 
     private  boolean isClicked(Rectangle rec){
-        return clickedRectangle != null && rec.equals(clickedRectangle);
+        return rec.equals(clickedRectangle);
     }
 
     public static void insertCardOnHand(PlaceableCard card){
