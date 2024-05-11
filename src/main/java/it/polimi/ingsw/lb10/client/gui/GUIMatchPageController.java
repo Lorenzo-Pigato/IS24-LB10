@@ -196,7 +196,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
         questsVBox.getChildren().add(privateQuests);
 
-        ImageView privateQuestImageView = new ImageView(new Image(Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/" + privateQuest.getId() + ".png")))););
+        ImageView privateQuestImageView = new ImageView(new Image(Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/" + privateQuest.getId() + ".png"))));
 
         VBox.setMargin(privateQuestImageView, standardInsets);
 
