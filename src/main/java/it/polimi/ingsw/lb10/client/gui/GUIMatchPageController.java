@@ -99,6 +99,18 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     private ImageView questCardTwo;
     @FXML
     private ImageView questCardThree;
+    @FXML
+    private ImageView deckOne;
+    @FXML
+    private ImageView deckTwo;
+    @FXML
+    private ImageView tableOne;
+    @FXML
+    private ImageView tableTwo;
+    @FXML
+    private ImageView tableThree;
+    @FXML
+    private ImageView tableFour;
 
     private ArrayList<Label> resourceLabels;
 
@@ -377,7 +389,6 @@ public class GUIMatchPageController implements GUIPageController , Initializable
                 rectangle.setDisable(false);
             }
         });
-
     }
 
     public void placeStartingCard(){
@@ -399,6 +410,16 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     private void resetAllBoardShadows(){
         boardAnchorPane.getChildren().stream().filter(node -> node.getClass().equals(ImageView.class)).map(node -> (ImageView)(node)).forEach(imageView -> imageView.setEffect(null));
         handCardStackPanes.forEach(stackPane -> stackPane.getChildren().stream().filter(node -> node.getClass().equals(Rectangle.class)).forEach(node -> node.setOpacity(0)));
+    }
+
+    public void updateTablePickingOptions(@NotNull List<PlaceableCard> tableCards){
+        deckOne.setImage(tableCards.get(0) == null ? null : new Image((getResourcePath(tableCards.get(0)))));
+        deckTwo.setImage(tableCards.get(1) == null ? null : new Image(( getResourcePath(tableCards.get(1)))));
+        tableOne.setImage(tableCards.get(2) == null ? null : new Image((getResourcePath(tableCards.get(2)))));
+        tableTwo.setImage(tableCards.get(3) == null ? null : new Image((getResourcePath(tableCards.get(3)))));
+        tableThree.setImage(tableCards.get(4) == null ? null : new Image((getResourcePath(tableCards.get(4)))));
+        tableFour.setImage(tableCards.get(5) == null ? null : new Image((getResourcePath(tableCards.get(5)))));
+
     }
 
     @FXML

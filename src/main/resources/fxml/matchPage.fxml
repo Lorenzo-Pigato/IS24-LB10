@@ -29,7 +29,75 @@
                   <ScrollPane fx:id="boardScrollPane" fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minViewportHeight="664.0" minViewportWidth="1181.0" minWidth="-Infinity" pannable="true" prefHeight="663.0" prefViewportHeight="664.0" prefViewportWidth="1181.0" prefWidth="1184.0" styleClass="player-board" stylesheets="@../css/matchPage.css" />
                </content>
             </Tab>
-          <Tab text="Game table" />
+          <Tab text="Game table">
+               <content>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <HBox prefHeight="362.0" prefWidth="1190.0">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <children>
+                              <ImageView fx:id="deckOne" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
+                                 <HBox.margin>
+                                    <Insets left="250.0" right="150.0" top="80.0" />
+                                 </HBox.margin>
+                                 <effect>
+                                    <DropShadow height="35.83" radius="30.015" width="86.23" />
+                                 </effect></ImageView>
+                              <ImageView fx:id="deckTwo" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
+                                 <HBox.margin>
+                                    <Insets left="80.0" top="80.0" />
+                                 </HBox.margin>
+                                 <effect>
+                                    <DropShadow height="23.97" radius="25.5675" width="80.3" />
+                                 </effect>
+                              </ImageView>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="362.0" prefWidth="1190.0">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <children>
+                              <ImageView fx:id="tableOne" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
+                                 <HBox.margin>
+                                    <Insets bottom="20.0" left="15.0" top="80.0" />
+                                 </HBox.margin>
+                                 <effect>
+                                    <DropShadow height="68.44" radius="32.980000000000004" width="65.48" />
+                                 </effect>
+                              </ImageView>
+                              <ImageView fx:id="tableTwo" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
+                                 <HBox.margin>
+                                    <Insets left="50.0" right="50.0" top="80.0" />
+                                 </HBox.margin>
+                                 <effect>
+                                    <DropShadow height="68.44" radius="33.72" width="68.44" />
+                                 </effect>
+                              </ImageView>
+                              <ImageView fx:id="tableThree" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
+                                 <HBox.margin>
+                                    <Insets top="80.0" />
+                                 </HBox.margin>
+                                 <effect>
+                                    <DropShadow height="97.85" radius="42.495" width="74.13" />
+                                 </effect>
+                              </ImageView>
+                              <ImageView fx:id="tableFour" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
+                                 <HBox.margin>
+                                    <Insets left="50.0" top="80.0" />
+                                 </HBox.margin>
+                                 <effect>
+                                    <DropShadow height="65.23" radius="31.375" width="62.27" />
+                                 </effect>
+                              </ImageView>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </content>
+            </Tab>
         </tabs>
       </TabPane>
       <AnchorPane fx:id="cardsAnchor" layoutX="22.0" layoutY="709.0" prefHeight="182.0" prefWidth="790.0" styleClass="card-anchor" stylesheets="@../css/matchPage.css">
@@ -84,7 +152,7 @@
                                     </ImageView>
                                     <ImageView fx:id="questCardThree" fitHeight="113.0" fitWidth="165.0" pickOnBounds="true" preserveRatio="true">
                                        <VBox.margin>
-                                          <Insets left="176.0" right="10.0" top="70.0" />
+                                          <Insets left="176.0" right="10.0" top="25.0" />
                                        </VBox.margin>
                                        <effect>
                                           <DropShadow />

@@ -194,7 +194,6 @@ public class CLIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(DeckUpdateResponse deckUpdateResponse) {
-
     }
 
 }

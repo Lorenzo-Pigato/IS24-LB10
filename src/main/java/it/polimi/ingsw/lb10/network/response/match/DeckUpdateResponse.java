@@ -22,7 +22,4 @@ public class DeckUpdateResponse extends Response {
         return pickables;
     }
 
-    public void setPickables(List<PlaceableCard> pickables) {
-        this.pickables = pickables;
-    }
 }
