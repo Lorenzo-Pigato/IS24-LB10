@@ -365,7 +365,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
         TextFlow textFlow = new TextFlow(username);
 
-        textFlow.setStyle("-fx-background-color : rgba(83,61,35,0.37)"
+        textFlow.setStyle("-fx-background-color : rgba(255, 251, 230, 0.37)"
                 + ";-fx-background-radius : 20px");
 
         textFlow.getChildren().add(text);
@@ -387,7 +387,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
         TextFlow textFlow = new TextFlow(username);
         textFlow.getChildren().add(text);
-        textFlow.setStyle("-fx-background-color : rgb(220,191,145)"
+        textFlow.setStyle("-fx-background-color : rgba(255, 238, 193, 0.82)"
                 + ";-fx-background-radius : 20px");
 
         textFlow.setPadding(new Insets(5, 10, 5, 10));

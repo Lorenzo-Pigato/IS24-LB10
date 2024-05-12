@@ -16,3 +16,9 @@
     -fx-background-position: center;
 }
 
+.waitingMessage {
+    -fx-font-family: "Alegreya SC";
+    -fx-font-size: 30;
+    -fx-alignment: center;
+}
+

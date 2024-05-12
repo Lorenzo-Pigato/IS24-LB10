@@ -42,13 +42,13 @@
     -fx-font-family: 'Alegreya SC', sans-serif;
     -fx-margin: 1em 0 1em 0;
     -fx-position: relative;
-    -fx-background-radius: 25px;
+    -fx-background-radius: 10px;
 
     -fx-font-size: 13;
     -fx-padding: 0.8em;
     -fx-outline: none;
     -fx-border-width: 2px;
     -fx-border-color: rgb(70, 46, 15);
-    -fx-background-color: rgba(253, 225, 154, 0.82);
-    -fx-border-radius: 25px;
+    -fx-background-color: rgba(255, 238, 193, 0.82);
+    -fx-border-radius: 10px;
 }
