@@ -193,8 +193,8 @@ public class MatchModel extends Observable {
 
     private void notifyDecksUpdate() {
         PlaceableCard[] decks = new PlaceableCard[]{
-                goldenDeck.getCards().get(0),
-                resourceDeck.getCards().get(0),
+                goldenDeck.getCards().getLast(),
+                resourceDeck.getCards().getLast(),
                 goldenUncovered.getFirst(),
                 goldenUncovered.getLast(),
                 resourceUncovered.getFirst(),
