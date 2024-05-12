@@ -13,7 +13,7 @@ public class PlaceCardResponse extends Response {
     private final boolean status;
     private final int row;
     private final int col;
-    private HashMap<Resource, Integer> playerResources;
+    private final HashMap<Resource, Integer> playerResources;
 
     public PlaceCardResponse(PlaceableCard card, boolean status, int row, int col, HashMap<Resource, Integer> playerResources) {
         this.card = card;

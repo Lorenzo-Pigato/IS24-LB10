@@ -12,7 +12,6 @@ import it.polimi.ingsw.lb10.server.model.cards.PlaceableCardState.BackOfTheCard;
 import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
 import it.polimi.ingsw.lb10.server.model.cards.StartingCardState.FrontStartingCard;
 import it.polimi.ingsw.lb10.server.model.cards.*;
-import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import javafx.beans.value.ChangeListener;
@@ -27,26 +26,21 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class GUIMatchPageController implements GUIPageController , Initializable {
 
@@ -63,6 +57,8 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     private AnchorPane boardAnchorPane;
     private final int boardCardDimension = 0xfa;
     private boolean matrixCardValidSelection = false;
+    private boolean placeRequestValidating = false;
+    private final Map<Position, int[]> placementOffsets = new HashMap<>();
 
 
     @FXML
@@ -141,7 +137,8 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         place.setPrefHeight(60);
         place.setPrefWidth(120);
         place.setText("Place");
-        place.setOnAction(_ -> controller.send(new PlaceStartingCardRequest(controller.getMatchId(), startingCard)));
+        place.setOnAction(_ ->
+                controller.send(new PlaceStartingCardRequest(controller.getMatchId(), startingCard)));
 
         Button flip = new Button();
         flip.setPrefHeight(60);
@@ -189,8 +186,16 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         handPanesSetup();
         resourcePaneSetup();
         questsSetup();
+        placementOffsetsSetup();
 
         showStartingCard(startingCard);
+    }
+
+    private void placementOffsetsSetup() {
+        placementOffsets.put(Position.TOPRIGHT, new int[]{+195, -101});
+        placementOffsets.put(Position.BOTTOMLEFT, new int[]{-195, +101});
+        placementOffsets.put(Position.BOTTOMRIGHT, new int[]{+195, +101});
+        placementOffsets.put(Position.TOPLEFT, new int[]{-195, -101});
     }
 
     private void questsSetup()  {
@@ -293,7 +298,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
             });
 
             hooverRectangle.setOnMouseClicked(_ -> {
-                if(!isClicked(hooverRectangle)){ //if this rectangle is not the selected one
+                if(!isClicked(hooverRectangle) && !placeRequestValidating){ //if this rectangle is not the selected one
                     clickedRectangle = hooverRectangle; //set this rectangle as selected
                     clickedCard = (PlaceableCard) hooverRectangle.getParent().getChildrenUnmodifiable()//updaate clickedCard as this specific card
                             .stream()
@@ -305,15 +310,12 @@ public class GUIMatchPageController implements GUIPageController , Initializable
                             .getUserData();
 
                     if(matrixCardValidSelection){ //if user already selected a martix card
-                        controller.send(new PlaceCardRequest(controller.getMatchId(), clickedCard, (Position)(hooverRectangle.getUserData()), matrixCardId)); //send place request
-                        clickedRectangle = null; //clicked rectangle resets as a new request of placing has been sent
-                        clickedCard = null; //clicked card resets
-                        resetAllBoardShadows();
+                        validatePlacing(hooverRectangle);
                     }
                     handCardStackPanes.forEach(stackPane -> stackPane.getChildren().stream().filter(node -> node.getClass().equals(Rectangle.class)).map(node -> ((Rectangle) (node))).forEach(rectangle -> {
                         if(!rectangle.equals(clickedRectangle)) rectangle.setOpacity(0);
                     })); //resets all highlighting, if a new req has been sent, clicked rectangle is null so this function sets all rectangles to non-highlighted
-                }else {
+                }else if(!placeRequestValidating){
                     hooverRectangle.setOpacity(0); //rectangle was the selected one, so we reset the state to non-selected
                     clickedCard = null;
                     clickedRectangle = null;
@@ -321,6 +323,11 @@ public class GUIMatchPageController implements GUIPageController , Initializable
             });
         }
         return hooverRectangles;
+    }
+
+    private void validatePlacing(@NotNull Rectangle hooverRectangle) {
+        controller.send(new PlaceCardRequest(controller.getMatchId(), clickedCard, (Position)(hooverRectangle.getUserData()), matrixCardId)); //send place request
+        placeRequestValidating = true;
     }
 
     private static void hooverRectangleStyleSetup(Rectangle hooverRectangle) {
@@ -376,7 +383,8 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     public void placeStartingCard(){
         clearBoard();
         setScrollPannable();
-        ImageView startingCardImageView = new ImageView(new Image((Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/retro" + startingCard.getId() + ".png")))));
+        String retro = startingCard.getStateStartingCard().getClass().equals(FrontStartingCard.class) ? "" : "retro";
+        ImageView startingCardImageView = new ImageView(new Image((Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/"+ retro + startingCard.getId() + ".png")))));
         startingCardImageView.setFitHeight(boardCardDimension);
         startingCardImageView.setFitWidth(boardCardDimension);
         startingCardImageView.setPreserveRatio(true);
@@ -385,36 +393,12 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         startingCardImageView.setUserData(startingCard);
         boardAnchorPane.getChildren().add(startingCardImageView);
 
-        startingCardImageView.setOnMouseEntered(_ -> {
-            startingCardImageView.setEffect(new DropShadow());
-        });
-
-        startingCardImageView.setOnMouseExited(_ -> {
-            if(!matrixCardValidSelection){
-                startingCardImageView.setEffect(null);
-            }else if (matrixCardId != ((StartingCard)(startingCardImageView.getUserData())).getId()){
-                startingCardImageView.setEffect(null);
-            }
-        });
-
-        startingCardImageView.setOnMouseClicked(_ -> {
-            if(!matrixCardValidSelection){
-                matrixCardValidSelection = true;
-                matrixCardId = ((StartingCard)(startingCardImageView.getUserData())).getId();
-                if(clickedCard != null) {
-                    controller.send(new PlaceCardRequest(controller.getMatchId(), clickedCard, (Position) (clickedRectangle.getUserData()), matrixCardId));
-                    resetAllBoardShadows();
-                }
-            }else if (matrixCardId == ((StartingCard)startingCardImageView.getUserData()).getId()){
-                matrixCardValidSelection = false;
-            }else{
-                matrixCardId = ((StartingCard)(startingCardImageView.getUserData())).getId();
-            }
-        });
+        setCardHooverEffects(startingCardImageView);
     }
 
     private void resetAllBoardShadows(){
         boardAnchorPane.getChildren().stream().filter(node -> node.getClass().equals(ImageView.class)).map(node -> (ImageView)(node)).forEach(imageView -> imageView.setEffect(null));
+        handCardStackPanes.forEach(stackPane -> stackPane.getChildren().stream().filter(node -> node.getClass().equals(Rectangle.class)).forEach(node -> node.setOpacity(0)));
     }
 
     @FXML
@@ -482,31 +466,62 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     }
 
 
-    public void placeCardOnTable(PlaceableCard card, Position position){
-        int cardWidth;
-        int cardHeight;
+    public void placeCardOnTable(PlaceableCard card){
 
-        String path = getResourcePath(card);
+        placeRequestValidating = false;
 
-        ImageView cardOnTable = new ImageView(new Image(
-                String.valueOf(Objects
-                      .requireNonNull(this.getClass()
-                      .getResourceAsStream(path + ".png"))))
-        );
+        StackPane placedCardStackPane = handCardStackPanes.stream().filter(stackPane -> ((PlaceableCard)(stackPane.getChildren().stream().filter(node -> node.getClass().equals(ImageView.class)).findFirst().get().getUserData())).getId() == card.getId()).findFirst().get();
+        placedCardStackPane.getChildren().stream().filter(node -> node.getClass().equals(ImageView.class)).map(node -> (ImageView)(node)).findFirst().get().setImage(null);
+        placedCardStackPane.setDisable(true);
 
-        ImageView cardOnBoard = boardScrollPane.getChildrenUnmodifiable().stream()
-                .filter(ch -> ch.getClass().equals(AnchorPane.class))
-                .map(ch -> (ImageView) ch)
-                .filter(ch -> ch.getUserData().equals(card))
-                .findFirst()
-                .orElseThrow(RuntimeException::new);
+        ImageView cardOnTable = new ImageView(new Image(Objects.requireNonNull(GUIMatchPageController.class.getResourceAsStream(getResourcePath(card)))));
 
-        // ATTENTION! Modify offset values to match the card size!!
-        cardOnTable.setLayoutX(cardOnBoard.getLayoutX() + position.getGuiOffsetX());
-        cardOnTable.setLayoutY(cardOnBoard.getLayoutY() + position.getGuiOffsetY());
+        cardOnTable.setFitWidth(boardCardDimension);
+        cardOnTable.setFitHeight(boardCardDimension);
+        cardOnTable.setPreserveRatio(true);
 
-        boardScrollPane.setContent(cardOnTable);
+        setCardHooverEffects(cardOnTable);
 
+        cardOnTable.setLayoutX(Objects.requireNonNull(boardAnchorPane.getChildren().stream().map(node -> (ImageView) (node)).filter(imageView -> ((BaseCard) (imageView.getUserData())).getId() == matrixCardId).findFirst().orElse(null)).getLayoutX() + placementOffsets.get((Position) clickedRectangle.getUserData())[0]);
+        cardOnTable.setLayoutY(Objects.requireNonNull(boardAnchorPane.getChildren().stream().map(node -> (ImageView) (node)).filter(imageView -> ((BaseCard) (imageView.getUserData())).getId() == matrixCardId).findFirst().orElse(null)).getLayoutY() + placementOffsets.get((Position) clickedRectangle.getUserData())[1]);
+
+        cardOnTable.setUserData(card);
+
+        boardAnchorPane.getChildren().add(cardOnTable);
+        boardAnchorPane.setPrefWidth(Math.max(cardOnTable.getFitHeight(), cardOnTable.getBoundsInParent().getMaxX()));
+        boardAnchorPane.setPrefHeight(Math.max(cardOnTable.getFitHeight(), cardOnTable.getBoundsInParent().getMaxY()));
+
+        clickedRectangle = null; //clicked rectangle resets as a new request of placing has been sent
+        clickedCard = null; //clicked card resets
+        resetAllBoardShadows();
+    }
+
+    private void setCardHooverEffects(@NotNull ImageView cardOnTable) {
+        cardOnTable.setOnMouseEntered(_ -> {
+            cardOnTable.setEffect(new DropShadow());
+        });
+
+        cardOnTable.setOnMouseExited(_ -> {
+            if(!matrixCardValidSelection){
+                cardOnTable.setEffect(null);
+            }else if (matrixCardId != ((BaseCard)(cardOnTable.getUserData())).getId()){
+                cardOnTable.setEffect(null);
+            }
+        });
+
+        cardOnTable.setOnMouseClicked(_ -> {
+            if(!matrixCardValidSelection){
+                matrixCardValidSelection = true;
+                matrixCardId = ((BaseCard)(cardOnTable.getUserData())).getId();
+                if(clickedCard != null) {
+                    validatePlacing(clickedRectangle);
+                }
+            }else if (matrixCardId == ((BaseCard)cardOnTable.getUserData()).getId()){
+                matrixCardValidSelection = false;
+            }else{
+                matrixCardId = ((BaseCard)(cardOnTable.getUserData())).getId();
+            }
+        });
     }
 
     private static @NotNull String getResourcePath(PlaceableCard card) {
