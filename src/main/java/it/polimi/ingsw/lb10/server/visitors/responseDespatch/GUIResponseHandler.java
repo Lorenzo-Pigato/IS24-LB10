@@ -9,8 +9,6 @@ import it.polimi.ingsw.lb10.network.response.match.*;
 import it.polimi.ingsw.lb10.server.model.Player;
 import javafx.application.Platform;
 
-import java.util.ArrayList;
-
 public class GUIResponseHandler implements ResponseVisitor {
 
     private static GUIResponseHandler instance;
@@ -81,19 +79,22 @@ public class GUIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(PlaceStartingCardResponse placeStartingCardResponse) {
-        GUIMatchPageController.setStartingCard(placeStartingCardResponse.getStartingCard());
-        GUIMatchPageController.setThisPlayer(controller.getPlayers().stream()
-                .filter(p -> p.getUsername().equals(controller.getClient().getUsername()))
-                .findFirst()
-                .orElseThrow(RuntimeException::new));
         Platform.runLater(() -> {
+            ((GUIMatchPageController)(controller.getPage())).placeStartingCard();
             ((GUIMatchPageController) controller.getPage()).updateResources(placeStartingCardResponse.getResources());
         });
     }
 
     @Override
     public void visit(PlaceCardResponse placeCardResponse) {
+        Platform.runLater(() -> {
+            if(placeCardResponse.getStatus()){
+                ((GUIMatchPageController)(controller.getPage())).placeCardOnTable(placeCardResponse.getCard());
+                ((GUIMatchPageController)(controller.getPage())).updateResources(placeCardResponse.getPlayerResources());
+            }else{
 
+            }
+        });
     }
 
     @Override
@@ -128,6 +129,12 @@ public class GUIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(PlayerLeftResponse playerLeftResponse) {
+
+    }
+
+    @Override
+    public void visit(DeckUpdateResponse deckUpdateResponse) {
+
 
     }
 }

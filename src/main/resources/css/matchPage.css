@@ -119,3 +119,8 @@
     -fx-background-color: rgba(255, 201, 53, 0.82);
 }
 
+.quest-label{
+    -fx-font-family: "Alegreya SC";
+    -fx-font-size: 30;
+    -fx-alignment: center;
+}

@@ -192,4 +192,9 @@ public class CLIResponseHandler implements ResponseVisitor {
         CLIMatchPage.removePlayer(playerLeftResponse.getUsername());
     }
 
+    @Override
+    public void visit(DeckUpdateResponse deckUpdateResponse) {
+
+    }
+
 }

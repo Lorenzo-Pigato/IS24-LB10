@@ -38,4 +38,6 @@ public interface ResponseVisitor {
     void visit(MoveBoardResponse moveBoardResponse);
 
     void visit(PlayerLeftResponse playerLeftResponse);
+
+    void visit(DeckUpdateResponse deckUpdateResponse);
 }

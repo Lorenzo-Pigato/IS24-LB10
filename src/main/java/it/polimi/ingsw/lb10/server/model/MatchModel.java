@@ -15,10 +15,7 @@ import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import it.polimi.ingsw.lb10.server.model.quest.QuestCounter;
 import it.polimi.ingsw.lb10.util.Observable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class MatchModel extends Observable {
 
@@ -173,7 +170,7 @@ public class MatchModel extends Observable {
     public void insertStartingCard(Player player) {
         player.getMatrix().setCard(player.getStartingCard());
         setCardResourceOnPlayer(player, player.getStartingCard());
-        notify(new PlaceStartingCardResponse(player.getStartingCard(), player.getOnMapResources(), player.getMatrix()), player.getUserHash());
+        notify(new PlaceStartingCardResponse(player.getStartingCard(), player.getOnMapResources()), player.getUserHash());
     }
 
     /**
@@ -186,6 +183,15 @@ public class MatchModel extends Observable {
         onTurnPlayer = players.get((players.indexOf(onTurnPlayer) + 1) % players.size());
         checkFinalTurn(getPlayer(userHash));
         checkEndGame();
+        PlaceableCard[] decks = new PlaceableCard[]{
+                goldenUncovered.getFirst(),
+                goldenUncovered.getLast(),
+                resourceUncovered.getFirst(),
+                resourceUncovered.getLast(),
+                resourceDeck.getCards().get(0),
+                goldenDeck.getCards().get(0)
+        };
+        notifyAll(new DeckUpdateResponse(Arrays.asList(decks)));
         notifyAll(new PlayerPointsUpdateResponse(getPlayer(userHash).getUsername(), points));
         notifyAll(new ChatMessageResponse("Server", "it's " + onTurnPlayer.getUsername() + "'s turn"));
         notify(new ServerNotification("It's your turn, place your card!"), onTurnPlayer.getUserHash());
