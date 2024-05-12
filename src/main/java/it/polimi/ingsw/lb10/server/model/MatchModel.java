@@ -164,7 +164,9 @@ public class MatchModel extends Observable {
         player.setReady(true);
         if (players.stream().allMatch(Player::isReady)) {
             players.forEach(p -> notify(new GameSetupResponse(players, commonQuests), p.getUserHash()));
+            notifyDecksUpdate();
         }
+
     }
 
     public void insertStartingCard(Player player) {
@@ -183,18 +185,22 @@ public class MatchModel extends Observable {
         onTurnPlayer = players.get((players.indexOf(onTurnPlayer) + 1) % players.size());
         checkFinalTurn(getPlayer(userHash));
         checkEndGame();
-        PlaceableCard[] decks = new PlaceableCard[]{
-                goldenUncovered.getFirst(),
-                goldenUncovered.getLast(),
-                resourceUncovered.getFirst(),
-                resourceUncovered.getLast(),
-                resourceDeck.getCards().get(0),
-                goldenDeck.getCards().get(0)
-        };
-        notifyAll(new DeckUpdateResponse(Arrays.asList(decks)));
+        notifyDecksUpdate();
         notifyAll(new PlayerPointsUpdateResponse(getPlayer(userHash).getUsername(), points));
         notifyAll(new ChatMessageResponse("Server", "it's " + onTurnPlayer.getUsername() + "'s turn"));
         notify(new ServerNotification("It's your turn, place your card!"), onTurnPlayer.getUserHash());
+    }
+
+    private void notifyDecksUpdate() {
+        PlaceableCard[] decks = new PlaceableCard[]{
+                goldenDeck.getCards().get(0),
+                resourceDeck.getCards().get(0),
+                goldenUncovered.getFirst(),
+                goldenUncovered.getLast(),
+                resourceUncovered.getFirst(),
+                resourceUncovered.getLast()
+        };
+        notifyAll(new DeckUpdateResponse(Arrays.asList(decks)));
     }
 
     /**

@@ -20,6 +20,10 @@ public class GUIResponseHandler implements ResponseVisitor {
         return instance;
     }
 
+    private GUIMatchPageController getMatchPageFromController(){
+        return ((GUIMatchPageController)(controller.getPage()));
+    }
+
     @Override
     public void visit(JoinMatchResponse response) {
         controller.getClient().setInMatch(response.getJoined());
@@ -68,7 +72,7 @@ public class GUIResponseHandler implements ResponseVisitor {
     @Override
     public void visit(ChatMessageResponse response) {
         Platform.runLater(()-> {
-            ((GUIMatchPageController)(GUIClientViewController.instance().getPage())).newMessage(response.getSender(), response.getMessage());
+            getMatchPageFromController().newMessage(response.getSender(), response.getMessage());
         });
     }
 
@@ -80,8 +84,8 @@ public class GUIResponseHandler implements ResponseVisitor {
     @Override
     public void visit(PlaceStartingCardResponse placeStartingCardResponse) {
         Platform.runLater(() -> {
-            ((GUIMatchPageController)(controller.getPage())).placeStartingCard();
-            ((GUIMatchPageController) controller.getPage()).updateResources(placeStartingCardResponse.getResources());
+            getMatchPageFromController().placeStartingCard();
+            getMatchPageFromController().updateResources(placeStartingCardResponse.getResources());
         });
     }
 
@@ -89,8 +93,8 @@ public class GUIResponseHandler implements ResponseVisitor {
     public void visit(PlaceCardResponse placeCardResponse) {
         Platform.runLater(() -> {
             if(placeCardResponse.getStatus()){
-                ((GUIMatchPageController)(controller.getPage())).placeCardOnTable(placeCardResponse.getCard());
-                ((GUIMatchPageController)(controller.getPage())).updateResources(placeCardResponse.getPlayerResources());
+                getMatchPageFromController().placeCardOnTable(placeCardResponse.getCard());
+                getMatchPageFromController().updateResources(placeCardResponse.getPlayerResources());
             }else{
 
             }
@@ -134,7 +138,9 @@ public class GUIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(DeckUpdateResponse deckUpdateResponse) {
+        Platform.runLater(() -> {
+            getMatchPageFromController().updateTablePickingOptions(deckUpdateResponse.getPickables());
 
-
+        });
     }
 }
