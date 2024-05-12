@@ -21,6 +21,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -51,7 +52,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     private static ArrayList<Quest> commonQuests;
     private static final ArrayList<StackPane> handCardStackPanes = new ArrayList<>();
     private int matrixCardId;
-    private Rectangle clickedRectangle = null;
+    private static Rectangle clickedRectangle = null;
     private PlaceableCard clickedCard;
     private static StartingCard startingCard;
     private AnchorPane boardAnchorPane;
@@ -59,6 +60,8 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     private boolean matrixCardValidSelection = false;
     private boolean placeRequestValidating = false;
     private final Map<Position, int[]> placementOffsets = new HashMap<>();
+
+    private static final HashMap<Integer, int[]> boardPositions = new HashMap<>();
 
 
     @FXML
@@ -187,6 +190,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         resourcePaneSetup();
         questsSetup();
         placementOffsetsSetup();
+        scoreboardPositionsSetup();
 
         showStartingCard(startingCard);
     }
@@ -237,9 +241,11 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
         handCardStackPanes.forEach(pane -> {
             ImageView disabledView = new ImageView();
+
             disabledView.setPreserveRatio(true);
             disabledView.setFitHeight(pane.getPrefHeight());
             disabledView.setFitWidth(pane.getPrefWidth());
+
             pane.setDisable(true);
             pane.getChildren().add(disabledView);
             ArrayList<Rectangle> hooverRectangles = rectangles();
@@ -247,6 +253,8 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         });
 
     }
+
+    private void scoreboardPositionsSetup() {}
 
     private void boardPanesSetup() {
 
@@ -364,11 +372,30 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
         cardView.setImage(cardImage);
         cardView.setUserData(card);
+        cardView.setCursor(Cursor.HAND);
+
+        cardView.setOnMouseClicked(event -> {
+            ((PlaceableCard) cardView.getUserData()).swapState();
+            cardView.setImage(new Image(getResourcePath(card)));
+
+            setRectanglesOnCard(stackPane, card);
+
+            if(!stackPane.getChildren().stream().filter(node -> node.getClass().equals(Rectangle.class)).filter(node -> node.equals(clickedRectangle)).toList().isEmpty()){
+                stackPane.getChildren().stream().filter(node -> node.getClass().equals(Rectangle.class)).forEach(node -> node.setOpacity(0));
+                clickedRectangle = null;
+            }
+        });
+
         AnchorPane.setTopAnchor(cardView, 0D);
         AnchorPane.setLeftAnchor(cardView, 0D);
         AnchorPane.setBottomAnchor(cardView, 0D);
         AnchorPane.setRightAnchor(cardView, 0D);
 
+        setRectanglesOnCard(stackPane, card);
+
+    }
+
+    private static void setRectanglesOnCard(StackPane stackPane, PlaceableCard card) {
         stackPane.getChildren().stream().filter(node -> node.getClass().equals(Rectangle.class)).forEach(rectangle -> {
             if(card.getStateCardCorners().stream().filter(corner -> !corner.isAvailable()).anyMatch(corner -> corner.getPosition().equals(rectangle.getUserData()))){
                 rectangle.setDisable(true);
@@ -377,7 +404,6 @@ public class GUIMatchPageController implements GUIPageController , Initializable
                 rectangle.setDisable(false);
             }
         });
-
     }
 
     public void placeStartingCard(){
@@ -437,6 +463,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         textFlow.setStyle("-fx-background-color : rgba(255, 251, 230, 0.37)"
                 + ";-fx-background-radius : 20px");
 
+        textFlow.setPadding(new Insets(5, 10, 5, 10));
         textFlow.getChildren().add(text);
 
         hBox.getChildren().add(textFlow);
@@ -538,6 +565,10 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
         else path += card.getId();
         return path + ".png";
+    }
+
+    public void updateBoard (ArrayList<Player> players) {
+
     }
 
 

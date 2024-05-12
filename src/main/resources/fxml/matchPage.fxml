@@ -2,11 +2,8 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -33,10 +30,9 @@
             <StackPane fx:id="handCardThreePane" layoutX="533.0" layoutY="11.0" prefHeight="150.0" prefWidth="230.0" />
             <StackPane fx:id="handCardTwoPane" layoutX="270.0" layoutY="10.0" prefHeight="150.0" prefWidth="230.0" />
          </children></AnchorPane>
-      <AnchorPane layoutX="1228.0" layoutY="15.0" prefHeight="450.0" prefWidth="340.0" styleClass="label" stylesheets="@../css/matchPage.css" AnchorPane.leftAnchor="1228.0" AnchorPane.rightAnchor="20.0">
+      <AnchorPane layoutX="1228.0" layoutY="15.0" prefHeight="458.0" prefWidth="352.0" styleClass="label" stylesheets="@../css/matchPage.css" AnchorPane.leftAnchor="1228.0" AnchorPane.rightAnchor="20.0">
          <children>
-            <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#6b59224d" height="470.0" layoutY="-2.0" stroke="#463e02" strokeType="INSIDE" strokeWidth="5.0" width="354.0" />
-            <TabPane layoutX="4.0" layoutY="8.0" prefHeight="460.0" prefWidth="352.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="8.0">
+            <TabPane layoutX="4.0" prefHeight="492.0" prefWidth="352.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="-34.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <tabs>
                 <Tab text="Quests">
                   <content>
@@ -78,7 +74,7 @@
                                     </ImageView>
                                     <ImageView fx:id="questCardThree" fitHeight="114.0" fitWidth="165.0" pickOnBounds="true" preserveRatio="true">
                                        <VBox.margin>
-                                          <Insets left="176.0" right="10.0" />
+                                          <Insets left="176.0" right="10.0" top="10.0" />
                                        </VBox.margin>
                                        <effect>
                                           <DropShadow />
@@ -239,40 +235,31 @@
             </HBox>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="1228.0" layoutY="492.0" prefHeight="385.0" prefWidth="352.0">
+      <AnchorPane layoutX="1228.0" layoutY="467.0" prefHeight="420.0" prefWidth="322.0">
          <children>
             <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#6957214d" height="288.0" layoutX="-1.0" layoutY="132.0" stroke="#463e02" strokeType="INSIDE" strokeWidth="5.0" width="356.0" AnchorPane.topAnchor="132.0" />
-            <ScrollPane fx:id="chatScrollPane" hbarPolicy="NEVER" layoutX="6.0" layoutY="132.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="208.0" prefWidth="342.0" styleClass="player-board" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="132.0">
+            <ScrollPane fx:id="chatScrollPane" hbarPolicy="NEVER" layoutY="135.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="234.0" prefWidth="352.0" styleClass="player-board" AnchorPane.bottomAnchor="51.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="33.0" AnchorPane.topAnchor="135.0">
                <content>
-                  <VBox fx:id="chatVBox" prefHeight="227.0" prefWidth="336.0" />
+                  <VBox fx:id="chatVBox" prefHeight="227.0" prefWidth="352.0" />
                </content>
             </ScrollPane>
-            <TextField fx:id="chatText" alignment="BOTTOM_CENTER" layoutX="8.0" layoutY="345.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="281.0">
+            <TextField fx:id="chatText" layoutX="6.0" layoutY="370.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="281.0" styleClass="input">
                <cursor>
-                  <Cursor fx:constant="NONE" />
+                  <Cursor fx:constant="TEXT" />
                </cursor>
                <effect>
                   <Glow />
                </effect></TextField>
-            <Button fx:id="chatButton" layoutX="291.0" layoutY="352.0" mnemonicParsing="false" onAction="#send" prefHeight="25.0" prefWidth="54.0" text="Send">
+            <Button fx:id="chatButton" layoutX="290.0" layoutY="372.0" mnemonicParsing="false" onAction="#send" prefHeight="25.0" prefWidth="54.0" text="Send">
                <effect>
                   <DropShadow blurType="GAUSSIAN" />
                </effect>
             </Button>
-            <Label layoutX="53.0" layoutY="77.0" prefHeight="35.0" prefWidth="249.0" styleClass="chat-label" stylesheets="@../css/matchPage.css" text="GAME CHAT" textAlignment="CENTER">
+            <Label layoutX="53.0" layoutY="81.0" prefHeight="35.0" prefWidth="249.0" styleClass="chat-label" stylesheets="@../css/matchPage.css" text="GAME CHAT" textAlignment="CENTER">
                <font>
                   <Font size="30.0" />
                </font>
             </Label>
-            <MenuButton layoutX="95.0" layoutY="14.0" mnemonicParsing="false" popupSide="LEFT" prefHeight="55.0" prefWidth="165.0" text="MenuButton">
-              <items>
-                <MenuItem mnemonicParsing="false" text="Action 1">
-                     <graphic>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" />
-                     </graphic>
-                  </MenuItem>
-              </items>
-            </MenuButton>
          </children>
       </AnchorPane>
 
