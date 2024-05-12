@@ -27,6 +27,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -56,9 +58,12 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     private static final ArrayList<StackPane> handCardStackPanes = new ArrayList<>();
     private int matrixCardId;
     private Rectangle clickedRectangle = null;
+    private PlaceableCard clickedCard;
     private static StartingCard startingCard;
     private AnchorPane boardAnchorPane;
     private final int boardCardDimension = 0xfa;
+    private boolean matrixCardValidSelection = false;
+
 
     @FXML
     private Button chatButton;
@@ -117,7 +122,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     public static void setThisPlayer(Player player){GUIMatchPageController.thisPlayer = player;}
     public static void setOtherPlayers (ArrayList<Player> otherPlayers){GUIMatchPageController.otherPlayers = otherPlayers;}
     public static void setStartingCard(StartingCard startingCard){GUIMatchPageController.startingCard = startingCard;}
-    private void clearBoard(){boardAnchorPane.getChildren().removeAll();}
+    private void clearBoard(){boardAnchorPane.getChildren().clear();}
 
     public void showStartingCard(@NotNull StartingCard startingCard){
 
@@ -281,23 +286,38 @@ public class GUIMatchPageController implements GUIPageController , Initializable
             hooverRectangles.add(hooverRectangle);
             hooverRectangle.setDisable(false);
 
-
-
-            hooverRectangle.setOnMouseEntered(_ -> hooverRectangle.setOpacity(0.3));
+            hooverRectangle.setOnMouseEntered(_ -> hooverRectangle.setOpacity(0.3)); //always highlight when hoovering
 
             hooverRectangle.setOnMouseExited(_ ->{
-                if(!isClicked(hooverRectangle)) hooverRectangle.setOpacity(0);
+                if(!isClicked(hooverRectangle)) hooverRectangle.setOpacity(0); //if rectangle is selected, leave highlight on it, else toggle
             });
 
             hooverRectangle.setOnMouseClicked(_ -> {
-                if(!isClicked(hooverRectangle)){
-                    clickedRectangle = hooverRectangle;
+                if(!isClicked(hooverRectangle)){ //if this rectangle is not the selected one
+                    clickedRectangle = hooverRectangle; //set this rectangle as selected
+                    clickedCard = (PlaceableCard) hooverRectangle.getParent().getChildrenUnmodifiable()//updaate clickedCard as this specific card
+                            .stream()
+                            .filter(node -> node.getClass()
+                                    .equals(ImageView.class))
+                            .map(node-> (ImageView) node)
+                            .findFirst()
+                            .get()
+                            .getUserData();
+
+                    if(matrixCardValidSelection){ //if user already selected a martix card
+                        controller.send(new PlaceCardRequest(controller.getMatchId(), clickedCard, (Position)(hooverRectangle.getUserData()), matrixCardId)); //send place request
+                        clickedRectangle = null; //clicked rectangle resets as a new request of placing has been sent
+                        clickedCard = null; //clicked card resets
+                        resetAllBoardShadows();
+                    }
                     handCardStackPanes.forEach(stackPane -> stackPane.getChildren().stream().filter(node -> node.getClass().equals(Rectangle.class)).map(node -> ((Rectangle) (node))).forEach(rectangle -> {
-                        if(!rectangle.equals(clickedRectangle)) rectangle.setOpacity(0);}));
+                        if(!rectangle.equals(clickedRectangle)) rectangle.setOpacity(0);
+                    })); //resets all highlighting, if a new req has been sent, clicked rectangle is null so this function sets all rectangles to non-highlighted
                 }else {
+                    hooverRectangle.setOpacity(0); //rectangle was the selected one, so we reset the state to non-selected
+                    clickedCard = null;
                     clickedRectangle = null;
                 }
-
             });
         }
         return hooverRectangles;
@@ -357,7 +377,44 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         clearBoard();
         setScrollPannable();
         ImageView startingCardImageView = new ImageView(new Image((Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/retro" + startingCard.getId() + ".png")))));
-        AnchorPane.setTopAnchor();
+        startingCardImageView.setFitHeight(boardCardDimension);
+        startingCardImageView.setFitWidth(boardCardDimension);
+        startingCardImageView.setPreserveRatio(true);
+        AnchorPane.setTopAnchor(startingCardImageView, boardAnchorPane.getPrefHeight()/2 - boardCardDimension/2);
+        AnchorPane.setLeftAnchor(startingCardImageView, boardAnchorPane.getPrefWidth()/2 - boardCardDimension/2);
+        startingCardImageView.setUserData(startingCard);
+        boardAnchorPane.getChildren().add(startingCardImageView);
+
+        startingCardImageView.setOnMouseEntered(_ -> {
+            startingCardImageView.setEffect(new DropShadow());
+        });
+
+        startingCardImageView.setOnMouseExited(_ -> {
+            if(!matrixCardValidSelection){
+                startingCardImageView.setEffect(null);
+            }else if (matrixCardId != ((StartingCard)(startingCardImageView.getUserData())).getId()){
+                startingCardImageView.setEffect(null);
+            }
+        });
+
+        startingCardImageView.setOnMouseClicked(_ -> {
+            if(!matrixCardValidSelection){
+                matrixCardValidSelection = true;
+                matrixCardId = ((StartingCard)(startingCardImageView.getUserData())).getId();
+                if(clickedCard != null) {
+                    controller.send(new PlaceCardRequest(controller.getMatchId(), clickedCard, (Position) (clickedRectangle.getUserData()), matrixCardId));
+                    resetAllBoardShadows();
+                }
+            }else if (matrixCardId == ((StartingCard)startingCardImageView.getUserData()).getId()){
+                matrixCardValidSelection = false;
+            }else{
+                matrixCardId = ((StartingCard)(startingCardImageView.getUserData())).getId();
+            }
+        });
+    }
+
+    private void resetAllBoardShadows(){
+        boardAnchorPane.getChildren().stream().filter(node -> node.getClass().equals(ImageView.class)).map(node -> (ImageView)(node)).forEach(imageView -> imageView.setEffect(null));
     }
 
     @FXML
@@ -424,34 +481,6 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         chatVBox.getChildren().add(hBox);
     }
 
-    /**
-     * This method must be assigned to all cards on the table when inserted inside the board.
-     * Starting card must have this method assigned.
-     * @param event mouse click event
-     */
-    @FXML
-    private void selectCardOnTable(MouseEvent event){
-        if(clickedRectangle != null){
-
-            matrixCardId = ((PlaceableCard) event.getSource()).getId();
-
-            controller.send(new PlaceCardRequest(
-                    controller.getMatchId(),
-                    (PlaceableCard) clickedRectangle.getParent().getChildrenUnmodifiable().stream()
-                            .filter(ch -> ch.getClass().equals(ImageView.class))
-                            .findFirst()
-                            .orElseThrow(RuntimeException::new)
-                            .getUserData(),
-
-                    (Position) clickedRectangle.getUserData(),
-                    ((PlaceableCard) event.getSource()).getId()
-                    )
-            );
-
-            clickedRectangle.setVisible(false);
-            clickedRectangle = null;
-        }
-    }
 
     public void placeCardOnTable(PlaceableCard card, Position position){
         int cardWidth;

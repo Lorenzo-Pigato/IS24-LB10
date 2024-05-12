@@ -173,7 +173,7 @@ public class MatchModel extends Observable {
     public void insertStartingCard(Player player) {
         player.getMatrix().setCard(player.getStartingCard());
         setCardResourceOnPlayer(player, player.getStartingCard());
-        notify(new PlaceStartingCardResponse(player.getStartingCard(), player.getOnMapResources(), player.getMatrix()), player.getUserHash());
+        notify(new PlaceStartingCardResponse(player.getStartingCard(), player.getOnMapResources()), player.getUserHash());
     }
 
     /**

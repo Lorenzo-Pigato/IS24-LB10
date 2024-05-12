@@ -81,8 +81,8 @@ public class GUIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(PlaceStartingCardResponse placeStartingCardResponse) {
-        ((GUIMatchPageController)(controller.getPage())).placeStartingCard();
         Platform.runLater(() -> {
+            ((GUIMatchPageController)(controller.getPage())).placeStartingCard();
             ((GUIMatchPageController) controller.getPage()).updateResources(placeStartingCardResponse.getResources());
         });
     }
