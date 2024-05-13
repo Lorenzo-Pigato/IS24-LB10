@@ -111,6 +111,7 @@ public class GUIResponseHandler implements ResponseVisitor {
                 getMatchPageFromController().popUpTip("You can draw your card from GAME TABLE to end your turn!", Color.GREEN);
             }else{
                 getMatchPageFromController().popUpTip("You selected an invalid card placement!", Color.RED);
+                getMatchPageFromController().resetAllBoardShadows();
             }
         });
     }
@@ -137,7 +138,7 @@ public class GUIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(ServerNotification serverNotification) {
-        getMatchPageFromController().popUpTip(serverNotification.getMessage(), Color.RED);
+        getMatchPageFromController().popUpTip(serverNotification.getMessage(), serverNotification.getStatus() ? Color.GREEN : Color.RED);
     }
 
     @Override

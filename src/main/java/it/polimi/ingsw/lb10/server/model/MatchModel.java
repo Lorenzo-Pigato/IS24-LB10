@@ -517,7 +517,6 @@ public class MatchModel extends Observable {
             player.addPoints(card.getStateCardPoints() * player.getResourceQuantity(goldenResource));
         else
             player.addPoints(card.getStateCardPoints());
-        notifyAll(new PlayerPointsUpdateResponse(player.getUsername(), player.getPoints()));
     }
 
 

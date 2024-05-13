@@ -22,16 +22,44 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" styleClass="background-anchor" stylesheets="@../css/matchPage.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.lb10.client.gui.GUIMatchPageController">
    <children>
+      <AnchorPane layoutX="1228.0" layoutY="505.0" minHeight="0.0" prefHeight="400.0" prefWidth="355.0">
+         <children>
+            <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#6957214d" height="269.0" layoutX="-1.0" layoutY="132.0" stroke="#463e02" strokeType="INSIDE" strokeWidth="5.0" width="356.0" AnchorPane.topAnchor="132.0" />
+            <ScrollPane fx:id="chatScrollPane" hbarPolicy="NEVER" layoutX="6.0" layoutY="135.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="208.0" prefWidth="342.0" styleClass="player-board" AnchorPane.bottomAnchor="47.0" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="135.0">
+               <content>
+                  <VBox fx:id="chatVBox" prefHeight="205.0" prefWidth="336.0" />
+               </content>
+            </ScrollPane>
+            <TextField fx:id="chatText" layoutX="8.0" layoutY="352.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#send" prefHeight="38.0" prefWidth="281.0" styleClass="input" stylesheets="@../css/matchPage.css">
+               <cursor>
+                  <Cursor fx:constant="TEXT" />
+               </cursor>
+               <effect>
+                  <Glow />
+               </effect>
+            </TextField>
+            <Button fx:id="chatButton" layoutX="292.0" layoutY="354.0" mnemonicParsing="false" onAction="#send" prefHeight="25.0" prefWidth="54.0" text="Send">
+               <effect>
+                  <DropShadow blurType="GAUSSIAN" />
+               </effect>
+            </Button>
+            <Label layoutX="53.0" layoutY="87.0" prefHeight="35.0" prefWidth="249.0" styleClass="chat-label" stylesheets="@../css/matchPage.css" text="GAME CHAT" textAlignment="CENTER">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
       <TabPane layoutX="14.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="1198.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Board">
                <content>
-                  <ScrollPane fx:id="boardScrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minViewportHeight="664.0" minViewportWidth="1181.0" minWidth="-Infinity" pannable="true" prefHeight="663.0" prefViewportHeight="664.0" prefViewportWidth="1181.0" prefWidth="1184.0" styleClass="player-board" stylesheets="@../css/matchPage.css" vbarPolicy="NEVER" />
+                  <ScrollPane fx:id="boardScrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minViewportHeight="664.0" minViewportWidth="1181.0" minWidth="-Infinity" pannable="true" prefHeight="631.0" prefViewportHeight="664.0" prefViewportWidth="1181.0" prefWidth="1187.0" styleClass="player-board" stylesheets="@../css/matchPage.css" vbarPolicy="NEVER" />
                </content>
             </Tab>
           <Tab text="Game table">
                <content>
-                  <VBox prefHeight="200.0" prefWidth="100.0">
+                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="1184.0">
                      <children>
                         <HBox prefHeight="362.0" prefWidth="1190.0">
                            <VBox.margin>
@@ -55,14 +83,14 @@
                               </ImageView>
                            </children>
                         </HBox>
-                        <HBox prefHeight="362.0" prefWidth="1190.0">
+                        <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="301.0" prefWidth="1183.0">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
                            <children>
                               <ImageView fx:id="tableOne" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
                                  <HBox.margin>
-                                    <Insets bottom="20.0" left="15.0" top="80.0" />
+                                    <Insets bottom="20.0" left="15.0" top="40.0" />
                                  </HBox.margin>
                                  <effect>
                                     <DropShadow height="68.44" radius="32.980000000000004" width="65.48" />
@@ -70,7 +98,7 @@
                               </ImageView>
                               <ImageView fx:id="tableTwo" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
                                  <HBox.margin>
-                                    <Insets left="50.0" right="50.0" top="80.0" />
+                                    <Insets left="50.0" right="50.0" top="40.0" />
                                  </HBox.margin>
                                  <effect>
                                     <DropShadow height="68.44" radius="33.72" width="68.44" />
@@ -78,7 +106,7 @@
                               </ImageView>
                               <ImageView fx:id="tableThree" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
                                  <HBox.margin>
-                                    <Insets top="80.0" />
+                                    <Insets top="40.0" />
                                  </HBox.margin>
                                  <effect>
                                     <DropShadow height="97.85" radius="42.495" width="74.13" />
@@ -86,10 +114,10 @@
                               </ImageView>
                               <ImageView fx:id="tableFour" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
                                  <HBox.margin>
-                                    <Insets left="50.0" top="80.0" />
+                                    <Insets left="50.0" top="40.0" />
                                  </HBox.margin>
                                  <effect>
-                                    <DropShadow height="65.23" radius="31.375" width="62.27" />
+                                    <DropShadow height="77.09" radius="32.8575" width="56.34" />
                                  </effect>
                               </ImageView>
                            </children>
@@ -130,7 +158,7 @@
                                     </Label>
                                     <ImageView fx:id="questCardOne" fitHeight="114.0" fitWidth="165.0" pickOnBounds="true" preserveRatio="true">
                                        <VBox.margin>
-                                          <Insets left="100.0" />
+                                          <Insets left="100.0" top="15.0" />
                                        </VBox.margin>
                                        <effect>
                                           <DropShadow />
@@ -138,12 +166,12 @@
                                     </ImageView>
                                     <Label alignment="CENTER" styleClass="quest-label" stylesheets="@../css/matchPage.css" text="Public Quests">
                                        <VBox.margin>
-                                          <Insets left="90.0" />
+                                          <Insets left="90.0" top="10.0" />
                                        </VBox.margin>
                                     </Label>
                                     <ImageView fx:id="questCardTwo" fitHeight="114.0" fitWidth="165.0" pickOnBounds="true" preserveRatio="true">
                                        <VBox.margin>
-                                          <Insets left="10.0" top="40.0" />
+                                          <Insets left="20.0" top="20.0" />
                                        </VBox.margin>
                                        <effect>
                                           <DropShadow />
@@ -151,7 +179,7 @@
                                     </ImageView>
                                     <ImageView fx:id="questCardThree" fitHeight="113.0" fitWidth="165.0" pickOnBounds="true" preserveRatio="true">
                                        <VBox.margin>
-                                          <Insets left="176.0" right="10.0" top="25.0" />
+                                          <Insets left="155.0" right="20.0" top="25.0" />
                                        </VBox.margin>
                                        <effect>
                                           <DropShadow />
@@ -165,10 +193,23 @@
                   <content>
                     <AnchorPane fx:id="scoreBoardAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
+                              <ImageView fitHeight="118.0" fitWidth="98.0" layoutX="-3.0" layoutY="391.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/DolmenInsect.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="118.0" fitWidth="98.0" layoutX="252.0" layoutY="391.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/DolmenAnimal.png" />
+                                 </image>
+                              </ImageView>
                               <ImageView fitHeight="493.0" fitWidth="264.0" layoutX="46.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/scoreboard.png" />
                                  </image>
+                                 <effect>
+                                    <DropShadow height="30.0" radius="24.8525" width="71.41" />
+                                 </effect>
                               </ImageView>
                            </children></AnchorPane>
                   </content>
@@ -180,7 +221,7 @@
       <AnchorPane fx:id="resourcePane" layoutX="818.0" layoutY="709.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="398.0">
          <children>
             <Rectangle arcHeight="30.0" arcWidth="30.0" fill="#2214006b" height="182.0" layoutX="-1.0" layoutY="-4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="401.0" />
-            <HBox layoutX="18.0" layoutY="40.0" prefHeight="44.0" prefWidth="64.0">
+            <HBox layoutX="23.0" layoutY="14.0" prefHeight="44.0" prefWidth="64.0" AnchorPane.topAnchor="14.0">
                <children>
                   <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -200,7 +241,7 @@
                   </Label>
                </children>
             </HBox>
-            <HBox layoutX="116.0" layoutY="40.0">
+            <HBox layoutX="116.0" layoutY="15.0">
                <children>
                   <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -220,7 +261,7 @@
                   </Label>
                </children>
             </HBox>
-            <HBox layoutX="211.0" layoutY="40.0">
+            <HBox layoutX="205.0" layoutY="15.0">
                <children>
                   <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -240,7 +281,7 @@
                   </Label>
                </children>
             </HBox>
-            <HBox layoutX="299.0" layoutY="40.0">
+            <HBox layoutX="303.0" layoutY="15.0">
                <children>
                   <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -269,7 +310,7 @@
                      <effect>
                         <DropShadow />
                      </effect></ImageView>
-                  <Label fx:id="featherResourceLabel" styleClass="points-label" stylesheets="@../css/matchPage.css" text="0">
+                  <Label fx:id="pergamenaResourceLabel" styleClass="points-label" stylesheets="@../css/matchPage.css" text="0">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -288,7 +329,7 @@
                      <effect>
                         <DropShadow />
                      </effect></ImageView>
-                  <Label fx:id="pergamenaResourceLabel" styleClass="points-label" stylesheets="@../css/matchPage.css" text="0">
+                  <Label fx:id="potionResourceLabel" styleClass="points-label" stylesheets="@../css/matchPage.css" text="0">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -307,7 +348,7 @@
                      <effect>
                         <DropShadow />
                      </effect></ImageView>
-                  <Label fx:id="potionResourceLabel" styleClass="points-label" stylesheets="@../css/matchPage.css" text="0">
+                  <Label fx:id="featherResourceLabel" styleClass="points-label" stylesheets="@../css/matchPage.css" text="0">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -319,41 +360,12 @@
             </HBox>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="1228.0" layoutY="485.0" minHeight="0.0" prefHeight="400.0" prefWidth="355.0">
-         <children>
-            <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#6957214d" height="269.0" layoutX="-1.0" layoutY="132.0" stroke="#463e02" strokeType="INSIDE" strokeWidth="5.0" width="356.0" AnchorPane.topAnchor="132.0" />
-            <ScrollPane fx:id="chatScrollPane" hbarPolicy="NEVER" layoutX="6.0" layoutY="135.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="208.0" prefWidth="342.0" styleClass="player-board" AnchorPane.bottomAnchor="47.0" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="135.0">
-               <content>
-                  <VBox fx:id="chatVBox" prefHeight="205.0" prefWidth="336.0" />
-               </content>
-            </ScrollPane>
-            <TextField fx:id="chatText" layoutX="8.0" layoutY="352.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="281.0" styleClass="input" stylesheets="@../css/matchPage.css">
-               <cursor>
-                  <Cursor fx:constant="TEXT" />
-               </cursor>
-               <effect>
-                  <Glow />
-               </effect>
-            </TextField>
-            <Button fx:id="chatButton" layoutX="292.0" layoutY="354.0" mnemonicParsing="false" onAction="#send" prefHeight="25.0" prefWidth="54.0" text="Send">
-               <effect>
-                  <DropShadow blurType="GAUSSIAN" />
-               </effect>
-            </Button>
-            <Label layoutX="53.0" layoutY="87.0" prefHeight="35.0" prefWidth="249.0" styleClass="chat-label" stylesheets="@../css/matchPage.css" text="GAME CHAT" textAlignment="CENTER">
-               <font>
-                  <Font size="30.0" />
-               </font>
-            </Label>
-         </children>
-      </AnchorPane>
       <AnchorPane fx:id="serverNotificationPane" layoutX="858.0" layoutY="25.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="71.0" prefWidth="342.0" AnchorPane.leftAnchor="858.0" AnchorPane.rightAnchor="400.0">
          <children>
-            <Rectangle fx:id="serverNotificationRectangle" arcHeight="40.0" arcWidth="40.0" fill="#ff21214a" height="70.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="342.0" AnchorPane.bottomAnchor="80.0" AnchorPane.topAnchor="0.0">
+            <Rectangle fx:id="serverNotificationRectangle" arcHeight="40.0" arcWidth="40.0" fill="#ff00004a" height="70.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="342.0" AnchorPane.bottomAnchor="80.0" AnchorPane.topAnchor="0.0">
                <effect>
                   <DropShadow />
                </effect></Rectangle>
-            <Text fx:id="serverNotificationLabel" layoutX="14.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="server-notification" wrappingWidth="237.7294921875" />
             <ImageView fitHeight="44.0" fitWidth="39.0" layoutX="290.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/info.png" />
@@ -362,6 +374,7 @@
                   <DropShadow />
                </effect>
             </ImageView>
+            <Text fx:id="serverNotificationLabel" layoutX="13.0" layoutY="5.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="server-notification" wrappingWidth="268.7294921875" AnchorPane.topAnchor="10.0" />
          </children>
       </AnchorPane>
 

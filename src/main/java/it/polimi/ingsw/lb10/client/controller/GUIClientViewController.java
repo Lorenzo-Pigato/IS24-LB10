@@ -48,7 +48,7 @@ public class GUIClientViewController extends ClientViewController {
 
     public synchronized void initialize(Stage stage) {
         setClient(new Client());
-
+        setExceptionHandler(new GUIExceptionHandler(this));
         this.stage = stage;
         stage.setResizable(false);
         stage.setTitle("Codex Naturalis");

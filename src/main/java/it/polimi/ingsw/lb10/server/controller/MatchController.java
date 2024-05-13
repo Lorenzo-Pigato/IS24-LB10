@@ -164,12 +164,13 @@ public class MatchController implements Runnable, MatchRequestVisitor {
             model.endTurn(drawGoldenFromTableRequest.getUserHash(), getPlayer(drawGoldenFromTableRequest.getUserHash()).getPoints());
             model.checkDeckEmptiness();
             Server.log("[" + id + "]" + ">>draw request valid");
-        } else if (!isOnTurnPlayer(drawGoldenFromTableRequest.getUserHash())) {
-            model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), drawGoldenFromTableRequest.getUserHash());
-            Server.log("[" + id + "]" + ">>draw request not valid");
-        } else if (!hasToPick(drawGoldenFromTableRequest.getUserHash())) {
+        }  else if (!hasToPick(drawGoldenFromTableRequest.getUserHash())) {
             Server.log("[" + id + "]" + ">>draw request not valid");
             model.notify(new ServerNotification("You must place a card before picking one!", false), drawGoldenFromTableRequest.getUserHash());
+
+        }else if (!isOnTurnPlayer(drawGoldenFromTableRequest.getUserHash())) {
+            model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), drawGoldenFromTableRequest.getUserHash());
+            Server.log("[" + id + "]" + ">>draw request not valid");
         }
     }
 
