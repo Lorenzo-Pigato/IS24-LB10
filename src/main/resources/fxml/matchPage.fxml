@@ -16,6 +16,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
@@ -107,6 +108,34 @@
             <StackPane fx:id="handCardThreePane" layoutX="533.0" layoutY="11.0" prefHeight="150.0" prefWidth="230.0" />
             <StackPane fx:id="handCardTwoPane" layoutX="270.0" layoutY="10.0" prefHeight="150.0" prefWidth="230.0" />
          </children></AnchorPane>
+      <AnchorPane layoutX="1228.0" layoutY="485.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="355.0">
+         <children>
+            <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#6957214d" height="269.0" layoutX="-1.0" layoutY="132.0" stroke="#463e02" strokeType="INSIDE" strokeWidth="5.0" width="356.0" AnchorPane.topAnchor="132.0" />
+            <ScrollPane fx:id="chatScrollPane" hbarPolicy="NEVER" layoutX="6.0" layoutY="140.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="213.0" prefWidth="344.0" styleClass="player-board" AnchorPane.bottomAnchor="47.0" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="140.0">
+               <content>
+                  <VBox fx:id="chatVBox" minWidth="-Infinity" prefHeight="205.0" prefWidth="336.0" />
+               </content>
+            </ScrollPane>
+            <TextField fx:id="chatText" layoutX="8.0" layoutY="352.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#send" prefHeight="38.0" prefWidth="281.0" styleClass="input" stylesheets="@../css/matchPage.css">
+               <cursor>
+                  <Cursor fx:constant="TEXT" />
+               </cursor>
+               <effect>
+                  <Glow />
+               </effect>
+            </TextField>
+            <Button fx:id="chatButton" layoutX="292.0" layoutY="354.0" mnemonicParsing="false" onAction="#send" prefHeight="25.0" prefWidth="54.0" text="Send">
+               <effect>
+                  <DropShadow blurType="GAUSSIAN" />
+               </effect>
+            </Button>
+            <Label layoutX="53.0" layoutY="87.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="249.0" styleClass="chat-label" stylesheets="@../css/matchPage.css" text="GAME CHAT" textAlignment="CENTER">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
       <AnchorPane layoutX="1228.0" layoutY="15.0" prefHeight="556.0" prefWidth="352.0" styleClass="label" stylesheets="@../css/matchPage.css" AnchorPane.leftAnchor="1228.0" AnchorPane.rightAnchor="20.0">
          <children>
             <TabPane layoutX="4.0" layoutY="1.0" prefHeight="556.0" prefWidth="356.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-4.0" AnchorPane.topAnchor="1.0">
@@ -169,12 +198,46 @@
                                  <image>
                                     <Image url="@../images/scoreboard.png" />
                                  </image>
+                                 <effect>
+                                    <DropShadow>
+                                       <color>
+                                          <Color opacity="0.7203065156936646" />
+                                       </color>
+                                    </DropShadow>
+                                 </effect>
                               </ImageView>
-                              <Circle fill="DODGERBLUE" layoutX="258.0" layoutY="361.0" radius="16.0" stroke="BLACK" strokeType="INSIDE" />
-                              <Circle fill="DODGERBLUE" layoutX="257.0" layoutY="412.0" radius="16.0" stroke="BLACK" strokeType="INSIDE" />
-                              <Circle fill="DODGERBLUE" layoutX="201.0" layoutY="412.0" radius="16.0" stroke="BLACK" strokeType="INSIDE" />
-                              <Circle fill="DODGERBLUE" layoutX="145.0" layoutY="412.0" radius="16.0" stroke="BLACK" strokeType="INSIDE" />
-                              <Circle fill="DODGERBLUE" layoutX="88.0" layoutY="412.0" radius="16.0" stroke="BLACK" strokeType="INSIDE" />
+                              <Circle fx:id="playerOne" fill="DODGERBLUE" layoutX="128.0" layoutY="465.0" radius="16.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <DropShadow>
+                                       <color>
+                                          <Color opacity="0.7203065156936646" />
+                                       </color>
+                                    </DropShadow>
+                                 </effect></Circle>
+                              <Circle fx:id="playerTwo" fill="DODGERBLUE" layoutX="120.0" layoutY="451.0" radius="16.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <DropShadow>
+                                       <color>
+                                          <Color opacity="0.7203065156936646" />
+                                       </color>
+                                    </DropShadow>
+                                 </effect></Circle>
+                              <Circle fx:id="playerThree" fill="DODGERBLUE" layoutX="114.0" layoutY="473.0" radius="16.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <DropShadow>
+                                       <color>
+                                          <Color opacity="0.7203065156936646" />
+                                       </color>
+                                    </DropShadow>
+                                 </effect></Circle>
+                              <Circle fx:id="playerFour" fill="DODGERBLUE" layoutX="103.0" layoutY="461.0" radius="16.0" stroke="BLACK" strokeType="INSIDE">
+                                 <effect>
+                                    <DropShadow>
+                                       <color>
+                                          <Color opacity="0.7203065156936646" />
+                                       </color>
+                                    </DropShadow>
+                                 </effect></Circle>
                            </children></AnchorPane>
                   </content>
                 </Tab>
@@ -322,34 +385,6 @@
                   </Label>
                </children>
             </HBox>
-         </children>
-      </AnchorPane>
-      <AnchorPane layoutX="1228.0" layoutY="485.0" minHeight="0.0" prefHeight="400.0" prefWidth="355.0">
-         <children>
-            <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#6957214d" height="269.0" layoutX="-1.0" layoutY="132.0" stroke="#463e02" strokeType="INSIDE" strokeWidth="5.0" width="356.0" AnchorPane.topAnchor="132.0" />
-            <ScrollPane fx:id="chatScrollPane" hbarPolicy="NEVER" layoutX="6.0" layoutY="135.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="208.0" prefWidth="342.0" styleClass="player-board" AnchorPane.bottomAnchor="47.0" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="135.0">
-               <content>
-                  <VBox fx:id="chatVBox" prefHeight="205.0" prefWidth="336.0" />
-               </content>
-            </ScrollPane>
-            <TextField fx:id="chatText" layoutX="8.0" layoutY="352.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="281.0" styleClass="input" stylesheets="@../css/matchPage.css">
-               <cursor>
-                  <Cursor fx:constant="TEXT" />
-               </cursor>
-               <effect>
-                  <Glow />
-               </effect>
-            </TextField>
-            <Button fx:id="chatButton" layoutX="292.0" layoutY="354.0" mnemonicParsing="false" onAction="#send" prefHeight="25.0" prefWidth="54.0" text="Send">
-               <effect>
-                  <DropShadow blurType="GAUSSIAN" />
-               </effect>
-            </Button>
-            <Label layoutX="53.0" layoutY="87.0" prefHeight="35.0" prefWidth="249.0" styleClass="chat-label" stylesheets="@../css/matchPage.css" text="GAME CHAT" textAlignment="CENTER">
-               <font>
-                  <Font size="30.0" />
-               </font>
-            </Label>
          </children>
       </AnchorPane>
 

@@ -9,6 +9,8 @@ import it.polimi.ingsw.lb10.network.response.match.*;
 import it.polimi.ingsw.lb10.server.model.Player;
 import javafx.application.Platform;
 
+import java.util.ArrayList;
+
 public class GUIResponseHandler implements ResponseVisitor {
 
     private static GUIResponseHandler instance;
@@ -60,8 +62,11 @@ public class GUIResponseHandler implements ResponseVisitor {
         GUIMatchPageController.setStartingCard(thisPlayer.getStartingCard());
         GUIMatchPageController.setCommonQuests(response.getPublicQuests());
         GUIMatchPageController.setThisPlayer(thisPlayer);
-        response.getPlayers().remove(thisPlayer);
-        GUIMatchPageController.setOtherPlayers(response.getPlayers());
+
+        ArrayList<Player> others =  response.getPlayers();
+        others.remove(thisPlayer);
+
+        GUIMatchPageController.setOtherPlayers(others);
 
         Platform.runLater(() -> {
             controller.changeScene(new GUIMatchPageController());
@@ -113,7 +118,7 @@ public class GUIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(PlayerPointsUpdateResponse playerPointsUpdateResponse) {
-
+        ((GUIMatchPageController)controller.getPage()).updateBoard(playerPointsUpdateResponse.getUsername(), playerPointsUpdateResponse.getPoints());
     }
 
     @Override

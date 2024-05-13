@@ -14,6 +14,7 @@ import it.polimi.ingsw.lb10.server.model.cards.StartingCardState.FrontStartingCa
 import it.polimi.ingsw.lb10.server.model.cards.*;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
+import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -35,9 +36,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.util.Duration;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.URL;
@@ -62,6 +65,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     private final Map<Position, int[]> placementOffsets = new HashMap<>();
 
     private static final HashMap<Integer, int[]> boardPositions = new HashMap<>();
+    private static final ArrayList<Circle> playerTokens = new ArrayList<>();
 
 
     @FXML
@@ -114,6 +118,14 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     private ImageView tableThree;
     @FXML
     private ImageView tableFour;
+    @FXML
+    private Circle playerOne;
+    @FXML
+    private Circle playerTwo;
+    @FXML
+    private Circle playerThree;
+    @FXML
+    private Circle playerFour;
 
     private ArrayList<Label> resourceLabels;
 
@@ -203,6 +215,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         questsSetup();
         placementOffsetsSetup();
         scoreboardPositionsSetup();
+        playerTokensSetup();
 
         showStartingCard(startingCard);
     }
@@ -266,7 +279,52 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
     }
 
-    private void scoreboardPositionsSetup() {}
+    private void scoreboardPositionsSetup() {
+        boardPositions.put(1, new int[]{173, 464});
+        boardPositions.put(2, new int[]{229, 464});
+
+        for(int i = 0; i < 4; i++){
+            for(int j = 0; j < 4; j++) {
+                boardPositions.put((i + j + 3), new int[]{
+                        257 + j * 56 * (j % 2 == 0 ? -1 : 1),
+                        412 - 52 * i
+                });
+            }
+        }
+
+        boardPositions.put(19, new int[]{257, 206});
+        boardPositions.put(20, new int[]{173, 181});
+        boardPositions.put(21, new int[]{88, 206});
+        boardPositions.put(22, new int[]{88, 154});
+        boardPositions.put(23, new int[]{88, 103});
+        boardPositions.put(24, new int[]{121, 61});
+        boardPositions.put(25, new int[]{173, 51});
+        boardPositions.put(26, new int[]{225, 61});
+        boardPositions.put(27, new int[]{257, 102});
+        boardPositions.put(28, new int[]{257, 154});
+        boardPositions.put(29, new int[]{173, 114});
+    }
+
+    private void playerTokensSetup() {
+        playerTokens.add(playerOne);
+        playerTokens.add(playerTwo);
+        playerTokens.add(playerThree);
+        playerTokens.add(playerThree);
+
+        for (Circle token : playerTokens) token.setVisible(false);
+
+        playerTokens.getFirst().setStyle("-fx-fill: " + thisPlayer.getColor().getCssString());
+        playerTokens.getFirst().setVisible(true);
+        playerTokens.getFirst().setUserData(thisPlayer);
+
+        for (Player player : otherPlayers){
+            Circle token = playerTokens.get(otherPlayers.indexOf(player) + 1);
+            token.setStyle("-fx-fill: " + player.getColor().getCssString());
+            token.setVisible(true);
+            token.setUserData(player);
+        }
+
+    }
 
     private void boardPanesSetup() {
 
@@ -589,9 +647,33 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         return path + ".png";
     }
 
-    public void updateBoard (ArrayList<Player> players) {
+    public void updateBoard (String username, int points) {
+        int maxRandoOffset = 20;
+        Player player = playerTokens.stream().map(token -> (Player)token.getUserData()).filter(pl -> pl.getUsername().equals(username)).findFirst().orElseThrow(RuntimeException::new);
+        List<Player> players = playerTokens.stream().map(token -> (Player)token.getUserData()).toList();
 
+        Circle token = playerTokens.stream().filter(t -> t.getUserData().equals(player)).findAny().orElseThrow(RuntimeException::new);
+
+        int xPos = boardPositions.get(player.getPoints())[0];
+        int yPos = boardPositions.get(player.getPoints())[1];
+
+        TranslateTransition transition = new TranslateTransition();
+
+        if(xPos + maxRandoOffset < token.getLayoutX() && xPos - maxRandoOffset > token.getLayoutX() &&
+                yPos + maxRandoOffset < token.getLayoutY() && yPos - maxRandoOffset > token.getLayoutY()){
+
+            transition.setNode(token);
+            transition.setDuration(Duration.seconds(2));
+
+            if(!players.stream().filter(pl -> pl.getPoints() == points).toList().isEmpty()){
+                xPos += new Random().nextInt(maxRandoOffset);
+                yPos += new Random().nextInt(maxRandoOffset);
+            }
+
+            transition.setToX(xPos);
+            transition.setToY(yPos);
+
+            transition.play();
+        }
     }
-
-
 }
