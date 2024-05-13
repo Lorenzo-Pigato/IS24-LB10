@@ -334,25 +334,22 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     private void playerTokensSetup() {
 
         for(Player player : otherPlayers){
-            Circle token = new Circle(20);
-            token.setStyle("-fx-fill: " + player.getColor().getCssString());
-            token.setVisible(true);
-            token.setUserData(player);
-            token.setCenterX(boardPositions.get(0)[0] + new Random().nextInt(10));
-            token.setCenterY(boardPositions.get(0)[1] + new Random().nextInt(10));
-            playerTokens.add(token);
+            playerTokens.add(createToken(player));
         }
 
+        playerTokens.add(createToken(thisPlayer));
+        scoreBoardAnchorPane.getChildren().addAll(playerTokens);
+    }
+
+    private Circle createToken(Player thisPlayer) {
         Circle thisToken = new Circle(20);
         thisToken.setStyle("-fx-fill: " + thisPlayer.getColor().getCssString());
         thisToken.setVisible(true);
         thisToken.setUserData(thisPlayer);
         thisToken.setCenterX(boardPositions.get(0)[0] + new Random().nextInt(10));
         thisToken.setCenterY(boardPositions.get(0)[1] + new Random().nextInt(10));
-
-        playerTokens.addFirst(thisToken);
-
-        scoreBoardAnchorPane.getChildren().addAll(playerTokens);
+        thisToken.setEffect(new DropShadow(BlurType.THREE_PASS_BOX, new javafx.scene.paint.Color(0, 0, 0, 0.6), 10, 0, 0,0));
+        return thisToken;
     }
 
     private void boardPanesSetup() {
