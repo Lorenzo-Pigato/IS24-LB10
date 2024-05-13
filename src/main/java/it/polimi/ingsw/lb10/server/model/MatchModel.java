@@ -129,7 +129,7 @@ public class MatchModel extends Observable {
             colors.remove(pickedColor);
             p.setColor(pickedColor);
         }
-        onTurnPlayer = players.get(0);
+        onTurnPlayer = null;
         notifyAll(new StartedMatchResponse(id));
     }
 
