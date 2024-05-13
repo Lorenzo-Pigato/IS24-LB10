@@ -2,12 +2,15 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Bloom?>
+<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
@@ -16,43 +19,172 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" styleClass="background-anchor" stylesheets="@../css/matchPage.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.lb10.client.gui.GUIMatchPageController">
    <children>
+      <ImageView fitHeight="256.0" fitWidth="355.0" layoutX="1275.0" layoutY="620.0" opacity="0.2" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/Denari.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="15.0" layoutY="744.0" opacity="0.51" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/Cave4.png" />
+         </image>
+         <effect>
+            <ColorAdjust brightness="0.52" />
+         </effect>
+      </ImageView>
+      <ImageView fitHeight="648.0" fitWidth="907.0" layoutX="150.0" layoutY="30.0" opacity="0.1" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/treeDeco2.png" />
+         </image>
+      </ImageView>
       <TabPane layoutX="14.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="1198.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Board">
                <content>
                   <ScrollPane fx:id="boardScrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minViewportHeight="664.0" minViewportWidth="1181.0" minWidth="-Infinity" pannable="true" prefHeight="663.0" prefViewportHeight="664.0" prefViewportWidth="1181.0" prefWidth="1184.0" styleClass="player-board" stylesheets="@../css/matchPage.css" vbarPolicy="NEVER" />
                </content>
+               <graphic>
+                  <ImageView fitHeight="150.0" fitWidth="200.0" opacity="0.41" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/Denari.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Tab>
           <Tab text="Game table">
                <content>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <HBox prefHeight="362.0" prefWidth="1190.0">
+                        <HBox prefHeight="282.0" prefWidth="1188.0">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
                            <children>
-                              <ImageView fx:id="deckOne" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
+                              <Group>
                                  <HBox.margin>
-                                    <Insets left="250.0" right="150.0" top="80.0" />
+                                    <Insets left="138.0" top="30.0" />
                                  </HBox.margin>
+                                 <children>
+                                    <ImageView fitHeight="250.0" fitWidth="250.0" layoutX="42.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../cards/retroGoldenAnimal.png" />
+                                       </image>
+                                       <effect>
+                                          <DropShadow>
+                                             <color>
+                                                <Color red="0.47999998927116394" green="0.3934379518032074" blue="0.14880000054836273" opacity="0.5" />
+                                             </color>
+                                          </DropShadow>
+                                       </effect>
+                                    </ImageView>
+                                    <ImageView fitHeight="250.0" fitWidth="250.0" layoutX="42.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true" rotate="-7.0">
+                                       <image>
+                                          <Image url="@../cards/retroGoldenMushroom.png" />
+                                       </image>
+                                       <effect>
+                                          <DropShadow>
+                                             <color>
+                                                <Color red="0.47999998927116394" green="0.3934379518032074" blue="0.14880000054836273" opacity="0.5" />
+                                             </color>
+                                          </DropShadow>
+                                       </effect>
+                                    </ImageView>
+                                    <ImageView fitHeight="250.0" fitWidth="250.0" layoutX="42.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true" rotate="6.7">
+                                       <image>
+                                          <Image url="@../cards/retroGoldenPlant.png" />
+                                       </image>
+                                       <effect>
+                                          <DropShadow>
+                                             <color>
+                                                <Color red="0.47999998927116394" green="0.3934379518032074" blue="0.14880000054836273" opacity="0.5" />
+                                             </color>
+                                          </DropShadow>
+                                       </effect>
+                                    </ImageView>
+                                    <ImageView fx:id="deckOne" fitHeight="250.0" fitWidth="250.0" layoutX="42.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
+                                       <effect>
+                                          <DropShadow height="35.83" radius="30.015" width="86.23" />
+                                       </effect>
+                                    </ImageView>
+                                 </children>
+                              </Group>
+                              <Group>
+                                 <children>
+                                    <Line endX="100.0" layoutX="117.0" layoutY="4.0" startX="-100.0" strokeWidth="2.5" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#361c02ef" height="10.0" layoutX="6.0355377197265625" layoutY="-1.0355377197265625" rotate="45.0" stroke="BLACK" strokeType="INSIDE" width="10.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#361c02ef" height="10.0" layoutX="218.03553771972656" layoutY="-1.0355377197265625" rotate="45.0" stroke="BLACK" strokeType="INSIDE" width="10.0" />
+                                    <Line endX="92.0" layoutX="121.53553771972656" layoutY="7.5355377197265625" startX="-100.0" />
+                                 </children>
                                  <effect>
-                                    <DropShadow height="35.83" radius="30.015" width="86.23" />
-                                 </effect></ImageView>
-                              <ImageView fx:id="deckTwo" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
-                                 <HBox.margin>
-                                    <Insets left="80.0" top="80.0" />
-                                 </HBox.margin>
-                                 <effect>
-                                    <DropShadow height="23.97" radius="25.5675" width="80.3" />
+                                    <DropShadow offsetY="3.0">
+                                       <color>
+                                          <Color opacity="0.5977011322975159" />
+                                       </color>
+                                       <input>
+                                          <Bloom />
+                                       </input>
+                                    </DropShadow>
                                  </effect>
-                              </ImageView>
+                                 <HBox.margin>
+                                    <Insets top="130.0" />
+                                 </HBox.margin>
+                              </Group>
+                              <Group>
+                                 <HBox.margin>
+                                    <Insets top="30.0" />
+                                 </HBox.margin>
+                                 <children>
+                                    <ImageView fitHeight="250.0" fitWidth="250.0" layoutX="51.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true" rotate="8.0">
+                                       <image>
+                                          <Image url="@../cards/retroGoldenPlant.png" />
+                                       </image>
+                                       <effect>
+                                          <DropShadow>
+                                             <color>
+                                                <Color opacity="0.44999998807907104" />
+                                             </color>
+                                          </DropShadow>
+                                       </effect>
+                                    </ImageView>
+                                    <ImageView fitHeight="250.0" fitWidth="250.0" layoutX="39.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true" rotate="-5.0">
+                                       <image>
+                                          <Image url="@../cards/retroGoldenMushroom.png" />
+                                       </image>
+                                       <effect>
+                                          <DropShadow>
+                                             <color>
+                                                <Color opacity="0.44999998807907104" />
+                                             </color>
+                                          </DropShadow>
+                                       </effect>
+                                    </ImageView>
+                                    <ImageView fitHeight="250.0" fitWidth="250.0" layoutX="39.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true" rotate="6.3">
+                                       <image>
+                                          <Image url="@../cards/retroGoldenAnimal.png" />
+                                       </image>
+                                       <effect>
+                                          <DropShadow>
+                                             <color>
+                                                <Color opacity="0.44999998807907104" />
+                                             </color>
+                                          </DropShadow>
+                                       </effect>
+                                    </ImageView>
+                                    <ImageView fx:id="deckTwo" fitHeight="250.0" fitWidth="250.0" layoutX="39.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
+                                       <effect>
+                                          <DropShadow height="23.97" radius="25.5675" width="80.3" />
+                                       </effect>
+                                    </ImageView>
+                                 </children>
+                              </Group>
                            </children>
                         </HBox>
                         <HBox prefHeight="362.0" prefWidth="1190.0">
@@ -62,7 +194,7 @@
                            <children>
                               <ImageView fx:id="tableOne" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
                                  <HBox.margin>
-                                    <Insets bottom="20.0" left="15.0" top="80.0" />
+                                    <Insets bottom="20.0" left="15.0" top="60.0" />
                                  </HBox.margin>
                                  <effect>
                                     <DropShadow height="68.44" radius="32.980000000000004" width="65.48" />
@@ -70,7 +202,7 @@
                               </ImageView>
                               <ImageView fx:id="tableTwo" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
                                  <HBox.margin>
-                                    <Insets left="50.0" right="50.0" top="80.0" />
+                                    <Insets left="50.0" right="50.0" top="60.0" />
                                  </HBox.margin>
                                  <effect>
                                     <DropShadow height="68.44" radius="33.72" width="68.44" />
@@ -78,7 +210,7 @@
                               </ImageView>
                               <ImageView fx:id="tableThree" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
                                  <HBox.margin>
-                                    <Insets top="80.0" />
+                                    <Insets top="60.0" />
                                  </HBox.margin>
                                  <effect>
                                     <DropShadow height="97.85" radius="42.495" width="74.13" />
@@ -86,7 +218,7 @@
                               </ImageView>
                               <ImageView fx:id="tableFour" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
                                  <HBox.margin>
-                                    <Insets left="50.0" top="80.0" />
+                                    <Insets left="50.0" top="60.0" />
                                  </HBox.margin>
                                  <effect>
                                     <DropShadow height="65.23" radius="31.375" width="62.27" />
@@ -97,6 +229,13 @@
                      </children>
                   </VBox>
                </content>
+               <graphic>
+                  <ImageView fitHeight="131.0" fitWidth="149.0" opacity="0.22" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/treeDeco2.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Tab>
         </tabs>
       </TabPane>
@@ -321,7 +460,7 @@
       </AnchorPane>
       <AnchorPane layoutX="1228.0" layoutY="485.0" minHeight="0.0" prefHeight="400.0" prefWidth="355.0">
          <children>
-            <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#6957214d" height="269.0" layoutX="-1.0" layoutY="132.0" stroke="#463e02" strokeType="INSIDE" strokeWidth="5.0" width="356.0" AnchorPane.topAnchor="132.0" />
+            <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#69572146" height="269.0" layoutX="-1.0" layoutY="132.0" stroke="#463e02" strokeType="INSIDE" strokeWidth="5.0" width="356.0" AnchorPane.topAnchor="132.0" />
             <ScrollPane fx:id="chatScrollPane" hbarPolicy="NEVER" layoutX="6.0" layoutY="135.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="208.0" prefWidth="342.0" styleClass="player-board" AnchorPane.bottomAnchor="47.0" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="135.0">
                <content>
                   <VBox fx:id="chatVBox" prefHeight="205.0" prefWidth="336.0" />

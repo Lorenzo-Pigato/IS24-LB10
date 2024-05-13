@@ -1,0 +1,31 @@
+@font-face {
+    font-family: 'Alegreya SC';
+    src: url('../fonts/AlegreyaSC-Bold.ttf');
+}
+
+.title {
+    -fx-font-family: "Alegreya SC";
+    -fx-font-size: 100;
+    -fx-alignment: center;
+}
+
+.anchor {
+    -fx-background-image:url('../images/pattern.png');
+    -fx-background-repeat: repeat;
+    -fx-background-size: 2700px 2700px;
+    -fx-background-position: center;
+}
+
+.playerTag {
+    -fx-font-family: "Alegreya SC";
+    -fx-font-size: 30;
+    -fx-alignment: center;
+    -fx-text-alignment: left;
+}
+
+.playerScore {
+    -fx-font-family: "Alegreya SC";
+    -fx-font-size: 50;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+}
