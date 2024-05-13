@@ -125,6 +125,8 @@
     -fx-alignment: center;
 }
 .server-notification{
+    -fx-font-family: "Liberation Serif";
+    -fx-font-weight: bold;
     -fx-font-size: 15;
     -fx-text-fill: white;
 }

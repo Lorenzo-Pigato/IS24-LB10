@@ -402,7 +402,7 @@
 
   {
     "id" 			    : "80",
-    "corners"	        : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 80, "color" : "BLUE"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 80, "color" : "BLUE"}, {"available" : false , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 80, "color" : "BLUE"}, {"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 80, "color" : "BLUE"}],
+    "corners"	        : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 80, "color" : "BLUE"}, {"available" : false , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 80, "color" : "BLUE"}, {"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 80, "color" : "BLUE"}, {"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 80, "color" : "BLUE"}],
     "resource"          : "ANIMAL",
     "points"            : 2 ,
     "color"	            : "BLUE",

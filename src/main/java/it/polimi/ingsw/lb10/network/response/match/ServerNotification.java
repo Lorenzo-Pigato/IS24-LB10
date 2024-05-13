@@ -22,5 +22,6 @@ public class ServerNotification extends Response {
     public String getMessage() {
         return message;
     }
+    public boolean getStatus(){return status;}
 
 }

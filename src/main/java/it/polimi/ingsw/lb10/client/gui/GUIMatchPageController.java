@@ -219,6 +219,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     }
 
     private void pickingOptionsSetup() {
+
         ArrayList<ImageView> pickingOptions = new ArrayList<>();
         pickingOptions.add(deckOne);
         pickingOptions.add(deckTwo);
@@ -239,7 +240,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
             if (((PlaceableCard)(tablePosition.getUserData())).getCardState() instanceof BackOfTheCard) return new DrawGoldenFromDeckRequest(controller.getMatchId());
             else return new DrawGoldenFromTableRequest(controller.getMatchId(), index - 2);
         }else if(((PlaceableCard)(tablePosition.getUserData())).getCardState() instanceof BackOfTheCard) return new DrawResourceFromDeckRequest(controller.getMatchId());
-        else return new DrawGoldenFromTableRequest(controller.getMatchId(), index - 4);
+        else return new DrawResourceFromTableRequest(controller.getMatchId(), index - 4);
     }
 
     private void placementOffsetsSetup() {
@@ -470,11 +471,11 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         cardView.setUserData(card);
         cardView.setCursor(Cursor.HAND);
 
-        cardView.setOnMouseClicked(event -> {
+        cardView.setOnMouseClicked(_ -> {
             ((PlaceableCard) cardView.getUserData()).swapState();
             cardView.setImage(new Image(Objects.requireNonNull(GUIMatchPageController.class.getResourceAsStream(getResourcePath(card)))));
 
-            setRectanglesOnCard(stackPane, card);
+            //setRectanglesOnCard(stackPane, card);
 
             if(!stackPane.getChildren().stream().filter(node -> node.getClass().equals(Rectangle.class)).filter(node -> node.equals(clickedRectangle)).toList().isEmpty()){
                 stackPane.getChildren().stream().filter(node -> node.getClass().equals(Rectangle.class)).forEach(node -> node.setOpacity(0));
@@ -487,21 +488,21 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         AnchorPane.setBottomAnchor(cardView, 0D);
         AnchorPane.setRightAnchor(cardView, 0D);
 
-        setRectanglesOnCard(stackPane, card);
+        //setRectanglesOnCard(stackPane, card);
 
     }
 
-    private static void setRectanglesOnCard(StackPane stackPane, PlaceableCard card) {
-        stackPane.getChildren().stream().filter(node -> node.getClass().equals(Rectangle.class)).forEach(rectangle -> {
-            if(card.getStateCardCorners().stream().filter(corner -> !corner.isAvailable()).anyMatch(corner -> corner.getPosition().equals(rectangle.getUserData()))){
-                rectangle.setDisable(true);
-                rectangle.setOpacity(0);
-            }else{
-                rectangle.setDisable(false);
-            }
-        });
-    }
-
+//    private static void setRectanglesOnCard(StackPane stackPane, PlaceableCard card) {
+//        stackPane.getChildren().stream().filter(node -> node.getClass().equals(Rectangle.class)).forEach(rectangle -> {
+//            if(card.getStateCardCorners().stream().filter(corner -> !corner.isAvailable()).anyMatch(corner -> corner.getPosition().equals(rectangle.getUserData()))){
+//                rectangle.setDisable(true);
+//                rectangle.setOpacity(0);
+//            }else{
+//                rectangle.setDisable(false);
+//            }
+//        });
+//    }
+//
     public void placeStartingCard(){
         clearBoard();
         setScrollPannable();
@@ -518,9 +519,11 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         setCardHooverEffects(startingCardImageView);
     }
 
-    private void resetAllBoardShadows(){
+    public void resetAllBoardShadows(){
         boardAnchorPane.getChildren().stream().filter(node -> node.getClass().equals(ImageView.class)).map(node -> (ImageView)(node)).forEach(imageView -> imageView.setEffect(new DropShadow(BlurType.THREE_PASS_BOX, new javafx.scene.paint.Color(0, 0, 0, 0.6), 10, 0, 0,0)));
         handCardStackPanes.forEach(stackPane -> stackPane.getChildren().stream().filter(node -> node.getClass().equals(Rectangle.class)).forEach(node -> node.setOpacity(0)));
+        matrixCardValidSelection = false;
+        clickedCard = null;
     }
 
     public void updateTablePickingOptions(@NotNull List<PlaceableCard> tableCards){
@@ -614,10 +617,10 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
 
     public void placeCardOnTable(PlaceableCard card){
-
         placeRequestValidating = false;
 
         StackPane placedCardStackPane = handCardStackPanes.stream().filter(stackPane -> ((PlaceableCard)(stackPane.getChildren().stream().filter(node -> node.getClass().equals(ImageView.class)).findFirst().get().getUserData())).getId() == card.getId()).findFirst().get();
+
         placedCardStackPane.getChildren().stream().filter(node -> node.getClass().equals(ImageView.class)).map(node -> (ImageView)(node)).findFirst().get().setImage(null);
         placedCardStackPane.setDisable(true);
 
@@ -626,6 +629,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         cardOnTable.setFitWidth(boardCardDimension);
         cardOnTable.setFitHeight(boardCardDimension);
         cardOnTable.setPreserveRatio(true);
+        cardOnTable.setEffect(new DropShadow(BlurType.THREE_PASS_BOX, new javafx.scene.paint.Color(1, 0.6, 0, 1), 10, 0, 0,0));
 
         setCardHooverEffects(cardOnTable);
 
@@ -727,17 +731,25 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
         fadeInTransition.setFromValue(0);
         fadeInTransition.setToValue(0.8);
-        fadeInTransition.setDuration(Duration.seconds(3));
+        fadeInTransition.setDuration(Duration.seconds(2));
 
         fadeInTransition.setNode(serverNotificationPane);
         fadeOutTransition.setNode(serverNotificationPane);
 
         fadeOutTransition.setFromValue(0.8);
         fadeOutTransition.setToValue(0);
-        fadeOutTransition.setDuration(Duration.seconds(3));
+        fadeOutTransition.setDuration(Duration.seconds(2));
         fadeOutTransition.setDelay(Duration.seconds(3));
 
         fadeInTransition.play();
         fadeOutTransition.play();
+    }
+
+    public void removePlayerFromBoard(String username){
+        Player removed = otherPlayers.stream().filter(player -> player.getUsername().equals(username)).findFirst().orElse(null);
+        otherPlayers.remove(removed);
+        Circle removedToken = playerTokens.stream().filter(circle -> ((Player)(circle.getUserData())).getUsername().equals(removed.getUsername())).findFirst().orElse(null);
+        playerTokens.remove(removedToken);
+        scoreBoardAnchorPane.getChildren().remove(removedToken);
     }
 }
