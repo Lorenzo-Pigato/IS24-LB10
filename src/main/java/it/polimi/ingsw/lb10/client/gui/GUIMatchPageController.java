@@ -14,6 +14,7 @@ import it.polimi.ingsw.lb10.server.model.cards.StartingCardState.FrontStartingCa
 import it.polimi.ingsw.lb10.server.model.cards.*;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
+import javafx.animation.FadeTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -27,6 +28,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
@@ -38,6 +40,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.util.Duration;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.URL;
@@ -114,6 +117,8 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     private ImageView tableThree;
     @FXML
     private ImageView tableFour;
+    @FXML
+    private AnchorPane serverNotificationPane;
 
     private ArrayList<Label> resourceLabels;
 
@@ -141,7 +146,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
         GUIMatchPageController.startingCard = startingCard;
 
-        ImageView startingCardImageView = new ImageView( new Image((Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/" + startingCard.getId() + ".png")))));
+        ImageView startingCardImageView = new ImageView((new Image((Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/" + startingCard.getId() + ".png"))))));
 
         startingCardImageView.setUserData(startingCard);
         startingCardImageView.setPreserveRatio(true);
@@ -435,18 +440,17 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     }
 
     private void resetAllBoardShadows(){
-        boardAnchorPane.getChildren().stream().filter(node -> node.getClass().equals(ImageView.class)).map(node -> (ImageView)(node)).forEach(imageView -> imageView.setEffect(null));
+        boardAnchorPane.getChildren().stream().filter(node -> node.getClass().equals(ImageView.class)).map(node -> (ImageView)(node)).forEach(imageView -> imageView.setEffect(new DropShadow(BlurType.THREE_PASS_BOX, new javafx.scene.paint.Color(0, 0, 0, 0.6), 10, 0, 0,0)));
         handCardStackPanes.forEach(stackPane -> stackPane.getChildren().stream().filter(node -> node.getClass().equals(Rectangle.class)).forEach(node -> node.setOpacity(0)));
     }
 
     public void updateTablePickingOptions(@NotNull List<PlaceableCard> tableCards){
-        deckOne.setImage(tableCards.get(0) == null ? null : new Image((getResourcePath(tableCards.get(0)))));
-        deckTwo.setImage(tableCards.get(1) == null ? null : new Image(( getResourcePath(tableCards.get(1)))));
-        tableOne.setImage(tableCards.get(2) == null ? null : new Image((getResourcePath(tableCards.get(2)))));
-        tableTwo.setImage(tableCards.get(3) == null ? null : new Image((getResourcePath(tableCards.get(3)))));
-        tableThree.setImage(tableCards.get(4) == null ? null : new Image((getResourcePath(tableCards.get(4)))));
-        tableFour.setImage(tableCards.get(5) == null ? null : new Image((getResourcePath(tableCards.get(5)))));
-
+        deckOne.setImage(tableCards.get(0) == null ? null : new Image(Objects.requireNonNull(GUIMatchPageController.class.getResourceAsStream(getResourcePath(tableCards.get(0))))));
+        deckTwo.setImage(tableCards.get(1) == null ? null : new Image(Objects.requireNonNull(GUIMatchPageController.class.getResourceAsStream(getResourcePath(tableCards.get(1))))));
+        tableOne.setImage(tableCards.get(2) == null ? null : new Image(Objects.requireNonNull(GUIMatchPageController.class.getResourceAsStream(getResourcePath(tableCards.get(2))))));
+        tableTwo.setImage(tableCards.get(3) == null ? null : new Image(Objects.requireNonNull(GUIMatchPageController.class.getResourceAsStream(getResourcePath(tableCards.get(3))))));
+        tableThree.setImage(tableCards.get(4) == null ? null : new Image(Objects.requireNonNull(GUIMatchPageController.class.getResourceAsStream(getResourcePath(tableCards.get(4))))));
+        tableFour.setImage(tableCards.get(5) == null ? null : new Image((Objects.requireNonNull(GUIMatchPageController.class.getResourceAsStream(getResourcePath(tableCards.get(5)))))));
     }
 
     @FXML
@@ -547,14 +551,14 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
     private void setCardHooverEffects(@NotNull ImageView cardOnTable) {
         cardOnTable.setOnMouseEntered(_ -> {
-            cardOnTable.setEffect(new DropShadow());
+            cardOnTable.setEffect(new DropShadow(BlurType.THREE_PASS_BOX, new javafx.scene.paint.Color(255, 204, 0, 1), 10, 0, 0,0));
         });
 
         cardOnTable.setOnMouseExited(_ -> {
             if(!matrixCardValidSelection){
-                cardOnTable.setEffect(null);
+                cardOnTable.setEffect(new DropShadow(BlurType.THREE_PASS_BOX, new javafx.scene.paint.Color(0, 0, 0, 0.6), 10, 0, 0,0));
             }else if (matrixCardId != ((BaseCard)(cardOnTable.getUserData())).getId()){
-                cardOnTable.setEffect(null);
+                cardOnTable.setEffect(new DropShadow(BlurType.THREE_PASS_BOX, new javafx.scene.paint.Color(0, 0, 0, 0.6), 10, 0, 0,0));
             }
         });
 
@@ -592,6 +596,30 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     public void updateBoard (ArrayList<Player> players) {
 
     }
+
+    public void popUpTip(String message, javafx.scene.paint.Color color){
+        ((Text)(serverNotificationPane.getChildren().stream().filter(node -> node.getClass().equals(Text.class)).findFirst().get())).setText(message);
+        ((Rectangle)(serverNotificationPane.getChildren().stream().filter(node -> node.getClass().equals(Rectangle.class)).findFirst().get())).setFill(color);
+
+        FadeTransition fadeInTransition = new FadeTransition();
+        FadeTransition fadeOutTransition = new FadeTransition();
+
+        fadeInTransition.setFromValue(0);
+        fadeInTransition.setToValue(0.8);
+        fadeInTransition.setDuration(Duration.seconds(3));
+
+        fadeInTransition.setNode(serverNotificationPane);
+        fadeOutTransition.setNode(serverNotificationPane);
+
+        fadeOutTransition.setFromValue(0.8);
+        fadeOutTransition.setToValue(0);
+        fadeOutTransition.setDuration(Duration.seconds(3));
+        fadeOutTransition.setDelay(Duration.seconds(3));
+
+        fadeInTransition.play();
+        fadeOutTransition.play();
+    }
+
 
 
 }

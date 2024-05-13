@@ -188,7 +188,7 @@ public class MatchModel extends Observable {
         notifyDecksUpdate();
         notifyAll(new PlayerPointsUpdateResponse(getPlayer(userHash).getUsername(), points));
         notifyAll(new ChatMessageResponse("Server", "it's " + onTurnPlayer.getUsername() + "'s turn"));
-        notify(new ServerNotification("It's your turn, place your card!"), onTurnPlayer.getUserHash());
+        notify(new ServerNotification("It's your turn, place your card!", true), onTurnPlayer.getUserHash());
     }
 
     private void notifyDecksUpdate() {
@@ -354,7 +354,7 @@ public class MatchModel extends Observable {
         if(player.equals(onTurnPlayer)){
             onTurnPlayer = players.get((players.indexOf(onTurnPlayer) + 1) % players.size());
             notifyAll(new ChatMessageResponse("Server", "it's " + onTurnPlayer.getUsername() + "'s turn"));
-            notify(new ServerNotification("It's your turn, place your card!"), onTurnPlayer.getUserHash());
+            notify(new ServerNotification("It's your turn, place your card!", true), onTurnPlayer.getUserHash());
         }
     }
 

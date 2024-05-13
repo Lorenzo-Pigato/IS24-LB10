@@ -8,6 +8,7 @@ import it.polimi.ingsw.lb10.network.response.lobby.BooleanResponse;
 import it.polimi.ingsw.lb10.network.response.match.*;
 import it.polimi.ingsw.lb10.server.model.Player;
 import javafx.application.Platform;
+import javafx.scene.paint.Color;
 
 public class GUIResponseHandler implements ResponseVisitor {
 
@@ -66,6 +67,7 @@ public class GUIResponseHandler implements ResponseVisitor {
         Platform.runLater(() -> {
             controller.changeScene(new GUIMatchPageController());
             thisPlayer.getHand().forEach(GUIMatchPageController::insertCardOnHand);
+            getMatchPageFromController().popUpTip("Place your starting card to start the game!", Color.GREEN);
         });
     }
 
@@ -95,8 +97,9 @@ public class GUIResponseHandler implements ResponseVisitor {
             if(placeCardResponse.getStatus()){
                 getMatchPageFromController().placeCardOnTable(placeCardResponse.getCard());
                 getMatchPageFromController().updateResources(placeCardResponse.getPlayerResources());
+                getMatchPageFromController().popUpTip("You can draw your card from GAME TABLE to end your turn!", Color.GREEN);
             }else{
-
+                getMatchPageFromController().popUpTip("You selected an invalid card placement!", Color.RED);
             }
         });
     }
@@ -108,7 +111,7 @@ public class GUIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(NotYourTurnResponse notYourTurnResponse) {
-
+        getMatchPageFromController().popUpTip("It's " + notYourTurnResponse.getUsername() + "'s turn, wait your turn to make your move!", Color.RED);
     }
 
     @Override
@@ -123,7 +126,7 @@ public class GUIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(ServerNotification serverNotification) {
-
+        getMatchPageFromController().popUpTip(serverNotification.getMessage(), Color.RED);
     }
 
     @Override
@@ -140,7 +143,6 @@ public class GUIResponseHandler implements ResponseVisitor {
     public void visit(DeckUpdateResponse deckUpdateResponse) {
         Platform.runLater(() -> {
             getMatchPageFromController().updateTablePickingOptions(deckUpdateResponse.getPickables());
-
         });
     }
 }

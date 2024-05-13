@@ -8,6 +8,7 @@ import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.server.view.RemoteView;
 import it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitor;
+import javafx.scene.paint.Color;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -168,7 +169,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
             Server.log("[" + id + "]" + ">>draw request not valid");
         } else if (!hasToPick(drawGoldenFromTableRequest.getUserHash())) {
             Server.log("[" + id + "]" + ">>draw request not valid");
-            model.notify(new ServerNotification("You must place a card before picking one! "), drawGoldenFromTableRequest.getUserHash());
+            model.notify(new ServerNotification("You must place a card before picking one!", false), drawGoldenFromTableRequest.getUserHash());
         }
     }
 
@@ -187,7 +188,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
             model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), drawResourceFromTableRequest.getUserHash());
             Server.log("[" + id + "]" + ">>draw request not valid");
         } else if (!hasToPick(drawResourceFromTableRequest.getUserHash())) {
-            model.notify(new ServerNotification("You must place a card before picking one! "), drawResourceFromTableRequest.getUserHash());
+            model.notify(new ServerNotification("You must place a card before picking one!", false), drawResourceFromTableRequest.getUserHash());
             Server.log("[" + id + "]" + ">>draw request not valid");
         }
 
@@ -208,7 +209,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
             model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), drawResourceFromDeckRequest.getUserHash());
             Server.log("[" + id + "]" + ">>draw request not valid");
         } else if (!hasToPick(drawResourceFromDeckRequest.getUserHash())) {
-            model.notify(new ServerNotification("You must place a card before picking one! "), drawResourceFromDeckRequest.getUserHash());
+            model.notify(new ServerNotification("You must place a card before picking one!", false), drawResourceFromDeckRequest.getUserHash());
             Server.log("[" + id + "]" + ">>draw request not valid");
         }
 
@@ -229,7 +230,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
             model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), drawGoldenFromDeckRequest.getUserHash());
             Server.log("[" + id + "]" + ">>draw request not valid");
         } else if (!hasToPick(drawGoldenFromDeckRequest.getUserHash())) {
-            model.notify(new ServerNotification("You must place a card before picking one! "), drawGoldenFromDeckRequest.getUserHash());
+            model.notify(new ServerNotification("You must place a card before picking one!", false), drawGoldenFromDeckRequest.getUserHash());
             Server.log("[" + id + "]" + ">>draw request not valid");
         }
     }
