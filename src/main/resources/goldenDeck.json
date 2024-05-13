@@ -188,7 +188,7 @@
   },
   {
     "id" 			    : "60",
-    "corners"	        : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 59, "color" : "GREEN"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 60, "color" : "GREEN"},{"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 60, "color" : "GREEN"},{"available" : false , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 60, "color" : "GREEN"}],
+    "corners"	        : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 60, "color" : "GREEN"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 60, "color" : "GREEN"},{"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 60, "color" : "GREEN"},{"available" : false , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 60, "color" : "GREEN"}],
     "resource"          : "PLANT" ,
     "points"            : 2 ,
     "color"			    : "GREEN",
@@ -391,7 +391,7 @@
 
   {
     "id" 			    : "79",
-    "corners"	        : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 79, "color" : "BLUE"}, {"available" : false , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 79, "color" : "BLUE"}, {"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 79, "color" : "BLUE"}, {"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 79, "color" : "BLUE"}],
+    "corners"	        : [{"available" : false , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 79, "color" : "BLUE"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 79, "color" : "BLUE"}, {"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 79, "color" : "BLUE"}, {"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 79, "color" : "BLUE"}],
     "resource"          : "ANIMAL" ,
     "points"            :  2,
     "color"			    : "BLUE",

@@ -241,6 +241,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         model.getPlayer(placeStartingCardRequest.getUserHash()).setStartingCard(placeStartingCardRequest.getStartingCard());
         model.insertStartingCard(getPlayer(placeStartingCardRequest.getUserHash()));
         if (players.stream().noneMatch(player -> player.getMatrix().getNode(41, 41).getCorners().isEmpty()))
+
             model.startTurns();
     }
 
