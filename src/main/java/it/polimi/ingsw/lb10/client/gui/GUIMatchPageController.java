@@ -338,18 +338,21 @@ public class GUIMatchPageController implements GUIPageController , Initializable
             token.setStyle("-fx-fill: " + player.getColor().getCssString());
             token.setVisible(true);
             token.setUserData(player);
-            token.setCenterX(boardPositions.get(0)[0] + new Random().nextInt(20));
-            token.setCenterY(boardPositions.get(0)[1] + new Random().nextInt(20));
+            token.setCenterX(boardPositions.get(0)[0] + new Random().nextInt(10));
+            token.setCenterY(boardPositions.get(0)[1] + new Random().nextInt(10));
             playerTokens.add(token);
         }
-        playerTokens.add(0, new Circle());
-        playerTokens.getFirst().setStyle("-fx-fill: " + thisPlayer.getColor().getCssString());
-        playerTokens.getFirst().setVisible(true);
-        playerTokens.getFirst().setUserData(thisPlayer);
+
+        Circle thisToken = new Circle(20);
+        thisToken.setStyle("-fx-fill: " + thisPlayer.getColor().getCssString());
+        thisToken.setVisible(true);
+        thisToken.setUserData(thisPlayer);
+        thisToken.setCenterX(boardPositions.get(0)[0] + new Random().nextInt(10));
+        thisToken.setCenterY(boardPositions.get(0)[1] + new Random().nextInt(10));
+
+        playerTokens.addFirst(thisToken);
 
         scoreBoardAnchorPane.getChildren().addAll(playerTokens);
-
-
     }
 
     private void boardPanesSetup() {
@@ -694,22 +697,26 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
         Circle token = playerTokens.stream().filter(t -> t.getUserData().equals(player)).findAny().orElseThrow(RuntimeException::new);
 
+        player.setPoints(points);
         int xPos = boardPositions.get(player.getPoints())[0];
         int yPos = boardPositions.get(player.getPoints())[1];
 
-        TranslateTransition transition = new TranslateTransition();
+//        TranslateTransition transition = new TranslateTransition();
+//
+//            transition.setNode(token);
+//            transition.setDuration(Duration.seconds(2));
 
-            transition.setNode(token);
-            transition.setDuration(Duration.seconds(2));
+        if(!players.stream().filter(pl -> pl != null && pl.getPoints() == points).toList().isEmpty()){
+            xPos += new Random().nextInt(maxRandoOffset);
+            yPos += new Random().nextInt(maxRandoOffset);
+        }
 
-            if(!players.stream().filter(pl -> pl != null && pl.getPoints() == points).toList().isEmpty()){
-                xPos += new Random().nextInt(maxRandoOffset);
-                yPos += new Random().nextInt(maxRandoOffset);
-            }
+//            transition.setToX(xPos);
+//            transition.setToY(yPos);
+//            transition.play();
 
-            transition.setToX(xPos);
-            transition.setToY(yPos);
-            transition.play();
+        token.setCenterX(xPos);
+        token.setCenterY(yPos);
 
     }
 
