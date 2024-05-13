@@ -359,7 +359,7 @@
                <effect>
                   <DropShadow />
                </effect></Rectangle>
-            <Text fx:id="serverNotificationLabel" layoutX="14.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="points-label" wrappingWidth="237.7294921875" />
+            <Text fx:id="serverNotificationLabel" layoutX="14.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="server-notification" wrappingWidth="237.7294921875" />
             <ImageView fitHeight="44.0" fitWidth="39.0" layoutX="290.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/info.png" />
