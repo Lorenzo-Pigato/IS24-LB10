@@ -304,12 +304,16 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     }
 
     private void scoreboardPositionsSetup() {
+        boardPositions.put(0, new int[]{117, 464});
         boardPositions.put(1, new int[]{173, 464});
         boardPositions.put(2, new int[]{229, 464});
 
+        // 3 4 5 6 10 9 8 7 11 12 13 14 18 17 16 15
         for(int i = 0; i < 4; i++){
             for(int j = 0; j < 4; j++) {
-                boardPositions.put((i + j + 3), new int[]{
+                boardPositions.put((j + 3) + (i >= 2 ? 8 : 0) +
+                                (i % 2 != 0 ? 7 - (j *2) : 1 + (j * 2)) * (i % 2),
+                        new int[]{
                         257 + j * 56 * (j % 2 == 0 ? -1 : 1),
                         412 - 52 * i
                 });
@@ -333,7 +337,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         playerTokens.add(playerOne);
         playerTokens.add(playerTwo);
         playerTokens.add(playerThree);
-        playerTokens.add(playerThree);
+        playerTokens.add(playerFour);
 
         for (Circle token : playerTokens) token.setVisible(false);
 
@@ -697,13 +701,10 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
         TranslateTransition transition = new TranslateTransition();
 
-        if(xPos + maxRandoOffset < token.getLayoutX() && xPos - maxRandoOffset > token.getLayoutX() &&
-                yPos + maxRandoOffset < token.getLayoutY() && yPos - maxRandoOffset > token.getLayoutY()){
-
             transition.setNode(token);
             transition.setDuration(Duration.seconds(2));
 
-            if(!players.stream().filter(pl -> pl.getPoints() == points).toList().isEmpty()){
+            if(!players.stream().filter(pl -> pl != null && pl.getPoints() == points).toList().isEmpty()){
                 xPos += new Random().nextInt(maxRandoOffset);
                 yPos += new Random().nextInt(maxRandoOffset);
             }
@@ -712,6 +713,6 @@ public class GUIMatchPageController implements GUIPageController , Initializable
             transition.setToY(yPos);
 
             transition.play();
-        }
+
     }
 }
