@@ -3,6 +3,7 @@ package it.polimi.ingsw.lb10.server.visitors.responseDespatch;
 import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
 import it.polimi.ingsw.lb10.client.gui.GUIMatchPageController;
 import it.polimi.ingsw.lb10.client.gui.GUIChooseQuestPageController;
+import it.polimi.ingsw.lb10.client.gui.GUIWaitingPageController;
 import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestsRequest;
 import it.polimi.ingsw.lb10.network.response.lobby.BooleanResponse;
 import it.polimi.ingsw.lb10.network.response.match.*;
@@ -133,7 +134,11 @@ public class GUIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(EndGameResponse endGameResponse) {
-
+        if(controller.getPage() instanceof GUIWaitingPageController){
+            controller.changeScene(new );
+        }else{
+            controller.changeScene();
+        }
     }
 
     @Override
@@ -148,7 +153,7 @@ public class GUIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(PlayerLeftResponse playerLeftResponse) {
-
+        getMatchPageFromController().removePlayerFromBoard(playerLeftResponse.getUsername());
     }
 
     @Override
