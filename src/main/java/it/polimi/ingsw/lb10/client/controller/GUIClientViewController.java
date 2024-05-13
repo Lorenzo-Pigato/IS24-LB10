@@ -7,7 +7,6 @@ import it.polimi.ingsw.lb10.client.exception.GUIExceptionHandler;
 import it.polimi.ingsw.lb10.client.gui.GUIConnectionPageController;
 import it.polimi.ingsw.lb10.client.gui.GUIPageController;
 import it.polimi.ingsw.lb10.network.response.Response;
-import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.GUIResponseHandler;
 import javafx.fxml.FXMLLoader;
@@ -15,9 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Objects;
 
