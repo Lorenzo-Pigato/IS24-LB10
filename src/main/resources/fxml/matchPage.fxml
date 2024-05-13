@@ -16,8 +16,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.paint.Color?>
-<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -165,18 +163,13 @@
                 </Tab>
                 <Tab text="Score Board">
                   <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <AnchorPane fx:id="scoreBoardAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
                               <ImageView fitHeight="493.0" fitWidth="264.0" layoutX="46.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/scoreboard.png" />
                                  </image>
                               </ImageView>
-                              <Circle fill="DODGERBLUE" layoutX="258.0" layoutY="361.0" radius="16.0" stroke="BLACK" strokeType="INSIDE" />
-                              <Circle fill="DODGERBLUE" layoutX="257.0" layoutY="412.0" radius="16.0" stroke="BLACK" strokeType="INSIDE" />
-                              <Circle fill="DODGERBLUE" layoutX="201.0" layoutY="412.0" radius="16.0" stroke="BLACK" strokeType="INSIDE" />
-                              <Circle fill="DODGERBLUE" layoutX="145.0" layoutY="412.0" radius="16.0" stroke="BLACK" strokeType="INSIDE" />
-                              <Circle fill="DODGERBLUE" layoutX="88.0" layoutY="412.0" radius="16.0" stroke="BLACK" strokeType="INSIDE" />
                            </children></AnchorPane>
                   </content>
                 </Tab>
@@ -354,9 +347,9 @@
             </Label>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="serverNotificationPane" layoutX="858.0" layoutY="25.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="342.0" AnchorPane.leftAnchor="858.0" AnchorPane.rightAnchor="400.0">
+      <AnchorPane fx:id="serverNotificationPane" layoutX="858.0" layoutY="25.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="71.0" prefWidth="342.0" AnchorPane.leftAnchor="858.0" AnchorPane.rightAnchor="400.0">
          <children>
-            <Rectangle fx:id="serverNotificationRectangle" arcHeight="40.0" arcWidth="40.0" fill="#ff2121aa" height="150.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="342.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <Rectangle fx:id="serverNotificationRectangle" arcHeight="40.0" arcWidth="40.0" fill="#ff21214a" height="70.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="342.0" AnchorPane.bottomAnchor="80.0" AnchorPane.topAnchor="0.0">
                <effect>
                   <DropShadow />
                </effect></Rectangle>

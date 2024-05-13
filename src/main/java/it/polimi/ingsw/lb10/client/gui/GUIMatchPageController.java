@@ -64,9 +64,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     private boolean matrixCardValidSelection = false;
     private boolean placeRequestValidating = false;
     private final Map<Position, int[]> placementOffsets = new HashMap<>();
-
     private static final HashMap<Integer, int[]> boardPositions = new HashMap<>();
-    private static final ArrayList<Circle> playerTokens = new ArrayList<>();
 
 
     @FXML
@@ -122,14 +120,10 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     @FXML
     private AnchorPane serverNotificationPane;
     @FXML
-    private Circle playerOne;
-    @FXML
-    private Circle playerTwo;
-    @FXML
-    private Circle playerThree;
-    @FXML
-    private Circle playerFour;
+    private AnchorPane scoreBoardAnchorPane;
 
+
+    private ArrayList<Circle> playerTokens = new ArrayList<>();
     private ArrayList<Label> resourceLabels;
 
 
@@ -338,23 +332,23 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     }
 
     private void playerTokensSetup() {
-        playerTokens.add(playerOne);
-        playerTokens.add(playerTwo);
-        playerTokens.add(playerThree);
-        playerTokens.add(playerFour);
 
-        for (Circle token : playerTokens) token.setVisible(false);
-
+        for(Player player : otherPlayers){
+            Circle token = new Circle(20);
+            token.setStyle("-fx-fill: " + player.getColor().getCssString());
+            token.setVisible(true);
+            token.setUserData(player);
+            token.setCenterX(boardPositions.get(0)[0] + new Random().nextInt(20));
+            token.setCenterY(boardPositions.get(0)[1] + new Random().nextInt(20));
+            playerTokens.add(token);
+        }
+        playerTokens.add(0, new Circle());
         playerTokens.getFirst().setStyle("-fx-fill: " + thisPlayer.getColor().getCssString());
         playerTokens.getFirst().setVisible(true);
         playerTokens.getFirst().setUserData(thisPlayer);
 
-        for (Player player : otherPlayers){
-            Circle token = playerTokens.get(otherPlayers.indexOf(player) + 1);
-            token.setStyle("-fx-fill: " + player.getColor().getCssString());
-            token.setVisible(true);
-            token.setUserData(player);
-        }
+        scoreBoardAnchorPane.getChildren().addAll(playerTokens);
+
 
     }
 
@@ -651,7 +645,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
     private void setCardHooverEffects(@NotNull ImageView cardOnTable) {
         cardOnTable.setOnMouseEntered(_ -> {
-            cardOnTable.setEffect(new DropShadow(BlurType.THREE_PASS_BOX, new javafx.scene.paint.Color(255, 204, 0, 1), 10, 0, 0,0));
+            cardOnTable.setEffect(new DropShadow(BlurType.THREE_PASS_BOX, new javafx.scene.paint.Color(1, 0.6, 0, 1), 10, 0, 0,0));
         });
 
         cardOnTable.setOnMouseExited(_ -> {
@@ -715,7 +709,6 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
             transition.setToX(xPos);
             transition.setToY(yPos);
-
             transition.play();
 
     }
