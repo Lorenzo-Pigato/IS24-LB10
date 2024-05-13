@@ -59,7 +59,7 @@ public class MatrixIndexesTest {
 
     }
 
-    @Test
+    @RepeatedTest(1000)
     public void fourCardsAllTypes(){
         setUp();
         PlaceableCard card1 = resourceDeck.drawCard();
@@ -71,6 +71,7 @@ public class MatrixIndexesTest {
         matrix.setCard(card2, 40, 40);
         matrix.setCard(card1, 40, 42);
         matrix.setCard(card4, 42, 42);
+        System.out.println("1 : " + card1.getId() + " 2: " + card2.getId() + " 3 : " + card3.getId() + " 4 : " + card4.getId());
 
         //starting card in the middle
         assertEquals(41, matrix.getCardColumn(card3.getId()));

@@ -83,7 +83,13 @@ public class GUIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(PickedCardResponse pickedCardResponse) {
+        Platform.runLater(() -> {
+            if(pickedCardResponse.getStatus()){
+                GUIMatchPageController.insertCardOnHand(pickedCardResponse.getCard());
+            }else{
 
+            }
+        });
     }
 
     @Override
@@ -145,7 +151,6 @@ public class GUIResponseHandler implements ResponseVisitor {
     public void visit(DeckUpdateResponse deckUpdateResponse) {
         Platform.runLater(() -> {
             getMatchPageFromController().updateTablePickingOptions(deckUpdateResponse.getPickables());
-
         });
     }
 }

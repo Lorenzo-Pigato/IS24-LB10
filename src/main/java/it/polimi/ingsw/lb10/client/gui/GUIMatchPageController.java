@@ -1,9 +1,8 @@
 package it.polimi.ingsw.lb10.client.gui;
 
 import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
-import it.polimi.ingsw.lb10.network.requests.match.ChatRequest;
-import it.polimi.ingsw.lb10.network.requests.match.PlaceCardRequest;
-import it.polimi.ingsw.lb10.network.requests.match.PlaceStartingCardRequest;
+import it.polimi.ingsw.lb10.network.requests.Request;
+import it.polimi.ingsw.lb10.network.requests.match.*;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.Resource;
 import it.polimi.ingsw.lb10.server.model.cards.Color;
@@ -216,15 +215,40 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         placementOffsetsSetup();
         scoreboardPositionsSetup();
         playerTokensSetup();
+        pickingOptionsSetup();
 
         showStartingCard(startingCard);
     }
 
+    private void pickingOptionsSetup() {
+        ArrayList<ImageView> pickingOptions = new ArrayList<>();
+        pickingOptions.add(deckOne);
+        pickingOptions.add(deckTwo);
+        pickingOptions.add(tableOne);
+        pickingOptions.add(tableTwo);
+        pickingOptions.add(tableThree);
+        pickingOptions.add(tableFour);
+        
+        pickingOptions.forEach(imageView -> {
+            imageView.setOnMouseEntered(_ -> imageView.setEffect(new DropShadow()));
+            imageView.setOnMouseExited(_ -> imageView.setEffect(null));
+            imageView.setOnMouseClicked(_ -> controller.send(getPickingRequest(imageView, pickingOptions.indexOf(imageView))));
+        });
+    }
+
+    private Request getPickingRequest(@NotNull ImageView tablePosition, int index) {
+        if(tablePosition.getUserData().getClass().equals(GoldenCard.class)){
+            if (((PlaceableCard)(tablePosition.getUserData())).getCardState() instanceof BackOfTheCard) return new DrawGoldenFromDeckRequest(controller.getMatchId());
+            else return new DrawGoldenFromTableRequest(controller.getMatchId(), index - 2);
+        }else if(((PlaceableCard)(tablePosition.getUserData())).getCardState() instanceof BackOfTheCard) return new DrawResourceFromDeckRequest(controller.getMatchId());
+        else return new DrawGoldenFromTableRequest(controller.getMatchId(), index - 4);
+    }
+
     private void placementOffsetsSetup() {
-        placementOffsets.put(Position.TOPRIGHT, new int[]{+195, -101});
-        placementOffsets.put(Position.BOTTOMLEFT, new int[]{-195, +101});
-        placementOffsets.put(Position.BOTTOMRIGHT, new int[]{+195, +101});
-        placementOffsets.put(Position.TOPLEFT, new int[]{-195, -101});
+        placementOffsets.put(Position.TOPRIGHT, new int[]{-195, +101});
+        placementOffsets.put(Position.BOTTOMLEFT, new int[]{+195, -101});
+        placementOffsets.put(Position.BOTTOMRIGHT, new int[]{-195, -101});
+        placementOffsets.put(Position.TOPLEFT, new int[]{+195, +101});
     }
 
     private void questsSetup()  {
@@ -446,7 +470,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
         cardView.setOnMouseClicked(event -> {
             ((PlaceableCard) cardView.getUserData()).swapState();
-            cardView.setImage(new Image(getResourcePath(card)));
+            cardView.setImage(new Image(Objects.requireNonNull(GUIMatchPageController.class.getResourceAsStream(getResourcePath(card)))));
 
             setRectanglesOnCard(stackPane, card);
 
@@ -498,12 +522,26 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     }
 
     public void updateTablePickingOptions(@NotNull List<PlaceableCard> tableCards){
-        deckOne.setImage(tableCards.get(0) == null ? null : new Image((getResourcePath(tableCards.get(0)))));
-        deckTwo.setImage(tableCards.get(1) == null ? null : new Image(( getResourcePath(tableCards.get(1)))));
-        tableOne.setImage(tableCards.get(2) == null ? null : new Image((getResourcePath(tableCards.get(2)))));
-        tableTwo.setImage(tableCards.get(3) == null ? null : new Image((getResourcePath(tableCards.get(3)))));
-        tableThree.setImage(tableCards.get(4) == null ? null : new Image((getResourcePath(tableCards.get(4)))));
-        tableFour.setImage(tableCards.get(5) == null ? null : new Image((getResourcePath(tableCards.get(5)))));
+        tableCards.get(0).swapState();
+        tableCards.get(1).swapState();
+
+        deckOne.setImage(tableCards.get(0) == null ? null : new Image(Objects.requireNonNull(GUIMatchPageController.class.getResourceAsStream((getResourcePath(tableCards.get(0)))))));
+        deckOne.setUserData(tableCards.get(0));
+
+        deckTwo.setImage(tableCards.get(1) == null ? null : new Image((Objects.requireNonNull(GUIMatchPageController.class.getResourceAsStream( getResourcePath(tableCards.get(1)))))));
+        deckTwo.setUserData(tableCards.get(1));
+
+        tableOne.setImage(tableCards.get(2) == null ? null : new Image((Objects.requireNonNull(GUIMatchPageController.class.getResourceAsStream(getResourcePath(tableCards.get(2)))))));
+        tableOne.setUserData(tableCards.get(2));
+
+        tableTwo.setImage(tableCards.get(3) == null ? null : new Image(Objects.requireNonNull(GUIMatchPageController.class.getResourceAsStream((getResourcePath(tableCards.get(3)))))));
+        tableTwo.setUserData(tableCards.get(3));
+
+        tableThree.setImage(tableCards.get(4) == null ? null : new Image(Objects.requireNonNull(GUIMatchPageController.class.getResourceAsStream((getResourcePath(tableCards.get(4)))))));
+        tableThree.setUserData(tableCards.get(4));
+
+        tableFour.setImage(tableCards.get(5) == null ? null : new Image(Objects.requireNonNull(GUIMatchPageController.class.getResourceAsStream((getResourcePath(tableCards.get(5)))))));
+        tableFour.setUserData(tableCards.get(5));
 
     }
 
