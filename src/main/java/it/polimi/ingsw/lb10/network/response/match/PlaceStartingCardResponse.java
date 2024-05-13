@@ -7,18 +7,18 @@ import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.ResponseVisitor;
 
+import java.io.Serial;
 import java.util.HashMap;
 
 public class PlaceStartingCardResponse extends Response {
+    @Serial
     private static final long serialVersionUID = 7L;
-    private StartingCard startingCard;
-    private HashMap<Resource, Integer> resources;
-    private Matrix matrix;
+    private final StartingCard startingCard;
+    private final HashMap<Resource, Integer> resources;
 
-    public PlaceStartingCardResponse(StartingCard startingCard, HashMap<Resource, Integer> resources, Matrix matrix) {
+    public PlaceStartingCardResponse(StartingCard startingCard, HashMap<Resource, Integer> resources) {
         this.startingCard = startingCard;
         this.resources = resources;
-        this.matrix = matrix;
     }
 
     @Override

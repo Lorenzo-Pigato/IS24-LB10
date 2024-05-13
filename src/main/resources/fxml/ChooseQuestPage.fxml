@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Group?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
@@ -8,69 +9,214 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.paint.LinearGradient?>
 <?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="900.0" maxWidth="1600.0" minHeight="900.0" minWidth="1600.0" prefHeight="900.0" prefWidth="1600.0" styleClass="anchor" stylesheets="@../css/ChooseQuestPage.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.lb10.client.gui.GUIChooseQuestPageController">
-   <children>
-      <Text fill="#52460e" layoutX="452.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Choose your Quest">
-         <effect>
-            <Glow />
-         </effect>
-      </Text>
-      <ImageView fitHeight="285.0" fitWidth="415.0" layoutX="606.0" layoutY="616.0" pickOnBounds="true" preserveRatio="true">
-         <image>
+   <Group layoutX="408.0" layoutY="48.0">
+      <children>
+         <Text fill="#3c310b" layoutX="48.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Choose your Quest">
+            <effect>
+               <DropShadow>
+                  <color>
+                     <Color opacity="0.27586206793785095" />
+                  </color>
+               </DropShadow>
+            </effect>
+         </Text>
+         <ImageView fitHeight="151.0" fitWidth="283.0" layoutX="293.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+            <effect>
+               <DropShadow height="10.0" radius="4.5" width="10.0" />
+            </effect>
             <Image url="@../images/owl.png" />
-         </image>
-         <effect>
-            <DropShadow height="10.0" radius="4.5" width="10.0" />
-         </effect>
-      </ImageView>
-      <Rectangle fx:id="firstQuestContainer" arcHeight="30.0" arcWidth="30.0" height="284.0" layoutX="263.0" layoutY="317.0" stroke="#654911" strokeType="INSIDE" strokeWidth="2.5" width="429.0">
-         <fill>
-            <LinearGradient endX="0.8857142857142857" endY="1.0" startX="0.3904761904761905">
-               <stops>
-                  <Stop>
-                     <color>
-                        <Color red="0.550000011920929" green="0.5237833261489868" blue="0.40700000524520874" opacity="0.0" />
-                     </color>
-                  </Stop>
-                  <Stop offset="1.0">
-                     <color>
-                        <Color red="0.32894736528396606" green="0.2616349756717682" blue="0.09137427061796188" opacity="0.2199999988079071" />
-                     </color>
-                  </Stop>
-               </stops>
-            </LinearGradient>
-         </fill>
-      </Rectangle>
-      <Rectangle fx:id="secondQuestContainer" arcHeight="30.0" arcWidth="30.0" height="284.0" layoutX="935.0" layoutY="316.0" stroke="#654911" strokeType="INSIDE" strokeWidth="2.5" width="429.0">
-         <fill>
-            <LinearGradient endX="0.8857142857142857" endY="1.0" startX="0.3904761904761905">
-               <stops>
-                  <Stop>
-                     <color>
-                        <Color red="0.550000011920929" green="0.5237833261489868" blue="0.40700000524520874" opacity="0.0" />
-                     </color>
-                  </Stop>
-                  <Stop offset="1.0">
-                     <color>
-                        <Color red="0.32894736528396606" green="0.2616349756717682" blue="0.09137427061796188" opacity="0.2199999988079071" />
-                     </color>
-                  </Stop>
-               </stops>
-            </LinearGradient>
-         </fill>
-      </Rectangle>
-      <ImageView fx:id="firstQuest" fitHeight="235.0" fitWidth="395.0" layoutX="277.0" layoutY="343.0" onDragEntered="#focusFirstQuest" onDragExited="#unfocusFirstQuest" onMouseClicked="#chooseQuest" pickOnBounds="true" preserveRatio="true">
-         <effect>
-            <DropShadow offsetX="5.0" offsetY="5.0" />
-         </effect>
-      </ImageView>
-      <ImageView fx:id="secondQuest" fitHeight="235.0" fitWidth="395.0" layoutX="951.0" layoutY="340.0" onDragEntered="#focusSecondQuest" onDragExited="#unfocusSecondQuest" onMouseClicked="#chooseQuest" pickOnBounds="true" preserveRatio="true">
-         <effect>
-            <DropShadow offsetX="5.0" offsetY="5.0" />
-         </effect>
-      </ImageView>
-   </children>
+         </ImageView>
+         <Rectangle arcHeight="30.0" arcWidth="30.0" fill="#1f93ff00" height="129.0" layoutX="9.0" layoutY="153.0" stroke="#4a370d" strokeType="INSIDE" strokeWidth="3.0" width="767.0">
+            <effect>
+               <DropShadow>
+                  <color>
+                     <Color opacity="0.37164750695228577" />
+                  </color>
+               </DropShadow>
+            </effect>
+         </Rectangle>
+      </children>
+   </Group>
+   <Rectangle arcHeight="30.0" arcWidth="30.0" height="284.0" layoutX="185.0" layoutY="427.0" stroke="#654911" strokeType="INSIDE" strokeWidth="2.5" width="429.0">
+      <fill>
+         <LinearGradient endX="0.8857142857142857" startX="0.3904761904761905">
+            <stops>
+               <Stop>
+                  <color>
+                     <Color red="0.550000011920929" green="0.5237833261489868" blue="0.40700000524520874" opacity="0.0" />
+                  </color>
+               </Stop>
+               <Stop offset="1.0">
+                  <color>
+                     <Color red="0.32894736528396606" green="0.2616349756717682" blue="0.09137427061796188" opacity="0.2199999988079071" />
+                  </color>
+               </Stop>
+            </stops>
+         </LinearGradient>
+      </fill>
+   </Rectangle>
+   <Rectangle arcHeight="30.0" arcWidth="30.0" height="284.0" layoutX="982.0" layoutY="426.0" stroke="#654911" strokeType="INSIDE" strokeWidth="2.5" width="429.0">
+      <fill>
+         <LinearGradient endX="0.8857142857142857" startX="0.3904761904761905">
+            <stops>
+               <Stop>
+                  <color>
+                     <Color red="0.550000011920929" green="0.5237833261489868" blue="0.40700000524520874" opacity="0.0" />
+                  </color>
+               </Stop>
+               <Stop offset="1.0">
+                  <color>
+                     <Color red="0.32894736528396606" green="0.2616349756717682" blue="0.09137427061796188" opacity="0.2199999988079071" />
+                  </color>
+               </Stop>
+            </stops>
+         </LinearGradient>
+      </fill>
+   </Rectangle>
+   <ImageView fx:id="firstQuest" fitHeight="235.0" fitWidth="395.0" layoutX="223.0" layoutY="453.0" onMouseClicked="#chooseQuest" onMouseEntered="#focusFirstQuest" onMouseExited="#unfocusFirstQuest" pickOnBounds="true" preserveRatio="true">
+      <effect>
+         <DropShadow>
+            <color>
+               <Color opacity="0.7662835121154785" />
+            </color>
+         </DropShadow>
+      </effect>
+   </ImageView>
+   <ImageView fx:id="secondQuest" fitHeight="235.0" fitWidth="395.0" layoutX="1020.0" layoutY="453.0" onMouseClicked="#chooseQuest" onMouseEntered="#focusSecondQuest" onMouseExited="#unfocusSecondQuest" pickOnBounds="true" preserveRatio="true">
+      <effect>
+         <DropShadow>
+            <color>
+               <Color opacity="0.7432950139045715" />
+            </color>
+         </DropShadow>
+      </effect>
+   </ImageView>
+   <ImageView fitHeight="334.0" fitWidth="249.0" layoutX="677.0" layoutY="407.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../images/Clerical.png" />
+      </image>
+      <effect>
+         <Glow level="0.28">
+            <input>
+               <DropShadow>
+                  <color>
+                     <Color red="0.5" green="0.4336419701576233" blue="0.10185185074806213" />
+                  </color>
+               </DropShadow>
+            </input>
+         </Glow>
+      </effect>
+   </ImageView>
+   <AnchorPane fx:id="anchorWaitingText" layoutX="201.0" layoutY="793.0" prefHeight="45.0" prefWidth="1252.0" visible="false">
+      <children>
+         <Text fill="#3c310b" layoutX="130.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="waitingMessage" text="Waiting for other players to choose their quest to start the match">
+            <effect>
+               <DropShadow>
+                  <color>
+                     <Color opacity="0.27586206793785095" />
+                  </color>
+               </DropShadow>
+            </effect>
+         </Text>
+         <Group layoutX="1144.6200332641602" layoutY="15.68096923828125">
+            <children>
+               <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#361c02ef" height="10.0" layoutX="102.0" layoutY="-1.0" rotate="45.0" stroke="BLACK" strokeType="INSIDE" width="10.0">
+                  <effect>
+                     <DropShadow>
+                        <color>
+                           <Color opacity="0.6781609058380127" />
+                        </color>
+                     </DropShadow>
+                  </effect>
+               </Rectangle>
+               <Line endX="-15.0" layoutX="117.0" layoutY="4.0" startX="-181.92892456054688" strokeWidth="2.5">
+                  <effect>
+                     <DropShadow>
+                        <color>
+                           <Color opacity="0.6781609058380127" />
+                        </color>
+                     </DropShadow>
+                  </effect>
+               </Line>
+               <Line endX="-38.20219421386719" endY="-1.52587890625E-5" layoutX="121.53553771972656" layoutY="-1.4644622802734375" startX="-173.53553771972656" startY="-1.52587890625E-5" strokeWidth="1.5">
+                  <effect>
+                     <DropShadow offsetX="3.0" offsetY="10.0">
+                        <color>
+                           <Color opacity="0.6781609058380127" />
+                        </color>
+                     </DropShadow>
+                  </effect>
+               </Line>
+               <Line endX="-38.20219421386719" endY="-1.52587890625E-5" layoutX="121.0" layoutY="9.0" startX="-173.53553771972656" startY="-1.52587890625E-5" strokeWidth="1.5">
+                  <effect>
+                     <DropShadow offsetX="3.0" offsetY="10.0">
+                        <color>
+                           <Color opacity="0.6781609058380127" />
+                        </color>
+                     </DropShadow>
+                  </effect>
+               </Line>
+            </children>
+            <effect>
+               <DropShadow>
+                  <color>
+                     <Color opacity="0.14176245033740997" />
+                  </color>
+               </DropShadow>
+            </effect>
+         </Group>
+         <Group layoutX="16.0" layoutY="14.0">
+            <children>
+               <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#361c02ef" height="10.0" layoutX="-77.0" layoutY="-1.0" rotate="45.0" stroke="BLACK" strokeType="INSIDE" width="10.0">
+                  <effect>
+                     <DropShadow>
+                        <color>
+                           <Color opacity="0.6781609058380127" />
+                        </color>
+                     </DropShadow>
+                  </effect>
+               </Rectangle>
+               <Line endX="-15.0" layoutX="117.0" layoutY="4.0" startX="-181.92892456054688" strokeWidth="2.5">
+                  <effect>
+                     <DropShadow>
+                        <color>
+                           <Color opacity="0.6781609058380127" />
+                        </color>
+                     </DropShadow>
+                  </effect>
+               </Line>
+               <Line endX="-38.20219421386719" endY="-1.52587890625E-5" layoutX="121.53553771972656" layoutY="-1.4644622802734375" startX="-173.53553771972656" startY="-1.52587890625E-5" strokeWidth="1.5">
+                  <effect>
+                     <DropShadow offsetX="3.0" offsetY="10.0">
+                        <color>
+                           <Color opacity="0.6781609058380127" />
+                        </color>
+                     </DropShadow>
+                  </effect>
+               </Line>
+               <Line endX="-38.20219421386719" endY="-1.52587890625E-5" layoutX="121.0" layoutY="9.0" startX="-173.53553771972656" startY="-1.52587890625E-5" strokeWidth="1.5">
+                  <effect>
+                     <DropShadow offsetX="3.0" offsetY="10.0">
+                        <color>
+                           <Color opacity="0.6781609058380127" />
+                        </color>
+                     </DropShadow>
+                  </effect>
+               </Line>
+            </children>
+            <effect>
+               <DropShadow>
+                  <color>
+                     <Color opacity="0.14176245033740997" />
+                  </color>
+               </DropShadow>
+            </effect>
+         </Group>
+      </children>
+   </AnchorPane>
 </AnchorPane>

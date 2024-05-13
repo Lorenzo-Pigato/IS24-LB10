@@ -42,7 +42,6 @@ public class GUILoginPageController implements GUIPageController {
 
     public void login(ActionEvent event){
         String playerUsername;
-        if (client.isActive()) {
             try {
                 playerUsername = username.getText();
                 resetErrorPane();
@@ -68,6 +67,7 @@ public class GUILoginPageController implements GUIPageController {
                     }
 
                     if(!client.isNotLogged()){
+                        controller.getClient().setUsername(playerUsername);
                         controller.changeScene(new GUIJoinMatchPageController());
                     }
                 }
@@ -77,7 +77,6 @@ public class GUILoginPageController implements GUIPageController {
                 controller.close();
             }
             username.clear();
-        }
     }
 
     private void resetErrorPane(){

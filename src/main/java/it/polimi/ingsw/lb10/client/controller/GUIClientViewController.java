@@ -7,15 +7,15 @@ import it.polimi.ingsw.lb10.client.exception.GUIExceptionHandler;
 import it.polimi.ingsw.lb10.client.gui.GUIConnectionPageController;
 import it.polimi.ingsw.lb10.client.gui.GUIPageController;
 import it.polimi.ingsw.lb10.network.response.Response;
-import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
+import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.GUIResponseHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 
@@ -27,13 +27,13 @@ public class GUIClientViewController extends ClientViewController {
     private Scene scene;
     private final ExceptionHandler exceptionHandler = new GUIExceptionHandler(this);
     private static final GUIResponseHandler responseHandler = GUIResponseHandler.instance();
-
+    private ArrayList<Player> players;
     public static GUIClientViewController instance() {
         if (instance == null) instance = new GUIClientViewController();
         return instance;
     }
 
-    public void changeScene(GUIPageController page) {
+    public synchronized void changeScene(GUIPageController page) {
         setPage(page);
         FXMLLoader fxmlLoader = new FXMLLoader(GUIClientViewController.class.getResource(page.getFXML()));
 
@@ -46,7 +46,7 @@ public class GUIClientViewController extends ClientViewController {
         }
     }
 
-    public void initialize(Stage stage) {
+    public synchronized void initialize(Stage stage) {
         setClient(new Client());
 
         this.stage = stage;
@@ -67,9 +67,10 @@ public class GUIClientViewController extends ClientViewController {
         stage.setScene(scene);
         stage.show();
     }
-    private void setPage(GUIPageController page){
+    public synchronized void setPage(GUIPageController page){
         this.page = page;
     }
+    public synchronized  GUIPageController getPage(){return page;}
 
     @Override
     public Thread asyncReadFromSocket() {
@@ -86,8 +87,11 @@ public class GUIClientViewController extends ClientViewController {
         });
     }
 
+    public void setPlayers(ArrayList<Player> players){this.players = players;}
+    public ArrayList<Player> getPlayers(){return players;}
+
     @Override
-    public void initializeConnection() throws ConnectionErrorException {
+    public synchronized void initializeConnection() throws ConnectionErrorException {
 
     }
 
@@ -112,7 +116,7 @@ public class GUIClientViewController extends ClientViewController {
     }
 
     public void setGameSize() {
-        stage.setHeight(900);
+        stage.setHeight(930);
         stage.setWidth(1600);
     }
 }

@@ -23,3 +23,18 @@
     -fx-text-alignment: center;
     -fx-font-size: 30;
 }
+
+.input {
+    -fx-font-family: 'Alegreya SC', sans-serif;
+    -fx-margin: 1em 0 1em 0;
+    -fx-position: relative;
+    -fx-background-radius: 25px;
+
+    -fx-font-size: 17;
+    -fx-padding: 0.8em;
+    -fx-outline: none;
+    -fx-border-width: 2px;
+    -fx-border-color: rgb(105, 85, 65);
+    -fx-background-color: rgba(255, 238, 193, 0.82);
+    -fx-border-radius: 25px;
+}

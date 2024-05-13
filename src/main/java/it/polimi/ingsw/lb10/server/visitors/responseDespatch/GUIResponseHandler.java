@@ -1,10 +1,13 @@
 package it.polimi.ingsw.lb10.server.visitors.responseDespatch;
 
 import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
+import it.polimi.ingsw.lb10.client.gui.GUIMatchPageController;
 import it.polimi.ingsw.lb10.client.gui.GUIChooseQuestPageController;
 import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestsRequest;
 import it.polimi.ingsw.lb10.network.response.lobby.BooleanResponse;
 import it.polimi.ingsw.lb10.network.response.match.*;
+import it.polimi.ingsw.lb10.server.model.Player;
+import javafx.application.Platform;
 
 public class GUIResponseHandler implements ResponseVisitor {
 
@@ -15,6 +18,10 @@ public class GUIResponseHandler implements ResponseVisitor {
     public static GUIResponseHandler instance() {
         if (instance == null) instance = new GUIResponseHandler();
         return instance;
+    }
+
+    private GUIMatchPageController getMatchPageFromController(){
+        return ((GUIMatchPageController)(controller.getPage()));
     }
 
     @Override
@@ -40,19 +47,33 @@ public class GUIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(PrivateQuestsResponse response) {
-        controller.setGameSize();
-        controller.changeScene(new GUIChooseQuestPageController());
         GUIChooseQuestPageController.setQuests(response.getPrivateQuests().getFirst(), response.getPrivateQuests().getLast());
+        Platform.runLater(() -> {
+            controller.setGameSize();
+            controller.changeScene(new GUIChooseQuestPageController());
+        });
     }
 
     @Override
     public void visit(GameSetupResponse response) {
+        Player thisPlayer = response.getPlayers().stream().filter(p -> p.getUsername().equals(controller.getClient().getUsername())).findFirst().orElseThrow(RuntimeException::new);
+        GUIMatchPageController.setStartingCard(thisPlayer.getStartingCard());
+        GUIMatchPageController.setCommonQuests(response.getPublicQuests());
+        GUIMatchPageController.setThisPlayer(thisPlayer);
+        response.getPlayers().remove(thisPlayer);
+        GUIMatchPageController.setOtherPlayers(response.getPlayers());
 
+        Platform.runLater(() -> {
+            controller.changeScene(new GUIMatchPageController());
+            thisPlayer.getHand().forEach(GUIMatchPageController::insertCardOnHand);
+        });
     }
 
     @Override
     public void visit(ChatMessageResponse response) {
-
+        Platform.runLater(()-> {
+            getMatchPageFromController().newMessage(response.getSender(), response.getMessage());
+        });
     }
 
     @Override
@@ -62,12 +83,22 @@ public class GUIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(PlaceStartingCardResponse placeStartingCardResponse) {
-
+        Platform.runLater(() -> {
+            getMatchPageFromController().placeStartingCard();
+            getMatchPageFromController().updateResources(placeStartingCardResponse.getResources());
+        });
     }
 
     @Override
     public void visit(PlaceCardResponse placeCardResponse) {
+        Platform.runLater(() -> {
+            if(placeCardResponse.getStatus()){
+                getMatchPageFromController().placeCardOnTable(placeCardResponse.getCard());
+                getMatchPageFromController().updateResources(placeCardResponse.getPlayerResources());
+            }else{
 
+            }
+        });
     }
 
     @Override
@@ -103,5 +134,13 @@ public class GUIResponseHandler implements ResponseVisitor {
     @Override
     public void visit(PlayerLeftResponse playerLeftResponse) {
 
+    }
+
+    @Override
+    public void visit(DeckUpdateResponse deckUpdateResponse) {
+        Platform.runLater(() -> {
+            getMatchPageFromController().updateTablePickingOptions(deckUpdateResponse.getPickables());
+
+        });
     }
 }

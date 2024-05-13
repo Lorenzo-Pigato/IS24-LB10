@@ -170,7 +170,7 @@ public class LobbyController implements LobbyRequestVisitor {
 
     public static synchronized void disconnectClient(int userHash) {
         Player player = getPlayer(userHash);
-        if (player.isInMatch()) {
+        if (player.isInMatch()){
             MatchController controller = getController(userHash);
             controller.removePlayer(player);
             if (controller.isTerminated()) {

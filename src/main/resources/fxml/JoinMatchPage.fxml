@@ -1,57 +1,236 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="600.0" styleClass="anchor" stylesheets="@../css/JoinMatchPage.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.lb10.client.gui.GUIJoinMatchPageController">
+<AnchorPane maxHeight="900.0" maxWidth="600.0" minHeight="900.0" minWidth="600.0" prefHeight="900.0" prefWidth="600.0" styleClass="anchor" stylesheets="@../css/JoinMatchPage.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.lb10.client.gui.GUIJoinMatchPageController">
    <children>
-      <AnchorPane layoutX="126.0" layoutY="303.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="216.0" prefWidth="340.0">
+      <Rectangle arcHeight="30.0" arcWidth="30.0" fill="#1f93ff00" height="651.0" layoutX="78.0" layoutY="33.0" stroke="#4a370d" strokeType="INSIDE" strokeWidth="3.0" width="460.0">
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color opacity="0.37164750695228577" />
+               </color>
+            </DropShadow>
+         </effect>
+      </Rectangle>
+      <AnchorPane layoutX="134.0" layoutY="194.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="216.0" prefWidth="340.0">
          <children>
-            <Button layoutX="4.0" layoutY="13.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#newMatch" prefHeight="104.0" prefWidth="307.0" stylesheets="@../css/JoinMatchPage.css" text="New Match" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0">
+            <Button layoutX="4.0" layoutY="47.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#newMatch" prefHeight="70.0" prefWidth="308.0" stylesheets="@../css/JoinMatchPage.css" text="New Match" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0">
                <font>
                   <Font name="System Bold Italic" size="31.0" />
                </font>
+               <effect>
+                  <DropShadow offsetX="10.0" offsetY="10.0">
+                     <color>
+                        <Color opacity="0.2068965584039688" />
+                     </color>
+                  </DropShadow>
+               </effect>
             </Button>
-            <RadioButton fx:id="twoPlayers" layoutX="210.0" layoutY="138.0" mnemonicParsing="false" onAction="#setMatchSize" text="2" />
-            <RadioButton fx:id="threePlayers" layoutX="250.0" layoutY="138.0" mnemonicParsing="false" onAction="#setMatchSize" text="3" />
-            <RadioButton fx:id="fourPlayers" layoutX="290.0" layoutY="138.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setMatchSize" text="4" />
+            <RadioButton fx:id="twoPlayers" layoutX="195.0" layoutY="136.0" mnemonicParsing="false" onAction="#setMatchSize" text="2" />
+            <RadioButton fx:id="threePlayers" layoutX="239.0" layoutY="136.0" mnemonicParsing="false" onAction="#setMatchSize" text="3" />
+            <RadioButton fx:id="fourPlayers" layoutX="281.0" layoutY="136.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#setMatchSize" styleClass="radio" text="4" />
             <Label layoutX="7.0" layoutY="105.0" prefHeight="82.0" prefWidth="183.0" styleClass="numOfPlayers" stylesheets="@../css/JoinMatchPage.css" text="Number of players :">
                <font>
                   <Font size="16.0" />
                </font>
+               <effect>
+                  <DropShadow blurType="GAUSSIAN" offsetX="5.0" offsetY="3.0">
+                     <color>
+                        <Color opacity="0.5057471394538879" />
+                     </color>
+                  </DropShadow>
+               </effect>
             </Label>
             <Text fx:id="numberOfPlayersError" layoutX="14.0" layoutY="196.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You have to choose the number of players first" visible="false" />
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="143.0" layoutY="601.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="143.0" AnchorPane.rightAnchor="137.0">
+      <AnchorPane layoutX="148.0" layoutY="478.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="148.0" AnchorPane.rightAnchor="132.0">
          <children>
-            <Button layoutX="4.0" layoutY="-2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#joinMatch" prefHeight="104.0" prefWidth="307.0" stylesheets="@../css/JoinMatchPage.css" text="Join Match" textAlignment="CENTER">
+            <Button layoutX="4.0" layoutY="32.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#joinMatch" prefHeight="70.0" prefWidth="307.0" stylesheets="@../css/JoinMatchPage.css" text="Join Match" textAlignment="CENTER">
                <font>
                   <Font name="System Bold Italic" size="31.0" />
                </font>
+               <effect>
+                  <DropShadow offsetX="10.0" offsetY="10.0">
+                     <color>
+                        <Color opacity="0.26436781883239746" />
+                     </color>
+                  </DropShadow>
+               </effect>
             </Button>
-            <TextField fx:id="matchId" layoutX="160.0" layoutY="136.0" onAction="#joinMatch" prefHeight="24.0" prefWidth="146.0" />
+            <TextField fx:id="matchId" layoutX="160.0" layoutY="130.0" onAction="#joinMatch" prefHeight="14.0" prefWidth="146.0" styleClass="input" />
             <Label layoutX="10.0" layoutY="132.0" prefHeight="29.0" prefWidth="146.0" styleClass="matchId" stylesheets="@../css/JoinMatchPage.css" text="Match ID :">
                <font>
                   <Font size="16.0" />
                </font>
+               <effect>
+                  <DropShadow blurType="GAUSSIAN" offsetX="5.0" offsetY="3.0">
+                     <color>
+                        <Color opacity="0.5057471394538879" />
+                     </color>
+                  </DropShadow>
+               </effect>
             </Label>
             <Text fx:id="invalidMatchIdError" layoutX="-3.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Match ID doesn't exist or match is already started" visible="false" />
             <Text fx:id="matchIdNotInsertedError" layoutX="38.0" layoutY="186.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You have to insert your match ID first" visible="false" />
          </children>
       </AnchorPane>
-      <Text layoutX="215.0" layoutY="164.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label" text="Lobby" wrappingWidth="168.75">
+      <Text fill="#3c310b" layoutX="188.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="label" text="Lobby" wrappingWidth="224.07107543945312">
          <font>
             <Font size="96.0" />
          </font>
+         <effect>
+            <DropShadow offsetX="5.0" offsetY="5.0" spread="0.17">
+               <color>
+                  <Color red="0.09000000357627869" green="0.07487999647855759" blue="0.03959999978542328" opacity="0.35134100914001465" />
+               </color>
+            </DropShadow>
+         </effect>
       </Text>
-      <Separator layoutX="184.0" layoutY="244.0" prefHeight="2.0" prefWidth="225.0" stylesheets="@../css/JoinMatchPage.css" />
-      <Separator layoutX="179.0" layoutY="514.0" prefHeight="29.0" prefWidth="245.0" stylesheets="@../css/JoinMatchPage.css" />
+      <Group layoutX="183.0" layoutY="168.0">
+         <children>
+            <Line endX="100.0" layoutX="117.0" layoutY="4.0" startX="-100.0" strokeWidth="2.5" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#361c02ef" height="10.0" layoutX="6.0355377197265625" layoutY="-1.0355377197265625" rotate="45.0" stroke="BLACK" strokeType="INSIDE" width="10.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#361c02ef" height="10.0" layoutX="218.03553771972656" layoutY="-1.0355377197265625" rotate="45.0" stroke="BLACK" strokeType="INSIDE" width="10.0" />
+            <Line endX="92.0" layoutX="121.53553771972656" layoutY="7.5355377197265625" startX="-100.0" />
+         </children>
+         <effect>
+            <DropShadow offsetY="3.0">
+               <color>
+                  <Color opacity="0.5977011322975159" />
+               </color>
+            </DropShadow>
+         </effect>
+      </Group>
+      <Group layoutX="192.0" layoutY="784.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#361c02ef" height="10.0" layoutX="-77.0" layoutY="-1.0" rotate="45.0" stroke="BLACK" strokeType="INSIDE" width="10.0">
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.6781609058380127" />
+                     </color>
+                  </DropShadow>
+               </effect></Rectangle>
+            <Line endX="178.9644775390625" endY="-0.0355224609375" layoutX="117.0" layoutY="4.0" startX="-181.92892456054688" strokeWidth="2.5">
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.6781609058380127" />
+                     </color>
+                  </DropShadow>
+               </effect></Line>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#361c02ef" height="10.0" layoutX="298.03553771972656" layoutY="-1.0355377197265625" rotate="45.0" stroke="BLACK" strokeType="INSIDE" width="10.0">
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.6781609058380127" />
+                     </color>
+                  </DropShadow>
+               </effect></Rectangle>
+            <Line endX="159.96446228027344" endY="-1.52587890625E-5" layoutX="121.53553771972656" layoutY="9.535537719726562" startX="-173.53553771972656" startY="-1.52587890625E-5" strokeWidth="1.5">
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.6781609058380127" />
+                     </color>
+                  </DropShadow>
+               </effect></Line>
+            <Line endX="159.96446228027344" endY="-1.52587890625E-5" layoutX="121.53553771972656" layoutY="-1.4644622802734375" startX="-173.53553771972656" startY="-1.52587890625E-5" strokeWidth="1.5">
+               <effect>
+                  <DropShadow offsetX="3.0" offsetY="10.0">
+                     <color>
+                        <Color opacity="0.6781609058380127" />
+                     </color>
+                  </DropShadow>
+               </effect></Line>
+         </children>
+      </Group>
+      <ImageView fitHeight="200.0" fitWidth="176.0" layoutY="701.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/DolmenAnimal.png" />
+         </image>
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
+      <Group layoutX="192.0" layoutY="426.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#361c02ef" height="10.0" layoutX="-77.0" layoutY="-1.0" rotate="45.0" stroke="BLACK" strokeType="INSIDE" width="10.0">
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.6781609058380127" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Rectangle>
+            <Line endX="178.9644775390625" endY="-0.0355224609375" layoutX="117.0" layoutY="4.0" startX="-181.92892456054688" strokeWidth="2.5">
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.6781609058380127" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Line>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#361c02ef" height="10.0" layoutX="298.03553771972656" layoutY="-1.0355377197265625" rotate="45.0" stroke="BLACK" strokeType="INSIDE" width="10.0">
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.6781609058380127" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Rectangle>
+            <Line endX="159.96446228027344" endY="-1.52587890625E-5" layoutX="121.53553771972656" layoutY="9.535537719726562" startX="-173.53553771972656" startY="-1.52587890625E-5" strokeWidth="1.5">
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.6781609058380127" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Line>
+            <Line endX="159.96446228027344" endY="-1.52587890625E-5" layoutX="121.53553771972656" layoutY="-1.4644622802734375" startX="-173.53553771972656" startY="-1.52587890625E-5" strokeWidth="1.5">
+               <effect>
+                  <DropShadow offsetX="3.0" offsetY="10.0">
+                     <color>
+                        <Color opacity="0.6781609058380127" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Line>
+         </children>
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color opacity="0.14176245033740997" />
+               </color>
+            </DropShadow>
+         </effect>
+      </Group>
+      <ImageView fitHeight="200.0" fitWidth="176.0" layoutX="428.0" layoutY="700.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/DolmenInsect.png" />
+         </image>
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
    </children>
 </AnchorPane>

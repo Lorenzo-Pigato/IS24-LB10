@@ -5,6 +5,8 @@ module it.polimi.ingsw.lb10 {
     requires com.fasterxml.jackson.databind;
     requires org.jetbrains.annotations;
     requires net.bytebuddy;
+    requires java.desktop;
+    requires java.smartcardio;
 
 
     opens it.polimi.ingsw.lb10 to javafx.fxml;

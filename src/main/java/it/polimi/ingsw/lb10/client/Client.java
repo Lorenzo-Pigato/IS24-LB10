@@ -19,6 +19,7 @@ public class Client implements Runnable {
     private boolean logged = false;
     private boolean inMatch = false;
     private boolean startedMatch = false;
+    private String username;
 
     private ExceptionHandler exceptionHandler;
 
@@ -89,6 +90,8 @@ public class Client implements Runnable {
         return !inMatch;
     }
 
+    public String getUsername(){return username;}
+
     public boolean matchIsStarted() { return startedMatch; }
 
 
@@ -101,6 +104,8 @@ public class Client implements Runnable {
     public void setInMatch(Boolean state) {
         inMatch = state;
     }
+
+    public void setUsername(String username){ this.username = username;}
 
     /**
      * @param active sets the client state, which will be evaluated by communication threads

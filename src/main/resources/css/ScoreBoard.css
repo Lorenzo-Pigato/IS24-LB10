@@ -3,9 +3,9 @@
     src: url('../fonts/AlegreyaSC-Bold.ttf');
 }
 
-.title {
+.label {
     -fx-font-family: "Alegreya SC";
-    -fx-font-size: 80;
+    -fx-font-size: 40;
     -fx-alignment: center;
 }
 
@@ -16,9 +16,11 @@
     -fx-background-position: center;
 }
 
-.waitingMessage {
+.text {
     -fx-font-family: "Alegreya SC";
-    -fx-font-size: 30;
+    -fx-font-size: 40;
     -fx-alignment: center;
 }
+
+
 
