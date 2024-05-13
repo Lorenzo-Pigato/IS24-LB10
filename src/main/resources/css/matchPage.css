@@ -32,7 +32,7 @@
 
 .chat-label{
     -fx-font-family: "Alegreya SC";
-    -fx-font-size: 40;
+    -fx-font-size: 30;
     -fx-alignment: center;
 }
 .player-board .viewport {
@@ -45,6 +45,78 @@
 .points-label{
     -fx-font-family: "Alegreya SC";
     -fx-font-size: 30;
+}
+
+.input {
+    -fx-font-family: 'Alegreya SC', sans-serif;
+    -fx-margin: 1em 0 1em 0;
+    -fx-position: relative;
+    -fx-background-radius: 25px;
+
+    -fx-font-size: 15;
+    -fx-padding: 0.2em;
+    -fx-outline: none;
+    -fx-border-width: 2px;
+    -fx-border-color: rgb(105, 85, 65);
+    -fx-background-color: rgba(255, 238, 193, 0.82);
+    -fx-border-radius: 25px;
+}
+
+.button {
+    -fx-font-family: 'Alegreya SC', sans-serif;
+    -fx-margin: 1em 0 1em 0;
+    -fx-position: relative;
+    -fx-background-radius: 10px;
+
+    -fx-font-size: 14;
+    -fx-padding: 0.4em;
+    -fx-outline: none;
+    -fx-border-width: 2px;
+    -fx-border-color: rgb(70, 46, 15);
+    -fx-background-color: rgba(255, 238, 193, 0.82);
+    -fx-border-radius: 10px;
+}
+
+.tab-pane {
+    -fx-background-color: rgba(105, 87, 33, 0.3);
+    -fx-font-family: "Alegreya SC";
+    -fx-arrows-visible: false;
+
+    -fx-color-label-visible: rgba(255, 238, 193, 0.82);
+
+    -fx-border-width: 5;
+    -fx-border-color: rgb(70, 46, 15);
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+
+}
+
+.tab-pane *.tab-header-background
+{
+    -fx-background-color: -fx-tab-border-color, -fx-tab-inner-border, -fx-tab-background;
+    -fx-effect: innershadow(two-pass-box , rgba(0, 0, 0, 0.77), 4, 0.0 , 0 , 0);
+}
+
+.tab-pane:top *.tab-header-area
+{
+    -fx-padding: 0.416667em 0.166667em 0.0em 0.833em; /* 5 2 0 10 */
+}
+.tab-pane:bottom *.tab-header-area
+{
+    -fx-padding: 0 0.166667em 0.416667em 0.833em; /* 0 2 5 0 */
+}
+.tab-pane:left *.tab-header-area
+{
+    -fx-padding: 2em 0.0em 0.166667em 0.416667em; /* 10 0 2 5 */
+}
+
+
+.tab-pane .tab {
+    -fx-background-color: rgba(255, 238, 193, 0.82);
+}
+
+.tab-pane .tab:selected {
+    -fx-background-color: rgba(255, 201, 53, 0.82);
 }
 
 .quest-label{

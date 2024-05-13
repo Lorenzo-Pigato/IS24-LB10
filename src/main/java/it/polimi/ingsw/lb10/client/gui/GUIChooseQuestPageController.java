@@ -13,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -42,11 +43,7 @@ public class GUIChooseQuestPageController implements GUIPageController , Initial
     private ImageView secondQuest;
 
     @FXML
-    private static Rectangle firstQuestContainer;
-
-    @FXML
-    private static Rectangle secondQuestContainer;
-
+    private AnchorPane anchorWaitingText;
 
     public static void setQuests(Quest firstQuestCard, Quest secondQuestCard){
         GUIChooseQuestPageController.firstQuestCard = firstQuestCard;
@@ -78,9 +75,18 @@ public class GUIChooseQuestPageController implements GUIPageController , Initial
         Quest chosen = event.getSource().equals(firstQuest) ? firstQuestCard : secondQuestCard;
         GUIMatchPageController.setPrivateQuest(chosen);
         GUIClientViewController.instance().send(new PrivateQuestSelectedRequest(GUIClientViewController.instance().getMatchId(), chosen));
+
+        if(event.getSource().equals(firstQuest))
+            firstQuest.setEffect(new DropShadow(BlurType.THREE_PASS_BOX, new Color(0.85, 0.65, 0, 0.75), 10, 0.3, 0,0));
+        else
+            secondQuest.setEffect(new DropShadow(BlurType.THREE_PASS_BOX, new Color(0.85, 0.65, 0, 0.75), 10, 0.3, 0,0));
+
+
+
         firstQuest.setDisable(true);
         secondQuest.setDisable(true);
 
+        anchorWaitingText.setVisible(true);
     }
 
     @Override

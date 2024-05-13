@@ -16,17 +16,17 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" styleClass="background-anchor" stylesheets="@../css/matchPage.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.lb10.client.gui.GUIMatchPageController">
    <children>
-      <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#6b59224d" height="687.0" layoutX="13.0" layoutY="13.0" stroke="#463e02" strokeType="INSIDE" strokeWidth="5.0" width="1204.0" />
-      <TabPane layoutX="20.0" layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="670.0" prefWidth="1190.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane layoutX="14.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="1198.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Board">
                <content>
-                  <ScrollPane fx:id="boardScrollPane" fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minViewportHeight="664.0" minViewportWidth="1181.0" minWidth="-Infinity" pannable="true" prefHeight="663.0" prefViewportHeight="664.0" prefViewportWidth="1181.0" prefWidth="1184.0" styleClass="player-board" stylesheets="@../css/matchPage.css" />
+                  <ScrollPane fx:id="boardScrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minViewportHeight="664.0" minViewportWidth="1181.0" minWidth="-Infinity" pannable="true" prefHeight="663.0" prefViewportHeight="664.0" prefViewportWidth="1181.0" prefWidth="1184.0" styleClass="player-board" stylesheets="@../css/matchPage.css" vbarPolicy="NEVER" />
                </content>
             </Tab>
           <Tab text="Game table">
@@ -107,10 +107,9 @@
             <StackPane fx:id="handCardThreePane" layoutX="533.0" layoutY="11.0" prefHeight="150.0" prefWidth="230.0" />
             <StackPane fx:id="handCardTwoPane" layoutX="270.0" layoutY="10.0" prefHeight="150.0" prefWidth="230.0" />
          </children></AnchorPane>
-      <AnchorPane layoutX="1228.0" layoutY="15.0" prefHeight="450.0" prefWidth="340.0" styleClass="label" stylesheets="@../css/matchPage.css" AnchorPane.leftAnchor="1228.0" AnchorPane.rightAnchor="20.0">
+      <AnchorPane layoutX="1228.0" layoutY="15.0" prefHeight="556.0" prefWidth="352.0" styleClass="label" stylesheets="@../css/matchPage.css" AnchorPane.leftAnchor="1228.0" AnchorPane.rightAnchor="20.0">
          <children>
-            <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#6b59224d" height="560.0" layoutY="-2.0" stroke="#463e02" strokeType="INSIDE" strokeWidth="5.0" width="354.0" />
-            <TabPane layoutX="4.0" layoutY="8.0" prefHeight="460.0" prefWidth="352.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="8.0">
+            <TabPane layoutX="4.0" layoutY="1.0" prefHeight="556.0" prefWidth="356.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-4.0" AnchorPane.topAnchor="1.0">
               <tabs>
                 <Tab text="Quests">
                   <content>
@@ -164,7 +163,19 @@
                 </Tab>
                 <Tab text="Score Board">
                   <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <ImageView fitHeight="493.0" fitWidth="264.0" layoutX="46.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/scoreboard.png" />
+                                 </image>
+                              </ImageView>
+                              <Circle fill="DODGERBLUE" layoutX="258.0" layoutY="361.0" radius="16.0" stroke="BLACK" strokeType="INSIDE" />
+                              <Circle fill="DODGERBLUE" layoutX="257.0" layoutY="412.0" radius="16.0" stroke="BLACK" strokeType="INSIDE" />
+                              <Circle fill="DODGERBLUE" layoutX="201.0" layoutY="412.0" radius="16.0" stroke="BLACK" strokeType="INSIDE" />
+                              <Circle fill="DODGERBLUE" layoutX="145.0" layoutY="412.0" radius="16.0" stroke="BLACK" strokeType="INSIDE" />
+                              <Circle fill="DODGERBLUE" layoutX="88.0" layoutY="412.0" radius="16.0" stroke="BLACK" strokeType="INSIDE" />
+                           </children></AnchorPane>
                   </content>
                 </Tab>
               </tabs>
@@ -316,19 +327,20 @@
       <AnchorPane layoutX="1228.0" layoutY="485.0" minHeight="0.0" prefHeight="400.0" prefWidth="355.0">
          <children>
             <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#6957214d" height="269.0" layoutX="-1.0" layoutY="132.0" stroke="#463e02" strokeType="INSIDE" strokeWidth="5.0" width="356.0" AnchorPane.topAnchor="132.0" />
-            <ScrollPane fx:id="chatScrollPane" hbarPolicy="NEVER" layoutX="6.0" layoutY="132.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="208.0" prefWidth="342.0" styleClass="player-board" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="132.0">
+            <ScrollPane fx:id="chatScrollPane" hbarPolicy="NEVER" layoutX="6.0" layoutY="135.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="208.0" prefWidth="342.0" styleClass="player-board" AnchorPane.bottomAnchor="47.0" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="135.0">
                <content>
                   <VBox fx:id="chatVBox" prefHeight="205.0" prefWidth="336.0" />
                </content>
             </ScrollPane>
-            <TextField fx:id="chatText" alignment="BOTTOM_CENTER" layoutX="8.0" layoutY="345.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="281.0">
+            <TextField fx:id="chatText" layoutX="8.0" layoutY="352.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="281.0" styleClass="input" stylesheets="@../css/matchPage.css">
                <cursor>
-                  <Cursor fx:constant="NONE" />
+                  <Cursor fx:constant="TEXT" />
                </cursor>
                <effect>
                   <Glow />
-               </effect></TextField>
-            <Button fx:id="chatButton" layoutX="291.0" layoutY="352.0" mnemonicParsing="false" onAction="#send" prefHeight="25.0" prefWidth="54.0" text="Send">
+               </effect>
+            </TextField>
+            <Button fx:id="chatButton" layoutX="292.0" layoutY="354.0" mnemonicParsing="false" onAction="#send" prefHeight="25.0" prefWidth="54.0" text="Send">
                <effect>
                   <DropShadow blurType="GAUSSIAN" />
                </effect>

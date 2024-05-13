@@ -5,7 +5,7 @@
 
 .label {
     -fx-font-family: "Alegreya SC";
-    -fx-font-size: 60;
+    -fx-font-size: 80;
     -fx-alignment: center;
 }
 
@@ -39,15 +39,15 @@
     -fx-font-family: 'Alegreya SC', sans-serif;
     -fx-margin: 1em 0 1em 0;
     -fx-position: relative;
-    -fx-background-radius: 25px;
+    -fx-background-radius: 20px;
 
     -fx-font-size: 35;
-    -fx-padding: 0.8em;
+    -fx-padding: 0.3em;
     -fx-outline: none;
     -fx-border-width: 2px;
     -fx-border-color: rgb(70, 46, 15);
-    -fx-background-color: rgba(250, 232, 180, 0.77);
-    -fx-border-radius: 25px;
+    -fx-background-color: rgba(255, 238, 193, 0.82);
+    -fx-border-radius: 20px;
 }
 
 .input {
@@ -56,8 +56,9 @@
     -fx-position: relative;
     -fx-background-radius: 20px;
 
-    -fx-font-size: 10;
-    -fx-padding: 0.8em;
+    -fx-font-size: 15;
+    -fx-padding: 0.2em;
+    -fx-padding-left: 0.5em;
     -fx-outline: none;
     -fx-border-width: 2px;
     -fx-border-color: rgb(105, 85, 65);
