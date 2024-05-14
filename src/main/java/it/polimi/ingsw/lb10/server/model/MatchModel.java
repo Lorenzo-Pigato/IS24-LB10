@@ -227,6 +227,7 @@ public class MatchModel extends Observable {
         if (!finalTurnStarted && p.getPoints() >= 20) {
             finalTurnStarted = true;
             Server.log("[ " + id + "]" + ">>final turn started, " + p.getUsername() + " reached 20 pts");
+            notifyAll(new ChatMessageResponse("Server", "Final turn has started!"));
         }
     }
 
@@ -320,7 +321,7 @@ public class MatchModel extends Observable {
         if (resourceDeckIsEmpty && goldenDeckIsEmpty) {
             finalTurnStarted = true;
             Server.log("[ " + id + "]" + ">>final turn started, both decks are empty!");
-            new ChatMessageResponse("Server", "It's your final turn, both decks are empty!");
+            notifyAll(new ChatMessageResponse("Server", "Final turn has started!"));
         }
     }
 
