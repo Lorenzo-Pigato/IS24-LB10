@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Bloom?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" styleClass="anchor" stylesheets="@../css/ErrorPage.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.lb10.client.gui.GUIErrorPageController">
+   <children>
+      <ImageView fitHeight="557.0" fitWidth="869.0" layoutX="-15.0" layoutY="345.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/Cave4.png" />
+         </image>
+         <effect>
+            <ColorAdjust brightness="-0.4" contrast="-0.15">
+               <input>
+                  <DropShadow />
+               </input>
+            </ColorAdjust>
+         </effect>
+      </ImageView>
+      <Group layoutX="298.0" layoutY="277.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#361c02ef" height="10.0" layoutX="-77.0" layoutY="-1.0" rotate="45.0" stroke="BLACK" strokeType="INSIDE" width="10.0">
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.6781609058380127" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Rectangle>
+            <Line endX="79.66665649414062" layoutX="117.0" layoutY="4.0" startX="-181.92892456054688" strokeWidth="2.5">
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.6781609058380127" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Line>
+            <Line endX="64.46446228027344" endY="-1.52587890625E-5" layoutX="121.53553771972656" layoutY="9.535537719726562" startX="-173.53553771972656" startY="-1.52587890625E-5" strokeWidth="1.5">
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.6781609058380127" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Line>
+            <Line endX="65.13111877441406" endY="-1.52587890625E-5" layoutX="121.53553771972656" layoutY="-1.4644622802734375" startX="-173.53553771972656" startY="-1.52587890625E-5" strokeWidth="1.5">
+               <effect>
+                  <DropShadow offsetX="3.0" offsetY="10.0">
+                     <color>
+                        <Color opacity="0.6781609058380127" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Line>
+         </children>
+      </Group>
+      <Label layoutX="498.0" layoutY="203.0" prefHeight="147.0" prefWidth="624.0" styleClass="title" text="An Error Occurred" textFill="#c33636">
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color red="0.006200000178068876" green="0.009999999776482582" blue="0.007115711458027363" opacity="0.5799999833106995" />
+               </color>
+               <input>
+                  <Bloom threshold="0.67" />
+               </input>
+            </DropShadow>
+         </effect>
+      </Label>
+      <Rectangle arcHeight="30.0" arcWidth="30.0" fill="#dbd9d91d" height="357.0" layoutX="521.0" layoutY="360.0" stroke="#7a531f" strokeType="INSIDE" strokeWidth="3.0" width="579.0" />
+      <Group layoutX="1196.0" layoutY="276.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#361c02ef" height="10.0" layoutX="199.0" layoutY="-1.0" rotate="45.0" stroke="BLACK" strokeType="INSIDE" width="10.0">
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.6781609058380127" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Rectangle>
+            <Line endX="79.66665649414062" layoutX="117.0" layoutY="4.0" startX="-181.92892456054688" strokeWidth="2.5">
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.6781609058380127" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Line>
+            <Line endX="64.46446228027344" endY="-1.52587890625E-5" layoutX="121.53553771972656" layoutY="9.535537719726562" startX="-173.53553771972656" startY="-1.52587890625E-5" strokeWidth="1.5">
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.6781609058380127" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Line>
+            <Line endX="65.13111877441406" endY="-1.52587890625E-5" layoutX="121.53553771972656" layoutY="-1.4644622802734375" startX="-173.53553771972656" startY="-1.52587890625E-5" strokeWidth="1.5">
+               <effect>
+                  <DropShadow offsetX="3.0" offsetY="10.0">
+                     <color>
+                        <Color opacity="0.6781609058380127" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Line>
+         </children>
+      </Group>
+      <ImageView fitHeight="489.0" fitWidth="338.0" layoutX="-104.0" layoutY="480.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/MagicianInsect.png" />
+         </image>
+         <effect>
+            <DropShadow>
+               <input>
+                  <Bloom threshold="0.65" />
+               </input>
+               <color>
+                  <Color opacity="0.6299999952316284" />
+               </color>
+            </DropShadow>
+         </effect>
+      </ImageView>
+      <ImageView fitHeight="489.0" fitWidth="338.0" layoutX="1367.0" layoutY="486.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/MagicianPlant.png" />
+         </image>
+         <effect>
+            <DropShadow>
+               <input>
+                  <Bloom threshold="0.65" />
+               </input>
+               <color>
+                  <Color opacity="0.6299999952316284" />
+               </color>
+            </DropShadow>
+         </effect>
+      </ImageView>
+      <Text fx:id="errorText" fill="#4a2207" layoutX="558.0" layoutY="434.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="515.7156372070312">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <Text fill="#4a2207" layoutX="556.0" layoutY="395.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Details:" wrappingWidth="515.7156372070312">
+         <font>
+            <Font name="System Bold" size="19.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>
