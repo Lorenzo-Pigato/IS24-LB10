@@ -405,7 +405,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
             hooverRectangle.setOnMouseClicked(_ -> {
                 if(!isClicked(hooverRectangle) && !placeRequestValidating){ //if this rectangle is not the selected one
                     clickedRectangle = hooverRectangle; //set this rectangle as selected
-                    clickedCard = (PlaceableCard) hooverRectangle.getParent().getChildrenUnmodifiable()//updaate clickedCard as this specific card
+                    clickedCard = (PlaceableCard) hooverRectangle.getParent().getChildrenUnmodifiable()//update clickedCard as this specific card
                             .stream()
                             .filter(node -> node.getClass()
                                     .equals(ImageView.class))
@@ -413,13 +413,12 @@ public class GUIMatchPageController implements GUIPageController , Initializable
                             .findFirst()
                             .get()
                             .getUserData();
+                    resetRectanglesOpacity();
 
                     if(matrixCardValidSelection){ //if user already selected a martix card
                         validatePlacing(hooverRectangle);
                     }
-                    handCardStackPanes.forEach(stackPane -> stackPane.getChildren().stream().filter(node -> node.getClass().equals(Rectangle.class)).map(node -> ((Rectangle) (node))).forEach(rectangle -> {
-                        if(!rectangle.equals(clickedRectangle)) rectangle.setOpacity(0);
-                    })); //resets all highlighting, if a new req has been sent, clicked rectangle is null so this function sets all rectangles to non-highlighted
+                    resetRectanglesOpacity();
                 }else if(!placeRequestValidating){
                     hooverRectangle.setOpacity(0); //rectangle was the selected one, so we reset the state to non-selected
                     clickedCard = null;
@@ -428,6 +427,12 @@ public class GUIMatchPageController implements GUIPageController , Initializable
             });
         }
         return hooverRectangles;
+    }
+
+    private static void resetRectanglesOpacity() {
+        handCardStackPanes.forEach(stackPane -> stackPane.getChildren().stream().filter(node -> node.getClass().equals(Rectangle.class)).map(node -> ((Rectangle) (node))).forEach(rectangle -> {
+            if(!rectangle.equals(clickedRectangle)) rectangle.setOpacity(0);
+        })); //resets all highlighting, if a new req has been sent, clicked rectangle is null so this function sets all rectangles to non-highlighted
     }
 
     private void validatePlacing(@NotNull Rectangle hooverRectangle) {
@@ -524,6 +529,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         handCardStackPanes.forEach(stackPane -> stackPane.getChildren().stream().filter(node -> node.getClass().equals(Rectangle.class)).forEach(node -> node.setOpacity(0)));
         matrixCardValidSelection = false;
         clickedCard = null;
+        clickedRectangle = null;
     }
 
     public void updateTablePickingOptions(@NotNull List<PlaceableCard> tableCards){

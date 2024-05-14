@@ -14,13 +14,15 @@ public class PlaceCardResponse extends Response {
     private final int row;
     private final int col;
     private final HashMap<Resource, Integer> playerResources;
+    private String message;
 
-    public PlaceCardResponse(PlaceableCard card, boolean status, int row, int col, HashMap<Resource, Integer> playerResources) {
+    public PlaceCardResponse(PlaceableCard card, boolean status, int row, int col, HashMap<Resource, Integer> playerResources, String message) {
         this.card = card;
         this.status = status;
         this.row = row;
         this.col = col;
         this.playerResources = playerResources;
+        this.message = message;
     }
 
     @Override

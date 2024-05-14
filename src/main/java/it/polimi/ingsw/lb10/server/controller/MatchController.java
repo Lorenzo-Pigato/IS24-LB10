@@ -242,7 +242,6 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         model.getPlayer(placeStartingCardRequest.getUserHash()).setStartingCard(placeStartingCardRequest.getStartingCard());
         model.insertStartingCard(getPlayer(placeStartingCardRequest.getUserHash()));
         if (players.stream().noneMatch(player -> player.getMatrix().getNode(41, 41).getCorners().isEmpty()))
-
             model.startTurns();
     }
 
@@ -254,7 +253,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     @Override
     public void visit(PlaceCardRequest placeCardRequest) {
         Server.log("[ " + id + "]" + ">>new place card request");
-        if (model.getPlayer(placeCardRequest.getUserHash()).equals(model.getOnTurnPlayer())) {
+        if (model.getPlayer(placeCardRequest.getUserHash()).equals(model.getOnTurnPlayer()) && !hasToPick(placeCardRequest.getUserHash())) {
             if (model.checkValidMatrixCardId(placeCardRequest.getMatrixCardId(), getPlayer(placeCardRequest.getUserHash()))) {
                 Position position = placeCardRequest.getPosition();
                 switch (position) {
@@ -269,11 +268,13 @@ public class MatchController implements Runnable, MatchRequestVisitor {
                 }
 
             } else {
-                model.notify(new PickedCardResponse(null, false, "Invalid card id", null), placeCardRequest.getUserHash());
+                model.notify(new PlaceCardResponse(null, false, 0, 0, null, "Invalid card id"), placeCardRequest.getUserHash());
             }
 
         } else {
-            model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), placeCardRequest.getUserHash());
+            if(model.getOnTurnPlayer() == null) model.notify(new ServerNotification("Wait for all players to place starting card before placing one!", false), placeCardRequest.getUserHash());
+            else if(!model.getPlayer(placeCardRequest.getUserHash()).equals(model.getOnTurnPlayer())) model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), placeCardRequest.getUserHash());
+            else model.notify(new PlaceCardResponse(null, false, 0, 0, null, "You already placed your card,\npick one to end your turn!"), placeCardRequest.getUserHash());
         }
 
     }
@@ -357,7 +358,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
             model.setId(id);
             model.gameSetup(); //initializer for decks, table cards , players hand and colors.
         } catch (Exception e) {
-            Server.log("[ " + id + "]" + e.getMessage());
+            Server.log("[" + id + "]" + e.getMessage());
         }
     }
 
