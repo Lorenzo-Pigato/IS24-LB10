@@ -8,7 +8,6 @@ import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.server.view.RemoteView;
 import it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitor;
-import javafx.scene.paint.Color;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -274,7 +273,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     @Override
     public void visit(PickRequest pickRequest) { //TEST !!
         Server.log("[ " + id + "]" + ">>new pick request");
-        if(model.isFinalTurn()) {
+        if(model.isFinalTurnStarted()) {
             model.notify(new PickedCardResponse(null, false, "Final turn reached", getPlayer(pickRequest.getUserHash()).getMatrix(), true), pickRequest.getUserHash());
             model.endTurn(pickRequest.getUserHash(), getPlayer(pickRequest.getUserHash()).getPoints());
         } else {

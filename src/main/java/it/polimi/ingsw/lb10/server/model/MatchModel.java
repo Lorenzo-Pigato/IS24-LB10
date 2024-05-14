@@ -27,8 +27,9 @@ public class MatchModel extends Observable {
     private final QuestDeck questDeck;
     private final StartingDeck startingDeck;
     private Player onTurnPlayer;
-    private boolean finalTurn = false;
-    private Player finalTurnPlayer;
+    private boolean finalTurnStarted = false;
+    private boolean finalTurnPlayed = false;
+    private Player gameStarter;
 
     private boolean resourceDeckIsEmpty = false;
     private boolean goldenDeckIsEmpty = false;
@@ -78,7 +79,7 @@ public class MatchModel extends Observable {
         return terminated;
     }
 
-    public boolean isFinalTurn() { return finalTurn;}
+    public boolean isFinalTurnStarted() { return finalTurnStarted;}
 
     public void terminate() {
         Server.log("[" + id + "]" + ">>match terminated");
@@ -223,9 +224,8 @@ public class MatchModel extends Observable {
      */
     private void checkFinalTurn(Player p) {
         Server.log("[ " + id + "]" + ">>checking final turn");
-        if (!finalTurn && p.getPoints() >= 20) {
-            finalTurnPlayer = p;
-            finalTurn = true;
+        if (!finalTurnStarted && p.getPoints() >= 20) {
+            finalTurnStarted = true;
             Server.log("[ " + id + "]" + ">>final turn started, " + p.getUsername() + " reached 20 pts");
         }
     }
@@ -235,11 +235,16 @@ public class MatchModel extends Observable {
      * the adds all quest points to each player setting his final score, notifies each player of each other player final scores, and notifies game end.
      */
     private void checkEndGame() {
-        if (finalTurn && onTurnPlayer.equals(finalTurnPlayer)) {
+        if (finalTurnPlayed && onTurnPlayer.equals(gameStarter)) {
             players.forEach(this::checkCounterQuestPoints);
             players.forEach(Player::setFinalScore);
             players.forEach(player -> notifyAll(new PlayerPointsUpdateResponse(player.getUsername(), player.getPoints())));
             endGame();
+        }
+
+        if(finalTurnStarted && !finalTurnPlayed && onTurnPlayer.equals(gameStarter)){
+            finalTurnPlayed = true;
+            Server.log("[ " + id + "]" + ">>final turn played");
         }
     }
 
@@ -313,8 +318,7 @@ public class MatchModel extends Observable {
         }
 
         if (resourceDeckIsEmpty && goldenDeckIsEmpty) {
-            finalTurn = true;
-            finalTurnPlayer = onTurnPlayer;
+            finalTurnStarted = true;
             Server.log("[ " + id + "]" + ">>final turn started, both decks are empty!");
             new ChatMessageResponse("Server", "It's your final turn, both decks are empty!");
         }
@@ -551,6 +555,7 @@ public class MatchModel extends Observable {
 
     public void startTurns() {
         onTurnPlayer = players.getFirst();
+        gameStarter = players.getFirst();
         notifyAll(new ChatMessageResponse("Server", "it's " + onTurnPlayer.getUsername() + "'s turn, make your move!"));
     }
 
