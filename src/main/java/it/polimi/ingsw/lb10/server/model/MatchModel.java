@@ -396,7 +396,7 @@ public class MatchModel extends Observable {
             player.getMatrix().setCard(card, row, column);
             //if one of the two-parameter row and column is > 82 return false!
             checkInsertion(player, card, row, column);
-        } else notify(new PlaceCardResponse(card, false, row, column, null), player.getUserHash());
+        } else notify(new PlaceCardResponse(card, false, row, column, null, "The card you chose has an activation cost, \n Check your resources befor placing!"), player.getUserHash());
     }
 
     public boolean checkValidMatrixCardId(int targetId, Player player) {
@@ -421,10 +421,10 @@ public class MatchModel extends Observable {
             addCardPointsOnPlayer(player, card, visitedNodes);
             checkPatternQuest(player, row, column);
             player.removeCardOnHand(card);//the player chooses the next card, it's a request!
-            notify(new PlaceCardResponse(card, true, row, column, player.getOnMapResources()), player.getUserHash());
+            notify(new PlaceCardResponse(card, true, row, column, player.getOnMapResources(), ""), player.getUserHash());
         } else {
             player.getMatrix().deleteCard(row, column);
-            notify(new PlaceCardResponse(card, false, row, column, null), player.getUserHash());
+            notify(new PlaceCardResponse(card, false, row, column, null, "Invalid card placement, retry!"), player.getUserHash());
         }
     }
 

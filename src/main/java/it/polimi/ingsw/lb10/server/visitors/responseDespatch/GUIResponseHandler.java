@@ -125,6 +125,7 @@ public class GUIResponseHandler implements ResponseVisitor {
     @Override
     public void visit(NotYourTurnResponse notYourTurnResponse) {
         getMatchPageFromController().popUpTip("It's " + notYourTurnResponse.getUsername() + "'s turn, wait your turn to make your move!", Color.RED);
+        getMatchPageFromController().resetAllBoardShadows();
     }
 
     @Override
@@ -134,11 +135,11 @@ public class GUIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(EndGameResponse endGameResponse) {
-        if(controller.getPage() instanceof GUIWaitingPageController){
-            controller.changeScene(new );
-        }else{
-            controller.changeScene();
-        }
+        //if(controller.getPage() instanceof GUIWaitingPageController){
+        //    controller.changeScene(new );
+        //}else{
+        //    controller.changeScene();
+        //}
     }
 
     @Override
