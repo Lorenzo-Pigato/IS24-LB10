@@ -90,7 +90,7 @@ public class GUIResponseHandler implements ResponseVisitor {
             if(pickedCardResponse.getStatus()){
                 GUIMatchPageController.insertCardOnHand(pickedCardResponse.getCard());
             }else{
-
+                /// IMPLEMENT final turn
             }
         });
     }

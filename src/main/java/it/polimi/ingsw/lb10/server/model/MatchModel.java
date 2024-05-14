@@ -78,6 +78,8 @@ public class MatchModel extends Observable {
         return terminated;
     }
 
+    public boolean isFinalTurn() { return finalTurn;}
+
     public void terminate() {
         Server.log("[" + id + "]" + ">>match terminated");
         terminated = true;
@@ -146,6 +148,14 @@ public class MatchModel extends Observable {
 
         startingDeck.fillDeck();
         startingDeck.shuffle();
+
+        for (int i = 0; i < 35; i++){
+            goldenDeck.drawCard();
+        }
+
+        for (int i = 0; i < 33; i++){
+            resourceDeck.drawCard();
+        }
     }
 
     /**
@@ -179,7 +189,7 @@ public class MatchModel extends Observable {
      * @param userHash player userHash
      * @param points   player points
      *                 this method provides logic to end a player's turn by selecting next "onTurnPlayer", checking if given player has reached 20 points,
-     *                 checks if game has to end by checking equaliance with "finalTurnPlayer", then
+     *                 then checks if game has to end by checking if it equals to "finalTurnPlayer"
      */
     public void endTurn(int userHash, int points) {
         onTurnPlayer = players.get((players.indexOf(onTurnPlayer) + 1) % players.size());
@@ -192,13 +202,16 @@ public class MatchModel extends Observable {
     }
 
     private void notifyDecksUpdate() {
+
         PlaceableCard[] decks = new PlaceableCard[]{
-                goldenDeck.getCards().getLast(),
-                resourceDeck.getCards().getLast(),
-                goldenUncovered.getFirst(),
-                goldenUncovered.getLast(),
-                resourceUncovered.getFirst(),
-                resourceUncovered.getLast()
+                goldenDeck.getCards().isEmpty() ? null : goldenDeck.getCards().getLast(),
+                resourceDeck.getCards().isEmpty() ? null : resourceDeck.getCards().getLast(),
+
+                goldenUncovered.isEmpty() ? null : (goldenUncovered.size() > 1 ? goldenUncovered.get(1) : goldenUncovered.getFirst()),
+                goldenUncovered.isEmpty() ? null : (goldenUncovered.size() > 1 ? goldenUncovered.getFirst() : null),
+
+                resourceUncovered.isEmpty() ? null : (resourceUncovered.size() > 1 ? resourceUncovered.get(1) : resourceUncovered.getFirst()),
+                resourceUncovered.isEmpty() ? null : (resourceUncovered.size() > 1 ? resourceUncovered.getFirst() : null),
         };
         notifyAll(new DeckUpdateResponse(Arrays.asList(decks)));
     }
@@ -223,8 +236,8 @@ public class MatchModel extends Observable {
      */
     private void checkEndGame() {
         if (finalTurn && onTurnPlayer.equals(finalTurnPlayer)) {
-            players.forEach(player -> checkCounterQuestPoints(player));
-            players.forEach(player -> player.setFinalScore());
+            players.forEach(this::checkCounterQuestPoints);
+            players.forEach(Player::setFinalScore);
             players.forEach(player -> notifyAll(new PlayerPointsUpdateResponse(player.getUsername(), player.getPoints())));
             endGame();
         }
@@ -238,25 +251,27 @@ public class MatchModel extends Observable {
         if (!resourceDeckIsEmpty) {
             ResourceCard picked = resourceDeck.drawCard();
             player.addCardOnHand(picked);
-            notify(new PickedCardResponse(picked, true, null, player.getMatrix()), player.getUserHash());
+            notify(new PickedCardResponse(picked, true, null, player.getMatrix(), false), player.getUserHash());
+            checkDeckEmptiness();
+            endTurn(player.getUserHash(), player.getPoints());
         } else {
-            notify(new PickedCardResponse(null, false, "Resource deck is empty!", null), player.getUserHash());
+            notify(new PickedCardResponse(null, false, "Resource deck is empty!", null, false), player.getUserHash());
         }
     }
 
     /**
      * this method id used to pick a golden card from golden deck, provides simple logic to avoid NoSuchElementException inside deck drawing:
      * once deck is empty, a little notification is sent to the client, so that his simple logic prevents client from requesting golden deck picking again.
-     *
-     * @return picked GOLDEN card
      */
     public void drawGoldenFromDeck(Player player) {
         if (!goldenDeckIsEmpty) {
             GoldenCard picked = goldenDeck.drawCard();
             player.addCardOnHand(picked);
-            notify(new PickedCardResponse(picked, true, null, player.getMatrix()), player.getUserHash());
+            notify(new PickedCardResponse(picked, true, null, player.getMatrix(), false), player.getUserHash());
+            checkDeckEmptiness();
+            endTurn(player.getUserHash(), player.getPoints());
         } else {
-            notify(new PickedCardResponse(null, false, "Golden deck is empty!", null), player.getUserHash());
+            notify(new PickedCardResponse(null, false, "Golden deck is empty!", null, false), player.getUserHash());
         }
     }
 
@@ -269,18 +284,23 @@ public class MatchModel extends Observable {
      * @param index  <1 or 2>
      */
     public void drawResourceFromTable(Player player, int index) {
-        ResourceCard picked = null;
+        ResourceCard picked;
         try {
             picked = resourceUncovered.get(index);
             resourceUncovered.remove(picked);
             if (!resourceDeckIsEmpty) {
                 resourceUncovered.add(index, resourceDeck.drawCard());
             }
-        } catch (NoSuchElementException e) {
-            notify(new PickedCardResponse(null, false, "Table position not avaliable!", null), player.getUserHash());
+
+            player.addCardOnHand(picked);
+            notify(new PickedCardResponse(picked, true, null, player.getMatrix(), false), player.getUserHash());
+            checkDeckEmptiness();
+            endTurn(player.getUserHash(), player.getPoints());
+
+        } catch (IndexOutOfBoundsException e) {
+            notify(new PickedCardResponse(null, false, "Table position not available!", null, false), player.getUserHash());
         }
-        player.addCardOnHand(picked);
-        notify(new PickedCardResponse(picked, true, null, player.getMatrix()), player.getUserHash());
+
     }
 
     public void checkDeckEmptiness() {
@@ -308,18 +328,22 @@ public class MatchModel extends Observable {
      * @param index  <1 or 2>
      */
     public void drawGoldenFromTable(Player player, int index) {
-        GoldenCard picked = null;
+        GoldenCard picked;
         try {
             picked = goldenUncovered.get(index);
             goldenUncovered.remove(picked);
             if (!goldenDeckIsEmpty) {
                 goldenUncovered.add(index, goldenDeck.drawCard());
             }
-        } catch (NoSuchElementException e) {
-            notify(new PickedCardResponse(null, false, "Table position not avaliable!", null), player.getUserHash());
+
+            player.addCardOnHand(picked);
+            notify(new PickedCardResponse(picked, true, null, player.getMatrix(), false), player.getUserHash());
+            checkDeckEmptiness();
+            endTurn(player.getUserHash(), player.getPoints());
+
+        } catch (IndexOutOfBoundsException e) {
+            notify(new PickedCardResponse(null, false, "Table position not available!", null, false), player.getUserHash());
         }
-        player.addCardOnHand(picked);
-        notify(new PickedCardResponse(picked, true, null, player.getMatrix()), player.getUserHash());
     }
 
     public void setCardResourceOnPlayer(Player player, PlaceableCard card) {
@@ -396,11 +420,11 @@ public class MatchModel extends Observable {
             player.getMatrix().setCard(card, row, column);
             //if one of the two-parameter row and column is > 82 return false!
             checkInsertion(player, card, row, column);
-        } else notify(new PlaceCardResponse(card, false, row, column, null, "The card you chose has an activation cost, \n Check your resources befor placing!"), player.getUserHash());
+        } else notify(new PlaceCardResponse(card, false, row, column, null, "The card you chose has an activation cost, \n Check your resources before placing!"), player.getUserHash());
     }
 
     public boolean checkValidMatrixCardId(int targetId, Player player) {
-        return player.getMatrix().getMatrix().stream().flatMap(col -> col.stream())
+        return player.getMatrix().getMatrix().stream().flatMap(Collection::stream)
                 .flatMap(node -> node.getCorners().stream()).anyMatch(corner -> corner.getId() == targetId);
     }
 
@@ -548,7 +572,7 @@ public class MatchModel extends Observable {
         quests.add(player.getPrivateQuest());
         for (Quest quest : quests) {
             if (quest instanceof QuestCounter)
-                player.addQuestPoints(((QuestCounter) quest).questAlgorithm(player.getOnMapResources()));
+                player.addQuestPoints((quest).questAlgorithm(player.getOnMapResources()));
         }
     }
 

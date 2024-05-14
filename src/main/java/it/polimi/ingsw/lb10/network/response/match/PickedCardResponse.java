@@ -9,14 +9,16 @@ public class PickedCardResponse extends Response {
     private static final long serialVersionUID = 6L;
     private PlaceableCard card;
     private final boolean status;
+    private final boolean finalTurn;
     private final String message;
     private Matrix matrix;
 
-    public PickedCardResponse(PlaceableCard card, boolean status, String message, Matrix matrix) {
+    public PickedCardResponse(PlaceableCard card, boolean status, String message, Matrix matrix, boolean finalTurn){
         this.card = card;
         this.status = status;
         this.message = message;
         this.matrix = matrix;
+        this.finalTurn = finalTurn;
     }
 
     @Override
@@ -39,4 +41,6 @@ public class PickedCardResponse extends Response {
     public Matrix getMatrix() {
         return matrix;
     }
+
+    public boolean isFinalTurn() { return finalTurn; }
 }

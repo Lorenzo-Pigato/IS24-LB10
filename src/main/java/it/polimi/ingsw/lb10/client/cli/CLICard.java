@@ -66,6 +66,12 @@ public abstract class CLICard {
     }
 
     public static void printPlaceableCard(PlaceableCard card, int col, int row) {
+        if(card == null)
+        {
+            CLICommand.restoreCursorPosition();
+            return;
+        }
+
         printBaseCard(card, col, row);
 
         if (card.getStateCardPoints() > 0) {

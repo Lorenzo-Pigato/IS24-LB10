@@ -80,13 +80,16 @@ public class CLIResponseHandler implements ResponseVisitor {
     @Override
     public void visit(PickedCardResponse pickedCardResponse) {
         if (pickedCardResponse.getStatus()) {
-            controller.getHand().add(pickedCardResponse.getCard());
+            if(!pickedCardResponse.isFinalTurn()){
+                controller.getHand().add(pickedCardResponse.getCard());
+            }
+
             controller.getView().getPage().changeState(new CLIMatchPage.Default());
             controller.getView().getPage().print(null);
             CLIMatchPage.printBoard(pickedCardResponse.getMatrix());
             CLIMatchPage.displayHand(controller.getHand());
 
-        } else {
+        } else if (!pickedCardResponse.isFinalTurn()){
             CLIMatchPage.serverReply(pickedCardResponse.getMessage() + ", pick another card");
         }
 

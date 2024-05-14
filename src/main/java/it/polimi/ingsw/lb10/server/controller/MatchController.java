@@ -161,8 +161,6 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         Server.log("[" + id + "]" + ">>draw golden card from table request from " + getPlayer(drawGoldenFromTableRequest.getUserHash()).getUsername());
         if (isOnTurnPlayer(drawGoldenFromTableRequest.getUserHash()) && hasToPick(drawGoldenFromTableRequest.getUserHash())) {
             model.drawGoldenFromTable(getPlayer(drawGoldenFromTableRequest.getUserHash()), drawGoldenFromTableRequest.getIndex());
-            model.endTurn(drawGoldenFromTableRequest.getUserHash(), getPlayer(drawGoldenFromTableRequest.getUserHash()).getPoints());
-            model.checkDeckEmptiness();
             Server.log("[" + id + "]" + ">>draw request valid");
         }  else if (!hasToPick(drawGoldenFromTableRequest.getUserHash())) {
             Server.log("[" + id + "]" + ">>draw request not valid");
@@ -182,8 +180,6 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         Server.log("[" + id + "]" + ">>draw resource card from table request from " + getPlayer(drawResourceFromTableRequest.getUserHash()).getUsername());
         if (isOnTurnPlayer(drawResourceFromTableRequest.getUserHash()) && hasToPick(drawResourceFromTableRequest.getUserHash())) {
             model.drawResourceFromTable(getPlayer(drawResourceFromTableRequest.getUserHash()), drawResourceFromTableRequest.getIndex());
-            model.endTurn(drawResourceFromTableRequest.getUserHash(), getPlayer(drawResourceFromTableRequest.getUserHash()).getPoints());
-            model.checkDeckEmptiness();
             Server.log("[" + id + "]" + ">>draw request valid");
         } else if (!isOnTurnPlayer(drawResourceFromTableRequest.getUserHash())) {
             model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), drawResourceFromTableRequest.getUserHash());
@@ -203,8 +199,6 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         Server.log("[" + id + "]" + ">>draw resource card from deck request from " + getPlayer(drawResourceFromDeckRequest.getUserHash()).getUsername());
         if (isOnTurnPlayer(drawResourceFromDeckRequest.getUserHash()) && hasToPick(drawResourceFromDeckRequest.getUserHash())) {
             model.drawResourceFromDeck(getPlayer(drawResourceFromDeckRequest.getUserHash()));
-            model.endTurn(drawResourceFromDeckRequest.getUserHash(), getPlayer(drawResourceFromDeckRequest.getUserHash()).getPoints());
-            model.checkDeckEmptiness();
             Server.log("[" + id + "]" + ">>draw request valid");
         } else if (!isOnTurnPlayer(drawResourceFromDeckRequest.getUserHash())) {
             model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), drawResourceFromDeckRequest.getUserHash());
@@ -224,8 +218,6 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         Server.log("[" + id + "]" + ">>draw resource card from deck request from " + getPlayer(drawGoldenFromDeckRequest.getUserHash()).getUsername());
         if (isOnTurnPlayer(drawGoldenFromDeckRequest.getUserHash()) && hasToPick(drawGoldenFromDeckRequest.getUserHash())) {
             model.drawGoldenFromDeck(getPlayer(drawGoldenFromDeckRequest.getUserHash()));
-            model.endTurn(drawGoldenFromDeckRequest.getUserHash(), getPlayer(drawGoldenFromDeckRequest.getUserHash()).getPoints());
-            model.checkDeckEmptiness();
             Server.log("[" + id + "]" + ">>draw request valid");
         } else if (!isOnTurnPlayer(drawGoldenFromDeckRequest.getUserHash())) {
             model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), drawGoldenFromDeckRequest.getUserHash());
@@ -282,7 +274,12 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     @Override
     public void visit(PickRequest pickRequest) { //TEST !!
         Server.log("[ " + id + "]" + ">>new pick request");
-        model.notify(new ShowPickingPossibilitiesResponse(!model.getGoldenDeck().getCards().isEmpty() ? model.getGoldenDeck().getCards().getLast() : null, !model.getResourceDeck().getCards().isEmpty() ? model.getResourceDeck().getCards().getLast() : null, model.getGoldenUncovered(), model.getResourceUncovered()), pickRequest.getUserHash());
+        if(model.isFinalTurn()) {
+            model.notify(new PickedCardResponse(null, false, "Final turn reached", getPlayer(pickRequest.getUserHash()).getMatrix(), true), pickRequest.getUserHash());
+            model.endTurn(pickRequest.getUserHash(), getPlayer(pickRequest.getUserHash()).getPoints());
+        } else {
+            model.notify(new ShowPickingPossibilitiesResponse(!model.getGoldenDeck().getCards().isEmpty() ? model.getGoldenDeck().getCards().getLast() : null, !model.getResourceDeck().getCards().isEmpty() ? model.getResourceDeck().getCards().getLast() : null, model.getGoldenUncovered(), model.getResourceUncovered()), pickRequest.getUserHash());
+        }
     }
 
     /**
