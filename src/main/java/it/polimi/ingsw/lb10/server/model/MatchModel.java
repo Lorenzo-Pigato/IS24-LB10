@@ -209,11 +209,11 @@ public class MatchModel extends Observable {
      *          before game termination.
      */
     private void checkFinalTurn(Player p) {
-        Server.log("[ " + id + "]" + ">>checking final turn");
+        Server.log("[" + id + "]" + ">>checking final turn");
         if (!finalTurn && p.getPoints() >= 20) {
             finalTurnPlayer = p;
             finalTurn = true;
-            Server.log("[ " + id + "]" + ">>final turn started, " + p.getUsername() + " reached 20 pts");
+            Server.log("[" + id + "]" + ">>final turn started, " + p.getUsername() + " reached 20 pts");
         }
     }
 
@@ -532,7 +532,7 @@ public class MatchModel extends Observable {
 
 
     private void endGame() {
-        Server.log("[ " + id + "]" + ">>match terminated");
+        Server.log("[" + id + "]" + ">>match terminated");
         players.forEach(player -> notify(new EndGameResponse(player, players), player.getUserHash()));
         terminated = true;
         notifyAll(new TerminatedMatchResponse());

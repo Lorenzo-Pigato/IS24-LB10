@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lb10.client.gui;
 
+import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.text.Text;
@@ -28,6 +29,6 @@ public class GUIErrorPageController implements GUIPageController, Initializable 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        GUIClientViewController.instance().setPage(this);
     }
 }

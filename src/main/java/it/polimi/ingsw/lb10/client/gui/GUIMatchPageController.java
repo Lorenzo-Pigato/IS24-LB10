@@ -14,7 +14,6 @@ import it.polimi.ingsw.lb10.server.model.cards.*;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import javafx.animation.FadeTransition;
-import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -33,10 +32,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -159,14 +155,14 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
         Button place = new Button();
         place.setPrefHeight(60);
-        place.setPrefWidth(120);
+        place.setMinWidth(120);
         place.setText("Place");
         place.setOnAction(_ ->
                 controller.send(new PlaceStartingCardRequest(controller.getMatchId(), startingCard)));
 
         Button flip = new Button();
         flip.setPrefHeight(60);
-        flip.setPrefWidth(120);
+        flip.setMinWidth(120);
         flip.setText("Flip");
         flip.setOnAction(event ->  {
             if(startingCard.getStateStartingCard().getClass().equals(FrontStartingCard.class)) startingCardImageView.setImage(new Image((Objects.requireNonNull(GUIChooseQuestPageController.class.getResourceAsStream("/cards/retro" + startingCard.getId() + ".png")))));
@@ -176,14 +172,23 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
         VBox buttonsBox = new VBox();
         buttonsBox.getChildren().addAll(flip, place);
-        VBox.setMargin(flip, new Insets(0, 200, 10, 20));
-        VBox.setMargin(place, new Insets(10, 200, 0, 20));
+        //VBox.setMargin(flip, new Insets(0, 200, 10, 0));
+        //VBox.setMargin(place, new Insets(10, 200, 0, 0));
+        HBox.setHgrow(place, Priority.ALWAYS);
+        HBox.setHgrow(flip, Priority.ALWAYS);
+        buttonsBox.setPrefWidth(1000);
 
         HBox hBox = new HBox(startingCardImageView, buttonsBox);
-        AnchorPane.setTopAnchor(hBox, boardAnchorPane.getPrefHeight()/2 - startingCardImageView.getFitHeight()/2 - 20);
-        AnchorPane.setLeftAnchor(hBox, boardAnchorPane.getPrefWidth()/2 - startingCardImageView.getFitWidth()/2 - 20);
 
         boardAnchorPane.getChildren().addAll(hBox);
+
+        AnchorPane.setTopAnchor(hBox, boardAnchorPane.getPrefHeight()/2 - boardCardDimension/2);
+        AnchorPane.setLeftAnchor(hBox, boardAnchorPane.getPrefWidth()/2 - boardCardDimension/2);
+        AnchorPane.setRightAnchor(hBox, boardAnchorPane.getPrefHeight()/2 - boardCardDimension/2);
+        AnchorPane.setBottomAnchor(hBox, boardAnchorPane.getPrefWidth()/2 - boardCardDimension/2);
+
+        boardScrollPane.setVvalue(0.5);
+        boardScrollPane.setHvalue(0.5);
 
     }
 
@@ -358,9 +363,9 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         boardAnchorPane = new AnchorPane();
         boardScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         boardScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-        boardScrollPane.setPrefHeight(664);
-        boardScrollPane.setPrefWidth(1181);
-        boardAnchorPane.setPrefSize(boardScrollPane.getPrefWidth(), boardScrollPane.getPrefHeight());
+        //boardScrollPane.setPrefViewportHeight(631);
+        //boardScrollPane.setPrefViewportWidth(1186);
+        boardAnchorPane.setPrefSize(20000, 20000);
 
         boardScrollPane.setContent(boardAnchorPane);
         boardScrollPane.setStyle("-fx-background-color: transparent");
@@ -493,21 +498,8 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         AnchorPane.setBottomAnchor(cardView, 0D);
         AnchorPane.setRightAnchor(cardView, 0D);
 
-        //setRectanglesOnCard(stackPane, card);
-
     }
 
-//    private static void setRectanglesOnCard(StackPane stackPane, PlaceableCard card) {
-//        stackPane.getChildren().stream().filter(node -> node.getClass().equals(Rectangle.class)).forEach(rectangle -> {
-//            if(card.getStateCardCorners().stream().filter(corner -> !corner.isAvailable()).anyMatch(corner -> corner.getPosition().equals(rectangle.getUserData()))){
-//                rectangle.setDisable(true);
-//                rectangle.setOpacity(0);
-//            }else{
-//                rectangle.setDisable(false);
-//            }
-//        });
-//    }
-//
     public void placeStartingCard(){
         clearBoard();
         setScrollPannable();
@@ -516,15 +508,17 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         startingCardImageView.setFitHeight(boardCardDimension);
         startingCardImageView.setFitWidth(boardCardDimension);
         startingCardImageView.setPreserveRatio(true);
-        AnchorPane.setTopAnchor(startingCardImageView, boardAnchorPane.getPrefHeight()/2 - boardCardDimension/2);
-        AnchorPane.setLeftAnchor(startingCardImageView, boardAnchorPane.getPrefWidth()/2 - boardCardDimension/2);
         startingCardImageView.setUserData(startingCard);
         boardAnchorPane.getChildren().add(startingCardImageView);
-
+        AnchorPane.setTopAnchor(startingCardImageView, boardAnchorPane.getPrefHeight()/2 - boardCardDimension/2);
+        AnchorPane.setLeftAnchor(startingCardImageView, boardAnchorPane.getPrefWidth()/2 - boardCardDimension/2);
+        AnchorPane.setRightAnchor(startingCardImageView, boardAnchorPane.getPrefHeight()/2 - boardCardDimension/2);
+        AnchorPane.setBottomAnchor(startingCardImageView, boardAnchorPane.getPrefWidth()/2 - boardCardDimension/2);
         setCardHooverEffects(startingCardImageView);
     }
 
     public void resetAllBoardShadows(){
+        placeRequestValidating = false;
         boardAnchorPane.getChildren().stream().filter(node -> node.getClass().equals(ImageView.class)).map(node -> (ImageView)(node)).forEach(imageView -> imageView.setEffect(new DropShadow(BlurType.THREE_PASS_BOX, new javafx.scene.paint.Color(0, 0, 0, 0.6), 10, 0, 0,0)));
         handCardStackPanes.forEach(stackPane -> stackPane.getChildren().stream().filter(node -> node.getClass().equals(Rectangle.class)).forEach(node -> node.setOpacity(0)));
         matrixCardValidSelection = false;
