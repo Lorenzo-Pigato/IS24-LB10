@@ -531,8 +531,8 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     }
 
     public void updateTablePickingOptions(@NotNull List<PlaceableCard> tableCards){
-        tableCards.get(0).swapState();
-        tableCards.get(1).swapState();
+        if(tableCards.get(0) != null) tableCards.get(0).swapState();
+        if(tableCards.get(1) != null) tableCards.get(1).swapState();
 
         deckOne.setImage(tableCards.get(0) == null ? null : new Image(Objects.requireNonNull(GUIMatchPageController.class.getResourceAsStream((getResourcePath(tableCards.get(0)))))));
         deckOne.setUserData(tableCards.get(0));
@@ -552,8 +552,14 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         tableFour.setImage(tableCards.get(5) == null ? null : new Image(Objects.requireNonNull(GUIMatchPageController.class.getResourceAsStream((getResourcePath(tableCards.get(5)))))));
         tableFour.setUserData(tableCards.get(5));
 
-        if(tableCards.get(0) == null) deckOneGroup.setVisible(false);
-        if(tableCards.get(1) == null) deckTwoGroup.setVisible(false);
+        if(tableCards.get(0) == null) {
+            deckOneGroup.setVisible(false);
+            deckOneGroup.setDisable(true);
+        }
+        if(tableCards.get(1) == null) {
+            deckTwoGroup.setVisible(false);
+            deckTwoGroup.setDisable(true);
+        }
 
     }
 
