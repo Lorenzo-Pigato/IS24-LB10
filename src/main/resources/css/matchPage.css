@@ -130,3 +130,7 @@
     -fx-font-size: 15;
     -fx-text-fill: white;
 }
+
+.buttonIcon:hover {
+    -fx-effect: dropshadow(three-pass-box, white, 10, 0, 0, 0);
+}
