@@ -775,17 +775,21 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         boardTabPane.getSelectionModel().select(index);
     }
 
+    @FXML
     private void quitMatch(){
         controller.send(new QuitMatchRequest(controller.getMatchId()));
-        Platform.runLater(() -> controller.changeScene(new GUIJoinMatchPageController()));
+        controller.changeScene(new GUIJoinMatchPageController());
+        controller.setLobbySize();
     }
 
+    @FXML
     private void quitLobby(){
         controller.send(new QuitRequest());
         controller.close();
     }
 
-    private centerScrollPane(MouseEvent event){
+    @FXML
+    private void centerScrollPane(){
         boardScrollPane.setHvalue(0.5);
         boardScrollPane.setHvalue(0.5);
     }

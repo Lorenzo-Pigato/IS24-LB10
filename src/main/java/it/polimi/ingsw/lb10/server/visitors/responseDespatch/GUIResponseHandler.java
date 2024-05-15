@@ -32,12 +32,13 @@ public class GUIResponseHandler implements ResponseVisitor {
     public void visit(JoinMatchResponse response) {
         controller.getClient().setInMatch(response.getJoined());
         controller.setMatchId(response.getMatchId());
+        Platform.runLater(() -> ((GUIJoinMatchPageController)(controller.getPage())).handleResponse(response.getJoined()));
     }
 
     @Override
     public void visit(BooleanResponse response) {
-        controller.getClient().setLogged(response.getResponseState());
-    }
+        Platform.runLater(() -> ((GUILoginPageController)(controller.getPage())).logClient(response.getResponseState()));
+    };
 
     @Override
     public void visit(TerminatedMatchResponse response) {
@@ -165,7 +166,7 @@ public class GUIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(PlayerLeftResponse playerLeftResponse) {
-        getMatchPageFromController().removePlayerFromBoard(playerLeftResponse.getUsername());
+        Platform.runLater(() -> getMatchPageFromController().removePlayerFromBoard(playerLeftResponse.getUsername()));
     }
 
     @Override

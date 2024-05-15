@@ -31,6 +31,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     private MatchModel model;
     private final BlockingQueue<MatchRequest> requests;
     private final ArrayList<RemoteView> remoteViews;
+
     private boolean started = false;
     private final ArrayList<Player> players;
     private final int numberOfPlayers;
@@ -293,7 +294,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
 
     @Override
     public void visit(QuitMatchRequest quitMatchRequest) {
-        Server.log("[" + id + "] " + getPlayer(quitMatchRequest.getUserHash()) + "left match");
+        Server.log("[" + id + "] " + getPlayer(quitMatchRequest.getUserHash()).getUsername() + " left match");
         removePlayer(getPlayer(quitMatchRequest.getUserHash()));
     }
 
@@ -340,13 +341,8 @@ public class MatchController implements Runnable, MatchRequestVisitor {
                 model.terminate();
             }
         }else if(players.isEmpty()) setActive(false);
+        remoteViews.remove(getRemoteView(p.getUserHash()));
 
-        try {
-            getRemoteView(p.getUserHash()).getSocket().close();
-            remoteViews.remove(getRemoteView(p.getUserHash()));
-        } catch (IOException e) {
-            Server.log("[" + id + "]" + e.getMessage());
-        }
 
         if (isStarted() && isTerminated() || isActive()) {
             LobbyController.terminateMatch(id);

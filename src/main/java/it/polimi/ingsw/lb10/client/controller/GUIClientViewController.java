@@ -28,9 +28,21 @@ public class GUIClientViewController extends ClientViewController {
     private final ExceptionHandler exceptionHandler = new GUIExceptionHandler(this);
     private static final GUIResponseHandler responseHandler = GUIResponseHandler.instance();
     private ArrayList<Player> players;
+    private boolean boundsSocket = false;
+
+    public boolean isBoundsSocket() {
+        return boundsSocket;
+    }
+    public void setBoundsSocket(boolean boundsSocket) {this.boundsSocket = boundsSocket;}
+
     public static GUIClientViewController instance() {
         if (instance == null) instance = new GUIClientViewController();
         return instance;
+    }
+
+    public void setLobbySize(){
+        stage.setHeight(900);
+        stage.setWidth(600);
     }
 
     public synchronized void changeScene(GUIPageController page) {
