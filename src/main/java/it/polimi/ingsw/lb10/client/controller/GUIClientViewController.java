@@ -34,7 +34,7 @@ public class GUIClientViewController extends ClientViewController {
     }
 
     public synchronized void changeScene(GUIPageController page) {
-        setPage(page);
+
         FXMLLoader fxmlLoader = new FXMLLoader(GUIClientViewController.class.getResource(page.getFXML()));
 
         try{
@@ -44,11 +44,12 @@ public class GUIClientViewController extends ClientViewController {
         }catch (IOException e){
             exceptionHandler.handle(e);
         }
+        setPage(fxmlLoader.getController());
     }
 
     public synchronized void initialize(Stage stage) {
         setClient(new Client());
-        setExceptionHandler(new GUIExceptionHandler(GUIClientViewController.instance()));
+        setExceptionHandler(new GUIExceptionHandler(this));
         this.stage = stage;
         stage.setResizable(false);
         stage.setTitle("Codex Naturalis");

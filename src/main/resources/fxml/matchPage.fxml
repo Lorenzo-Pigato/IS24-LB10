@@ -92,9 +92,6 @@
                      <Image url="@../cards/retroGoldenPlant.png" />
                   </ImageView>
                   <ImageView fx:id="deckOne" fitHeight="250.0" fitWidth="250.0" layoutX="42.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
-                     <effect>
-                        <DropShadow height="35.83" radius="30.015" width="86.23" />
-                     </effect>
                   </ImageView>
                </Group>
                <Group>
@@ -151,9 +148,6 @@
                      <Image url="@../cards/retroGoldenAnimal.png" />
                   </ImageView>
                   <ImageView fx:id="deckTwo" fitHeight="250.0" fitWidth="250.0" layoutX="39.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
-                     <effect>
-                        <DropShadow height="23.97" radius="25.5675" width="80.3" />
-                     </effect>
                   </ImageView>
                   <effect>
                      <DropShadow>
@@ -387,7 +381,7 @@
       <ScrollPane fx:id="chatScrollPane" hbarPolicy="NEVER" layoutX="6.0" layoutY="135.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="208.0" prefWidth="342.0" styleClass="player-board" AnchorPane.bottomAnchor="47.0" AnchorPane.leftAnchor="6.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="135.0">
          <VBox fx:id="chatVBox" prefHeight="205.0" prefWidth="336.0" />
       </ScrollPane>
-      <TextField fx:id="chatText" layoutX="8.0" layoutY="352.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="281.0" styleClass="input" stylesheets="@../css/matchPage.css">
+      <TextField fx:id="chatText" layoutX="8.0" layoutY="352.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#send" prefHeight="38.0" prefWidth="281.0" styleClass="input" stylesheets="@../css/matchPage.css">
          <cursor>
             <Cursor fx:constant="TEXT" />
          </cursor>

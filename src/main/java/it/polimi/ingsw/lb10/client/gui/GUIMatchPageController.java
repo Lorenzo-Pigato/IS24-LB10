@@ -54,7 +54,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     private PlaceableCard clickedCard;
     private static StartingCard startingCard;
     private AnchorPane boardAnchorPane;
-    private final int boardCardDimension = 0xfa;
+    private final int boardCardDimension = 150;
     private boolean matrixCardValidSelection = false;
     private boolean placeRequestValidating = false;
     private final Map<Position, int[]> placementOffsets = new HashMap<>();
@@ -238,8 +238,9 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         pickingOptions.add(tableFour);
         
         pickingOptions.forEach(imageView -> {
-            imageView.setOnMouseEntered(_ -> imageView.setEffect(new DropShadow()));
-            imageView.setOnMouseExited(_ -> imageView.setEffect(null));
+            imageView.setEffect(new DropShadow(BlurType.THREE_PASS_BOX, new javafx.scene.paint.Color(0, 0, 0, 0.6), 10, 0, 0,0));
+            imageView.setOnMouseEntered(_ -> imageView.setEffect(new DropShadow(BlurType.THREE_PASS_BOX, new javafx.scene.paint.Color(1, 0.6, 0, 1), 10, 0, 0,0)));
+            imageView.setOnMouseExited(_ -> imageView.setEffect((new DropShadow(BlurType.THREE_PASS_BOX, new javafx.scene.paint.Color(0, 0, 0, 0.6), 10, 0, 0,0))));
             imageView.setOnMouseClicked(_ -> controller.send(getPickingRequest(imageView, pickingOptions.indexOf(imageView))));
         });
     }
@@ -253,10 +254,10 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     }
 
     private void placementOffsetsSetup() {
-        placementOffsets.put(Position.TOPRIGHT, new int[]{-195, +101});
-        placementOffsets.put(Position.BOTTOMLEFT, new int[]{+195, -101});
-        placementOffsets.put(Position.BOTTOMRIGHT, new int[]{-195, -101});
-        placementOffsets.put(Position.TOPLEFT, new int[]{+195, +101});
+        placementOffsets.put(Position.TOPRIGHT, new int[]{-117, +60});
+        placementOffsets.put(Position.BOTTOMLEFT, new int[]{+117, -60});
+        placementOffsets.put(Position.BOTTOMRIGHT, new int[]{-117, -60});
+        placementOffsets.put(Position.TOPLEFT, new int[]{+117, +60});
     }
 
     private void questsSetup()  {

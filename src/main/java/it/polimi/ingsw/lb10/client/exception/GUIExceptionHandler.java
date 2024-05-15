@@ -17,37 +17,38 @@ public class GUIExceptionHandler implements ExceptionHandler{
 
     @Override
     public void handle(Exception e) {
+        GUIErrorPageController errorPage = new GUIErrorPageController();
         Platform.runLater(() -> {
-            GUIErrorPageController errorPage = new GUIErrorPageController();
+            GUIClientViewController.instance().setGameSize();
             controller.changeScene(errorPage);
-            errorPage.setErrorText("An Exception occurred: " + e.getMessage());
+            ((GUIErrorPageController)(controller.getPage())).setErrorText("An Exception occurred: " + (e.getMessage() != null ? e.getMessage() : ""));
         });
     }
 
     @Override
     public void handle(UnknownHostException e) {
+        GUIErrorPageController errorPage = new GUIErrorPageController();
         Platform.runLater(() -> {
-            GUIErrorPageController errorPage = new GUIErrorPageController();
             controller.changeScene(errorPage);
-            errorPage.setErrorText("An Exception occurred: " + e.getMessage());
+            ((GUIErrorPageController)(controller.getPage())).setErrorText("An Exception occurred: " + e.getMessage());
         });
     }
 
     @Override
     public void handle(IOException e) {
+        GUIErrorPageController errorPage = new GUIErrorPageController();
         Platform.runLater(() -> {
-            GUIErrorPageController errorPage = new GUIErrorPageController();
             controller.changeScene(errorPage);
-            errorPage.setErrorText("There was an issue with your sockets: " + e.getMessage());
+            ((GUIErrorPageController)(controller.getPage())).setErrorText("There was an issue with your sockets: " + (e.getMessage() != null ? e.getMessage() : ""));
         });
     }
 
     @Override
     public void handle(ConnectionErrorException e) {
+        GUIErrorPageController errorPage = new GUIErrorPageController();
         Platform.runLater(() -> {
-            GUIErrorPageController errorPage = new GUIErrorPageController();
             controller.changeScene(errorPage);
-            errorPage.setErrorText("There were some issues connecting to the server: " + e.getMessage());
+            ((GUIErrorPageController)(controller.getPage())).setErrorText("There were some issues connecting to the server: " + (e.getMessage() != null ? e.getMessage() : ""));
         });
     }
 }
