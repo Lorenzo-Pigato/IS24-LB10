@@ -173,7 +173,7 @@ public class LobbyController implements LobbyRequestVisitor {
         if (player.isInMatch()){
             MatchController controller = getController(userHash);
             controller.removePlayer(player);
-            if (controller.isStarted() && controller.isTerminated()) {
+            if (controller.isStarted() && controller.isTerminated() || !controller.isActive()) {
                 terminateMatch(controller.getMatchId());
             }
         }
