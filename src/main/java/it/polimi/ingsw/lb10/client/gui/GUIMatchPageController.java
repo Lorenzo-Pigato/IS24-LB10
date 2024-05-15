@@ -324,11 +324,8 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         // 3 4 5 6 10 9 8 7 11 12 13 14 18 17 16 15
         for(int i = 0; i < 4; i++){
             for(int j = 0; j < 4; j++) {
-                boardPositions.put((j + 3) + (i >= 2 ? 8 : 0) +
-                                (i % 2 != 0 ? 7 - (j *2) : 1 + (j * 2)) * (i % 2),
-                        new int[]{
-                        257 + j * 56 * (j % 2 == 0 ? -1 : 1),
-                        412 - 52 * i
+                boardPositions.put((j + 3) + (i >= 2 ? 8 : 0) + (i % 2 != 0 ? 7 - (j *2) : 1 + (j * 2)) * (i % 2),
+                        new int[]{ i % 2 == 0 ? 257 - j * 56 : 79 + j * 56, 412 - 52 * i
                 });
             }
         }
