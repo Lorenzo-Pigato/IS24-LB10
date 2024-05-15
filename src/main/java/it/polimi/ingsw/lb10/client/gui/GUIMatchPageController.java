@@ -323,7 +323,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
                 boardPositions.put((j + 3) + (i >= 2 ? 8 : 0) +
                                 (i % 2 != 0 ? 7 - (j *2) : 1 + (j * 2)) * (i % 2),
                         new int[]{
-                        257 + j * 56 * (j % 2 == 0 ? -1 : 1),
+                        257 + j * 56 * (i % 2 == 0 ? -1 : 1),
                         412 - 52 * i
                 });
             }
