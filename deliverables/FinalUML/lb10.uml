@@ -1,0 +1,777 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>C:/Users/Massimo/OneDrive/Desktop/IS24-LB10/src/main/java/it/polimi/ingsw/lb10</OriginalElement>
+  <nodes>
+    <node x="2644.0" y="746.0">it.polimi.ingsw.lb10.client.view.GUIClientView</node>
+    <node x="2350.0" y="746.0">it.polimi.ingsw.lb10.server.visitors.responseDespatch.ResponseVisitable</node>
+    <node x="1386.0" y="946.0">it.polimi.ingsw.lb10.client.gui.GUILoginPageController</node>
+    <node x="1371.5" y="1126.0">it.polimi.ingsw.lb10.network.response.match.NotYourTurnResponse</node>
+    <node x="-25.0" y="686.0">it.polimi.ingsw.lb10.server.model.quest.Pattern.Diagonal.TopLeftDiagonal</node>
+    <node x="293.0" y="546.0">it.polimi.ingsw.lb10.network.requests.match.DrawResourceFromDeckRequest</node>
+    <node x="2118.0" y="306.0">it.polimi.ingsw.lb10.server.model.cards.PlaceableCardState.BackOfTheCard</node>
+    <node x="1916.5" y="746.0">it.polimi.ingsw.lb10.client.exception.GUIExceptionHandler</node>
+    <node x="-134.0" y="546.0">it.polimi.ingsw.lb10.server.model.quest.Pattern.Diagonal.TypeDiagonal</node>
+    <node x="1105.5" y="946.0">it.polimi.ingsw.lb10.client.controller.GUIClientViewController</node>
+    <node x="1707.5" y="746.0">it.polimi.ingsw.lb10.client.cli.clipages.CLIPage</node>
+    <node x="2331.5" y="166.0">it.polimi.ingsw.lb10.client.cli.CLIBox</node>
+    <node x="361.0" y="1066.0">it.polimi.ingsw.lb10.network.response.lobby.HashResponse</node>
+    <node x="1513.5" y="1066.0">it.polimi.ingsw.lb10.network.response.match.DeckUpdateResponse</node>
+    <node x="1996.5" y="366.0">it.polimi.ingsw.lb10.server.controller.LobbyController</node>
+    <node x="2412.5" y="106.0">it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitable</node>
+    <node x="1124.0" y="746.0">it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ.TopRight</node>
+    <node x="1903.5" y="306.0">it.polimi.ingsw.lb10.server.model.Resource</node>
+    <node x="1507.0" y="746.0">it.polimi.ingsw.lb10.client.cli.CLICommand</node>
+    <node x="2652.5" y="306.0">it.polimi.ingsw.lb10.network.requests.QuitRequest</node>
+    <node x="229.5" y="1126.0">it.polimi.ingsw.lb10.network.response.match.ServerNotification</node>
+    <node x="2688.0" y="166.0">it.polimi.ingsw.lb10.network.requests.Request</node>
+    <node x="-143.5" y="946.0">it.polimi.ingsw.lb10.client.exception.ConnectionErrorException</node>
+    <node x="886.0" y="546.0">it.polimi.ingsw.lb10.network.requests.match.PrivateQuestSelectedRequest</node>
+    <node x="1651.5" y="306.0">it.polimi.ingsw.lb10.network.ClientConnection</node>
+    <node x="1301.5" y="-14.0">it.polimi.ingsw.lb10.server.model.cards.BaseCard</node>
+    <node x="1997.0" y="1126.0">it.polimi.ingsw.lb10.network.response.match.GameSetupResponse</node>
+    <node x="1405.5" y="686.0">it.polimi.ingsw.lb10.client.view.CLIClientView</node>
+    <node x="2097.5" y="106.0">it.polimi.ingsw.lb10.server.model.cards.PlaceableCardState.StateOfTheCard</node>
+    <node x="306.0" y="886.0">it.polimi.ingsw.lb10.client.cli.clipages.CLILoginPage</node>
+    <node x="-158.5" y="746.0">it.polimi.ingsw.lb10.server.model.quest.Pattern.Diagonal.BottomLeftDiagonal</node>
+    <node x="1776.5" y="166.0">it.polimi.ingsw.lb10.client.Client</node>
+    <node x="1698.5" y="106.0">it.polimi.ingsw.lb10.server.model.Node</node>
+    <node x="1363.5" y="366.0">it.polimi.ingsw.lb10.Launcher</node>
+    <node x="1286.5" y="306.0">it.polimi.ingsw.lb10.client.cli.clipages.CLIState</node>
+    <node x="1488.0" y="106.0">it.polimi.ingsw.lb10.client.cli.CLICard</node>
+    <node x="715.5" y="746.0">it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ.BottomLeft</node>
+    <node x="159.5" y="946.0">it.polimi.ingsw.lb10.client.cli.clipages.CLIEndOfMatchPage</node>
+    <node x="1761.0" y="546.0">it.polimi.ingsw.lb10.network.requests.match.DrawGoldenFromDeckRequest</node>
+    <node x="1410.5" y="166.0">it.polimi.ingsw.lb10.client.cli.CLILine</node>
+    <node x="1538.5" y="886.0">it.polimi.ingsw.lb10.client.gui.GUIWaitingPageController</node>
+    <node x="-34.5" y="486.0">it.polimi.ingsw.lb10.server.model.quest.QuestCounter</node>
+    <node x="643.0" y="546.0">it.polimi.ingsw.lb10.network.requests.match.ShowPlayerRequest</node>
+    <node x="2236.0" y="366.0">it.polimi.ingsw.lb10.server.model.cards.PlaceableCardState.FrontOfTheCard</node>
+    <node x="585.5" y="1066.0">it.polimi.ingsw.lb10.network.response.match.ShowPickingPossibilitiesResponse</node>
+    <node x="1575.5" y="166.0">it.polimi.ingsw.lb10.util.Observable</node>
+    <node x="1207.5" y="366.0">it.polimi.ingsw.lb10.server.model.cards.corners.Position</node>
+    <node x="2661.0" y="946.0">it.polimi.ingsw.lb10.network.response.Response</node>
+    <node x="1305.0" y="746.0">it.polimi.ingsw.lb10.client.view.LauncherView</node>
+    <node x="1840.0" y="106.0">it.polimi.ingsw.lb10.server.visitors.requestDispatch.LobbyRequestVisitor</node>
+    <node x="957.0" y="1066.0">it.polimi.ingsw.lb10.network.response.match.PickedCardResponse</node>
+    <node x="1445.0" y="306.0">it.polimi.ingsw.lb10.server.model.cards.ResourceCard</node>
+    <node x="1218.0" y="166.0">it.polimi.ingsw.lb10.server.model.cards.Color</node>
+    <node x="1215.0" y="686.0">it.polimi.ingsw.lb10.client.util.InputParser</node>
+    <node x="931.0" y="366.0">it.polimi.ingsw.lb10.server.model.cards.StartingCardState.BackStartingCard</node>
+    <node x="1549.5" y="546.0">it.polimi.ingsw.lb10.network.requests.match.ChatRequest</node>
+    <node x="1004.0" y="686.0">it.polimi.ingsw.lb10.server.model.cards.decks.ResourceDeck</node>
+    <node x="1039.5" y="486.0">it.polimi.ingsw.lb10.network.requests.match.DrawGoldenFromTableRequest</node>
+    <node x="2478.0" y="686.0">it.polimi.ingsw.lb10.client.exception.CLIExceptionHandler</node>
+    <node x="1954.5" y="486.0">it.polimi.ingsw.lb10.network.requests.match.PrivateQuestsRequest</node>
+    <node x="975.5" y="166.0">it.polimi.ingsw.lb10.server.model.Player</node>
+    <node x="1228.0" y="1066.0">it.polimi.ingsw.lb10.network.response.match.ChatMessageResponse</node>
+    <node x="638.5" y="366.0">it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler</node>
+    <node x="-143.5" y="366.0">it.polimi.ingsw.lb10.server.model.quest.Quest</node>
+    <node x="909.0" y="746.0">it.polimi.ingsw.lb10.server.model.cards.decks.StartingDeck</node>
+    <node x="1811.5" y="1066.0">it.polimi.ingsw.lb10.network.response.match.PlaceStartingCardResponse</node>
+    <node x="82.0" y="546.0">it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ.LJPattern</node>
+    <node x="1647.5" y="486.0">it.polimi.ingsw.lb10.network.requests.match.JoinMatchRequest</node>
+    <node x="502.5" y="886.0">it.polimi.ingsw.lb10.client.cli.clipages.CLIConnectionPage</node>
+    <node x="539.0" y="306.0">it.polimi.ingsw.lb10.client.cli.CLIBanner</node>
+    <node x="1779.5" y="686.0">it.polimi.ingsw.lb10.client.controller.ClientViewController</node>
+    <node x="1653.5" y="1126.0">it.polimi.ingsw.lb10.network.response.match.TerminatedMatchResponse</node>
+    <node x="1284.0" y="106.0">it.polimi.ingsw.lb10.server.model.cards.PlaceableCard</node>
+    <node x="712.5" y="166.0">it.polimi.ingsw.lb10.server.model.cards.corners.Corner</node>
+    <node x="2397.0" y="1066.0">it.polimi.ingsw.lb10.network.response.match.MoveBoardResponse</node>
+    <node x="2262.5" y="1126.0">it.polimi.ingsw.lb10.network.response.match.PlayerLeftResponse</node>
+    <node x="814.5" y="686.0">it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat</node>
+    <node x="1102.0" y="1126.0">it.polimi.ingsw.lb10.network.response.match.PlaceCardResponse</node>
+    <node x="768.5" y="886.0">it.polimi.ingsw.lb10.client.cli.clipages.CLIErrorPage</node>
+    <node x="1553.0" y="366.0">it.polimi.ingsw.lb10.server.model.cards.GoldenCard</node>
+    <node x="1003.5" y="886.0">it.polimi.ingsw.lb10.client.cli.clipages.CLIMatchPage</node>
+    <node x="1721.0" y="946.0">it.polimi.ingsw.lb10.client.gui.GUIScoreBoardPage</node>
+    <node x="-91.0" y="1126.0">it.polimi.ingsw.lb10.network.response.match.StartedMatchResponse</node>
+    <node x="412.5" y="946.0">it.polimi.ingsw.lb10.client.cli.clipages.CLI404Page</node>
+    <node x="2091.5" y="546.0">it.polimi.ingsw.lb10.network.requests.match.DrawResourceFromTableRequest</node>
+    <node x="2228.0" y="686.0">it.polimi.ingsw.lb10.client.gui.GUIPageController</node>
+    <node x="210.5" y="686.0">it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ.BottomRight</node>
+    <node x="601.0" y="686.0">it.polimi.ingsw.lb10.ClientLauncher</node>
+    <node x="1409.0" y="486.0">it.polimi.ingsw.lb10.network.requests.match.PlaceCardRequest</node>
+    <node x="2525.0" y="1126.0">it.polimi.ingsw.lb10.network.response.match.PlayerPointsUpdateResponse</node>
+    <node x="777.0" y="306.0">it.polimi.ingsw.lb10.server.visitors.responseDespatch.GUIResponseHandler</node>
+    <node x="1247.0" y="886.0">it.polimi.ingsw.lb10.client.controller.CLIClientViewController</node>
+    <node x="171.5" y="486.0">it.polimi.ingsw.lb10.client.exception.ExceptionHandler</node>
+    <node x="1629.0" y="686.0">it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ.TopLeft</node>
+    <node x="2504.0" y="366.0">it.polimi.ingsw.lb10.network.requests.preMatch.LobbyRequest</node>
+    <node x="461.0" y="366.0">it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor</node>
+    <node x="2552.0" y="-14.0">it.polimi.ingsw.lb10.server.visitors.requestDispatch.LobbyRequestVisitable</node>
+    <node x="1050.5" y="106.0">it.polimi.ingsw.lb10.server.model.cards.StartingCardState.StateStartingCard</node>
+    <node x="514.5" y="746.0">it.polimi.ingsw.lb10.client.cli.ansi.AnsiSpecial</node>
+    <node x="807.5" y="1126.0">it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse</node>
+    <node x="109.5" y="1066.0">it.polimi.ingsw.lb10.network.response.lobby.BooleanResponse</node>
+    <node x="1843.5" y="886.0">it.polimi.ingsw.lb10.client.gui.GUIMatchPageController</node>
+    <node x="2607.0" y="486.0">it.polimi.ingsw.lb10.network.requests.preMatch.NewMatchRequest</node>
+    <node x="444.5" y="106.0">it.polimi.ingsw.lb10.util.Observer</node>
+    <node x="764.0" y="486.0">it.polimi.ingsw.lb10.network.requests.match.MoveBoardRequest</node>
+    <node x="878.5" y="946.0">it.polimi.ingsw.lb10.client.cli.clipages.CLIWaitingPage</node>
+    <node x="374.5" y="166.0">it.polimi.ingsw.lb10.server.Server</node>
+    <node x="2364.0" y="306.0">it.polimi.ingsw.lb10.network.requests.match.MatchRequest</node>
+    <node x="200.5" y="106.0">it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitor</node>
+    <node x="2346.5" y="486.0">it.polimi.ingsw.lb10.network.requests.preMatch.LoginRequest</node>
+    <node x="351.5" y="306.0">it.polimi.ingsw.lb10.server.view.RemoteView</node>
+    <node x="119.0" y="306.0">it.polimi.ingsw.lb10.client.cli.ansi.AnsiString</node>
+    <node x="2144.0" y="1066.0">it.polimi.ingsw.lb10.network.response.match.EndGameResponse</node>
+    <node x="2347.0" y="946.0">it.polimi.ingsw.lb10.client.gui.GUIJoinMatchPageController</node>
+    <node x="17.0" y="366.0">it.polimi.ingsw.lb10.server.model.cards.decks.QuestDeck</node>
+    <node x="-76.5" y="306.0">it.polimi.ingsw.lb10.client.cli.CLIString</node>
+    <node x="63.5" y="886.0">it.polimi.ingsw.lb10.client.cli.clipages.CLILobbyPage</node>
+    <node x="412.0" y="686.0">it.polimi.ingsw.lb10.client.util.InputVerifier</node>
+    <node x="312.0" y="746.0">it.polimi.ingsw.lb10.server.model.cards.decks.GoldenDeck</node>
+    <node x="552.0" y="486.0">it.polimi.ingsw.lb10.network.requests.match.PickRequest</node>
+    <node x="216.5" y="366.0">it.polimi.ingsw.lb10.server.controller.MatchController</node>
+    <node x="1995.0" y="946.0">it.polimi.ingsw.lb10.client.gui.GUIChooseQuestPageController</node>
+    <node x="1049.0" y="306.0">it.polimi.ingsw.lb10.server.model.cards.StartingCardState.FrontStartingCard</node>
+    <node x="99.0" y="746.0">it.polimi.ingsw.lb10.ServerLauncher</node>
+    <node x="1218.5" y="546.0">it.polimi.ingsw.lb10.network.requests.match.PlaceStartingCardRequest</node>
+    <node x="1791.5" y="366.0">it.polimi.ingsw.lb10.server.model.MatchModel</node>
+    <node x="798.0" y="106.0">it.polimi.ingsw.lb10.server.visitors.responseDespatch.ResponseVisitor</node>
+    <node x="625.0" y="946.0">it.polimi.ingsw.lb10.client.cli.clipages.CLIStartMatchPage</node>
+    <node x="135.0" y="166.0">it.polimi.ingsw.lb10.server.model.Matrix</node>
+    <node x="2450.0" y="546.0">it.polimi.ingsw.lb10.network.requests.preMatch.LobbyToMatchRequest</node>
+    <node x="460.5" y="1126.0">it.polimi.ingsw.lb10.network.response.match.JoinMatchResponse</node>
+    <node x="1990.0" y="166.0">it.polimi.ingsw.lb10.server.model.cards.StartingCard</node>
+    <node x="2182.5" y="886.0">it.polimi.ingsw.lb10.client.gui.GUIConnectionPageController</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="it.polimi.ingsw.lb10.network.requests.match.MatchRequest" target="it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitable" relationship="REALIZATION">
+      <point x="-40.0" y="-14.0" />
+      <point x="2404.0" y="220.0" />
+      <point x="2524.0" y="220.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.client.gui.GUIConnectionPageController" target="it.polimi.ingsw.lb10.client.gui.GUIPageController" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.requests.match.PlaceCardRequest" target="it.polimi.ingsw.lb10.network.requests.match.MatchRequest" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1504.0" y="460.0" />
+      <point x="1904.0" y="460.0" />
+      <point x="1904.0" y="420.0" />
+      <point x="2444.0" y="420.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.response.lobby.BooleanResponse" target="it.polimi.ingsw.lb10.network.response.Response" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="204.0" y="1040.0" />
+      <point x="2684.0" y="1040.0" />
+      <point x="2684.0" y="1000.0" />
+      <point x="2724.0" y="1000.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.requests.match.PrivateQuestSelectedRequest" target="it.polimi.ingsw.lb10.network.requests.match.MatchRequest" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1024.0" y="460.0" />
+      <point x="1904.0" y="460.0" />
+      <point x="1904.0" y="420.0" />
+      <point x="2444.0" y="420.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.requests.preMatch.LobbyRequest" target="it.polimi.ingsw.lb10.network.requests.Request" relationship="GENERALIZATION">
+      <point x="40.0" y="-14.0" />
+      <point x="2624.0" y="260.0" />
+      <point x="2724.0" y="260.0" />
+      <point x="2724.0" y="220.0" />
+      <point x="2744.0" y="220.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.response.match.ChatMessageResponse" target="it.polimi.ingsw.lb10.network.response.Response" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1344.0" y="1040.0" />
+      <point x="2684.0" y="1040.0" />
+      <point x="2684.0" y="1000.0" />
+      <point x="2724.0" y="1000.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.requests.Request" target="it.polimi.ingsw.lb10.server.visitors.requestDispatch.LobbyRequestVisitable" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="2744.0" y="80.0" />
+      <point x="2664.0" y="80.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.client.gui.GUIScoreBoardPage" target="it.polimi.ingsw.lb10.client.gui.GUIPageController" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1824.0" y="860.0" />
+      <point x="2324.0" y="860.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.visitors.responseDespatch.GUIResponseHandler" target="it.polimi.ingsw.lb10.server.visitors.responseDespatch.ResponseVisitor" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.controller.LobbyController" target="it.polimi.ingsw.lb10.server.visitors.requestDispatch.LobbyRequestVisitor" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="2084.0" y="280.0" />
+      <point x="1944.0" y="280.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.response.match.MoveBoardResponse" target="it.polimi.ingsw.lb10.network.response.Response" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="2504.0" y="1040.0" />
+      <point x="2684.0" y="1040.0" />
+      <point x="2684.0" y="1000.0" />
+      <point x="2724.0" y="1000.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.client.cli.clipages.CLIStartMatchPage" target="it.polimi.ingsw.lb10.client.cli.clipages.CLIPage" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="724.0" y="860.0" />
+      <point x="604.0" y="860.0" />
+      <point x="604.0" y="820.0" />
+      <point x="1764.0" y="820.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.response.match.PlayerLeftResponse" target="it.polimi.ingsw.lb10.network.response.Response" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="2364.0" y="1040.0" />
+      <point x="2684.0" y="1040.0" />
+      <point x="2684.0" y="1000.0" />
+      <point x="2724.0" y="1000.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.cards.PlaceableCardState.FrontOfTheCard" target="it.polimi.ingsw.lb10.server.model.cards.PlaceableCardState.StateOfTheCard" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="2324.0" y="280.0" />
+      <point x="2204.0" y="280.0" />
+      <point x="2204.0" y="160.0" />
+      <point x="2184.0" y="160.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.requests.preMatch.NewMatchRequest" target="it.polimi.ingsw.lb10.network.requests.preMatch.LobbyRequest" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="2704.0" y="460.0" />
+      <point x="2564.0" y="460.0" />
+      <point x="2564.0" y="420.0" />
+      <point x="2584.0" y="420.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.client.cli.clipages.CLILoginPage" target="it.polimi.ingsw.lb10.client.cli.clipages.CLIPage" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="384.0" y="860.0" />
+      <point x="604.0" y="860.0" />
+      <point x="604.0" y="820.0" />
+      <point x="1764.0" y="820.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.requests.preMatch.LobbyRequest" target="it.polimi.ingsw.lb10.server.visitors.requestDispatch.LobbyRequestVisitable" relationship="REALIZATION">
+      <point x="-40.0" y="-14.0" />
+      <point x="2544.0" y="280.0" />
+      <point x="2664.0" y="280.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.client.cli.clipages.CLIErrorPage" target="it.polimi.ingsw.lb10.client.cli.clipages.CLIPage" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="844.0" y="860.0" />
+      <point x="604.0" y="860.0" />
+      <point x="604.0" y="820.0" />
+      <point x="1764.0" y="820.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.response.match.GameSetupResponse" target="it.polimi.ingsw.lb10.network.response.Response" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="2104.0" y="1040.0" />
+      <point x="2684.0" y="1040.0" />
+      <point x="2684.0" y="1000.0" />
+      <point x="2724.0" y="1000.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.requests.match.PlaceStartingCardRequest" target="it.polimi.ingsw.lb10.network.requests.match.MatchRequest" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1344.0" y="460.0" />
+      <point x="1904.0" y="460.0" />
+      <point x="1904.0" y="420.0" />
+      <point x="2444.0" y="420.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.requests.QuitRequest" target="it.polimi.ingsw.lb10.network.requests.Request" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="2724.0" y="220.0" />
+      <point x="2744.0" y="220.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.requests.match.MatchRequest" target="it.polimi.ingsw.lb10.network.requests.Request" relationship="GENERALIZATION">
+      <point x="40.0" y="-14.0" />
+      <point x="2484.0" y="260.0" />
+      <point x="2724.0" y="260.0" />
+      <point x="2724.0" y="220.0" />
+      <point x="2744.0" y="220.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.response.match.TerminatedMatchResponse" target="it.polimi.ingsw.lb10.network.response.Response" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1784.0" y="1040.0" />
+      <point x="2684.0" y="1040.0" />
+      <point x="2684.0" y="1000.0" />
+      <point x="2724.0" y="1000.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.cards.GoldenCard" target="it.polimi.ingsw.lb10.server.model.cards.PlaceableCard" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1624.0" y="280.0" />
+      <point x="1524.0" y="280.0" />
+      <point x="1524.0" y="220.0" />
+      <point x="1364.0" y="220.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.client.gui.GUIMatchPageController" target="it.polimi.ingsw.lb10.client.gui.GUIPageController" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1964.0" y="860.0" />
+      <point x="2324.0" y="860.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.quest.Pattern.Diagonal.TypeDiagonal" target="it.polimi.ingsw.lb10.server.model.quest.Quest" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="-56.0" y="420.0" />
+      <point x="-96.0" y="420.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.client.controller.GUIClientViewController" target="it.polimi.ingsw.lb10.client.controller.ClientViewController" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1224.0" y="840.0" />
+      <point x="1364.0" y="840.0" />
+      <point x="1364.0" y="800.0" />
+      <point x="1884.0" y="800.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.MatchModel" target="it.polimi.ingsw.lb10.util.Observable" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1864.0" y="280.0" />
+      <point x="1744.0" y="280.0" />
+      <point x="1744.0" y="220.0" />
+      <point x="1644.0" y="220.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.client.cli.clipages.CLIWaitingPage" target="it.polimi.ingsw.lb10.client.cli.clipages.CLIPage" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="964.0" y="860.0" />
+      <point x="604.0" y="860.0" />
+      <point x="604.0" y="820.0" />
+      <point x="1764.0" y="820.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.response.match.PlayerPointsUpdateResponse" target="it.polimi.ingsw.lb10.network.response.Response" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="2664.0" y="1040.0" />
+      <point x="2684.0" y="1040.0" />
+      <point x="2684.0" y="1000.0" />
+      <point x="2724.0" y="1000.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.response.match.ShowPickingPossibilitiesResponse" target="it.polimi.ingsw.lb10.network.response.Response" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="744.0" y="1040.0" />
+      <point x="2684.0" y="1040.0" />
+      <point x="2684.0" y="1000.0" />
+      <point x="2724.0" y="1000.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.requests.match.DrawResourceFromTableRequest" target="it.polimi.ingsw.lb10.network.requests.match.MatchRequest" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="2244.0" y="460.0" />
+      <point x="1904.0" y="460.0" />
+      <point x="1904.0" y="420.0" />
+      <point x="2444.0" y="420.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.response.match.DeckUpdateResponse" target="it.polimi.ingsw.lb10.network.response.Response" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1624.0" y="1040.0" />
+      <point x="2684.0" y="1040.0" />
+      <point x="2684.0" y="1000.0" />
+      <point x="2724.0" y="1000.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.client.exception.GUIExceptionHandler" target="it.polimi.ingsw.lb10.client.exception.ExceptionHandler" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="2024.0" y="600.0" />
+      <point x="264.0" y="600.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.requests.match.DrawResourceFromDeckRequest" target="it.polimi.ingsw.lb10.network.requests.match.MatchRequest" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="444.0" y="460.0" />
+      <point x="1904.0" y="460.0" />
+      <point x="1904.0" y="420.0" />
+      <point x="2444.0" y="420.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.quest.Pattern.Diagonal.BottomLeftDiagonal" target="it.polimi.ingsw.lb10.server.model.quest.Pattern.Diagonal.TypeDiagonal" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ.BottomRight" target="it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ.LJPattern" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="284.0" y="660.0" />
+      <point x="784.0" y="660.0" />
+      <point x="784.0" y="620.0" />
+      <point x="144.0" y="620.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.cards.StartingCard" target="it.polimi.ingsw.lb10.server.model.cards.BaseCard" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="2064.0" y="80.0" />
+      <point x="1364.0" y="80.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.response.match.EndGameResponse" target="it.polimi.ingsw.lb10.network.response.Response" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="2244.0" y="1040.0" />
+      <point x="2684.0" y="1040.0" />
+      <point x="2684.0" y="1000.0" />
+      <point x="2724.0" y="1000.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse" target="it.polimi.ingsw.lb10.network.response.Response" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="924.0" y="1040.0" />
+      <point x="2684.0" y="1040.0" />
+      <point x="2684.0" y="1000.0" />
+      <point x="2724.0" y="1000.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.response.match.StartedMatchResponse" target="it.polimi.ingsw.lb10.network.response.Response" relationship="GENERALIZATION">
+      <point x="57.5" y="-14.0" />
+      <point x="81.5" y="1040.0" />
+      <point x="2684.0" y="1040.0" />
+      <point x="2684.0" y="1000.0" />
+      <point x="2724.0" y="1000.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.cards.StartingCardState.FrontStartingCard" target="it.polimi.ingsw.lb10.server.model.cards.StartingCardState.StateStartingCard" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler" target="it.polimi.ingsw.lb10.server.visitors.responseDespatch.ResponseVisitor" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="744.0" y="280.0" />
+      <point x="884.0" y="280.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.client.gui.GUIJoinMatchPageController" target="it.polimi.ingsw.lb10.client.gui.GUIPageController" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="2484.0" y="860.0" />
+      <point x="2324.0" y="860.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.quest.Pattern.Diagonal.TopLeftDiagonal" target="it.polimi.ingsw.lb10.server.model.quest.Pattern.Diagonal.TypeDiagonal" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="64.0" y="660.0" />
+      <point x="-56.0" y="660.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.controller.MatchController" target="it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitor" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.response.match.PlaceStartingCardResponse" target="it.polimi.ingsw.lb10.network.response.Response" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1944.0" y="1040.0" />
+      <point x="2684.0" y="1040.0" />
+      <point x="2684.0" y="1000.0" />
+      <point x="2724.0" y="1000.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.requests.match.ChatRequest" target="it.polimi.ingsw.lb10.network.requests.match.MatchRequest" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1624.0" y="460.0" />
+      <point x="1904.0" y="460.0" />
+      <point x="1904.0" y="420.0" />
+      <point x="2444.0" y="420.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.requests.match.PrivateQuestsRequest" target="it.polimi.ingsw.lb10.network.requests.match.MatchRequest" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="2064.0" y="460.0" />
+      <point x="1904.0" y="460.0" />
+      <point x="1904.0" y="420.0" />
+      <point x="2444.0" y="420.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.client.controller.CLIClientViewController" target="it.polimi.ingsw.lb10.client.controller.ClientViewController" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1364.0" y="800.0" />
+      <point x="1884.0" y="800.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.client.cli.clipages.CLILobbyPage" target="it.polimi.ingsw.lb10.client.cli.clipages.CLIPage" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="144.0" y="860.0" />
+      <point x="604.0" y="860.0" />
+      <point x="604.0" y="820.0" />
+      <point x="1764.0" y="820.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.client.cli.clipages.CLIEndOfMatchPage" target="it.polimi.ingsw.lb10.client.cli.clipages.CLIPage" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="264.0" y="860.0" />
+      <point x="604.0" y="860.0" />
+      <point x="604.0" y="820.0" />
+      <point x="1764.0" y="820.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.requests.preMatch.LobbyToMatchRequest" target="it.polimi.ingsw.lb10.network.requests.preMatch.LobbyRequest" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="2564.0" y="420.0" />
+      <point x="2584.0" y="420.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.cards.PlaceableCardState.BackOfTheCard" target="it.polimi.ingsw.lb10.server.model.cards.PlaceableCardState.StateOfTheCard" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="2204.0" y="160.0" />
+      <point x="2184.0" y="160.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.response.match.ServerNotification" target="it.polimi.ingsw.lb10.network.response.Response" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="324.0" y="1040.0" />
+      <point x="2684.0" y="1040.0" />
+      <point x="2684.0" y="1000.0" />
+      <point x="2724.0" y="1000.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.response.match.NotYourTurnResponse" target="it.polimi.ingsw.lb10.network.response.Response" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1484.0" y="1040.0" />
+      <point x="2684.0" y="1040.0" />
+      <point x="2684.0" y="1000.0" />
+      <point x="2724.0" y="1000.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.client.cli.clipages.CLIMatchPage" target="it.polimi.ingsw.lb10.client.cli.clipages.CLIPage" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1084.0" y="860.0" />
+      <point x="604.0" y="860.0" />
+      <point x="604.0" y="820.0" />
+      <point x="1764.0" y="820.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.response.lobby.HashResponse" target="it.polimi.ingsw.lb10.network.response.Response" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="444.0" y="1040.0" />
+      <point x="2684.0" y="1040.0" />
+      <point x="2684.0" y="1000.0" />
+      <point x="2724.0" y="1000.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.requests.match.MoveBoardRequest" target="it.polimi.ingsw.lb10.network.requests.match.MatchRequest" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="864.0" y="460.0" />
+      <point x="1904.0" y="460.0" />
+      <point x="1904.0" y="420.0" />
+      <point x="2444.0" y="420.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.client.exception.CLIExceptionHandler" target="it.polimi.ingsw.lb10.client.exception.ExceptionHandler" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="2584.0" y="660.0" />
+      <point x="2024.0" y="660.0" />
+      <point x="2024.0" y="600.0" />
+      <point x="264.0" y="600.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ.TopRight" target="it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ.LJPattern" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1184.0" y="660.0" />
+      <point x="784.0" y="660.0" />
+      <point x="784.0" y="620.0" />
+      <point x="144.0" y="620.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.ClientConnection" target="it.polimi.ingsw.lb10.util.Observable" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1744.0" y="220.0" />
+      <point x="1644.0" y="220.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.cards.PlaceableCard" target="it.polimi.ingsw.lb10.server.model.cards.BaseCard" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.cards.StartingCardState.BackStartingCard" target="it.polimi.ingsw.lb10.server.model.cards.StartingCardState.StateStartingCard" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1024.0" y="280.0" />
+      <point x="1144.0" y="280.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.requests.match.PickRequest" target="it.polimi.ingsw.lb10.network.requests.match.MatchRequest" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="624.0" y="460.0" />
+      <point x="1904.0" y="460.0" />
+      <point x="1904.0" y="420.0" />
+      <point x="2444.0" y="420.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.requests.match.JoinMatchRequest" target="it.polimi.ingsw.lb10.network.requests.match.MatchRequest" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1744.0" y="460.0" />
+      <point x="1904.0" y="460.0" />
+      <point x="1904.0" y="420.0" />
+      <point x="2444.0" y="420.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.response.match.PickedCardResponse" target="it.polimi.ingsw.lb10.network.response.Response" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1064.0" y="1040.0" />
+      <point x="2684.0" y="1040.0" />
+      <point x="2684.0" y="1000.0" />
+      <point x="2724.0" y="1000.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.response.match.JoinMatchResponse" target="it.polimi.ingsw.lb10.network.response.Response" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="564.0" y="1040.0" />
+      <point x="2684.0" y="1040.0" />
+      <point x="2684.0" y="1000.0" />
+      <point x="2724.0" y="1000.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.requests.match.ShowPlayerRequest" target="it.polimi.ingsw.lb10.network.requests.match.MatchRequest" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="744.0" y="460.0" />
+      <point x="1904.0" y="460.0" />
+      <point x="1904.0" y="420.0" />
+      <point x="2444.0" y="420.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.requests.preMatch.LoginRequest" target="it.polimi.ingsw.lb10.network.requests.preMatch.LobbyRequest" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="2424.0" y="460.0" />
+      <point x="2564.0" y="460.0" />
+      <point x="2564.0" y="420.0" />
+      <point x="2584.0" y="420.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.response.match.PlaceCardResponse" target="it.polimi.ingsw.lb10.network.response.Response" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1204.0" y="1040.0" />
+      <point x="2684.0" y="1040.0" />
+      <point x="2684.0" y="1000.0" />
+      <point x="2724.0" y="1000.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.client.cli.clipages.CLI404Page" target="it.polimi.ingsw.lb10.client.cli.clipages.CLIPage" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="484.0" y="860.0" />
+      <point x="604.0" y="860.0" />
+      <point x="604.0" y="820.0" />
+      <point x="1764.0" y="820.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ.BottomLeft" target="it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ.LJPattern" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="784.0" y="620.0" />
+      <point x="144.0" y="620.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.requests.match.MatchRequest" target="it.polimi.ingsw.lb10.server.visitors.requestDispatch.LobbyRequestVisitable" relationship="REALIZATION">
+      <point x="-40.0" y="-14.0" />
+      <point x="2404.0" y="220.0" />
+      <point x="2304.0" y="220.0" />
+      <point x="2304.0" y="80.0" />
+      <point x="2664.0" y="80.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.client.gui.GUIWaitingPageController" target="it.polimi.ingsw.lb10.client.gui.GUIPageController" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1664.0" y="860.0" />
+      <point x="2324.0" y="860.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.response.Response" target="it.polimi.ingsw.lb10.server.visitors.responseDespatch.ResponseVisitable" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="2724.0" y="920.0" />
+      <point x="2644.0" y="920.0" />
+      <point x="2644.0" y="800.0" />
+      <point x="2444.0" y="800.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ.LJPattern" target="it.polimi.ingsw.lb10.server.model.quest.Quest" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="144.0" y="460.0" />
+      <point x="-56.0" y="460.0" />
+      <point x="-56.0" y="420.0" />
+      <point x="-96.0" y="420.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.cards.ResourceCard" target="it.polimi.ingsw.lb10.server.model.cards.PlaceableCard" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1524.0" y="220.0" />
+      <point x="1364.0" y="220.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.requests.match.DrawGoldenFromDeckRequest" target="it.polimi.ingsw.lb10.network.requests.match.MatchRequest" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1904.0" y="420.0" />
+      <point x="2444.0" y="420.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ.TopLeft" target="it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ.LJPattern" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1684.0" y="660.0" />
+      <point x="784.0" y="660.0" />
+      <point x="784.0" y="620.0" />
+      <point x="144.0" y="620.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.quest.QuestCounter" target="it.polimi.ingsw.lb10.server.model.quest.Quest" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="44.0" y="460.0" />
+      <point x="-56.0" y="460.0" />
+      <point x="-56.0" y="420.0" />
+      <point x="-96.0" y="420.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.client.gui.GUILoginPageController" target="it.polimi.ingsw.lb10.client.gui.GUIPageController" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1504.0" y="860.0" />
+      <point x="2324.0" y="860.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.client.gui.GUIChooseQuestPageController" target="it.polimi.ingsw.lb10.client.gui.GUIPageController" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="2144.0" y="860.0" />
+      <point x="2324.0" y="860.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.view.RemoteView" target="it.polimi.ingsw.lb10.util.Observer" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="424.0" y="280.0" />
+      <point x="504.0" y="280.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.client.cli.clipages.CLIConnectionPage" target="it.polimi.ingsw.lb10.client.cli.clipages.CLIPage" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="604.0" y="820.0" />
+      <point x="1764.0" y="820.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.requests.match.DrawGoldenFromTableRequest" target="it.polimi.ingsw.lb10.network.requests.match.MatchRequest" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1184.0" y="460.0" />
+      <point x="1904.0" y="460.0" />
+      <point x="1904.0" y="420.0" />
+      <point x="2444.0" y="420.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.response.match.StartedMatchResponse" target="it.polimi.ingsw.lb10.server.visitors.responseDespatch.ResponseVisitable" relationship="REALIZATION">
+      <point x="-57.5" y="-14.0" />
+      <point x="-33.5" y="1020.0" />
+      <point x="2644.0" y="1020.0" />
+      <point x="2644.0" y="800.0" />
+      <point x="2444.0" y="800.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Compact" zoom="0.48809922896413005" showDependencies="false" x="1339.389771636958" y="581.5232963659805" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

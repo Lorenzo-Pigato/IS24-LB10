@@ -74,7 +74,6 @@ public class Player implements Serializable {
 
     public void addPoints(int point) {
         setPoints(point + getPoints());
-        maxScore();
     }
 
 
@@ -162,6 +161,7 @@ public class Player implements Serializable {
 
     public void setFinalScore() {
         points = points + questPoints;
+        maxScore();
     }
 
 
