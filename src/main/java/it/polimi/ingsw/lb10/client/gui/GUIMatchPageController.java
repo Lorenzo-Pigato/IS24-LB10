@@ -33,6 +33,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -782,5 +783,10 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     private void quitLobby(){
         controller.send(new QuitRequest());
         controller.close();
+    }
+
+    private centerScrollPane(MouseEvent event){
+        boardScrollPane.setHvalue(0.5);
+        boardScrollPane.setHvalue(0.5);
     }
 }
