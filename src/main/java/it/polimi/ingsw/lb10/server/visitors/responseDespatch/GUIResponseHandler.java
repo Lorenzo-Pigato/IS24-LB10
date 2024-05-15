@@ -87,10 +87,10 @@ public class GUIResponseHandler implements ResponseVisitor {
     @Override
     public void visit(PickedCardResponse pickedCardResponse) {
         Platform.runLater(() -> {
-            if(pickedCardResponse.getStatus() && !pickedCardResponse.isFinalTurn()){
+            if(pickedCardResponse.getStatus()){
                 GUIMatchPageController.insertCardOnHand(pickedCardResponse.getCard());
                 getMatchPageFromController().switchTab(0);
-            } else{
+            } else {
                 getMatchPageFromController().popUpTip("You can't pick a card now!", Color.RED);
             }
         });
@@ -107,13 +107,16 @@ public class GUIResponseHandler implements ResponseVisitor {
     @Override
     public void visit(PlaceCardResponse placeCardResponse) {
         Platform.runLater(() -> {
-            if(placeCardResponse.getStatus()){
+            if(placeCardResponse.getStatus() && !placeCardResponse.isFinalTurn()){
                 getMatchPageFromController().placeCardOnTable(placeCardResponse.getCard());
                 getMatchPageFromController().updateResources(placeCardResponse.getPlayerResources());
                 controller.send(new PickRequest(controller.getMatchId()));
-            }else{
+            }else if(!placeCardResponse.getStatus()){
                 getMatchPageFromController().popUpTip(placeCardResponse.getMessage(), Color.RED);
                 getMatchPageFromController().resetAllBoardShadows();
+            }else if (placeCardResponse.isFinalTurn() && placeCardResponse.getStatus()){
+                //change turn sanding a pick request which will be handled properly by match controller
+                controller.send(new PickRequest(controller.getMatchId()));
             }
         });
     }

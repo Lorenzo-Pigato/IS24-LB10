@@ -80,16 +80,13 @@ public class CLIResponseHandler implements ResponseVisitor {
     @Override
     public void visit(PickedCardResponse pickedCardResponse) {
         if (pickedCardResponse.getStatus()) {
-            if(!pickedCardResponse.isFinalTurn()){
-                controller.getHand().add(pickedCardResponse.getCard());
-            }
-
+            controller.getHand().add(pickedCardResponse.getCard());
             controller.getView().getPage().changeState(new CLIMatchPage.Default());
             controller.getView().getPage().print(null);
             CLIMatchPage.printBoard(pickedCardResponse.getMatrix());
             CLIMatchPage.displayHand(controller.getHand());
 
-        } else if (!pickedCardResponse.isFinalTurn()){
+        } else {
             CLIMatchPage.serverReply(pickedCardResponse.getMessage() + ", pick another card");
         }
 
@@ -109,14 +106,17 @@ public class CLIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(PlaceCardResponse placeCardResponse) {
-        if (placeCardResponse.getStatus()) {
+        if (placeCardResponse.getStatus() && !placeCardResponse.isFinalTurn()) {
             CLIMatchPage.updateResourceCounter(placeCardResponse.getPlayerResources());
             CLIMatchPage.placeCard(placeCardResponse.getCard(), placeCardResponse.getCol(), placeCardResponse.getRow(), controller.getHand().indexOf(controller.getHand().stream().filter(placeableCard -> placeableCard.getId() == placeCardResponse.getCard().getId()).findFirst().orElse(null)));
 
             controller.getHand().remove(controller.getHand().stream().filter(placeableCard -> placeableCard.getId() == placeCardResponse.getCard().getId()).findFirst().orElse(null));
             controller.send(new PickRequest(controller.getMatchId()));
-        } else {
-            CLIMatchPage.serverReply("Invalid card placement, retry!");
+        } else if(!placeCardResponse.getStatus()){
+            CLIMatchPage.serverReply(placeCardResponse.getMessage());
+        } else if (placeCardResponse.isFinalTurn() && placeCardResponse.getStatus()) {
+            //change turn sanding a pick request which will be handled properly by match controller
+            controller.send(new PickRequest(controller.getMatchId()));
         }
     }
 

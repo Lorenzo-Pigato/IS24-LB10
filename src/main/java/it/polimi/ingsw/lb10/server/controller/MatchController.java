@@ -259,13 +259,13 @@ public class MatchController implements Runnable, MatchRequestVisitor {
                 }
 
             } else {
-                model.notify(new PlaceCardResponse(null, false, 0, 0, null, "Invalid card id"), placeCardRequest.getUserHash());
+                model.notify(new PlaceCardResponse(null, false, 0, 0, null, "Invalid card id", model.isFinalTurnStarted()), placeCardRequest.getUserHash());
             }
 
         } else {
             if(model.getOnTurnPlayer() == null) model.notify(new ServerNotification("Wait for all players to place starting card before placing one!", false), placeCardRequest.getUserHash());
             else if(!model.getPlayer(placeCardRequest.getUserHash()).equals(model.getOnTurnPlayer())) model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), placeCardRequest.getUserHash());
-            else model.notify(new PlaceCardResponse(null, false, 0, 0, null, "You already placed your card,\npick one to end your turn!"), placeCardRequest.getUserHash());
+            else model.notify(new PlaceCardResponse(null, false, 0, 0, null, "You already placed your card,\npick one to end your turn!", model.isFinalTurnStarted()), placeCardRequest.getUserHash());
         }
 
     }
@@ -274,7 +274,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     public void visit(PickRequest pickRequest) { //TEST !!
         Server.log("[ " + id + "]" + ">>new pick request");
         if(model.isFinalTurnStarted()) {
-            model.notify(new PickedCardResponse(null, false, "Final turn reached", getPlayer(pickRequest.getUserHash()).getMatrix(), true), pickRequest.getUserHash());
+            model.notify(new PickedCardResponse(null, false, "Final turn reached", getPlayer(pickRequest.getUserHash()).getMatrix()), pickRequest.getUserHash());
             model.endTurn(pickRequest.getUserHash(), getPlayer(pickRequest.getUserHash()).getPoints());
         } else {
             model.notify(new ShowPickingPossibilitiesResponse(!model.getGoldenDeck().getCards().isEmpty() ? model.getGoldenDeck().getCards().getLast() : null, !model.getResourceDeck().getCards().isEmpty() ? model.getResourceDeck().getCards().getLast() : null, model.getGoldenUncovered(), model.getResourceUncovered()), pickRequest.getUserHash());
