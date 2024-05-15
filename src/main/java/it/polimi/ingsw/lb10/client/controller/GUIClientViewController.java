@@ -6,6 +6,7 @@ import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
 import it.polimi.ingsw.lb10.client.exception.GUIExceptionHandler;
 import it.polimi.ingsw.lb10.client.gui.GUIConnectionPageController;
 import it.polimi.ingsw.lb10.client.gui.GUIPageController;
+import it.polimi.ingsw.lb10.network.requests.QuitRequest;
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.GUIResponseHandler;
@@ -56,6 +57,10 @@ public class GUIClientViewController extends ClientViewController {
         stage.setWidth(600);
         stage.setHeight(900);
         stage.getIcons().add(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/images/icon.png"))));
+        stage.setOnCloseRequest(_ -> {
+            send(new QuitRequest());
+            close();
+        });
 
         setPage(new GUIConnectionPageController());
         FXMLLoader fxmlLoader = new FXMLLoader(GUIClientViewController.class.getResource(page.getFXML()));
