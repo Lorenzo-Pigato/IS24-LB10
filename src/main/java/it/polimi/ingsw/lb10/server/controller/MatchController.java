@@ -331,7 +331,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
             if (((players.size() < 2 && isStarted()) && !model.isTerminated())) { //logic : if match has STARTED but is not TERMINATED, all players have left apart from one -> notify endGame and close, if is
                 //STARTED and TERMINATED -> game is correctly terminated -> all players are quitting correctly
                 setActive(false);
-                model.notify(new EndGameResponse(players.getFirst(), players, isStarted()), players.getFirst().getUserHash());
+                model.notify(new EndGameResponse(players.getFirst(), players, false), players.getFirst().getUserHash());
                 model.terminate();
             }
         }else if(players.isEmpty()) setActive(false);

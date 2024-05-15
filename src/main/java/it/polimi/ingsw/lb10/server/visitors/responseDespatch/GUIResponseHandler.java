@@ -138,7 +138,7 @@ public class GUIResponseHandler implements ResponseVisitor {
     @Override
     public void visit(EndGameResponse endGameResponse) {
         Platform.runLater(() -> {
-            if(endGameResponse.getPlayers() == null || endGameResponse.getPlayers().size() == 1)
+            if(!endGameResponse.isMatchStarted())
                 controller.changeScene(new GUIAllPlayersLeftPageController());
             else
             {
