@@ -38,7 +38,7 @@
    <ImageView fitHeight="648.0" fitWidth="907.0" layoutX="150.0" layoutY="30.0" opacity="0.1" pickOnBounds="true" preserveRatio="true">
       <Image url="@../images/treeDeco2.png" />
    </ImageView>
-   <TabPane layoutX="14.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="1198.0" tabClosingPolicy="UNAVAILABLE">
+   <TabPane fx:id="boardTabPane" layoutX="14.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="1198.0" tabClosingPolicy="UNAVAILABLE">
       <Tab text="Board">
          <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="629.0" prefWidth="1184.0">
             <children>

@@ -2,6 +2,7 @@ package it.polimi.ingsw.lb10.server.visitors.responseDespatch;
 
 import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
 import it.polimi.ingsw.lb10.client.gui.*;
+import it.polimi.ingsw.lb10.network.requests.match.PickRequest;
 import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestsRequest;
 import it.polimi.ingsw.lb10.network.response.lobby.BooleanResponse;
 import it.polimi.ingsw.lb10.network.response.match.*;
@@ -109,6 +110,7 @@ public class GUIResponseHandler implements ResponseVisitor {
             if(placeCardResponse.getStatus()){
                 getMatchPageFromController().placeCardOnTable(placeCardResponse.getCard());
                 getMatchPageFromController().updateResources(placeCardResponse.getPlayerResources());
+                controller.send(new PickRequest(controller.getMatchId()));
             }else{
                 getMatchPageFromController().popUpTip(placeCardResponse.getMessage(), Color.RED);
                 getMatchPageFromController().resetAllBoardShadows();
