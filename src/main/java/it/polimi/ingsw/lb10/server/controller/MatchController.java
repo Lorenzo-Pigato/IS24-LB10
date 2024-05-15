@@ -307,7 +307,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
                     .findFirst()
                     .orElseThrow(() -> new Exception(">>RemoteView not found [hash : " + hashCode + "]"));
         } catch (Exception e) {
-            Server.log("[ " + id + "]" + e.getMessage());
+            Server.log("[" + id + "]" + e.getMessage());
             return null;
         }
 
@@ -322,22 +322,25 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     public synchronized void removePlayer(Player p) {
         players.remove(p);
+
+        p.setInMatch(false);
+
+        if(isStarted()) {
+            model.removeObserver(getRemoteView(p.getUserHash()));
+            model.removePlayer(p);
+            if (((players.size() < 2 && isStarted()) && !model.isTerminated())) { //logic : if match has STARTED but is not TERMINATED, all players have left apart from one -> notify endGame and close, if is
+                //STARTED and TERMINATED -> game is correctly terminated -> all players are quitting correctly
+                setActive(false);
+                model.notify(new EndGameResponse(players.getFirst(), players, isStarted()), players.getFirst().getUserHash());
+                model.terminate();
+            }
+        }else if(players.isEmpty()) setActive(false);
+
         try {
             getRemoteView(p.getUserHash()).getSocket().close();
+            remoteViews.remove(getRemoteView(p.getUserHash()));
         } catch (IOException e) {
             Server.log("[" + id + "]" + e.getMessage());
-        }
-        model.removeObserver(getRemoteView(p.getUserHash()));
-        model.removePlayer(p);
-        p.setInMatch(false);
-        remoteViews.remove(getRemoteView(p.getUserHash()));
-
-
-        if (((players.size() < 2 && isStarted()) && !model.isTerminated())) { //logic : if match has STARTED but is not TERMINATED, all players have left apart from one -> notify endGame and close, if is
-            //STARTED and TERMINATED -> game is correctly terminated -> all players are quitting correctly
-            setActive(false);
-            model.notify(new EndGameResponse(players.getFirst(), players, isStarted()), players.getFirst().getUserHash());
-            model.terminate();
         }
     }
 

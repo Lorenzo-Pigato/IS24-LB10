@@ -38,14 +38,13 @@
    <ImageView fitHeight="648.0" fitWidth="907.0" layoutX="150.0" layoutY="30.0" opacity="0.1" pickOnBounds="true" preserveRatio="true">
       <Image url="@../images/treeDeco2.png" />
    </ImageView>
-   <TabPane fx:id="boardTabPane" layoutX="14.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="1198.0" tabClosingPolicy="UNAVAILABLE">
+   <TabPane layoutX="14.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="1198.0" tabClosingPolicy="UNAVAILABLE">
       <Tab text="Board">
-         <graphic>
-            <ImageView fitHeight="150.0" fitWidth="200.0" opacity="0.41" pickOnBounds="true" preserveRatio="true">
-               <Image url="@../images/Denari.png" />
-            </ImageView>
-         </graphic>
-         <ScrollPane fx:id="boardScrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minViewportHeight="664.0" minViewportWidth="1181.0" minWidth="-Infinity" pannable="true" prefHeight="663.0" prefViewportHeight="664.0" prefViewportWidth="1181.0" prefWidth="1184.0" styleClass="player-board" stylesheets="@../css/matchPage.css" vbarPolicy="NEVER" />
+         <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="629.0" prefWidth="1184.0">
+            <children>
+               <ScrollPane fx:id="boardScrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" hvalue="1.0" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minViewportHeight="20000.0" minViewportWidth="20000.0" minWidth="-Infinity" pannable="true" prefHeight="628.0" prefViewportHeight="644.0" prefViewportWidth="1181.0" prefWidth="1185.0" styleClass="player-board" stylesheets="@../css/matchPage.css" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="2.0" />
+            </children>
+         </AnchorPane>
       </Tab>
       <Tab text="Game table">
          <graphic>
@@ -407,14 +406,15 @@
          </font>
       </Label>
    </AnchorPane>
-   <AnchorPane fx:id="serverNotificationPane" layoutX="858.0" layoutY="25.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="71.0" prefWidth="342.0" AnchorPane.leftAnchor="858.0" AnchorPane.rightAnchor="400.0">
-      <Rectangle arcHeight="40.0" arcWidth="40.0" fill="#ff21214a" height="70.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="342.0" AnchorPane.bottomAnchor="80.0" AnchorPane.topAnchor="0.0">
+   <AnchorPane fx:id="serverNotificationPane" layoutX="858.0" layoutY="25.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="71.0" prefWidth="339.0" AnchorPane.leftAnchor="858.0" AnchorPane.rightAnchor="400.0">
+      <Rectangle arcHeight="40.0" arcWidth="40.0" fill="#ff21214a" height="70.0" layoutX="-53.0" layoutY="1.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="3.0" width="342.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="1.0">
+
          <effect>
             <DropShadow />
          </effect>
       </Rectangle>
-      <Text layoutX="14.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="server-notification" wrappingWidth="237.7294921875" />
-      <ImageView fitHeight="44.0" fitWidth="39.0" layoutX="290.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+      <Text layoutX="10.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="server-notification" wrappingWidth="237.7294921875" AnchorPane.leftAnchor="5.0" />
+      <ImageView fitHeight="44.0" fitWidth="39.0" layoutX="243.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
          <effect>
             <DropShadow />
          </effect>
