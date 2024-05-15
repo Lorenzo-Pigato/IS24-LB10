@@ -118,9 +118,9 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     @FXML
     private TabPane boardTabPane;
     @FXML
-    private Group deckGroupOne;
+    private Group deckOneGroup;
     @FXML
-    private Group deckGroupTwo;
+    private Group deckTwoGroup;
 
 
     private ArrayList<Circle> playerTokens = new ArrayList<>();
@@ -552,8 +552,8 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         tableFour.setImage(tableCards.get(5) == null ? null : new Image(Objects.requireNonNull(GUIMatchPageController.class.getResourceAsStream((getResourcePath(tableCards.get(5)))))));
         tableFour.setUserData(tableCards.get(5));
 
-        if(tableCards.get(0) == null) deckGroupOne.setVisible(false);
-        if(tableCards.get(1) == null) deckGroupTwo.setVisible(false);
+        if(tableCards.get(0) == null) deckOneGroup.setVisible(false);
+        if(tableCards.get(1) == null) deckTwoGroup.setVisible(false);
 
     }
 
@@ -699,7 +699,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     }
 
     public void updateBoard (String username, int points) {
-        int maxRandoOffset = 20;
+        int maxRandoOffset = 7;
         Player player = playerTokens.stream().map(token -> (Player)token.getUserData()).filter(pl -> pl.getUsername().equals(username)).findFirst().orElseThrow(RuntimeException::new);
         List<Player> players = playerTokens.stream().map(token -> (Player)token.getUserData()).toList();
 
@@ -761,6 +761,6 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     }
 
     public void switchTab(int index) {
-        boardTabPane.getSelectionModel().select(1);
+        boardTabPane.getSelectionModel().select(index);
     }
 }
