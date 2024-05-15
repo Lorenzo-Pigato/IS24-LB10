@@ -46,6 +46,8 @@ public class PlaceCardResponse extends Response {
         return col;
     }
 
+    public String getMessage() { return message; }
+
     public HashMap<Resource, Integer> getPlayerResources() {
         return playerResources;
     }

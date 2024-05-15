@@ -10,10 +10,12 @@ public class EndGameResponse extends Response {
 
     private Player player;
     private ArrayList<Player> players;
+    private boolean matchStarted;
 
-    public EndGameResponse(Player player, ArrayList<Player> players) {
+    public EndGameResponse(Player player, ArrayList<Player> players, boolean matchStarted) {
         this.player = player;
         this.players = players;
+        this.matchStarted = matchStarted;
     }
 
     @Override
@@ -28,4 +30,6 @@ public class EndGameResponse extends Response {
     public ArrayList<Player> getPlayers() {
         return players;
     }
+
+    public boolean isMatchStarted() { return matchStarted;}
 }

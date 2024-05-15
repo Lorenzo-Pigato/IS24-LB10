@@ -23,11 +23,9 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.GaussianBlur;
@@ -121,6 +119,12 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     private AnchorPane serverNotificationPane;
     @FXML
     private AnchorPane scoreBoardAnchorPane;
+    @FXML
+    private TabPane boardTabPane;
+    @FXML
+    private Group deckGroupOne;
+    @FXML
+    private Group deckGroupTwo;
 
 
     private ArrayList<Circle> playerTokens = new ArrayList<>();
@@ -554,6 +558,9 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         tableFour.setImage(tableCards.get(5) == null ? null : new Image(Objects.requireNonNull(GUIMatchPageController.class.getResourceAsStream((getResourcePath(tableCards.get(5)))))));
         tableFour.setUserData(tableCards.get(5));
 
+        if(tableCards.get(0) == null) deckGroupOne.setVisible(false);
+        if(tableCards.get(1) == null) deckGroupTwo.setVisible(false);
+
     }
 
     @FXML
@@ -757,5 +764,9 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         Circle removedToken = playerTokens.stream().filter(circle -> ((Player)(circle.getUserData())).getUsername().equals(removed.getUsername())).findFirst().orElse(null);
         playerTokens.remove(removedToken);
         scoreBoardAnchorPane.getChildren().remove(removedToken);
+    }
+
+    public void switchTab(int index) {
+        boardTabPane.getSelectionModel().select(1);
     }
 }

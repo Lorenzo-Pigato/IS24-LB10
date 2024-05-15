@@ -1,12 +1,11 @@
 package it.polimi.ingsw.lb10.server.visitors.responseDespatch;
 
 import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
-import it.polimi.ingsw.lb10.client.gui.GUIMatchPageController;
-import it.polimi.ingsw.lb10.client.gui.GUIChooseQuestPageController;
-import it.polimi.ingsw.lb10.client.gui.GUIWaitingPageController;
+import it.polimi.ingsw.lb10.client.gui.*;
 import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestsRequest;
 import it.polimi.ingsw.lb10.network.response.lobby.BooleanResponse;
 import it.polimi.ingsw.lb10.network.response.match.*;
+import it.polimi.ingsw.lb10.server.Server;
 import it.polimi.ingsw.lb10.server.model.Player;
 import javafx.application.Platform;
 import javafx.scene.paint.Color;
@@ -87,10 +86,11 @@ public class GUIResponseHandler implements ResponseVisitor {
     @Override
     public void visit(PickedCardResponse pickedCardResponse) {
         Platform.runLater(() -> {
-            if(pickedCardResponse.getStatus()){
+            if(pickedCardResponse.getStatus() && !pickedCardResponse.isFinalTurn()){
                 GUIMatchPageController.insertCardOnHand(pickedCardResponse.getCard());
-            }else{
-                /// IMPLEMENT final turn
+                getMatchPageFromController().switchTab(0);
+            } else{
+                getMatchPageFromController().popUpTip("You can't pick a card now!", Color.RED);
             }
         });
     }
@@ -109,9 +109,8 @@ public class GUIResponseHandler implements ResponseVisitor {
             if(placeCardResponse.getStatus()){
                 getMatchPageFromController().placeCardOnTable(placeCardResponse.getCard());
                 getMatchPageFromController().updateResources(placeCardResponse.getPlayerResources());
-                getMatchPageFromController().popUpTip("You can draw your card from GAME TABLE to end your turn!", Color.GREEN);
             }else{
-                getMatchPageFromController().popUpTip("You selected an invalid card placement!", Color.RED);
+                getMatchPageFromController().popUpTip(placeCardResponse.getMessage(), Color.RED);
                 getMatchPageFromController().resetAllBoardShadows();
             }
         });
@@ -119,7 +118,10 @@ public class GUIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(ShowPickingPossibilitiesResponse showPickingPossibilitiesResponse) {
-
+        Platform.runLater(() -> {
+            ((GUIMatchPageController) controller.getPage()).switchTab(1);
+            getMatchPageFromController().popUpTip("Draw a card to end your turn", Color.GREEN);
+        });
     }
 
     @Override
@@ -135,11 +137,15 @@ public class GUIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(EndGameResponse endGameResponse) {
-        //if(controller.getPage() instanceof GUIWaitingPageController){
-        //    controller.changeScene(new );
-        //}else{
-        //    controller.changeScene();
-        //}
+        Platform.runLater(() -> {
+            if(endGameResponse.getPlayers() == null || endGameResponse.getPlayers().size() == 1)
+                controller.changeScene(new GUIAllPlayersLeftPageController());
+            else
+            {
+                controller.changeScene(new GUIEndOfMatchPageController());
+                ((GUIEndOfMatchPageController)controller.getPage()).setScoreboard(endGameResponse.getPlayers());
+            }
+        });
     }
 
     @Override

@@ -1,6 +1,8 @@
 package it.polimi.ingsw.lb10.client.gui;
 
 import it.polimi.ingsw.lb10.client.cli.CLIBanner;
+import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
+import it.polimi.ingsw.lb10.client.view.GUIClientView;
 import it.polimi.ingsw.lb10.server.model.Player;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -66,6 +68,8 @@ public class GUIEndOfMatchPageController implements GUIPageController, Initializ
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        GUIClientViewController.instance().setPage(this);
+
         groups.add(firstBox);
         groups.add(secondBox);
         groups.add(thirdBox);

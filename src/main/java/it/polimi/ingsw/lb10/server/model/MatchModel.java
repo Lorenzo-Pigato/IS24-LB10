@@ -149,14 +149,6 @@ public class MatchModel extends Observable {
 
         startingDeck.fillDeck();
         startingDeck.shuffle();
-
-        for (int i = 0; i < 35; i++){
-            goldenDeck.drawCard();
-        }
-
-        for (int i = 0; i < 33; i++){
-            resourceDeck.drawCard();
-        }
     }
 
     /**
@@ -563,7 +555,7 @@ public class MatchModel extends Observable {
 
     private void endGame() {
         Server.log("[ " + id + "]" + ">>match terminated");
-        players.forEach(player -> notify(new EndGameResponse(player, players), player.getUserHash()));
+        players.forEach(player -> notify(new EndGameResponse(player, players, true), player.getUserHash()));
         terminated = true;
         notifyAll(new TerminatedMatchResponse());
     }

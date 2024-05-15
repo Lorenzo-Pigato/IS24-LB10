@@ -34,7 +34,7 @@ public class CLIEndOfMatchPage implements CLIPage {
         public void apply(Object[] args) {
             CLICommand.initialize();
 
-            if(((ArrayList<Player>)args[1]).size() > 1){
+            if(((ArrayList<Player>)args[1]).size() > 1 || ((boolean) args[2])){
                 Player thisPlayer = (Player) args[0];
                 ArrayList<Player> allPlayers = (ArrayList<Player>) args[1];
 
