@@ -290,6 +290,13 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         model.notify(new MoveBoardResponse(model.getPlayer(moveBoardRequest.getUserHash()).getMatrix(), moveBoardRequest.getxOffset(), moveBoardRequest.getyOffset()), moveBoardRequest.getUserHash());
     }
 
+
+    @Override
+    public void visit(QuitMatchRequest quitMatchRequest) {
+        Server.log("[" + id + "] " + getPlayer(quitMatchRequest.getUserHash()) + "left match");
+        removePlayer(getPlayer(quitMatchRequest.getUserHash()));
+    }
+
     /**
      * this method adds the remote view to the MatchController whenever a new client joins the match
      *
@@ -322,9 +329,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     public synchronized void removePlayer(Player p) {
         players.remove(p);
-
         p.setInMatch(false);
-
         if(isStarted()) {
             model.removeObserver(getRemoteView(p.getUserHash()));
             model.removePlayer(p);
@@ -341,6 +346,10 @@ public class MatchController implements Runnable, MatchRequestVisitor {
             remoteViews.remove(getRemoteView(p.getUserHash()));
         } catch (IOException e) {
             Server.log("[" + id + "]" + e.getMessage());
+        }
+
+        if (isStarted() && isTerminated() || isActive()) {
+            LobbyController.terminateMatch(id);
         }
     }
 

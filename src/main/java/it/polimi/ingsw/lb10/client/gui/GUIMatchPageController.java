@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lb10.client.gui;
 
 import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
+import it.polimi.ingsw.lb10.network.requests.QuitRequest;
 import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.network.requests.match.*;
 import it.polimi.ingsw.lb10.server.model.Player;
@@ -14,6 +15,8 @@ import it.polimi.ingsw.lb10.server.model.cards.*;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import javafx.animation.FadeTransition;
+import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -769,5 +772,15 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
     public void switchTab(int index) {
         boardTabPane.getSelectionModel().select(index);
+    }
+
+    private void quitMatch(){
+        controller.send(new QuitMatchRequest(controller.getMatchId()));
+        Platform.runLater(() -> controller.changeScene(new GUIJoinMatchPageController()));
+    }
+
+    private void quitLobby(){
+        controller.send(new QuitRequest());
+        controller.close();
     }
 }

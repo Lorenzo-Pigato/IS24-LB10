@@ -163,8 +163,7 @@ public class LobbyController implements LobbyRequestVisitor {
                 .findFirst().orElse(null);
     }
 
-    private static void terminateMatch(int matchId) {
-//        matches.stream().filter(matchController-> matchController.getMatchId() == matchId).findFirst().get().getPlayers().forEach(player -> disconnectClient(player.getUserHash()));
+    public static void terminateMatch(int matchId) {
         matches.remove(matches.stream().filter(matchController -> matchController.getMatchId() == matchId).findFirst().orElse(null));
     }
 
@@ -173,9 +172,6 @@ public class LobbyController implements LobbyRequestVisitor {
         if (player.isInMatch()){
             MatchController controller = getController(userHash);
             controller.removePlayer(player);
-            if (controller.isStarted() && controller.isTerminated() || !controller.isActive()) {
-                terminateMatch(controller.getMatchId());
-            }
         }
         signedPlayers.remove(getPlayer(userHash));
         try {
