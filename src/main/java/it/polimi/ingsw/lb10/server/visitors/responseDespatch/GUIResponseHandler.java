@@ -154,6 +154,7 @@ public class GUIResponseHandler implements ResponseVisitor {
                 ((GUIEndOfMatchPageController)controller.getPage()).setScoreboard(endGameResponse.getPlayers());
             }
         });
+        controller.close();
     }
 
     @Override
