@@ -4,7 +4,6 @@ import it.polimi.ingsw.lb10.client.cli.clipages.CLIEndOfMatchPage;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIMatchPage;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIStartMatchPage;
 import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
-import it.polimi.ingsw.lb10.network.requests.QuitRequest;
 import it.polimi.ingsw.lb10.network.requests.match.PickRequest;
 import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestsRequest;
 import it.polimi.ingsw.lb10.network.response.lobby.BooleanResponse;
@@ -106,17 +105,14 @@ public class CLIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(PlaceCardResponse placeCardResponse) {
-        if (placeCardResponse.getStatus() && !placeCardResponse.isFinalTurn()) {
+        if (placeCardResponse.getStatus()) {
             CLIMatchPage.updateResourceCounter(placeCardResponse.getPlayerResources());
             CLIMatchPage.placeCard(placeCardResponse.getCard(), placeCardResponse.getCol(), placeCardResponse.getRow(), controller.getHand().indexOf(controller.getHand().stream().filter(placeableCard -> placeableCard.getId() == placeCardResponse.getCard().getId()).findFirst().orElse(null)));
 
             controller.getHand().remove(controller.getHand().stream().filter(placeableCard -> placeableCard.getId() == placeCardResponse.getCard().getId()).findFirst().orElse(null));
             controller.send(new PickRequest(controller.getMatchId()));
-        } else if(!placeCardResponse.getStatus()){
+        } else {
             CLIMatchPage.serverReply(placeCardResponse.getMessage());
-        } else if (placeCardResponse.isFinalTurn() && placeCardResponse.getStatus()) {
-            //change turn sanding a pick request which will be handled properly by match controller
-            controller.send(new PickRequest(controller.getMatchId()));
         }
     }
 

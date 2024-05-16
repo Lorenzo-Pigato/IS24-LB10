@@ -15,16 +15,14 @@ public class PlaceCardResponse extends Response {
     private final int col;
     private final HashMap<Resource, Integer> playerResources;
     private String message;
-    private boolean finalTurn;
 
-    public PlaceCardResponse(PlaceableCard card, boolean status, int row, int col, HashMap<Resource, Integer> playerResources, String message, boolean finalTurn) {
+    public PlaceCardResponse(PlaceableCard card, boolean status, int row, int col, HashMap<Resource, Integer> playerResources, String message) {
         this.card = card;
         this.status = status;
         this.row = row;
         this.col = col;
         this.playerResources = playerResources;
         this.message = message;
-        this.finalTurn = finalTurn;
     }
 
     @Override
@@ -53,6 +51,4 @@ public class PlaceCardResponse extends Response {
     public HashMap<Resource, Integer> getPlayerResources() {
         return playerResources;
     }
-
-    public boolean isFinalTurn() { return finalTurn; }
 }
