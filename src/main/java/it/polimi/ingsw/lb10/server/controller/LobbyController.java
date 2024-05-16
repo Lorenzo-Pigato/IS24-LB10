@@ -39,7 +39,7 @@ public class LobbyController implements LobbyRequestVisitor {
     private static ArrayList<Player> signedPlayers;
     private static ArrayList<RemoteView> remoteViews;
     private static final ExecutorService controllersPool = Executors.newCachedThreadPool();
-    private static ArrayList<ServerHeartBeatHandler> heartBeats = new ArrayList<>();
+    private static final ArrayList<ServerHeartBeatHandler> heartBeats = new ArrayList<>();
 
     private LobbyController() {
         signedPlayers = new ArrayList<>();
@@ -169,6 +169,7 @@ public class LobbyController implements LobbyRequestVisitor {
     @Override
     public void visit(PongRequest pongRequest) {
         getHeartBeatHandler(pongRequest.getUserHash()).decrementCounter();
+        Server.log("pong from client");
     }
 
     private static ServerHeartBeatHandler getHeartBeatHandler(int userHash) {

@@ -49,4 +49,10 @@ public class CLIExceptionHandler implements ExceptionHandler {
         view.setPage(new CLIErrorPage());
         view.displayPage(new String[]{">> Server closed connection<<", null});
     }
+
+    @Override
+    public void handle(ConnectionTimedOutException e){
+        view.setPage(new CLIErrorPage());
+        view.displayPage(new String[]{">> Connection timed out<<", null});
+    }
 }

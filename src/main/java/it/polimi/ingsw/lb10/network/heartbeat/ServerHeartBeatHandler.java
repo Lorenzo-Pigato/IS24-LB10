@@ -24,18 +24,17 @@ public class ServerHeartBeatHandler {
 
     public synchronized void incrementCounter(){
         counter ++;
-        Server.log(counter + " ");
     }
 
     public synchronized void decrementCounter(){
         counter --;
-        Server.log(counter + " ");
     }
 
     public void start(){
         es = Executors.newSingleThreadScheduledExecutor();
         es.scheduleAtFixedRate(() -> {
             LobbyController.send(hashcode, new PingResponse());
+            System.out.println("ping from server");
             incrementCounter();
             if(counter > 10){
                 LobbyController.disconnectClient(hashcode);

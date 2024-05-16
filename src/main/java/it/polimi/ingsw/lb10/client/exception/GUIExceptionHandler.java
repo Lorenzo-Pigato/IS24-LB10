@@ -86,4 +86,14 @@ public class GUIExceptionHandler implements ExceptionHandler{
 
     }
 
+    @Override
+    public void handle(ConnectionTimedOutException e) {
+        GUIErrorPageController errorPage = new GUIErrorPageController();
+        controller.setGameSize();
+        Platform.runLater(() -> {
+            controller.changeScene(errorPage);
+            ((GUIErrorPageController) (controller.getPage())).setErrorText("Connection timed out");
+        });
+    }
+
 }

@@ -1,5 +1,8 @@
 package it.polimi.ingsw.lb10.network.heartbeat;
 import it.polimi.ingsw.lb10.client.controller.ClientViewController;
+import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
+import it.polimi.ingsw.lb10.client.exception.ConnectionTimedOutException;
+import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
 import it.polimi.ingsw.lb10.network.requests.preMatch.PingRequest;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -13,8 +16,10 @@ public class ClientHeartBeatHandler {
     static ScheduledExecutorService es;
 
     public static ClientHeartBeatHandler instance(){
-        if(instance == null) return new ClientHeartBeatHandler();
-        else return instance;
+        if(instance == null) {
+            instance = new ClientHeartBeatHandler();
+        }
+        return instance;
     }
 
     public static void setController(ClientViewController controller){
@@ -22,14 +27,21 @@ public class ClientHeartBeatHandler {
     }
 
     public static void start(){
+
         es = Executors.newSingleThreadScheduledExecutor();
         es.scheduleAtFixedRate(() -> {
-            clientViewController.send(new PingRequest());
-            incrementCounter();
-            if(counter > 10) {
-                clientViewController.getClient().setActive(false);
-                es.close();
-                clientViewController.close();
+            try{
+                clientViewController.send(new PingRequest());
+                incrementCounter();
+                if (counter > 10) {
+                    clientViewController.getClient().setActive(false);
+                    es.close();
+                    clientViewController.close();
+                    throw new ConnectionTimedOutException();
+                }
+            }catch(ConnectionTimedOutException e){
+                close();
+                clientViewController.getExceptionHandler().handle(e);
             }
         }, 0, 1,  TimeUnit.SECONDS);
     }

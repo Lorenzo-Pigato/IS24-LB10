@@ -18,4 +18,6 @@ public interface ExceptionHandler {
     void handle(SocketException e);
 
     void handle(EOFException e);
+
+    void handle (ConnectionTimedOutException e);
 }
