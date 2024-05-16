@@ -180,7 +180,7 @@ public class MatchModel extends Observable {
         if(!terminated) {
             notifyDecksUpdate();
             notifyAll(new PlayerPointsUpdateResponse(getPlayer(userHash).getUsername(), points));
-            notifyAll(new ChatMessageResponse("Server", "it's " + onTurnPlayer.getUsername() + "'s turn"));
+            notifyAll(new ChatMessageResponse("Server", "it's " + onTurnPlayer.getUsername() + "'s turn", false));
             notify(new ServerNotification("It's your turn, place your card!", true), onTurnPlayer.getUserHash());
         }else terminate();
     }
@@ -210,7 +210,7 @@ public class MatchModel extends Observable {
         if (!finalTurnStarted && p.getPoints() >= 20) {
             finalTurnStarted = true;
             Server.log("[" + id + "]" + ">>final turn started, " + p.getUsername() + " reached 20 pts");
-            notifyAll(new ChatMessageResponse("Server", "Final turn has started!"));
+            notifyAll(new ChatMessageResponse("Server", "Final turn has started!", false));
         }
     }
 
@@ -330,7 +330,7 @@ public class MatchModel extends Observable {
         if (resourceDeckIsEmpty && goldenDeckIsEmpty) {
             finalTurnStarted = true;
             Server.log("[ " + id + "]" + ">>final turn started, both decks are empty!");
-            notifyAll(new ChatMessageResponse("Server", "Final turn has started!"));
+            notifyAll(new ChatMessageResponse("Server", "Final turn has started!", false));
         }
 
         if(resourceDeckIsEmpty && goldenDeckIsEmpty && resourceUncovered.isEmpty() && goldenUncovered.isEmpty()){
@@ -366,10 +366,10 @@ public class MatchModel extends Observable {
     public void removePlayer(Player player) {
         players.remove(player);
         notifyAll(new PlayerLeftResponse(player.getUsername()));
-        notifyAll(new ChatMessageResponse("Server", player.getUsername() + "left"));
+        notifyAll(new ChatMessageResponse("Server", player.getUsername() + "left", false));
         if(player.equals(onTurnPlayer)){
             onTurnPlayer = players.get((players.indexOf(onTurnPlayer) + 1) % players.size());
-            notifyAll(new ChatMessageResponse("Server", "it's " + onTurnPlayer.getUsername() + "'s turn"));
+            notifyAll(new ChatMessageResponse("Server", "it's " + onTurnPlayer.getUsername() + "'s turn", false));
             notify(new ServerNotification("It's your turn, place your card!", true), onTurnPlayer.getUserHash());
         }
     }
@@ -548,7 +548,7 @@ public class MatchModel extends Observable {
     public void startTurns() {
         onTurnPlayer = players.getFirst();
         gameStarter = players.getFirst();
-        notifyAll(new ChatMessageResponse("Server", "it's " + onTurnPlayer.getUsername() + "'s turn, make your move!"));
+        notifyAll(new ChatMessageResponse("Server", "it's " + onTurnPlayer.getUsername() + "'s turn, make your move!", false));
     }
 
 
@@ -556,6 +556,7 @@ public class MatchModel extends Observable {
         Server.log("[" + id + "]" + ">>match terminated");
         players.forEach(player -> notify(new EndGameResponse(player, players, true), player.getUserHash()));
         terminated = true;
+        notifyAll(new TerminatedMatchResponse());
     }
 
 
