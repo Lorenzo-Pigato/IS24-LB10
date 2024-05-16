@@ -69,10 +69,6 @@ public abstract class ClientViewController {
 
     // ------------------ METHODS ------------------ //
 
-    public void closeAsyncSocketReader() {
-        asyncSocketReader.interrupt();
-    }
-
     /**
      * This method is used to set up the communication streams with the Server.
      */
@@ -98,7 +94,7 @@ public abstract class ClientViewController {
      * the handler method "..."
      */
     public Thread asyncReadFromSocket() {
-        return new Thread(() -> {
+        Thread asyncSocketReader = new Thread(() -> {
             try {
                 while (client.isActive()) {
                     Response response = (Response) socketIn.readObject();
@@ -112,6 +108,10 @@ public abstract class ClientViewController {
                 exceptionHandler.handle(e);
             }
         });
+
+        this.asyncSocketReader = asyncSocketReader;
+
+        return this.asyncSocketReader;
     }
 
     /**
