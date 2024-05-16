@@ -197,13 +197,11 @@ public abstract class ClientViewController {
         if (!socket.isClosed()) {
             try {
                 ClientHeartBeatHandler.stop();
-                if(asyncSocketReader.isAlive()) asyncSocketReader.interrupt();
-
-                socketIn.close();
-                socketOut.close();
-                socket.close();
-            } catch (IOException e) {
-                exceptionHandler.handle(e);
+                if(!asyncSocketReader.isInterrupted()) asyncSocketReader.interrupt();
+                //socketOut.close();
+                //socket.close();
+            //} catch (IOException e) {
+            //    exceptionHandler.handle(e);
             } finally {
                 client.setActive(false);
             }

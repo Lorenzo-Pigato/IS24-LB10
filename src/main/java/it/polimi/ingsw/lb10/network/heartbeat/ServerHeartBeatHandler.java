@@ -45,7 +45,7 @@ public class ServerHeartBeatHandler {
         return hashcode;
     }
 
-    public void close(){
+    public synchronized void close(){
         es.shutdownNow();
     }
 
