@@ -80,7 +80,7 @@ public class GUIResponseHandler implements ResponseVisitor {
     @Override
     public void visit(ChatMessageResponse response) {
         Platform.runLater(()-> {
-            getMatchPageFromController().newMessage(response.getSender(), response.getMessage());
+            getMatchPageFromController().newMessage(response.getSender(), response.getMessage(), response.isPrivate());
         });
     }
 

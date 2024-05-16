@@ -573,20 +573,20 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         }
     }
 
-    public void newMessage(String username, String message){
+    public void newMessage(String username, String message, boolean isPrivate){
         Player senderPlayer = otherPlayers.stream().filter(p -> p.getUsername().equals(username)).findFirst().orElse(new Player(0, "Server"));
 
         if(senderPlayer.getUserHash() == 0) senderPlayer.setColor(Color.GREEN);
 
         if(username.equals(controller.getClient().getUsername())){
-            showLocalMessage(message, thisPlayer);
+            showLocalMessage(message, thisPlayer, isPrivate);
         }else{
-            showOuterMessage(message, senderPlayer);
+            showOuterMessage(message, senderPlayer, isPrivate);
         }
 
     }
 
-    private void showOuterMessage(String message, Player senderPlayer) {
+    private void showOuterMessage(String message, Player senderPlayer, boolean isPrivate){
         HBox hBox = new HBox();
         hBox.setAlignment(Pos.CENTER_LEFT);
         hBox.setPadding(new Insets(5, 5, 5, 10));
@@ -598,7 +598,11 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
         TextFlow textFlow = new TextFlow(username);
 
-        textFlow.setStyle("-fx-background-color : rgba(255, 251, 230, 0.75)"
+        if(isPrivate)
+            textFlow.setStyle("-fx-background-color : rgba(108,255,189,0.82)"
+                + ";-fx-background-radius : 20px");
+        else
+            textFlow.setStyle("-fx-background-color : rgba(255, 251, 230, 0.75)"
                 + ";-fx-background-radius : 20px");
 
         textFlow.setPadding(new Insets(5, 10, 5, 10));
@@ -608,7 +612,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         chatVBox.getChildren().add(hBox);
     }
 
-    private void showLocalMessage(String message, Player senderPlayer) {
+    private void showLocalMessage(String message, Player senderPlayer, boolean isPrivate) {
         HBox hBox = new HBox();
         hBox.setAlignment(Pos.CENTER_RIGHT);
         hBox.setPadding(new Insets(5, 5, 5, 10));
@@ -621,7 +625,13 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
         TextFlow textFlow = new TextFlow(username);
         textFlow.getChildren().add(text);
-        textFlow.setStyle("-fx-background-color : rgba(255, 238, 193, 0.82)"
+
+        if(isPrivate) textFlow.setStyle(
+                "-fx-background-color : rgba(108,255,239,0.82)"
+                + ";-fx-background-radius : 20px");
+        else
+            textFlow.setStyle(
+                    "-fx-background-color : rgba(255, 238, 193, 0.82)"
                 + ";-fx-background-radius : 20px");
 
         textFlow.setPadding(new Insets(5, 10, 5, 10));

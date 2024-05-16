@@ -138,6 +138,9 @@ public class MatchController implements Runnable, MatchRequestVisitor {
 
     /**
      * @param chatRequest this request is sent by the client to send a message to the match chat
+     *                    if the sender specifies a recipient using the keyword pair <to> <username>,
+     *                    the message will be sent only to the specified player and to the player sending the message
+     *                    itself to be displayed
      */
     @Override
     public void visit(@NotNull ChatRequest chatRequest) {
@@ -147,11 +150,16 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         if(splitMessage[0].equals("to")) {
             players.stream().filter(p -> p.getUsername().equals(splitMessage[1])).map(Player::getUserHash)
                     .findFirst()
-                    .ifPresent(u -> model.notify(new ChatMessageResponse(
-                            getPlayer(chatRequest.getUserHash()).getUsername(),
-                            chatRequest.getMessage().substring(4 + getPlayer(u).getUsername().length())), u));
+                    .ifPresent(u -> {
+                        model.notify(new ChatMessageResponse(
+                                getPlayer(chatRequest.getUserHash()).getUsername(),
+                                chatRequest.getMessage().substring(4 + getPlayer(u).getUsername().length()), true), u);
+                        model.notify(new ChatMessageResponse(getPlayer(chatRequest.getUserHash()).getUsername(),
+                                chatRequest.getMessage().substring(4 + getPlayer(u).getUsername().length()),
+                                true), chatRequest.getUserHash());
+                    });
         } else
-            model.notifyAll(new ChatMessageResponse(getPlayer(chatRequest.getUserHash()).getUsername(), chatRequest.getMessage()));
+            model.notifyAll(new ChatMessageResponse(getPlayer(chatRequest.getUserHash()).getUsername(), chatRequest.getMessage(), false));
     }
 
     /**
