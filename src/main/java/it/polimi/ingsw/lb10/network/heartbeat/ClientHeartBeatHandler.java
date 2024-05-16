@@ -35,7 +35,6 @@ public class ClientHeartBeatHandler {
                 incrementCounter();
                 if (counter > 10) {
                     clientViewController.getClient().setActive(false);
-                    es.close();
                     clientViewController.close();
                     throw new ConnectionTimedOutException();
                 }
@@ -55,6 +54,6 @@ public class ClientHeartBeatHandler {
     }
 
     public static void close(){
-        es.close();
+        es.shutdownNow();
     }
 }
