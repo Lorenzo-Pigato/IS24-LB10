@@ -781,13 +781,13 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
     @FXML
     private void quitLobby(){
-        controller.send(new QuitRequest());
+        //controller.send(new QuitRequest());
         controller.close();
     }
 
     @FXML
     private void centerScrollPane(){
         boardScrollPane.setHvalue(0.5);
-        boardScrollPane.setHvalue(0.5);
+        boardScrollPane.setVvalue(0.5);
     }
 }

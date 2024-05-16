@@ -7,6 +7,7 @@ module it.polimi.ingsw.lb10 {
     requires net.bytebuddy;
     requires java.desktop;
     requires java.smartcardio;
+    requires jdk.compiler;
 
 
     opens it.polimi.ingsw.lb10 to javafx.fxml;

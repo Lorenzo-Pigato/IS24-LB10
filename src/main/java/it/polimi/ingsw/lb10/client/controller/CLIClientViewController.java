@@ -17,7 +17,9 @@ import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 
+import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -55,9 +57,11 @@ public class CLIClientViewController extends ClientViewController {
                     Response response = (Response) socketIn.readObject();
                     response.accept(responseHandler);
                 }
-            } catch (Exception e) {
+            } catch (SocketException e) {
                 exceptionHandler.handle(e);
                 close();
+            } catch (IOException | ClassNotFoundException e) {
+                exceptionHandler.handle(e);
             }
         });
     }
@@ -238,7 +242,6 @@ public class CLIClientViewController extends ClientViewController {
      */
     public Thread asyncReadFromTerminal() {
         return new Thread(() -> {
-
             Request futureRequest;
             while (client.isActive()) {
                 try {
@@ -251,7 +254,6 @@ public class CLIClientViewController extends ClientViewController {
                     CLICommand.clearLineAfterCursor();
 
                     if (futureRequest != null) {
-
                         Thread t = asyncWriteToSocket(futureRequest);
                         t.start();
                         t.join();

@@ -149,14 +149,6 @@ public class MatchModel extends Observable {
 
         startingDeck.fillDeck();
         startingDeck.shuffle();
-
-        for (int i = 0; i < 35; i ++) {
-            goldenDeck.drawCard();
-        }
-
-        for (int i = 0; i < 33; i ++) {
-            resourceDeck.drawCard();
-        }
     }
 
     /**

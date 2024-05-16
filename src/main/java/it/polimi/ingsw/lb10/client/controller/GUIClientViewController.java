@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -98,9 +99,12 @@ public class GUIClientViewController extends ClientViewController {
                     Response response = (Response) socketIn.readObject();
                     response.accept(responseHandler);
                 }
-            } catch (Exception e) {
+            } catch (SocketException e) {
+                client.setActive(false);
                 exceptionHandler.handle(e);
-                close();
+            } catch (IOException | ClassNotFoundException e) {
+                exceptionHandler.handle(e);
+
             }
         });
     }

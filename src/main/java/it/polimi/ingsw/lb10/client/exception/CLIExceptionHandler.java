@@ -1,10 +1,12 @@
 package it.polimi.ingsw.lb10.client.exception;
 
+import com.sun.tools.javac.Main;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLI404Page;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIErrorPage;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
 
 import java.io.IOException;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 
 public class CLIExceptionHandler implements ExceptionHandler {
@@ -32,5 +34,10 @@ public class CLIExceptionHandler implements ExceptionHandler {
     public void handle(ConnectionErrorException e) {
         view.setPage(new CLI404Page());
         view.displayPage(new String[]{">> Server closed connection <<", e.getMessage()});
+    }
+
+    @Override
+    public void handle(SocketException e) {
+
     }
 }
