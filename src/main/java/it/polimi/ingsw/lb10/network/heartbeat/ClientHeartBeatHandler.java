@@ -33,13 +33,12 @@ public class ClientHeartBeatHandler {
             try{
                 clientViewController.send(new PingRequest());
                 incrementCounter();
-                if (counter > 10) {
+                if (counter > 10) {ClientHeartBeatHandler.
                     clientViewController.getClient().setActive(false);
                     clientViewController.close();
                     throw new ConnectionTimedOutException();
                 }
             }catch(ConnectionTimedOutException e){
-                close();
                 clientViewController.getExceptionHandler().handle(e);
             }
         }, 0, 1,  TimeUnit.SECONDS);
@@ -53,7 +52,7 @@ public class ClientHeartBeatHandler {
         counter --;
     }
 
-    public static void close(){
-        es.shutdownNow();
+    public static void stop(){
+        es.shutdown();
     }
 }

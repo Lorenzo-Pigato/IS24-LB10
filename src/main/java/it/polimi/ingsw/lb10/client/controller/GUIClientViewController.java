@@ -10,6 +10,7 @@ import it.polimi.ingsw.lb10.network.requests.QuitRequest;
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.GUIResponseHandler;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -30,7 +31,6 @@ public class GUIClientViewController extends ClientViewController {
     private Stage stage;
     private Scene scene;
     private final ExceptionHandler exceptionHandler = new GUIExceptionHandler(this);
-    private static final GUIResponseHandler responseHandler = GUIResponseHandler.instance();
     private ArrayList<Player> players;
     private boolean boundsSocket = false;
 
@@ -66,6 +66,7 @@ public class GUIClientViewController extends ClientViewController {
     public synchronized void initialize(Stage stage) {
         setClient(new Client());
         setExceptionHandler(new GUIExceptionHandler(this));
+        setResponseHandler(GUIResponseHandler.instance());
         this.stage = stage;
         stage.setResizable(false);
         stage.setTitle("Codex Naturalis");
@@ -75,7 +76,7 @@ public class GUIClientViewController extends ClientViewController {
         stage.setOnCloseRequest(_ -> {
             send(new QuitRequest());
             client.setActive(false);
-            close();
+            Platform.exit();
         });
 
         setPage(new GUIConnectionPageController());
@@ -93,24 +94,6 @@ public class GUIClientViewController extends ClientViewController {
         this.page = page;
     }
     public synchronized  GUIPageController getPage(){return page;}
-
-    @Override
-    public Thread asyncReadFromSocket() {
-        return new Thread(() -> {
-            try {
-                while (client.isActive()) {
-                    Response response = (Response) socketIn.readObject();
-                    response.accept(responseHandler);
-                }
-            } catch (EOFException e) {
-                close();
-                client.setActive(false);
-                exceptionHandler.handle(e);
-            } catch (IOException | ClassNotFoundException e) {
-                exceptionHandler.handle(e);
-            }
-        });
-    }
 
     public void setPlayers(ArrayList<Player> players){this.players = players;}
     public ArrayList<Player> getPlayers(){return players;}

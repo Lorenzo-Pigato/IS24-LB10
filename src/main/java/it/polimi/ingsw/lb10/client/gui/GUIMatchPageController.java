@@ -791,7 +791,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
     @FXML
     private void quitLobby(){
-        //controller.send(new QuitRequest());
+        controller.send(new QuitRequest());
         controller.close();
     }
 
