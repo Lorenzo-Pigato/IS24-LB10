@@ -4,6 +4,7 @@ import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
 import it.polimi.ingsw.lb10.client.gui.GUIErrorPageController;
 import javafx.application.Platform;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -38,10 +39,12 @@ public class GUIExceptionHandler implements ExceptionHandler{
     @Override
     public void handle(IOException e) {
         GUIErrorPageController errorPage = new GUIErrorPageController();
-        Platform.runLater(() -> {
-            controller.changeScene(errorPage);
-            ((GUIErrorPageController)(controller.getPage())).setErrorText("There was an issue with your sockets: " + (e.getMessage() != null ? e.getMessage() : ""));
-        });
+        if(controller.getClient().isActive()) {
+            Platform.runLater(() -> {
+                controller.changeScene(errorPage);
+                ((GUIErrorPageController) (controller.getPage())).setErrorText("There was an issue with your sockets: " + (e.getMessage() != null ? e.getMessage() : ""));
+            });
+        }else Platform.exit();
     }
 
     @Override
@@ -55,7 +58,6 @@ public class GUIExceptionHandler implements ExceptionHandler{
 
     @Override
     public void handle(SocketException e) {
-
         GUIErrorPageController errorPage = new GUIErrorPageController();
         if(controller.getClient().isActive()) {
             Platform.runLater(() -> {
@@ -65,6 +67,16 @@ public class GUIExceptionHandler implements ExceptionHandler{
         }else{
             Platform.exit();
         }
+    }
+
+    @Override
+    public void handle(EOFException e) {
+        GUIErrorPageController errorPage = new GUIErrorPageController();
+        Platform.runLater(() -> {
+            controller.changeScene(errorPage);
+            ((GUIErrorPageController) (controller.getPage())).setErrorText("Server closed connection");
+        });
+
     }
 
 }

@@ -14,6 +14,7 @@ import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
 import org.jetbrains.annotations.NotNull;
 
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -114,9 +115,12 @@ public abstract class ClientViewController {
         Response response = null;
         try {
             response = (Response) socketIn.readObject();
-        } catch (Exception e) {
-            exceptionHandler.handle(e);
+        } catch (EOFException e) {
             close();
+            client.setActive(false);
+            exceptionHandler.handle(e);
+        } catch (IOException  | ClassNotFoundException e){
+            exceptionHandler.handle(e);
         }
         return response;
     }

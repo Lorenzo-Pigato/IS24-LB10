@@ -746,14 +746,14 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
         fadeInTransition.setFromValue(0);
         fadeInTransition.setToValue(0.8);
-        fadeInTransition.setDuration(Duration.seconds(2));
+        fadeInTransition.setDuration(Duration.seconds(1));
 
         fadeInTransition.setNode(serverNotificationPane);
         fadeOutTransition.setNode(serverNotificationPane);
 
         fadeOutTransition.setFromValue(0.8);
         fadeOutTransition.setToValue(0);
-        fadeOutTransition.setDuration(Duration.seconds(2));
+        fadeOutTransition.setDuration(Duration.seconds(1));
         fadeOutTransition.setDelay(Duration.seconds(3));
 
         fadeInTransition.play();
