@@ -189,11 +189,11 @@ public class MatchModel extends Observable {
                 goldenDeck.getCards().isEmpty() ? null : goldenDeck.getCards().getLast(),
                 resourceDeck.getCards().isEmpty() ? null : resourceDeck.getCards().getLast(),
 
-                goldenUncovered.isEmpty() ? null : (goldenUncovered.size() > 1 ? goldenUncovered.get(1) : goldenUncovered.getFirst()),
                 goldenUncovered.isEmpty() ? null : (goldenUncovered.size() > 1 ? goldenUncovered.getFirst() : null),
+                goldenUncovered.isEmpty() ? null : (goldenUncovered.size() > 1 ? goldenUncovered.get(1) : goldenUncovered.getFirst()),
 
-                resourceUncovered.isEmpty() ? null : (resourceUncovered.size() > 1 ? resourceUncovered.get(1) : resourceUncovered.getFirst()),
                 resourceUncovered.isEmpty() ? null : (resourceUncovered.size() > 1 ? resourceUncovered.getFirst() : null),
+                resourceUncovered.isEmpty() ? null : (resourceUncovered.size() > 1 ? resourceUncovered.get(1) : resourceUncovered.getFirst()),
         };
         notifyAll(new DeckUpdateResponse(Arrays.asList(decks)));
     }
@@ -290,26 +290,6 @@ public class MatchModel extends Observable {
 
     }
 
-    public void checkDeckEmptiness() {
-        if (resourceDeck.getCards().isEmpty() && !resourceDeckIsEmpty) {
-            resourceDeckIsEmpty = true;
-        }
-
-        if (goldenDeck.getCards().isEmpty() && !goldenDeckIsEmpty) {
-            goldenDeckIsEmpty = true;
-        }
-
-        if (resourceDeckIsEmpty && goldenDeckIsEmpty) {
-            finalTurnStarted = true;
-            Server.log("[ " + id + "]" + ">>final turn started, both decks are empty!");
-            notifyAll(new ChatMessageResponse("Server", "Final turn has started!"));
-        }
-
-        if(resourceDeckIsEmpty && goldenDeckIsEmpty && resourceUncovered.isEmpty() && goldenUncovered.isEmpty()){
-            runOutOfCards = true;
-        }
-    }
-
     /**
      * this method is used to pick a card from table, there are always two cards, except when golden deck is empty.
      * If both decks are empty, match status changes to last turn.
@@ -333,6 +313,26 @@ public class MatchModel extends Observable {
 
         } catch (IndexOutOfBoundsException e) {
             notify(new PickedCardResponse(null, false, "Table position not available", null, false), player.getUserHash());
+        }
+    }
+
+    public void checkDeckEmptiness() {
+        if (resourceDeck.getCards().isEmpty() && !resourceDeckIsEmpty) {
+            resourceDeckIsEmpty = true;
+        }
+
+        if (goldenDeck.getCards().isEmpty() && !goldenDeckIsEmpty) {
+            goldenDeckIsEmpty = true;
+        }
+
+        if (resourceDeckIsEmpty && goldenDeckIsEmpty) {
+            finalTurnStarted = true;
+            Server.log("[ " + id + "]" + ">>final turn started, both decks are empty!");
+            notifyAll(new ChatMessageResponse("Server", "Final turn has started!"));
+        }
+
+        if(resourceDeckIsEmpty && goldenDeckIsEmpty && resourceUncovered.isEmpty() && goldenUncovered.isEmpty()){
+            runOutOfCards = true;
         }
     }
 

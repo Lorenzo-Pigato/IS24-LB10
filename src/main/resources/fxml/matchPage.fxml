@@ -169,7 +169,7 @@
                <VBox.margin>
                   <Insets />
                </VBox.margin>
-               <ImageView fx:id="tableTwo" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
+               <ImageView fx:id="tableOne" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
                   <HBox.margin>
                      <Insets bottom="20.0" left="15.0" top="60.0" />
                   </HBox.margin>
@@ -177,7 +177,7 @@
                      <DropShadow height="68.44" radius="32.980000000000004" width="65.48" />
                   </effect>
                </ImageView>
-               <ImageView fx:id="tableOne" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
+               <ImageView fx:id="tableTwo" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
                   <HBox.margin>
                      <Insets left="50.0" right="50.0" top="60.0" />
                   </HBox.margin>
@@ -185,7 +185,7 @@
                      <DropShadow height="68.44" radius="33.72" width="68.44" />
                   </effect>
                </ImageView>
-               <ImageView fx:id="tableFour" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
+               <ImageView fx:id="tableThree" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
                   <HBox.margin>
                      <Insets top="60.0" />
                   </HBox.margin>
@@ -193,7 +193,7 @@
                      <DropShadow height="97.85" radius="42.495" width="74.13" />
                   </effect>
                </ImageView>
-               <ImageView fx:id="tableThree" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
+               <ImageView fx:id="tableFour" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
                   <HBox.margin>
                      <Insets left="50.0" top="60.0" />
                   </HBox.margin>
