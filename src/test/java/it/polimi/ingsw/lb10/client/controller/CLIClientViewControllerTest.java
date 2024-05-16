@@ -24,7 +24,6 @@ public class CLIClientViewControllerTest {
      static Client client = Client.instance();
      static CLIExceptionHandler exceptionHandler = new CLIExceptionHandler(new CLIClientView());
 
-     //@AfterAll
      static void close(){
          try{
              outputStream.close();

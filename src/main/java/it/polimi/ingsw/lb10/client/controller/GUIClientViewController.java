@@ -15,6 +15,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+
+import java.io.EOFException;
 import java.io.IOException;
 import java.net.SocketException;
 import java.util.ArrayList;
@@ -72,6 +74,7 @@ public class GUIClientViewController extends ClientViewController {
         stage.getIcons().add(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/images/icon.png"))));
         stage.setOnCloseRequest(_ -> {
             send(new QuitRequest());
+            client.setActive(false);
             close();
         });
 
@@ -99,12 +102,12 @@ public class GUIClientViewController extends ClientViewController {
                     Response response = (Response) socketIn.readObject();
                     response.accept(responseHandler);
                 }
-            } catch (SocketException e) {
+            } catch (EOFException e) {
+                close();
                 client.setActive(false);
                 exceptionHandler.handle(e);
             } catch (IOException | ClassNotFoundException e) {
                 exceptionHandler.handle(e);
-
             }
         });
     }

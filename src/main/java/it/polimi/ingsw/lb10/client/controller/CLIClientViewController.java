@@ -17,6 +17,7 @@ import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketException;
@@ -57,9 +58,10 @@ public class CLIClientViewController extends ClientViewController {
                     Response response = (Response) socketIn.readObject();
                     response.accept(responseHandler);
                 }
-            } catch (SocketException e) {
-                exceptionHandler.handle(e);
+            } catch (EOFException e) {
                 close();
+                client.setActive(false);
+                exceptionHandler.handle(e);
             } catch (IOException | ClassNotFoundException e) {
                 exceptionHandler.handle(e);
             }
