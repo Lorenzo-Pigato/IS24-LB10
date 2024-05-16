@@ -1,11 +1,13 @@
 package it.polimi.ingsw.lb10.server.visitors.requestDispatch;
 
+import it.polimi.ingsw.lb10.network.requests.PongRequest;
 import it.polimi.ingsw.lb10.network.requests.QuitRequest;
 import it.polimi.ingsw.lb10.network.requests.match.MatchRequest;
 import it.polimi.ingsw.lb10.network.requests.match.QuitMatchRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.LobbyToMatchRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.LoginRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.NewMatchRequest;
+import it.polimi.ingsw.lb10.network.requests.preMatch.PingRequest;
 
 public interface LobbyRequestVisitor {
 
@@ -30,4 +32,7 @@ public interface LobbyRequestVisitor {
      */
     void visit(QuitRequest quitRequest);
 
+    void visit(PingRequest pingRequest);
+
+    void visit(PongRequest pongRequest);
 }

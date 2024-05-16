@@ -1,11 +1,16 @@
 package it.polimi.ingsw.lb10.server.controller;
 
+import it.polimi.ingsw.lb10.network.heartbeat.ServerHeartBeatHandler;
+import it.polimi.ingsw.lb10.network.requests.PongRequest;
 import it.polimi.ingsw.lb10.network.requests.QuitRequest;
 import it.polimi.ingsw.lb10.network.requests.match.JoinMatchRequest;
 import it.polimi.ingsw.lb10.network.requests.match.MatchRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.LobbyToMatchRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.LoginRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.NewMatchRequest;
+import it.polimi.ingsw.lb10.network.requests.preMatch.PingRequest;
+import it.polimi.ingsw.lb10.network.response.PongResponse;
+import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.network.response.lobby.BooleanResponse;
 import it.polimi.ingsw.lb10.network.response.match.JoinMatchResponse;
 import it.polimi.ingsw.lb10.network.response.match.TerminatedMatchResponse;
@@ -19,6 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * This SINGLETON class handles the login requests and dispatches players inside match controllers,
@@ -33,6 +39,7 @@ public class LobbyController implements LobbyRequestVisitor {
     private static ArrayList<Player> signedPlayers;
     private static ArrayList<RemoteView> remoteViews;
     private static final ExecutorService controllersPool = Executors.newCachedThreadPool();
+    private static ArrayList<ServerHeartBeatHandler> heartBeats = new ArrayList<>();
 
     private LobbyController() {
         signedPlayers = new ArrayList<>();
@@ -52,6 +59,15 @@ public class LobbyController implements LobbyRequestVisitor {
 
     public synchronized static void removeRemoteView(RemoteView remoteView) {
         remoteViews.remove(remoteView);
+    }
+
+    public static void addHeartBeat(ServerHeartBeatHandler heartBeatHandler){
+        heartBeats.add(heartBeatHandler);
+    }
+
+    public static void removeHeartBeat(ServerHeartBeatHandler heartBeatHandler){
+        heartBeatHandler.close();
+        heartBeats.remove(heartBeatHandler);
     }
 
     public synchronized boolean validateUsername(@NotNull String username) {
@@ -77,7 +93,7 @@ public class LobbyController implements LobbyRequestVisitor {
         Server.log(">>login request [username : " + lr.getUsername() + ", " + lr.getUserHash() + "]");
         boolean validated = validateUsername(lr.getUsername());
         if (validated) addSignedPlayer(lr.getUserHash(), lr.getUsername());
-        getRemoteView(lr.getUserHash()).send(new BooleanResponse(validated));
+        send(lr.getUserHash(), new BooleanResponse(lr.getUsername(), validated));
         Server.log(">>boolean response [username : " + lr.getUsername() + ", " + lr.getUserHash() + "] " + validated);
     }
 
@@ -92,7 +108,7 @@ public class LobbyController implements LobbyRequestVisitor {
         Server.log(">>join match [username : " + getPlayer(ltmr.getUserHash()).getUsername() + ", id : " + ltmr.getMatchId() + "]");
         if (matches.stream().filter(matchController -> !matchController.isStarted()).map(MatchController::getMatchId).noneMatch(id -> id == ltmr.getMatchId())) {
             //Predicate : matchId contained in the request is an actual waiting match
-            getRemoteView(ltmr.getUserHash()).send(new JoinMatchResponse(false, 0)); //match already started or not existing
+            send(ltmr.getUserHash(), new JoinMatchResponse(false, 0)); //match already started or not existing
             Server.log(">>no match found, join match response [status : false]");
         } else {
             //envelopes the username of the player to be passed to the controller
@@ -116,7 +132,7 @@ public class LobbyController implements LobbyRequestVisitor {
             try {
                 matchController.submitRequest(mr);
             } catch (Exception e) {
-                getRemoteView(mr.getUserHash()).send(new TerminatedMatchResponse());
+                send(mr.getUserHash(), new TerminatedMatchResponse());
             }
         });
     }
@@ -133,7 +149,7 @@ public class LobbyController implements LobbyRequestVisitor {
             getPlayer(newMatchRequest.getUserHash()).setInMatch(true);
             submitToController(controller, new JoinMatchRequest(controller.getMatchId(), getPlayer(newMatchRequest.getUserHash())), newMatchRequest.getUserHash());
         } catch (InterruptedException e) {
-            getRemoteView(newMatchRequest.getUserHash()).send(new TerminatedMatchResponse()); //match interrupted
+            send(newMatchRequest.getUserHash(), new TerminatedMatchResponse()); //match interrupted
         }
     }
 
@@ -141,6 +157,22 @@ public class LobbyController implements LobbyRequestVisitor {
     public synchronized void visit(@NotNull QuitRequest quitRequest) {
         Server.log(">>quit request [username : " + getPlayer(quitRequest.getUserHash()).getUsername() + "]");
         disconnectClient(quitRequest.getUserHash());
+    }
+
+
+    @Override
+    public synchronized void visit(PingRequest pingRequest) {
+        send(pingRequest.getUserHash(), new PongResponse());
+        Server.log("ping from client -> pong from server " + pingRequest.getUserHash());
+    }
+
+    @Override
+    public void visit(PongRequest pongRequest) {
+        getHeartBeatHandler(pongRequest.getUserHash()).decrementCounter();
+    }
+
+    private static ServerHeartBeatHandler getHeartBeatHandler(int userHash) {
+        return heartBeats.stream().filter(heartBeatHandler -> heartBeatHandler.getHashcode() == userHash).findFirst().orElse(null);
     }
 
     public synchronized void submitToController(@NotNull MatchController controller, @NotNull MatchRequest request, int userHash) throws InterruptedException {
@@ -175,11 +207,16 @@ public class LobbyController implements LobbyRequestVisitor {
         }
         signedPlayers.remove(getPlayer(userHash));
         try {
+            removeHeartBeat(getHeartBeatHandler(userHash));
             getRemoteView(userHash).getSocket().close();
             removeRemoteView(getRemoteView(userHash));
         } catch (IOException e) {
             //
         }
         Server.log(">>client disconnected : " + userHash);
+    }
+
+    public synchronized static void send(int hashcode, Response response){
+        getRemoteView(hashcode).send(response);
     }
 }

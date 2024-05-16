@@ -1,11 +1,16 @@
 package it.polimi.ingsw.lb10.server.visitors.responseDespatch;
 
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIEndOfMatchPage;
+import it.polimi.ingsw.lb10.client.cli.clipages.CLILoginPage;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIMatchPage;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIStartMatchPage;
 import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
+import it.polimi.ingsw.lb10.network.heartbeat.ClientHeartBeatHandler;
+import it.polimi.ingsw.lb10.network.requests.PongRequest;
 import it.polimi.ingsw.lb10.network.requests.match.PickRequest;
 import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestsRequest;
+import it.polimi.ingsw.lb10.network.response.PingResponse;
+import it.polimi.ingsw.lb10.network.response.PongResponse;
 import it.polimi.ingsw.lb10.network.response.lobby.BooleanResponse;
 import it.polimi.ingsw.lb10.network.response.match.*;
 import it.polimi.ingsw.lb10.server.model.Player;
@@ -17,7 +22,7 @@ public class CLIResponseHandler implements ResponseVisitor {
 
     private static CLIResponseHandler instance;
     private static final CLIClientViewController controller = CLIClientViewController.instance();
-
+    private static final Object lock = CLIClientViewController.getLock();
 
     public static CLIResponseHandler instance() {
         if (instance == null) instance = new CLIResponseHandler();
@@ -26,26 +31,39 @@ public class CLIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(JoinMatchResponse response) {
-        controller.getClient().setInMatch(response.getJoined());
-        controller.setMatchId(response.getMatchId());
+        synchronized (lock) {
+            controller.getClient().setInMatch(response.getJoined());
+            controller.setMatchId(response.getMatchId());
+            lock.notifyAll();
+        }
     }
 
     @Override
     public void visit(BooleanResponse response) {
-        controller.getClient().setLogged(response.getResponseState());
+        synchronized (lock) {
+            controller.getClient().setLogged(response.getResponseState());
+            if (controller.getClient().isNotLogged()) {
+                controller.getView().updatePageState(new CLILoginPage.alreadyTaken());
+                controller.getView().displayPage(new String[]{response.getUsername()});
+            }
+            lock.notifyAll();
+        }
     }
 
     @Override
     public void visit(TerminatedMatchResponse response) {
+        controller.getClient().setActive(false);
         controller.close();
     }
 
     @Override
     public void visit(StartedMatchResponse response) {
-        controller.getClient().setStartedMatch(true);
-        controller.setMatchId(response.getMatchId());
-        controller.send(new PrivateQuestsRequest(controller.getMatchId()));
-        //controller.syncReceive().accept(this); //PrivateQuestResponse
+        synchronized (lock) {
+            controller.getClient().setStartedMatch(true);
+            controller.setMatchId(response.getMatchId());
+            controller.send(new PrivateQuestsRequest(controller.getMatchId()));
+            lock.notifyAll();
+        }
     }
 
     @Override
@@ -194,6 +212,17 @@ public class CLIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(DeckUpdateResponse deckUpdateResponse) {
+    }
+
+
+    @Override
+    public void visit(PongResponse pongResponse) {
+        ClientHeartBeatHandler.decrementCounter();
+    }
+
+    @Override
+    public void visit(PingResponse pingResponse) {
+        controller.send(new PongRequest());
     }
 
 }

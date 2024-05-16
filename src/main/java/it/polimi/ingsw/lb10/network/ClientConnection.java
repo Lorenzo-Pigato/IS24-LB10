@@ -1,5 +1,6 @@
 package it.polimi.ingsw.lb10.network;
 
+import it.polimi.ingsw.lb10.network.heartbeat.ServerHeartBeatHandler;
 import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.network.response.lobby.HashResponse;
 import it.polimi.ingsw.lb10.server.controller.LobbyController;
@@ -11,6 +12,7 @@ import it.polimi.ingsw.lb10.server.Server;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class ClientConnection extends Observable implements Runnable {
 
@@ -56,6 +58,8 @@ public class ClientConnection extends Observable implements Runnable {
         }
         remoteView.send(new HashResponse(socket.hashCode()));
         Server.log(">>new client, assigned hashcode: " + socket.hashCode());
+
+        heartBeatSetup();
         while (isActive()) {
             try {
                 Request request = (Request) (input.readObject());
@@ -67,6 +71,13 @@ public class ClientConnection extends Observable implements Runnable {
                 close();
             }
         }
+
+    }
+
+    private void heartBeatSetup() {
+        ServerHeartBeatHandler heartBeat = new ServerHeartBeatHandler(socket.hashCode());
+        heartBeat.start();
+        LobbyController.addHeartBeat(heartBeat);
     }
 
     /**

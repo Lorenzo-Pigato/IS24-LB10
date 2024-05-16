@@ -177,10 +177,12 @@ public class MatchModel extends Observable {
         onTurnPlayer = players.get((players.indexOf(onTurnPlayer) + 1) % players.size());
         checkFinalTurn(getPlayer(userHash));
         checkEndGame();
-        notifyDecksUpdate();
-        notifyAll(new PlayerPointsUpdateResponse(getPlayer(userHash).getUsername(), points));
-        notifyAll(new ChatMessageResponse("Server", "it's " + onTurnPlayer.getUsername() + "'s turn"));
-        notify(new ServerNotification("It's your turn, place your card!", true), onTurnPlayer.getUserHash());
+        if(!terminated) {
+            notifyDecksUpdate();
+            notifyAll(new PlayerPointsUpdateResponse(getPlayer(userHash).getUsername(), points));
+            notifyAll(new ChatMessageResponse("Server", "it's " + onTurnPlayer.getUsername() + "'s turn"));
+            notify(new ServerNotification("It's your turn, place your card!", true), onTurnPlayer.getUserHash());
+        }else terminate();
     }
 
     private void notifyDecksUpdate() {
@@ -554,7 +556,6 @@ public class MatchModel extends Observable {
         Server.log("[" + id + "]" + ">>match terminated");
         players.forEach(player -> notify(new EndGameResponse(player, players, true), player.getUserHash()));
         terminated = true;
-        notifyAll(new TerminatedMatchResponse());
     }
 
 

@@ -4,6 +4,7 @@ import it.polimi.ingsw.lb10.client.Client;
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 
 import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
+import it.polimi.ingsw.lb10.network.heartbeat.ClientHeartBeatHandler;
 import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.network.response.lobby.HashResponse;
@@ -99,7 +100,7 @@ public abstract class ClientViewController {
         return new Thread(() -> send(message));
     }
 
-    public void send(@NotNull Request request) {
+    public synchronized void send(@NotNull Request request) {
         request.setUserHash(hash); //wraps hashcode inside request, very important!!
         try {
             socketOut.reset();
@@ -111,7 +112,7 @@ public abstract class ClientViewController {
         }
     }
 
-    public Response syncReceive() {
+    public synchronized Response syncReceive() {
         Response response = null;
         try {
             response = (Response) socketIn.readObject();
@@ -149,7 +150,7 @@ public abstract class ClientViewController {
     public void setHash() {
         try {
             HashResponse hashResponse = (HashResponse) socketIn.readObject();
-            this.hash = hashResponse.getHash();
+            hash = hashResponse.getHash();
         } catch (Exception e) {
             Server.log(e.getMessage());
             close();
@@ -169,6 +170,7 @@ public abstract class ClientViewController {
     public void close() {
         if (!socket.isClosed()) {
             try {
+                ClientHeartBeatHandler.close();
                 socketIn.close();
                 socketOut.close();
                 socket.close();

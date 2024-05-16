@@ -3,6 +3,7 @@ package it.polimi.ingsw.lb10.client;
 import it.polimi.ingsw.lb10.client.controller.ClientViewController;
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
+import it.polimi.ingsw.lb10.network.heartbeat.ClientHeartBeatHandler;
 
 import java.util.Scanner;
 
@@ -51,10 +52,11 @@ public class Client implements Runnable {
 
         //--------------- setup ----------------//
         controller.setUp();
-
         //---------------hash------------------//
-
         controller.setHash();
+        Thread socketReader = controller.asyncReadFromSocket();
+        socketReader.start();
+        heartBeatSetUp();
 
         //-------------- login ----------------//
         controller.login();
@@ -72,6 +74,11 @@ public class Client implements Runnable {
         new Scanner(System.in).nextLine();
     }
 
+    private void heartBeatSetUp() {
+        ClientHeartBeatHandler.setController(controller);
+        ClientHeartBeatHandler.start();
+    }
+
 
     //-------------- GETTERS -------------- //
 
@@ -82,35 +89,35 @@ public class Client implements Runnable {
         return active;
     }
 
-    public boolean isNotLogged() {
+    public synchronized boolean isNotLogged() {
         return !logged;
     }
 
-    public boolean isNotInMatch() {
+    public synchronized boolean isNotInMatch() {
         return !inMatch;
     }
 
-    public String getUsername(){return username;}
+    public synchronized String getUsername(){return username;}
 
     public boolean matchIsStarted() { return startedMatch; }
 
 
     //-------------- SETTERS -------------- //
 
-    public void setLogged(Boolean state) {
+    public synchronized void setLogged(Boolean state) {
         logged = state;
     }
 
-    public void setInMatch(Boolean state) {
+    public synchronized void setInMatch(Boolean state) {
         inMatch = state;
     }
 
-    public void setUsername(String username){ this.username = username;}
+    public synchronized void setUsername(String username){ this.username = username;}
 
     /**
      * @param active sets the client state, which will be evaluated by communication threads
      */
-    public void setActive(boolean active) {
+    public synchronized void setActive(boolean active) {
         this.active = active;
     }
 

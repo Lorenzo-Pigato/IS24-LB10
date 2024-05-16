@@ -2,8 +2,12 @@ package it.polimi.ingsw.lb10.server.visitors.responseDespatch;
 
 import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
 import it.polimi.ingsw.lb10.client.gui.*;
+import it.polimi.ingsw.lb10.network.heartbeat.ClientHeartBeatHandler;
+import it.polimi.ingsw.lb10.network.requests.PongRequest;
 import it.polimi.ingsw.lb10.network.requests.match.PickRequest;
 import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestsRequest;
+import it.polimi.ingsw.lb10.network.response.PingResponse;
+import it.polimi.ingsw.lb10.network.response.PongResponse;
 import it.polimi.ingsw.lb10.network.response.lobby.BooleanResponse;
 import it.polimi.ingsw.lb10.network.response.match.*;
 import it.polimi.ingsw.lb10.server.model.Player;
@@ -172,5 +176,15 @@ public class GUIResponseHandler implements ResponseVisitor {
         Platform.runLater(() -> {
             getMatchPageFromController().updateTablePickingOptions(deckUpdateResponse.getPickables());
         });
+    }
+
+    @Override
+    public void visit(PongResponse pongResponse) {
+        ClientHeartBeatHandler.decrementCounter();
+    }
+
+    @Override
+    public void visit(PingResponse pingResponse) {
+        controller.send(new PongRequest());
     }
 }

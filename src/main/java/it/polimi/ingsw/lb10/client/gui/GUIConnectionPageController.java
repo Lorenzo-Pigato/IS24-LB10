@@ -1,12 +1,10 @@
 package it.polimi.ingsw.lb10.client.gui;
 
-import it.polimi.ingsw.lb10.client.controller.ClientViewController;
 import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
 import it.polimi.ingsw.lb10.client.util.InputVerifier;
+import it.polimi.ingsw.lb10.network.heartbeat.ClientHeartBeatHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
@@ -56,10 +54,16 @@ public class GUIConnectionPageController implements GUIPageController {
                 controller.setSocket(new Socket(ip, Integer.parseInt(port)));
                 controller.setUp();
                 controller.setHash();
+                setUpHeartBeat();
                 controller.changeScene(new GUILoginPageController());
             } catch (Exception e) {
                 unreachableServer.setVisible(true);
             }
         }
+    }
+
+    private static void setUpHeartBeat() {
+        ClientHeartBeatHandler.setController(GUIClientViewController.instance());
+        ClientHeartBeatHandler.start();
     }
 }

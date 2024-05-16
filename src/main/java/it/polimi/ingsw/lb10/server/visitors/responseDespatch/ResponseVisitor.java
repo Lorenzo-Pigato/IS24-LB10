@@ -1,5 +1,7 @@
 package it.polimi.ingsw.lb10.server.visitors.responseDespatch;
 
+import it.polimi.ingsw.lb10.network.response.PingResponse;
+import it.polimi.ingsw.lb10.network.response.PongResponse;
 import it.polimi.ingsw.lb10.network.response.lobby.BooleanResponse;
 import it.polimi.ingsw.lb10.network.response.match.*;
 
@@ -40,4 +42,8 @@ public interface ResponseVisitor {
     void visit(PlayerLeftResponse playerLeftResponse);
 
     void visit(DeckUpdateResponse deckUpdateResponse);
+
+    void visit(PongResponse pongResponse);
+
+    void visit(PingResponse pingResponse);
 }
