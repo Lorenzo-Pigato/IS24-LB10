@@ -202,11 +202,13 @@ public class LobbyController implements LobbyRequestVisitor {
 
     public static synchronized void disconnectClient(int userHash) {
         Player player = getPlayer(userHash);
-        if (player.isInMatch()){
-            MatchController controller = getController(userHash);
-            controller.removePlayer(player);
-        }
+        if(signedPlayers.contains(player)){
+            if (player.isInMatch()) {
+                MatchController controller = getController(userHash);
+                controller.removePlayer(player);
+            }
         signedPlayers.remove(getPlayer(userHash));
+        }
         try {
             removeHeartBeat(getHeartBeatHandler(userHash));
             getRemoteView(userHash).getSocket().close();

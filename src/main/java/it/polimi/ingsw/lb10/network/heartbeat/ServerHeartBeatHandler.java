@@ -38,7 +38,6 @@ public class ServerHeartBeatHandler {
             incrementCounter();
             if(counter > 10){
                 LobbyController.disconnectClient(hashcode);
-                es.close();
             }
         }, 0, 1,  TimeUnit.SECONDS);
     }
@@ -48,7 +47,7 @@ public class ServerHeartBeatHandler {
     }
 
     public void close(){
-        es.close();
+        es.shutdownNow();
     }
 
 }
