@@ -6,7 +6,6 @@ import it.polimi.ingsw.lb10.network.requests.match.PickRequest;
 import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestsRequest;
 import it.polimi.ingsw.lb10.network.response.lobby.BooleanResponse;
 import it.polimi.ingsw.lb10.network.response.match.*;
-import it.polimi.ingsw.lb10.server.Server;
 import it.polimi.ingsw.lb10.server.model.Player;
 import javafx.application.Platform;
 import javafx.scene.paint.Color;
@@ -107,16 +106,13 @@ public class GUIResponseHandler implements ResponseVisitor {
     @Override
     public void visit(PlaceCardResponse placeCardResponse) {
         Platform.runLater(() -> {
-            if(placeCardResponse.getStatus() && !placeCardResponse.isFinalTurn()){
+            if(placeCardResponse.getStatus()){
                 getMatchPageFromController().placeCardOnTable(placeCardResponse.getCard());
                 getMatchPageFromController().updateResources(placeCardResponse.getPlayerResources());
                 controller.send(new PickRequest(controller.getMatchId()));
-            }else if(!placeCardResponse.getStatus()){
+            }else {
                 getMatchPageFromController().popUpTip(placeCardResponse.getMessage(), Color.RED);
                 getMatchPageFromController().resetAllBoardShadows();
-            }else if (placeCardResponse.isFinalTurn() && placeCardResponse.getStatus()){
-                //change turn sanding a pick request which will be handled properly by match controller
-                controller.send(new PickRequest(controller.getMatchId()));
             }
         });
     }

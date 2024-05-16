@@ -33,6 +33,7 @@ public class MatchModel extends Observable {
 
     private boolean resourceDeckIsEmpty = false;
     private boolean goldenDeckIsEmpty = false;
+    private boolean runOutOfCards = false;
 
     private final ArrayList<Quest> commonQuests = new ArrayList<>();
 
@@ -51,35 +52,23 @@ public class MatchModel extends Observable {
         this.numberOfPlayers = numberOfPlayers;
     }
 
-    public ArrayList<GoldenCard> getGoldenUncovered() {
-        return goldenUncovered;
-    }
+    public ArrayList<GoldenCard> getGoldenUncovered() {return goldenUncovered;}
 
-    public ArrayList<ResourceCard> getResourceUncovered() {
-        return resourceUncovered;
-    }
+    public ArrayList<ResourceCard> getResourceUncovered() {return resourceUncovered;}
 
-    public QuestDeck getQuestDeck() {
-        return questDeck;
-    }
+    public QuestDeck getQuestDeck() {return questDeck;}
 
-    public StartingDeck getStartingDeck() {
-        return startingDeck;
-    }
+    public StartingDeck getStartingDeck() {return startingDeck;}
 
-    public ResourceDeck getResourceDeck() {
-        return resourceDeck;
-    }
+    public ResourceDeck getResourceDeck() {return resourceDeck;}
 
-    public GoldenDeck getGoldenDeck() {
-        return goldenDeck;
-    }
+    public GoldenDeck getGoldenDeck() {return goldenDeck;}
 
-    public boolean isTerminated() {
-        return terminated;
-    }
+    public boolean isTerminated() {return terminated;}
 
     public boolean isFinalTurnStarted() { return finalTurnStarted;}
+
+    public boolean hasRunOutOfCards() { return runOutOfCards;}
 
     public void terminate() {
         Server.log("[" + id + "]" + ">>match terminated");
@@ -415,19 +404,23 @@ public class MatchModel extends Observable {
      * This method is called to insert a Card
      * A boolean is returned to verify if the card is placeable
      * --> At the beginning the algorithm checks if the card is flipped, with a consequent update of the state of the card.
-     * the card is placed inside the matrix if the activation cost is matched
+     * the card is placed inside the matrix if the activation cost is matched, then the method checkInsertion is called
+     * to verify if the card is placeable inside the matrix in the requested position
      */
-
-
     public synchronized void insertCard(Player player, PlaceableCard card, int row, int column) {
         boolean responseStatus = checkActivationCost(player, card);
         if (responseStatus) {
             player.getMatrix().setCard(card, row, column);
             //if one of the two-parameter row and column is > 82 return false!
             checkInsertion(player, card, row, column);
-        } else notify(new PlaceCardResponse(card, false, row, column, null, "The card you chose has an activation cost, \n Check your resources before placing!", isFinalTurnStarted()), player.getUserHash());
+        } else notify(new PlaceCardResponse(card, false, row, column, null, "The card you chose has an activation cost, \n Check your resources before placing!"), player.getUserHash());
     }
 
+    /**
+     * @param targetId the id of the card to check
+     * @param player requesting to place the card
+     * @return true is the card is inside the matrix
+     */
     public boolean checkValidMatrixCardId(int targetId, Player player) {
         return player.getMatrix().getMatrix().stream().flatMap(Collection::stream)
                 .flatMap(node -> node.getCorners().stream()).anyMatch(corner -> corner.getId() == targetId);
@@ -450,10 +443,10 @@ public class MatchModel extends Observable {
             addCardPointsOnPlayer(player, card, visitedNodes);
             checkPatternQuest(player, row, column);
             player.removeCardOnHand(card);//the player chooses the next card, it's a request!
-            notify(new PlaceCardResponse(card, true, row, column, player.getOnMapResources(), "", isFinalTurnStarted()), player.getUserHash());
+            notify(new PlaceCardResponse(card, true, row, column, player.getOnMapResources(), ""), player.getUserHash());
         } else {
             player.getMatrix().deleteCard(row, column);
-            notify(new PlaceCardResponse(card, false, row, column, null, "Invalid card placement, retry!", isFinalTurnStarted()), player.getUserHash());
+            notify(new PlaceCardResponse(card, false, row, column, null, "Invalid card placement, retry!"), player.getUserHash());
         }
     }
 
