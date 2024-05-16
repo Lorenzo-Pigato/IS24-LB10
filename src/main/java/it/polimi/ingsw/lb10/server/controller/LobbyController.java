@@ -155,7 +155,6 @@ public class LobbyController implements LobbyRequestVisitor {
 
     @Override
     public synchronized void visit(@NotNull QuitRequest quitRequest) {
-        Server.log(">>quit request [username : " + getPlayer(quitRequest.getUserHash()).getUsername() + "]");
         disconnectClient(quitRequest.getUserHash());
     }
 
@@ -163,13 +162,11 @@ public class LobbyController implements LobbyRequestVisitor {
     @Override
     public synchronized void visit(PingRequest pingRequest) {
         send(pingRequest.getUserHash(), new PongResponse());
-        Server.log("ping from client -> pong from server " + pingRequest.getUserHash());
     }
 
     @Override
     public void visit(PongRequest pongRequest) {
         getHeartBeatHandler(pongRequest.getUserHash()).decrementCounter();
-        Server.log("pong from client");
     }
 
     private static ServerHeartBeatHandler getHeartBeatHandler(int userHash) {

@@ -34,7 +34,6 @@ public class ServerHeartBeatHandler {
         es = Executors.newSingleThreadScheduledExecutor();
         es.scheduleAtFixedRate(() -> {
             LobbyController.send(hashcode, new PingResponse());
-            System.out.println("ping from server");
             incrementCounter();
             if(counter > 10){
                 LobbyController.disconnectClient(hashcode);
