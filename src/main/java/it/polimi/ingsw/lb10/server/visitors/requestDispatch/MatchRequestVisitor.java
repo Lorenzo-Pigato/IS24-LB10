@@ -30,4 +30,6 @@ public interface MatchRequestVisitor {
     void visit(PickRequest pickRequest);
 
     void visit(MoveBoardRequest moveBoardRequest);
+
+    void visit(QuitMatchRequest quitMatchRequest);
 }

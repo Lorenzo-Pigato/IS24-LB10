@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -29,9 +30,21 @@ public class GUIClientViewController extends ClientViewController {
     private final ExceptionHandler exceptionHandler = new GUIExceptionHandler(this);
     private static final GUIResponseHandler responseHandler = GUIResponseHandler.instance();
     private ArrayList<Player> players;
+    private boolean boundsSocket = false;
+
+    public boolean isBoundsSocket() {
+        return boundsSocket;
+    }
+    public void setBoundsSocket(boolean boundsSocket) {this.boundsSocket = boundsSocket;}
+
     public static GUIClientViewController instance() {
         if (instance == null) instance = new GUIClientViewController();
         return instance;
+    }
+
+    public void setLobbySize(){
+        stage.setHeight(900);
+        stage.setWidth(600);
     }
 
     public synchronized void changeScene(GUIPageController page) {
@@ -86,9 +99,12 @@ public class GUIClientViewController extends ClientViewController {
                     Response response = (Response) socketIn.readObject();
                     response.accept(responseHandler);
                 }
-            } catch (Exception e) {
+            } catch (SocketException e) {
+                client.setActive(false);
                 exceptionHandler.handle(e);
-                close();
+            } catch (IOException | ClassNotFoundException e) {
+                exceptionHandler.handle(e);
+
             }
         });
     }

@@ -89,16 +89,4 @@
          <DropShadow />
       </effect>
    </ImageView>
-   <ImageView fitHeight="61.0" fitWidth="52.0" layoutX="534.0" layoutY="14.0" onMouseClicked="#quit" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@../images/house.png" />
-      </image>
-      <effect>
-         <DropShadow>
-            <color>
-               <Color opacity="0.5057471394538879" />
-            </color>
-         </DropShadow>
-      </effect>
-   </ImageView>
 </AnchorPane>

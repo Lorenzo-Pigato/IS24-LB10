@@ -30,9 +30,4 @@ public class GUIWaitingPageController implements GUIPageController, Initializabl
             return "/css/WaitingPage.css";
         }
 
-        @FXML
-        private void quit(ActionEvent event) {
-            GUIClientViewController.instance().send(new QuitRequest());
-            GUIClientViewController.instance().changeScene(new GUIConnectionPageController());
-        }
 }

@@ -3,7 +3,10 @@ package it.polimi.ingsw.lb10.network.response.match;
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.ResponseVisitor;
 
+import java.io.Serial;
+
 public class JoinMatchResponse extends Response {
+    @Serial
     private static final long serialVersionUID = 5L;
     private final boolean joined;
     private int matchId;

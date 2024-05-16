@@ -5,13 +5,9 @@ import it.polimi.ingsw.lb10.network.requests.preMatch.NewMatchRequest;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.GUIResponseHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.effect.*;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 public class GUIJoinMatchPageController implements GUIPageController{
@@ -70,26 +66,13 @@ public class GUIJoinMatchPageController implements GUIPageController{
         fourPlayers.setToggleGroup(toggleGroup);
     }
     @FXML
-    private void newMatch(ActionEvent event){
+    private void newMatch(){
         resetErrors();
         if(matchSizeSelected){
             controller.send(new NewMatchRequest(matchSize));
-            controller.syncReceive().accept(GUIResponseHandler.instance());
-            if(!controller.getClient().isNotInMatch()) controller.changeScene(new GUIWaitingPageController());
         }else{
             numberOfPlayersError.setVisible(true);
         }
-
-        if(!controller.getClient().isNotInMatch()){
-            Thread socketReader = GUIClientViewController.instance().asyncReadFromSocket();
-            socketReader.start();
-
-            controller.changeScene(new GUIWaitingPageController());
-        } else {
-            invalidMatchIdError.setVisible(true);
-
-        }
-
     }
 
     @FXML
@@ -100,29 +83,29 @@ public class GUIJoinMatchPageController implements GUIPageController{
     }
 
     @FXML
-    private void joinMatch(ActionEvent event){
+    private void joinMatch() {
         resetErrors();
         int id = 0;
-        if(!matchId.getText().isEmpty()){
-            try{
+        if (!matchId.getText().isEmpty()) {
+            try {
                 id = Integer.parseInt(matchId.getText());
                 controller.send(new LobbyToMatchRequest(id));
                 matchId.clear();
-                controller.syncReceive().accept(GUIResponseHandler.instance());
-                if(!controller.getClient().isNotInMatch()){
-                    Thread socketReader = GUIClientViewController.instance().asyncReadFromSocket();
-                    socketReader.start();
-
-                    controller.changeScene(new GUIWaitingPageController());
-                }
-                else invalidMatchIdError.setVisible(true);
-            }catch(NumberFormatException e){
+            } catch (NumberFormatException e) {
                 invalidMatchIdError.setVisible(true);
             }
-        }else{
+        } else {
             matchIdNotInsertedError.setVisible(true);
         }
-
     }
+
+    public void handleResponse(boolean status){
+        if(status){
+            controller.changeScene(new GUIWaitingPageController());
+        }else{
+            invalidMatchIdError.setVisible(true);
+        }
+    }
+
 
 }

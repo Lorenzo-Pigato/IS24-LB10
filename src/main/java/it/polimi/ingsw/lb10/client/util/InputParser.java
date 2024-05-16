@@ -149,7 +149,9 @@ public class InputParser {
             }
 
             case "quit" -> {
-                return new QuitRequest();
+                controller.getClient().setActive(false);
+                controller.close();
+                return null;
             }
 
             default -> CLIMatchPage.serverReply("Invalid command, type <help> to see all commands");
