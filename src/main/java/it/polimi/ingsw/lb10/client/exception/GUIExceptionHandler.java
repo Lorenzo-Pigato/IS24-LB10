@@ -20,6 +20,7 @@ public class GUIExceptionHandler implements ExceptionHandler{
     @Override
     public void handle(Exception e) {
         GUIErrorPageController errorPage = new GUIErrorPageController();
+        controller.setLobbySize();
         Platform.runLater(() -> {
             GUIClientViewController.instance().setGameSize();
             controller.changeScene(errorPage);
@@ -30,6 +31,7 @@ public class GUIExceptionHandler implements ExceptionHandler{
     @Override
     public void handle(UnknownHostException e) {
         GUIErrorPageController errorPage = new GUIErrorPageController();
+        controller.setLobbySize();
         Platform.runLater(() -> {
             controller.changeScene(errorPage);
             ((GUIErrorPageController)(controller.getPage())).setErrorText("An Exception occurred: " + e.getMessage());
@@ -39,6 +41,7 @@ public class GUIExceptionHandler implements ExceptionHandler{
     @Override
     public void handle(IOException e) {
         GUIErrorPageController errorPage = new GUIErrorPageController();
+        controller.setLobbySize();
         if(controller.getClient().isActive()) {
             Platform.runLater(() -> {
                 controller.changeScene(errorPage);
@@ -50,6 +53,7 @@ public class GUIExceptionHandler implements ExceptionHandler{
     @Override
     public void handle(ConnectionErrorException e) {
         GUIErrorPageController errorPage = new GUIErrorPageController();
+        controller.setLobbySize();
         Platform.runLater(() -> {
             controller.changeScene(errorPage);
             ((GUIErrorPageController)(controller.getPage())).setErrorText("There were some issues connecting to the server: " + (e.getMessage() != null ? e.getMessage() : ""));
@@ -59,6 +63,7 @@ public class GUIExceptionHandler implements ExceptionHandler{
     @Override
     public void handle(SocketException e) {
         GUIErrorPageController errorPage = new GUIErrorPageController();
+        controller.setLobbySize();
         if(controller.getClient().isActive()) {
             Platform.runLater(() -> {
                 controller.changeScene(errorPage);
@@ -72,6 +77,7 @@ public class GUIExceptionHandler implements ExceptionHandler{
     @Override
     public void handle(EOFException e) {
         GUIErrorPageController errorPage = new GUIErrorPageController();
+        controller.setLobbySize();
         Platform.runLater(() -> {
             controller.changeScene(errorPage);
             ((GUIErrorPageController) (controller.getPage())).setErrorText("Server closed connection");
