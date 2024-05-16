@@ -7,6 +7,7 @@ import it.polimi.ingsw.lb10.client.exception.CLIExceptionHandler;
 import it.polimi.ingsw.lb10.client.exception.GUIExceptionHandler;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
 import it.polimi.ingsw.lb10.client.view.GUIClientView;
+import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 import javafx.application.Application;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,6 +28,7 @@ public class ClientLauncher {
             controller.setExceptionHandler(new CLIExceptionHandler(controller.getView()));
             client.setController(controller);
             client.setExceptionHandler(new CLIExceptionHandler(controller.getView()));
+            controller.setResponseHandler(CLIResponseHandler.instance());
             final Thread clientThread = new Thread(Client.instance());
             clientThread.start();
 

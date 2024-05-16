@@ -12,6 +12,7 @@ import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
 import it.polimi.ingsw.lb10.server.Server;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
 import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
+import it.polimi.ingsw.lb10.server.visitors.responseDespatch.ResponseVisitor;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -37,6 +38,9 @@ public abstract class ClientViewController {
     protected boolean startingCardHasBeenPlaced = false;
 
     protected ExceptionHandler exceptionHandler;
+    protected ResponseVisitor responseHandler;
+
+    protected Thread asyncSocketReader;
 
     // ------------------ SETTERS ------------------ //
 
@@ -47,6 +51,8 @@ public abstract class ClientViewController {
     public void setHand(ArrayList<PlaceableCard> hand) {this.hand = hand;}
     public void setStartingCard(StartingCard startingCard) {this.startingCard = startingCard;}
     public void setStartingCardHasBeenPlaced(boolean status) {this.startingCardHasBeenPlaced = status;}
+    public void setResponseHandler(ResponseVisitor responseHandler) {this.responseHandler = responseHandler;}
+    public void setAsyncSocketReader(Thread asyncSocketReader) {this.asyncSocketReader = asyncSocketReader;}
 
     // -------------- GETTERS -------------- //
 
@@ -63,6 +69,10 @@ public abstract class ClientViewController {
 
     // ------------------ METHODS ------------------ //
 
+    public void closeAsyncSocketReader() {
+        asyncSocketReader.interrupt();
+    }
+
     /**
      * This method is used to set up the communication streams with the Server.
      */
@@ -71,14 +81,14 @@ public abstract class ClientViewController {
             socketOut = new ObjectOutputStream(socket.getOutputStream());
             socketOut.flush();
         } catch (IOException e) {
-            exceptionHandler.handle(e);
             close();
+            exceptionHandler.handle(e);
         }
         try {
             socketIn = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
-            exceptionHandler.handle(e);
             close();
+            exceptionHandler.handle(e);
         }
     }
 
@@ -87,7 +97,22 @@ public abstract class ClientViewController {
      * This method uses CommandParser class' static method parse(String input) to figure out the command given and reacts by invoking
      * the handler method "..."
      */
-    public abstract Thread asyncReadFromSocket();
+    public Thread asyncReadFromSocket() {
+        return new Thread(() -> {
+            try {
+                while (client.isActive()) {
+                    Response response = (Response) socketIn.readObject();
+                    response.accept(responseHandler);
+                }
+            } catch (EOFException e) {
+                close();
+                client.setActive(false);
+                exceptionHandler.handle(e);
+            } catch (IOException | ClassNotFoundException e) {
+                exceptionHandler.handle(e);
+            }
+        });
+    }
 
     /**
      * This asynchronous method provides a thread to send asynchronous requests to the network layer through
@@ -107,8 +132,8 @@ public abstract class ClientViewController {
             socketOut.writeObject(request);
             socketOut.flush();
         } catch (IOException e) {
-            exceptionHandler.handle(e);
             close();
+            exceptionHandler.handle(e);
         }
     }
 
@@ -154,6 +179,7 @@ public abstract class ClientViewController {
         } catch (Exception e) {
             Server.log(e.getMessage());
             close();
+            exceptionHandler.handle(e);
         }
     }
 
@@ -170,7 +196,9 @@ public abstract class ClientViewController {
     public void close() {
         if (!socket.isClosed()) {
             try {
-                ClientHeartBeatHandler.close();
+                ClientHeartBeatHandler.stop();
+                asyncSocketReader.interrupt();
+
                 socketIn.close();
                 socketOut.close();
                 socket.close();

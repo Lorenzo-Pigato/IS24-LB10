@@ -53,24 +53,6 @@ public class CLIClientViewController extends ClientViewController {
     // ------------------ METHODS ------------------ //
 
     @Override
-    public Thread asyncReadFromSocket() {
-        return new Thread(() -> {
-            try {
-                while (client.isActive()) {
-                    Response response = (Response) socketIn.readObject();
-                    response.accept(responseHandler);
-                }
-            } catch (EOFException e) {
-                close();
-                client.setActive(false);
-                exceptionHandler.handle(e);
-            } catch (IOException | ClassNotFoundException e) {
-                exceptionHandler.handle(e);
-            }
-        });
-    }
-
-    @Override
     public void initializeConnection() throws ConnectionErrorException {
         Socket cliSocket;
         Scanner in = new Scanner(System.in);
@@ -125,6 +107,7 @@ public class CLIClientViewController extends ClientViewController {
                     } while (client.isNotLogged());
                 } catch (NullPointerException e) {
                     close();
+                    getExceptionHandler().handle(e);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -179,6 +162,7 @@ public class CLIClientViewController extends ClientViewController {
                     } while (client.isNotInMatch());
                 } catch (NullPointerException e) {
                     close();
+                    exceptionHandler.handle(e);
                 }
             }
         }
@@ -197,32 +181,6 @@ public class CLIClientViewController extends ClientViewController {
         }
     }
 
-    //@Override
-    //public void privateQuestSelection(PrivateQuestsResponse response) {
-    //    Scanner in = new Scanner(System.in);
-    //    String input;
-    //    view.setPage(new CLIStartMatchPage());
-    //    view.displayPage(new Object[]{response.getPrivateQuests().get(0), response.getPrivateQuests().get(1)});
-    //    String[] parsed;
-    //    boolean valid;
-    //    do {
-    //        input = in.nextLine();
-    //        parsed = input.split(" ");
-    //        valid = parsed.length == 1 && ((parsed[0].equalsIgnoreCase("1")) || (parsed[0].equalsIgnoreCase("2")));
-    //        if (parsed[0].equalsIgnoreCase("quit")) send(new QuitRequest());
-    //        if (!valid) {
-    //            view.updatePageState(new CLIStartMatchPage.InvalidInput());
-    //            view.displayPage(new Object[]{input});
-    //        } else if ("1".equalsIgnoreCase(parsed[0])) {
-    //            send(new PrivateQuestSelectedRequest(matchId, response.getPrivateQuests().getFirst()));
-    //        } else if ("2".equalsIgnoreCase(parsed[0])) {
-    //            send(new PrivateQuestSelectedRequest(matchId, response.getPrivateQuests().get(1)));
-    //        }
-    //    } while (!valid);
-    //    view.updatePageState(new CLIStartMatchPage.WaitPage());
-    //    view.displayPage(new Object[]{input});
-    //}
-//
 
     @Override
     public void game() {
@@ -233,6 +191,7 @@ public class CLIClientViewController extends ClientViewController {
         } catch (InterruptedException e) {
             client.setActive(false);
             close();
+            exceptionHandler.handle(e);
             //match is Terminated
         }
 
@@ -265,6 +224,7 @@ public class CLIClientViewController extends ClientViewController {
                     }
                 } catch (Exception e) {
                     close();
+                    exceptionHandler.handle(e);
                 }
             }
         });
