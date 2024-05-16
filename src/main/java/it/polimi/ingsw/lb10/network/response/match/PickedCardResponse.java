@@ -11,12 +11,14 @@ public class PickedCardResponse extends Response {
     private final boolean status;
     private final String message;
     private Matrix matrix;
+    private boolean runOutOfCards;
 
-    public PickedCardResponse(PlaceableCard card, boolean status, String message, Matrix matrix){
+    public PickedCardResponse(PlaceableCard card, boolean status, String message, Matrix matrix, boolean runOutOfCards){
         this.card = card;
         this.status = status;
         this.message = message;
         this.matrix = matrix;
+        this.runOutOfCards = false;
     }
 
     @Override
@@ -39,5 +41,7 @@ public class PickedCardResponse extends Response {
     public Matrix getMatrix() {
         return matrix;
     }
+
+    public boolean hasRunOutOfCards() {return runOutOfCards;}
 
 }

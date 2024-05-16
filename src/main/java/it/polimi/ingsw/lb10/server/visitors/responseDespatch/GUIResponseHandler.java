@@ -87,10 +87,12 @@ public class GUIResponseHandler implements ResponseVisitor {
     @Override
     public void visit(PickedCardResponse pickedCardResponse) {
         Platform.runLater(() -> {
-            if(pickedCardResponse.getStatus()){
+            if (pickedCardResponse.getStatus()) {
                 GUIMatchPageController.insertCardOnHand(pickedCardResponse.getCard());
                 getMatchPageFromController().switchTab(0);
-            } else {
+            } else if (pickedCardResponse.hasRunOutOfCards()) {
+                getMatchPageFromController().popUpTip(pickedCardResponse.getMessage(), Color.YELLOW);
+            }else {
                 getMatchPageFromController().popUpTip("You can't pick a card now!", Color.RED);
             }
         });

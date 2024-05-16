@@ -275,7 +275,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     public void visit(PickRequest pickRequest) { //TEST !!
         Server.log("[ " + id + "]" + ">>new pick request");
         if(model.hasRunOutOfCards()){
-            model.notify(new PickedCardResponse(null, false, "You and your friends run out of cards", getPlayer(pickRequest.getUserHash()).getMatrix()), pickRequest.getUserHash());
+            model.notify(new PickedCardResponse(null, false, "You and your friends run out of cards", getPlayer(pickRequest.getUserHash()).getMatrix(), model.hasRunOutOfCards()), pickRequest.getUserHash());
             model.endTurn(pickRequest.getUserHash(), getPlayer(pickRequest.getUserHash()).getPoints());
         } else {
             model.notify(new ShowPickingPossibilitiesResponse(!model.getGoldenDeck().getCards().isEmpty() ? model.getGoldenDeck().getCards().getLast() : null, !model.getResourceDeck().getCards().isEmpty() ? model.getResourceDeck().getCards().getLast() : null, model.getGoldenUncovered(), model.getResourceUncovered()), pickRequest.getUserHash());

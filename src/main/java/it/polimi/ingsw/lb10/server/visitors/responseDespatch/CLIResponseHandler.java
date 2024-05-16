@@ -85,10 +85,11 @@ public class CLIResponseHandler implements ResponseVisitor {
             CLIMatchPage.printBoard(pickedCardResponse.getMatrix());
             CLIMatchPage.displayHand(controller.getHand());
 
+        } else if (pickedCardResponse.hasRunOutOfCards()) {
+            CLIMatchPage.serverReply(pickedCardResponse.getMessage());
         } else {
             CLIMatchPage.serverReply(pickedCardResponse.getMessage() + ", pick another card");
         }
-
     }
 
     @Override

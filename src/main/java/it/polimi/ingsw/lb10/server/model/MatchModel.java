@@ -138,6 +138,9 @@ public class MatchModel extends Observable {
 
         startingDeck.fillDeck();
         startingDeck.shuffle();
+
+        for(int i = 0; i<33; i++) resourceDeck.drawCard();
+        for(int i = 0; i<35; i++) goldenDeck.drawCard();
     }
 
     /**
@@ -238,11 +241,11 @@ public class MatchModel extends Observable {
         if (!resourceDeckIsEmpty) {
             ResourceCard picked = resourceDeck.drawCard();
             player.addCardOnHand(picked);
-            notify(new PickedCardResponse(picked, true, null, player.getMatrix()), player.getUserHash());
+            notify(new PickedCardResponse(picked, true, null, player.getMatrix(), false), player.getUserHash());
             checkDeckEmptiness();
             endTurn(player.getUserHash(), player.getPoints());
         } else {
-            notify(new PickedCardResponse(null, false, "Resource deck is empty!", null), player.getUserHash());
+            notify(new PickedCardResponse(null, false, "Resource deck is empty", null, false), player.getUserHash());
         }
     }
 
@@ -254,11 +257,11 @@ public class MatchModel extends Observable {
         if (!goldenDeckIsEmpty) {
             GoldenCard picked = goldenDeck.drawCard();
             player.addCardOnHand(picked);
-            notify(new PickedCardResponse(picked, true, null, player.getMatrix()), player.getUserHash());
+            notify(new PickedCardResponse(picked, true, null, player.getMatrix(), false), player.getUserHash());
             checkDeckEmptiness();
             endTurn(player.getUserHash(), player.getPoints());
         } else {
-            notify(new PickedCardResponse(null, false, "Golden deck is empty!", null), player.getUserHash());
+            notify(new PickedCardResponse(null, false, "Golden deck is empty!", null, false), player.getUserHash());
         }
     }
 
@@ -280,12 +283,12 @@ public class MatchModel extends Observable {
             }
 
             player.addCardOnHand(picked);
-            notify(new PickedCardResponse(picked, true, null, player.getMatrix()), player.getUserHash());
+            notify(new PickedCardResponse(picked, true, null, player.getMatrix(), false), player.getUserHash());
             checkDeckEmptiness();
             endTurn(player.getUserHash(), player.getPoints());
 
         } catch (IndexOutOfBoundsException e) {
-            notify(new PickedCardResponse(null, false, "Table position not available!", null), player.getUserHash());
+            notify(new PickedCardResponse(null, false, "Table position not available!", null, false), player.getUserHash());
         }
 
     }
@@ -303,6 +306,10 @@ public class MatchModel extends Observable {
             finalTurnStarted = true;
             Server.log("[ " + id + "]" + ">>final turn started, both decks are empty!");
             notifyAll(new ChatMessageResponse("Server", "Final turn has started!"));
+        }
+
+        if(resourceDeckIsEmpty && goldenDeckIsEmpty && resourceUncovered.isEmpty() && goldenUncovered.isEmpty()){
+            runOutOfCards = true;
         }
     }
 
@@ -323,12 +330,12 @@ public class MatchModel extends Observable {
             }
 
             player.addCardOnHand(picked);
-            notify(new PickedCardResponse(picked, true, null, player.getMatrix()), player.getUserHash());
+            notify(new PickedCardResponse(picked, true, null, player.getMatrix(), false), player.getUserHash());
             checkDeckEmptiness();
             endTurn(player.getUserHash(), player.getPoints());
 
         } catch (IndexOutOfBoundsException e) {
-            notify(new PickedCardResponse(null, false, "Table position not available!", null), player.getUserHash());
+            notify(new PickedCardResponse(null, false, "Table position not available", null, false), player.getUserHash());
         }
     }
 
