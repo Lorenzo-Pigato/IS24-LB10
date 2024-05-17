@@ -147,7 +147,8 @@ public class Player implements Serializable {
     }
 
     public void setFinalScore() {
-        points = points + questPoints;
+        addPoints(questPoints);
+
     }
 
 
