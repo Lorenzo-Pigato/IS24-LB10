@@ -95,7 +95,7 @@ public class Server implements Runnable {
             logs.addLast(new CLIString(log.split("\n")[0],
                     AnsiColor.DEFAULT,
                     AnsiFormat.DEFAULT,
-                    2, 44, 73)); //add last log entry on line 44
+                    2, 44, 60)); //add last log entry on line 44
 
             logs.forEach(l -> {
                 l.reposition(2, l.getPosition()[1] - 1);

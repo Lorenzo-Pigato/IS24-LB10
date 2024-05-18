@@ -54,8 +54,6 @@ public class Player implements Serializable {
         if (resource != Resource.EMPTY && resource != Resource.NULL) {
             if (onMapResources.containsKey(resource)) {
                 onMapResources.compute(resource, (k, currentQuantity) -> currentQuantity - 1);
-            } else {
-                // Tira un errore
             }
         }
     }
@@ -72,8 +70,7 @@ public class Player implements Serializable {
 
 
     /**
-     * @param questPoints to add,
-     *                    It's important to manage the fact that the max score is 29!!!!
+     * @param questPoints to add
      */
     public void addQuestPoints(int questPoints) {
         setQuestPoints(questPoints + getQuestPoints());
@@ -148,7 +145,6 @@ public class Player implements Serializable {
 
     public void setFinalScore() {
         addPoints(questPoints);
-
     }
 
 

@@ -15,11 +15,14 @@ public class InputParser {
     private static boolean questSelected = false;
 
     public static Request parse(String input) {
-        String[] parsed = input.split(" ");
+        String[] parsed = input.trim().split(" ");
+
+        if(parsed.length == 0) return null;
+
         if(questSelected) {
             if (controller.getClient().isActive()) {
 
-                if (parsed[0].equalsIgnoreCase("chat") && !parsed[1].isEmpty()) {
+                if (parsed.length > 1 && parsed[0].equalsIgnoreCase("chat") && !parsed[1].isEmpty()) {
                     String message = input.substring(5);
                     return new ChatRequest(controller.getMatchId(), message);
                 }

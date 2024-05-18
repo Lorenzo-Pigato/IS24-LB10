@@ -172,6 +172,7 @@ public class GUIResponseHandler implements ResponseVisitor {
         Platform.runLater(() -> getMatchPageFromController().removePlayerFromBoard(playerLeftResponse.getUsername()));
     }
 
+
     @Override
     public void visit(DeckUpdateResponse deckUpdateResponse) {
         Platform.runLater(() -> {

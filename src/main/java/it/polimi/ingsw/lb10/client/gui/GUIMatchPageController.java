@@ -568,7 +568,8 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     @FXML
     private void send(ActionEvent event){
         if(!chatText.getText().isEmpty()){
-            controller.send(new ChatRequest(GUIClientViewController.instance().getMatchId(), chatText.getText()));
+            String message = chatText.getText().trim();
+            if(!message.isEmpty()) controller.send(new ChatRequest(GUIClientViewController.instance().getMatchId(), message));
             chatText.clear();
         }
     }
@@ -793,6 +794,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     private void quitLobby(){
         controller.send(new QuitRequest());
         controller.close();
+        Platform.exit();
     }
 
     @FXML
