@@ -87,6 +87,7 @@ public abstract class CLICommand {
      */
     public static void initialize() {
         initialize(defaultWidth, defaultHeight);
+        resetInvisibleInput();
     }
 
     /**

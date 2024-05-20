@@ -15,12 +15,12 @@ import org.jetbrains.annotations.NotNull;
  * When calling the print method, the page will be displayed with the two quests passed as arguments
  * InvalidInput state is used to display an error message when the player inputs an invalid choice
  */
-public class CLIStartMatchPage implements CLIPage {
+public class CLIChooseQuestPage implements CLIPage {
     private static final CLIString invalidInput = new CLIString(">> Choose [1] or [2] <<", AnsiColor.RED, AnsiFormat.BOLD, 1, 45);
     private static final CLIString chooseQuest = new CLIString(">> Choose a quest to start the match <<", AnsiColor.CYAN, AnsiFormat.BOLD, 1, 45);
     private static final CLIString inputField = new CLIString(">> ", AnsiColor.CYAN, 65, 46);
     private static final CLIString wait = new CLIString(">> Waiting for other players... <<", AnsiColor.CYAN, AnsiFormat.BOLD, 61, 46);
-    private CLIState state = new CLIStartMatchPage.Default();
+    private CLIState state = new CLIChooseQuestPage.Default();
 
     @Override
     public void changeState(@NotNull CLIState state) {
@@ -71,7 +71,10 @@ public class CLIStartMatchPage implements CLIPage {
         @Override
         public void apply(Object @NotNull [] args) {
             CLIString.replace(chooseQuest, wait);
+            inputField.deleteString();
+
             CLICommand.clearUserInput((String) args[0]);
+            CLICommand.setInvisibleInput();
         }
     }
 }

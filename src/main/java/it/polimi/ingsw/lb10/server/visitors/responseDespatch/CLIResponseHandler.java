@@ -3,7 +3,7 @@ package it.polimi.ingsw.lb10.server.visitors.responseDespatch;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIEndOfMatchPage;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLILoginPage;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIMatchPage;
-import it.polimi.ingsw.lb10.client.cli.clipages.CLIStartMatchPage;
+import it.polimi.ingsw.lb10.client.cli.clipages.CLIChooseQuestPage;
 import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
 import it.polimi.ingsw.lb10.network.heartbeat.ClientHeartBeatHandler;
 import it.polimi.ingsw.lb10.network.requests.PongRequest;
@@ -69,7 +69,7 @@ public class CLIResponseHandler implements ResponseVisitor {
     @Override
     public void visit(PrivateQuestsResponse response) {
         controller.setQuests(response.getPrivateQuests());
-        controller.getView().setPage(new CLIStartMatchPage());
+        controller.getView().setPage(new CLIChooseQuestPage());
         controller.getView().displayPage(new Object[]{response.getPrivateQuests().get(0), response.getPrivateQuests().get(1)});
     }
 
