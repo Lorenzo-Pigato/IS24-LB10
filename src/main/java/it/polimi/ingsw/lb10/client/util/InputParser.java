@@ -15,6 +15,7 @@ public class InputParser {
 
     public static Request parse(String input) {
         String[] parsed = input.trim().split(" ");
+        CLIMatchPage.deleteServerReply();
 
         if(parsed.length == 0) return null;
 
