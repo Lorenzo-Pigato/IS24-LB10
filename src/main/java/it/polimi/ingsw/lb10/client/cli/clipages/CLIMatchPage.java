@@ -391,6 +391,13 @@ public class CLIMatchPage implements CLIPage {
         CLICommand.restoreCursorPosition();
     }
 
+    public static void deleteServerReply() {
+        CLICommand.setPosition(2, 45);
+        CLICommand.clearLine();
+
+        CLICommand.restoreCursorPosition();
+    }
+
     // ---------------- HAND ---------------- //
     public static void displayHand(ArrayList<PlaceableCard> hand) {
         for (PlaceableCard card : hand)
