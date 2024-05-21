@@ -7,6 +7,9 @@ import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * in this class are written all methods and attributes that are common to all cards (excluding Quest card)
+ */
 public abstract class BaseCard implements Serializable {
 
     private int id;

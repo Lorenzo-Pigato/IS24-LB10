@@ -17,6 +17,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.NoSuchElementException;
 
+/**
+ * Complete deck of QuestCard, it has 16 cards
+ * The cards are taken from the json in resource.
+ */
 public class QuestDeck {
 
     private ArrayList<Quest> cards;

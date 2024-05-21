@@ -24,6 +24,13 @@ public class Corner implements Serializable {
     @JsonProperty("color")
     private Color cardColor;
 
+    /**
+     * @param id of the card that has this corner
+     * @param available if is it possible to place on the card
+     * @param position inside the card useful, for matchModel
+     * @param resource  in the corner
+     * @param cardColor of the card that has this corner
+     */
     @JsonCreator
     public Corner(@JsonProperty("id") int id, @JsonProperty("available") boolean available, @JsonProperty("position") Position position, @JsonProperty("resource") Resource resource, @JsonProperty("color") Color cardColor) {
         this.id = id;

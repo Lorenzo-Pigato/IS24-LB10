@@ -161,6 +161,10 @@ public class MatchModel extends Observable {
 
     }
 
+    /**
+     * @param player placing the starting card on the table.
+     * Resources must be updated accordingly
+     */
     public void insertStartingCard(Player player) {
         player.getMatrix().setCard(player.getStartingCard());
         setCardResourceOnPlayer(player, player.getStartingCard());
@@ -296,7 +300,7 @@ public class MatchModel extends Observable {
      * this method is used to pick a card from table, there are always two cards, except when golden deck is empty.
      * If both decks are empty, match status changes to last turn.
      *
-     * @param player player who requested to pick a resource card from table
+     * @param player who requested to pick a resource card from table
      * @param index  <1 or 2>
      */
     public void drawGoldenFromTable(Player player, int index) {
@@ -338,13 +342,20 @@ public class MatchModel extends Observable {
         }
     }
 
+    /**
+     * @param player placing a card inside the matrix
+     * @param card to place
+     */
     public void setCardResourceOnPlayer(Player player, PlaceableCard card) {
         for (Corner corner : card.getStateCardCorners()) {
             player.addOnMapResources(corner.getResource());
         }
         player.addOnMapResources(card.getStateCardMiddleResource());
     }
-
+    /**
+     * @param player placing the starting card
+     * @param card to place
+     */
     public void setCardResourceOnPlayer(Player player, StartingCard card) {
 
         for (Corner corner : card.getStateCardCorners())
@@ -399,7 +410,7 @@ public class MatchModel extends Observable {
     // --------> MODEL <-------- //
 
     /**
-     * This method is called to insert a Card
+     * This method is called to insert a card,
      * A boolean is returned to verify if the card is placeable
      * --> At the beginning the algorithm checks if the card is flipped, with a consequent update of the state of the card.
      * the card is placed inside the matrix if the activation cost is matched, then the method checkInsertion is called
@@ -450,8 +461,9 @@ public class MatchModel extends Observable {
 
 
     /**
-     * @param row and the column is the top left corner of the card
-     * @return true if the card passed all the requirements
+     * @param row used to find a card based on its top-left corner
+     * @param column used to find the corner
+     * @return true, if the card passed all the requirements,
      * it's important to remember that the card is already inserted!
      */
     public synchronized boolean verificationSetting(Player player, int row, int column, ArrayList<Node> visitedNodes) {
@@ -493,6 +505,11 @@ public class MatchModel extends Observable {
         return !visitedNodes.isEmpty();
     }
 
+    /**
+     * @param player adding the card to the matrix
+     * @param card to add
+     * @return false, if the player didn't have enough resources to place the card, true otherwise
+     */
     public synchronized boolean checkActivationCost(Player player, PlaceableCard card) {
         if (card.getStateCardActivationCost().isEmpty())
             return true;
@@ -501,6 +518,12 @@ public class MatchModel extends Observable {
         return true;
     }
 
+    /**
+     * @param player adding the card to the matrix
+     * @param row of the top-left corner of the card
+     * @param column of the top-left corner of the card
+     * @return true if the corner is available, else false
+     */
     public synchronized boolean checkNotAvailability(Player player, int row, int column) {
         Map<Position, int[]> setIncrement = player.getMatrix().parsingPositionCorners();
 
@@ -512,6 +535,13 @@ public class MatchModel extends Observable {
         return true;
     }
 
+
+    /**
+     * @param player adding the card to the
+     * @param row of the top-left corner of the card
+     * @param column of the top-left corner of the card
+     * This method remove the resources (corners) covered by the new card.
+     */
     public synchronized void deleteCoveredResource(Player player, int row, int column) {
         Map<Position, int[]> setIncrement = player.getMatrix().parsingPositionCorners();
 
@@ -537,6 +567,7 @@ public class MatchModel extends Observable {
             player.addPoints(card.getStateCardPoints() * player.getResourceQuantity(goldenResource));
         else
             player.addPoints(card.getStateCardPoints());
+        notifyAll(new PlayerPointsUpdateResponse(player.getUsername(), player.getPoints()));
     }
 
 

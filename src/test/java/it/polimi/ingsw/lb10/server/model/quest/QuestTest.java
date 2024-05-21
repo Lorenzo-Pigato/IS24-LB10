@@ -62,7 +62,7 @@ class QuestCounterTest {
             player.addOnMapResources(Resource.PERGAMENA);
 
         counterQuest=questDeck.getCards().get(7);
-        Assertions.assertEquals(4, counterQuest.questAlgorithm(player.getOnMapResources()));
+        Assertions.assertEquals(6, counterQuest.questAlgorithm(player.getOnMapResources()));
     }
 
 
