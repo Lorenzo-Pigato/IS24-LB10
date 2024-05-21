@@ -48,9 +48,7 @@ public class ClientHeartBeatHandler {
         counter ++;
     }
 
-    public static synchronized void decrementCounter(){
-        counter --;
-    }
+    public static synchronized void decrementCounter(){ counter = 0; }
 
     public static void stop(){
         es.shutdown();

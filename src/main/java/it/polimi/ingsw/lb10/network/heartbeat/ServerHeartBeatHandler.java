@@ -26,9 +26,7 @@ public class ServerHeartBeatHandler {
         counter ++;
     }
 
-    public synchronized void decrementCounter(){
-        counter --;
-    }
+    public synchronized void decrementCounter(){counter = 0;}
 
     public void start(){
         es = Executors.newSingleThreadScheduledExecutor();

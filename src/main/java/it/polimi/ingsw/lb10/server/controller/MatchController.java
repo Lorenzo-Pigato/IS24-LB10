@@ -147,7 +147,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         Server.log("[ " + id + "]" + ">>chat message from " + getPlayer(chatRequest.getUserHash()).getUsername());
 
         String [] splitMessage = chatRequest.getMessage().split(" ");
-        if(splitMessage[0].equals("to")) {
+        if(splitMessage[0].equals("to") && splitMessage.length > 1) {
             players.stream().filter(p -> p.getUsername().equals(splitMessage[1])).map(Player::getUserHash)
                     .findFirst()
                     .ifPresent(u -> {
@@ -158,8 +158,9 @@ public class MatchController implements Runnable, MatchRequestVisitor {
                                 chatRequest.getMessage().substring(4 + getPlayer(u).getUsername().length()),
                                 true), chatRequest.getUserHash());
                     });
-        } else
+        } else if (!splitMessage[0].equals("to")) {
             model.notifyAll(new ChatMessageResponse(getPlayer(chatRequest.getUserHash()).getUsername(), chatRequest.getMessage(), false));
+        }
     }
 
     /**

@@ -15,11 +15,12 @@ public class InputParser {
 
     public static Request parse(String input) {
         String[] parsed = input.trim().split(" ");
-        CLIMatchPage.deleteServerReply();
 
         if(parsed.length == 0) return null;
 
         if(questSelected && (controller.getView().getPage() instanceof CLIMatchPage)){
+            CLIMatchPage.deleteServerReply();
+
             if (controller.getClient().isActive()) {
 
                 if (parsed.length > 1 && parsed[0].equalsIgnoreCase("chat") && !parsed[1].isEmpty()) {
