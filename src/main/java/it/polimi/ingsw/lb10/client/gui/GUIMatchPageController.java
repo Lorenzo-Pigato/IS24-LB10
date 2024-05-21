@@ -449,7 +449,6 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     private void validatePlacing(@NotNull Rectangle hooverRectangle) {
         controller.send(new PlaceCardRequest(controller.getMatchId(), clickedCard, (Position)(hooverRectangle.getUserData()), matrixCardId)); //send place request
         placeRequestValidating = true;
-        resetAllBoardShadows();
     }
 
     private static void hooverRectangleStyleSetup(Rectangle hooverRectangle) {

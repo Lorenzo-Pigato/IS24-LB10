@@ -144,10 +144,10 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     @Override
     public void visit(@NotNull ChatRequest chatRequest) {
-        Server.log("[ " + id + "]" + ">>chat message from " + getPlayer(chatRequest.getUserHash()).getUsername());
+        Server.log("[ " + id + "]" + ">>chat message from " + getPlayer(chatRequest.getUserHash()).getUsername() + " : " + chatRequest.getMessage());
 
-        String [] splitMessage = chatRequest.getMessage().split(" ");
-        if(splitMessage[0].equals("to") && splitMessage.length > 1) {
+        String [] splitMessage = chatRequest.getMessage().trim().split(" ");
+        if(splitMessage[0].equals("to") && splitMessage.length > 2) {
             players.stream().filter(p -> p.getUsername().equals(splitMessage[1])).map(Player::getUserHash)
                     .findFirst()
                     .ifPresent(u -> {
