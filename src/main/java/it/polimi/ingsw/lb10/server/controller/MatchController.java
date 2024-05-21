@@ -226,10 +226,10 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     }
 
     private void notValidDrawReaction(int userHash) {
-        if (!isOnTurnPlayer(userHash)) {
+        if (!isOnTurnPlayer(userHash) && model.getOnTurnPlayer() != null) {
             model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), userHash);
             Server.log("[" + id + "]" + ">>draw request not valid");
-        } else if (!hasToPick(userHash)) {
+        } else {
             model.notify(new ServerNotification("You must place a card before picking one!", false), userHash);
             Server.log("[" + id + "]" + ">>draw request not valid");
         }
