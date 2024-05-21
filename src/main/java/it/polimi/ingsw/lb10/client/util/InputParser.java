@@ -19,7 +19,7 @@ public class InputParser {
 
         if(parsed.length == 0) return null;
 
-        if(questSelected) {
+        if(questSelected && (controller.getView().getPage() instanceof CLIMatchPage)){
             if (controller.getClient().isActive()) {
 
                 if (parsed.length > 1 && parsed[0].equalsIgnoreCase("chat") && !parsed[1].isEmpty()) {
@@ -35,24 +35,26 @@ public class InputParser {
                     default -> null;
                 };
             } else return null;
-        }else{
+        } else if (!questSelected){
             int parsedInt;
             try{
                 parsedInt = Integer.parseInt(parsed[0]);
             } catch (Exception e) {
                 controller.getView().getPage().changeState(new CLIChooseQuestPage.InvalidInput());
+                controller.getView().displayPage(new Object[]{input});
                 return null;
             }
             if(parsed.length == 1 && (parsedInt == 1 || parsedInt == 2)){
                 questSelected = true;
-                    controller.getView().updatePageState(new CLIChooseQuestPage.WaitPage());
+                    controller.getView().updatePageState(new CLIChooseQuestPage.WaitingState());
                     controller.getView().displayPage(new Object[]{input});
                 return new PrivateQuestSelectedRequest(controller.getMatchId(), controller.getQuests().get(parsedInt - 1));
-            }else {
+            } else {
                 controller.getView().getPage().changeState(new CLIChooseQuestPage.InvalidInput());
+                controller.getView().displayPage(new Object[]{input});
                 return null;
             }
-        }
+        } else return null;
     }
 
     private static Request parseThreeWordCommand(String[] parsed) {

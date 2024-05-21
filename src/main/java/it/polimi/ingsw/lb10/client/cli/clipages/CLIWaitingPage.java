@@ -26,10 +26,11 @@ public class CLIWaitingPage implements CLIPage {
         public void apply(Object[] args) {
             CLICommand.initialize();
             CLIBanner.displayWaitingRoom();
-            CLICommand.setInvisibleInput();
 
             new CLIString(">> Waiting for other players to join <<", AnsiColor.CYAN, AnsiFormat.BOLD, 1, 33).centerPrint();
             new CLIString(">> Match ID: " + args[0] + " <<", AnsiColor.CYAN, 1, 35).centerPrint();
+
+            CLICommand.setInvisibleInput();
         }
     }
 }

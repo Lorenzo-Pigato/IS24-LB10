@@ -76,6 +76,7 @@ public abstract class CLICommand {
      */
     public static void initialize(int width, int height) {
         setScreenSize(width, height);
+        resetInvisibleInput();
         home();
         clearScreen();
     }
@@ -87,7 +88,6 @@ public abstract class CLICommand {
      */
     public static void initialize() {
         initialize(defaultWidth, defaultHeight);
-        resetInvisibleInput();
     }
 
     /**
@@ -123,16 +123,16 @@ public abstract class CLICommand {
 
 
     public static void setInvisibleInput() {
-        System.out.print("\u001B[8m");
+        System.out.print("\033[8m");
         System.out.flush();
-        System.out.print("\u001b[?25l");
+        System.out.print("\033[?25l");
         System.out.flush();
     }
 
     public static void resetInvisibleInput() {
-        System.out.print("\u001B[28m");
+        System.out.print("\033[28m");
         System.out.flush();
-        System.out.print("\u001b[?25h");
+        System.out.print("\033[?25h");
         System.out.flush();
     }
 

@@ -67,7 +67,7 @@ public class CLIChooseQuestPage implements CLIPage {
         }
     }
 
-    public static class WaitPage implements CLIState {
+    public static class WaitingState implements CLIState {
         @Override
         public void apply(Object @NotNull [] args) {
             CLIString.replace(chooseQuest, wait);
@@ -75,6 +75,8 @@ public class CLIChooseQuestPage implements CLIPage {
 
             CLICommand.clearUserInput((String) args[0]);
             CLICommand.setInvisibleInput();
+            CLICommand.setPosition(1, 48);
+            CLICommand.saveCursorPosition();
         }
     }
 }
