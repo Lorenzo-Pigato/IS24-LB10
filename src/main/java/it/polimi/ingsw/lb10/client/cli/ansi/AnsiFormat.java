@@ -1,5 +1,8 @@
 package it.polimi.ingsw.lb10.client.cli.ansi;
 
+/**
+ * This enum contains the ANSI escape codes for text formatting.
+ */
 public enum AnsiFormat {
     DEFAULT(""),
     UNDERLINE("\u001B[4m"),

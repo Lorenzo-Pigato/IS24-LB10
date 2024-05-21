@@ -7,6 +7,10 @@ import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * This class is displayed to the client when an error occurs.
+ * The error message is usually set by an ExceptionHandler implementation
+ */
 public class CLIErrorPage implements CLIPage {
     private CLIState state = new Default();
 

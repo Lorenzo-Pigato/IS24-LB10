@@ -12,7 +12,7 @@ import it.polimi.ingsw.lb10.server.model.quest.QuestCounter;
 
 
 /**
- * This class contains the ASCII art for the game's banners
+ * This class contains the ASCII art for the game's CLI
  */
 public abstract class CLIBanner {
 

@@ -11,8 +11,8 @@ import java.util.Arrays;
 /**
  * This class provides a way to print strings with ANSI colors and formats
  * and to manage their position on the console.
- * It also provides methods to refactor them or delete them.
- * Strings are declared as objects, use AnsiString to print without creating an object
+ * It also provides methods to refactor or delete them.
+ * Strings are instantiated as objects, use AnsiString to print a formatted string without creating an object
  */
 public class CLIString {
     private final String string;
@@ -146,6 +146,11 @@ public class CLIString {
     }
 
     //------------------ String printing Methods ----------------------//
+
+
+    /**
+     * This method prints the formatted string on the console and sets the isVisible flag to true
+     */
     public void print() {
         CLICommand.setPosition(position[0], position[1]);
         int row = position[1];
@@ -160,6 +165,9 @@ public class CLIString {
         this.visible = true;
     }
 
+    /**
+     * This method prints the formatted string on the console after centering it horizontally
+     */
     public void centerPrint() {
         this.reposition((CLICommand.getDefaultWidth() - Arrays.stream(string.split("\n"))
                         .mapToInt(String::length)

@@ -8,6 +8,9 @@ import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiString;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * This page is  displayed to the client to connect to a server by typing the server IP and port.
+ */
 public class CLIConnectionPage implements CLIPage {
     private static final CLIString welcome = new CLIString(">> Welcome to Codex, new Player! <<", AnsiColor.YELLOW, 0, 36);
     private static final CLIString invalidIp = new CLIString(">> Invalid server ip <<", AnsiColor.RED, 0, 36);

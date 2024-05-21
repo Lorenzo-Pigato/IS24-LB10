@@ -7,6 +7,11 @@ import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * This page is displayed to the client while waiting for other players to join the match.
+ * The match ID is displayed, so it can be shared to other players.
+ * Input is disabled
+ */
 public class CLIWaitingPage implements CLIPage {
 
     private CLIState state = new Default();

@@ -38,6 +38,9 @@ public abstract class CLICommand {
         System.out.flush();
     }
 
+    /**
+     * @param lineCount number of lines to clear
+     */
     public static void clearNextLines(int lineCount) {
         for (int i = 0; i < lineCount; i++) {
             clearLine();
@@ -51,6 +54,9 @@ public abstract class CLICommand {
         System.out.flush();
     }
 
+    /**
+     * @param input string to clear
+     */
     public static void clearUserInput(String input) {
         CLICommand.restoreCursorPosition();     //Pushing back cursor to the beginning of the input
 
@@ -62,7 +68,7 @@ public abstract class CLICommand {
 
     /**
      * This method sets current terminal windows size
-     *
+     * note that some terminals may not support this feature (e.g. Windows cmd)
      * @param cols number of terminal columns
      * @param rows number of terminal rows
      */

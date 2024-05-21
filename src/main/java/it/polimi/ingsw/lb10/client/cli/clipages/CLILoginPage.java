@@ -7,6 +7,9 @@ import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * This page is displayed to the client to choose its username.
+ */
 public class CLILoginPage implements CLIPage {
     private static final CLIString insertUsername = new CLIString(">> Insert your username <<\n>> ",
             AnsiColor.GREEN,

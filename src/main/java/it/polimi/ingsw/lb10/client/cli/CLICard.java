@@ -18,6 +18,9 @@ import it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ.TopRight;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import it.polimi.ingsw.lb10.server.model.quest.QuestCounter;
 
+/**
+ * This class is used to print the game cards on the CLI
+ */
 public abstract class CLICard {
     private static void printBaseCard(BaseCard card, int col, int row) {
         new CLIString(

@@ -1,5 +1,8 @@
 package it.polimi.ingsw.lb10.client.cli.ansi;
 
+/**
+ * This enum contains the ANSI escape codes for colors.
+ */
 public enum AnsiColor {
     DEFAULT(""),
     RED("\u001B[31m"),

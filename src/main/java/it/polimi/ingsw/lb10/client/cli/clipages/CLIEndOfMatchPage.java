@@ -12,6 +12,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+/**
+ * This page is displayed to the client at the end of a match.
+ * It either displays the winner and the scoreboard or a message if all players left the match
+ */
 public class CLIEndOfMatchPage implements CLIPage {
 
     private CLIState state = new Default();
