@@ -2,6 +2,7 @@ package it.polimi.ingsw.lb10.server.view;
 
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.server.Server;
+import it.polimi.ingsw.lb10.server.controller.LobbyController;
 import it.polimi.ingsw.lb10.util.Observer;
 
 import java.io.IOException;
@@ -35,6 +36,7 @@ public class RemoteView implements Observer {
             outputStream.flush();
         } catch (IOException e) {
             Server.log("Socket exception: " + e.getMessage());
+            LobbyController.disconnectClient(hashCode);
         }
     }
 
