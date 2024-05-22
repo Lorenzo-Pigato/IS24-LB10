@@ -238,6 +238,7 @@ public class CLIMatchPage implements CLIPage {
 
         public static void flipStartingCard(StartingCard startingCard) {
             CLICard.displayStartingCard(startingCard, 84, 35);
+            moveToInputField();
         }
     }
 
@@ -282,6 +283,8 @@ public class CLIMatchPage implements CLIPage {
                     AnsiColor.CYAN,
                     AnsiColor.WHITE,
                     AnsiFormat.BOLD);
+
+            moveToInputField();
         }
     }
 

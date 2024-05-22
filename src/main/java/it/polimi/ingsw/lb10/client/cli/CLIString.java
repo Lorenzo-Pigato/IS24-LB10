@@ -135,7 +135,7 @@ public class CLIString {
         Arrays.stream(this.string.split("\n"))
                 .forEach(
                     line -> {
-                        System.out.print(" ".repeat(line.length()));
+                        System.out.print(" ".repeat(line.length() - 1));
                         CLICommand.setPosition(position[0], ++position[1]);
                 }
         );
