@@ -51,12 +51,6 @@ public class CLIResponseHandler implements ResponseVisitor {
     }
 
     @Override
-    public void visit(TerminatedMatchResponse response) {
-        controller.getClient().setActive(false);
-        controller.close();
-    }
-
-    @Override
     public void visit(StartedMatchResponse response) {
         synchronized (lock) {
             controller.getClient().setStartedMatch(true);

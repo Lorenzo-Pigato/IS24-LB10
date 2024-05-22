@@ -19,7 +19,7 @@ class QuestCounterTest {
     static void setUp(){
         questDeck.fillDeck();
         counterQuest=questDeck.getCards().getFirst();
-        player=new Player(123,"Tony");
+        player=new Player(123,"Tester");
     }
 
     @AfterEach

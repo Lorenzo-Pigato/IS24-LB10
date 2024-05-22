@@ -10,7 +10,6 @@ import it.polimi.ingsw.lb10.server.view.RemoteView;
 import it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitor;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -73,7 +72,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
             }
         } catch (Throwable e) {
             Server.displayError();
-            Server.log(">> ERROR handling match request");
+            Server.log(">> ERROR [" + id + "] handling match request");
             remoteViews.forEach(remoteView -> remoteView.send(new TerminatedMatchResponse()));
         }
 
@@ -351,7 +350,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
 
 
         if (isStarted() && isTerminated() || isActive()) {
-            LobbyController.terminateMatch(id);
+            LobbyController.removeMatch(id);
         }
     }
 

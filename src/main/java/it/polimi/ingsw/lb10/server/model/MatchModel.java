@@ -70,14 +70,19 @@ public class MatchModel extends Observable {
 
     public boolean hasRunOutOfCards() { return runOutOfCards;}
 
+    /**
+     * this method sets terminated state to true and sets all player in-match state to false.
+     */
     public void terminate() {
         Server.log(">> [" + id + "] match terminated");
         terminated = true;
         players.forEach(p -> p.setInMatch(false));
-        notifyAll(new TerminatedMatchResponse());
     }
 
 
+    /**
+     * @return the player playing his turn.
+     */
     public Player getOnTurnPlayer() {
         return onTurnPlayer;
     }
@@ -125,6 +130,9 @@ public class MatchModel extends Observable {
         notifyAll(new StartedMatchResponse(id));
     }
 
+    /**
+     * this method fills every game deck by loading json cards data and shuffles them.
+     */
     public void initializeDecks() {
 
         resourceDeck.fillDeck();
@@ -151,6 +159,12 @@ public class MatchModel extends Observable {
         player.setStartingCard(startingDeck.drawCard());
     }
 
+    /**
+     * this method sets the player's private quest field to the given quest and sets the player state to READY, once
+     * all player's are ready, game will start.
+     * @param player the player the private quest is assigned to.
+     * @param quest the private quest assigned to the player.
+     */
     public void assignPrivateQuest(Player player, Quest quest) {
         player.setPrivateQuest(quest);
         player.setReady(true);
@@ -162,8 +176,8 @@ public class MatchModel extends Observable {
     }
 
     /**
-     * @param player placing the starting card on the table.
-     * Resources must be updated accordingly
+     * this method places the starting card in the center of the given player's matrix.
+     * @param player the player that has placed his starting card.
      */
     public void insertStartingCard(Player player) {
         player.getMatrix().setCard(player.getStartingCard());
@@ -189,6 +203,10 @@ public class MatchModel extends Observable {
         }else terminate();
     }
 
+    /**
+     * this method notifies all players when picking options get updated.
+     * Logic is provided to handle cases when a picking option is not available due to deck emptiness.
+     */
     private void notifyDecksUpdate() {
 
         PlaceableCard[] decks = new PlaceableCard[]{
@@ -300,7 +318,7 @@ public class MatchModel extends Observable {
      * this method is used to pick a card from table, there are always two cards, except when golden deck is empty.
      * If both decks are empty, match status changes to last turn.
      *
-     * @param player who requested to pick a resource card from table
+     * @param player player who requested to pick a resource card from table
      * @param index  <1 or 2>
      */
     public void drawGoldenFromTable(Player player, int index) {
@@ -343,8 +361,9 @@ public class MatchModel extends Observable {
     }
 
     /**
-     * @param player placing a card inside the matrix
-     * @param card to place
+     * this method adds all resources belonging to a new placed PLACEABLE card to a player state.
+     * @param player the player receiving the card resources.
+     * @param card the card from which resources are obtained.
      */
     public void setCardResourceOnPlayer(Player player, PlaceableCard card) {
         for (Corner corner : card.getStateCardCorners()) {
@@ -352,9 +371,11 @@ public class MatchModel extends Observable {
         }
         player.addOnMapResources(card.getStateCardMiddleResource());
     }
+
     /**
-     * @param player placing the starting card
-     * @param card to place
+     * this method adds all resources belonging to a new placed PLACEABLE card to a player state.
+     * @param player the player receiving the card resources.
+     * @param card the card from which resources are obtained.
      */
     public void setCardResourceOnPlayer(Player player, StartingCard card) {
 
@@ -367,13 +388,11 @@ public class MatchModel extends Observable {
         }
     }
 
-    public List<Quest> getCommonQuests() {
-        return commonQuests;
-    }
-
-
-    // --------> GETTER <--------
-
+    /**
+     * This method removes a player from the match once the match is terminated or the clients gets disconnected due to quitting or connection fault.
+     * This method updates onTurnPlayer and notifies all other players.
+     * @param player the player to be removed.
+     */
     public void removePlayer(Player player) {
         players.remove(player);
         notifyAll(new PlayerLeftResponse(player.getUsername()));
@@ -385,10 +404,22 @@ public class MatchModel extends Observable {
         }
     }
 
+    // --------> GETTER <--------
+    /**
+     * @return game's public quests
+     */
+    public List<Quest> getPublicQuests() {
+        return commonQuests;
+    }
+
     public List<Player> getPlayers() {
         return players;
     }
 
+    /**
+     * @param userHash the player's user hash.
+     * @return the player assigned to the given hash code.
+     */
     public Player getPlayer(int userHash) {
         try {
             return players.stream().filter(player -> player.getUserHash() == userHash).findFirst().orElseThrow(() -> new Exception(">>player not found in match model"));
@@ -462,9 +493,8 @@ public class MatchModel extends Observable {
 
 
     /**
-     * @param row used to find a card based on its top-left corner
-     * @param column used to find the corner
-     * @return true, if the card passed all the requirements,
+     * @param row and the column is the top left corner of the card
+     * @return true if the card passed all the requirements
      * it's important to remember that the card is already inserted!
      */
     public synchronized boolean verificationSetting(Player player, int row, int column, ArrayList<Node> visitedNodes) {
@@ -568,7 +598,6 @@ public class MatchModel extends Observable {
             player.addPoints(card.getStateCardPoints() * player.getResourceQuantity(goldenResource));
         else
             player.addPoints(card.getStateCardPoints());
-        notifyAll(new PlayerPointsUpdateResponse(player.getUsername(), player.getPoints()));
     }
 
 
@@ -577,6 +606,10 @@ public class MatchModel extends Observable {
     }
 
 
+    /**
+     * this method starts game turns once every player has placed his starting card.
+     * this method notifies all players of the first turn starting.
+     */
     public void startTurns() {
         onTurnPlayer = players.getFirst();
         gameStarter = players.getFirst();
@@ -584,11 +617,14 @@ public class MatchModel extends Observable {
     }
 
 
+    /**
+     * this method is called once the game has terminated due to game rules.
+     * this method notifies all players and updates state to terminated.
+     */
     private void endGame() {
         Server.log(">> [" + id + "] match terminated");
         players.forEach(player -> notify(new EndGameResponse(player, players, true), player.getUserHash()));
         terminated = true;
-        notifyAll(new TerminatedMatchResponse());
     }
 
 
@@ -597,7 +633,7 @@ public class MatchModel extends Observable {
      *               This method is called at the end of the game!
      */
     public void checkCounterQuestPoints(Player player) {
-        ArrayList<Quest> quests = new ArrayList<>(getCommonQuests());
+        ArrayList<Quest> quests = new ArrayList<>(getPublicQuests());
         quests.add(player.getPrivateQuest());
         for (Quest quest : quests) {
             if (quest instanceof QuestCounter)
@@ -613,7 +649,7 @@ public class MatchModel extends Observable {
      *            After the verification of the pattern are added the points.
      */
     public void checkPatternQuest(Player player, int row, int column) {
-        ArrayList<Quest> quests = new ArrayList<>(getCommonQuests());
+        ArrayList<Quest> quests = new ArrayList<>(getPublicQuests());
         quests.add(player.getPrivateQuest());
         for (Quest quest : quests)
             if (quest instanceof TypeDiagonal || quest instanceof LJPattern)

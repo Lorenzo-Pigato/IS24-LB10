@@ -29,17 +29,6 @@ public class GUIExceptionHandler implements ExceptionHandler{
     }
 
     @Override
-    public void handle(UnknownHostException e) {
-        GUIErrorPageController errorPage = new GUIErrorPageController();
-        controller.setGameSize();
-        controller.setLobbySize();
-        Platform.runLater(() -> {
-            controller.changeScene(errorPage);
-            ((GUIErrorPageController)(controller.getPage())).setErrorText("An Exception occurred: " + e.getMessage());
-        });
-    }
-
-    @Override
     public void handle(IOException e) {
         GUIErrorPageController errorPage = new GUIErrorPageController();
         controller.setGameSize();
@@ -61,30 +50,6 @@ public class GUIExceptionHandler implements ExceptionHandler{
         });
     }
 
-    @Override
-    public void handle(SocketException e) {
-        GUIErrorPageController errorPage = new GUIErrorPageController();
-        controller.setGameSize();
-        if(controller.getClient().isActive()) {
-            Platform.runLater(() -> {
-                controller.changeScene(errorPage);
-                ((GUIErrorPageController) (controller.getPage())).setErrorText("There were some issues connecting to the server: " + (e.getMessage() != null ? e.getMessage() : ""));
-            });
-        }else{
-            Platform.exit();
-        }
-    }
-
-    @Override
-    public void handle(EOFException e) {
-        GUIErrorPageController errorPage = new GUIErrorPageController();
-        controller.setGameSize();
-        Platform.runLater(() -> {
-            controller.changeScene(errorPage);
-            ((GUIErrorPageController) (controller.getPage())).setErrorText("Server closed connection");
-        });
-
-    }
 
     @Override
     public void handle(ConnectionTimedOutException e) {

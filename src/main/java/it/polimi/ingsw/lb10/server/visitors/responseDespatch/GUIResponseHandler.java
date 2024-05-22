@@ -43,10 +43,6 @@ public class GUIResponseHandler implements ResponseVisitor {
         Platform.runLater(() -> ((GUILoginPageController)(controller.getPage())).logClient(response.getResponseState()));
     };
 
-    @Override
-    public void visit(TerminatedMatchResponse response) {
-
-    }
 
     @Override
     public void visit(StartedMatchResponse response) {

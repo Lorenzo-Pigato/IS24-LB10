@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 public abstract class ClientViewController {
@@ -100,9 +101,11 @@ public abstract class ClientViewController {
                     response.accept(responseHandler);
                 }
             }  catch (IOException | ClassNotFoundException e) {
-                close();
-                client.setActive(false);
-                exceptionHandler.handle(e);
+                if(client.isActive()){
+                    exceptionHandler.handle(e);
+                    close();
+                    client.setActive(false);
+                }
             }
         });
 
@@ -191,14 +194,12 @@ public abstract class ClientViewController {
      */
     public void close() {
         if (!socket.isClosed()) {
-            try {
-                ClientHeartBeatHandler.stop();
+            try{
                 if(!asyncSocketReader.isInterrupted()) asyncSocketReader.interrupt();
-                //socketOut.close();
-                //socket.close();
-            //} catch (IOException e) {
-            //    exceptionHandler.handle(e);
-            } finally {
+                ClientHeartBeatHandler.stop();
+                socket.close();
+            } catch (IOException e) {
+                exceptionHandler.handle(e);
                 client.setActive(false);
             }
         }

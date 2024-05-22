@@ -2,18 +2,24 @@ package it.polimi.ingsw.lb10.client.util;
 
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIMatchPage;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIChooseQuestPage;
+import it.polimi.ingsw.lb10.client.cli.clipages.CLIQuitPage;
 import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
 import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.network.requests.match.*;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+/**
+ * This class implements static methods to parse user input commands and react
+ */
 public class InputParser {
 
     public static CLIClientViewController controller = CLIClientViewController.instance();
     private static boolean questSelected = false;
 
-    public static Request parse(String input) {
+    public static @Nullable Request parse(@NotNull String input) {
         String[] parsed = input.trim().split(" ");
 
         if(parsed.length == 0) return null;
@@ -143,20 +149,22 @@ public class InputParser {
         return null;
     }
 
-    private static Request parseOneWordCommand(String[] parsed) {
+    private static @Nullable Request parseOneWordCommand(String[] parsed) {
         switch (parsed[0]) {
-
             case "help" -> {
                 controller.getView().getPage().changeState(new CLIMatchPage.Help());
                 controller.getView().getPage().print(null);
                 controller.getView().getPage().changeState(new CLIMatchPage.Default());
                 controller.getView().getPage().print(null);
                 CLIMatchPage.displayHand(controller.getHand());
+                return null;
             }
 
             case "quit" -> {
                 controller.getClient().setActive(false);
                 controller.close();
+                controller.getView().setPage(new CLIQuitPage());
+                controller.getView().displayPage(null);
                 return null;
             }
 
