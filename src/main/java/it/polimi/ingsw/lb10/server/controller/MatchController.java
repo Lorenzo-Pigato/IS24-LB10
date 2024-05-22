@@ -73,7 +73,6 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         } catch (Throwable e) {
             Server.displayError();
             Server.log(">> ERROR [" + id + "] handling match request");
-            remoteViews.forEach(remoteView -> remoteView.send(new TerminatedMatchResponse()));
         }
 
     }
