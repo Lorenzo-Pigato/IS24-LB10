@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Scanner;
 
 /**
  * This page is displayed to the client at the end of a match.
@@ -64,7 +65,15 @@ public class CLIEndOfMatchPage implements CLIPage {
             }
 
             CLICommand.setPosition(1, 49);
+
+            Scanner scanner = new Scanner(System.in);
+
+            scanner.nextLine();
+
+            CLIClientViewController.instance().getView().setPage(new CLIQuitPage());
+            CLIClientViewController.instance().getView().displayPage(null);
         }
+
     }
 }
 

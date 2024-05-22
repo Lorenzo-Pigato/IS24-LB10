@@ -40,13 +40,13 @@
       </effect>
    </ImageView>
 
-   <Text fx:id="unreachableServer" fill="#c91c1c" fontSmoothingType="LCD" layoutX="151.0" layoutY="678.0" nodeOrientation="LEFT_TO_RIGHT" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="error-log-big" text="The server you chose can't be reached" visible="false" wrappingWidth="300.34130859375">
+   <Text fx:id="unreachableServer" fill="#c91c1c" fontSmoothingType="LCD" layoutX="183.0" layoutY="681.0" nodeOrientation="LEFT_TO_RIGHT" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="error-message" text="The server you chose can't be reached" visible="false" wrappingWidth="300.34130859375">
    </Text>
 
-   <Text fx:id="invalidIPLabel" fill="#c91c1c" layoutX="183.0" layoutY="748.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="error-log-small" text="Invalid IP Address" textAlignment="CENTER" visible="false" wrappingWidth="234.0">
+   <Text fx:id="invalidIPLabel" fill="#c91c1c" layoutX="200.0" layoutY="752.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="error-message" text="Invalid IP Address" textAlignment="CENTER" visible="false" wrappingWidth="234.0">
    </Text>
 
-   <Text fx:id="invalidPortLabel" fill="#c91c1c" layoutX="184.0" layoutY="819.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="error-log-small" text="Invalid Port" textAlignment="CENTER" visible="false" wrappingWidth="148.0">;
+   <Text fx:id="invalidPortLabel" fill="#c91c1c" layoutX="184.0" layoutY="822.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="error-message" text="Invalid Port" textAlignment="CENTER" visible="false" wrappingWidth="148.0">;
    </Text>
 
    <HBox alignment="CENTER" layoutX="156.0" layoutY="762.0" prefHeight="45.0" prefWidth="316.0" spacing="10.0">

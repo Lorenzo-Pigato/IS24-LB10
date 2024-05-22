@@ -108,7 +108,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     public synchronized void visit(@NotNull JoinMatchRequest jmr) {
         players.add(jmr.getPlayer()); //adds new player, safe because LobbyController checked if it's possible
         getRemoteView(jmr.getUserHash()).send(new JoinMatchResponse(true, getMatchId())); //sends response
-        Server.log(">> [ " +  getPlayer(jmr.getUserHash()).getUsername() + "]" + " joined match [" + id);
+        Server.log(">> [" +  getPlayer(jmr.getUserHash()).getUsername() + "]" + " joined match [" + id);
         if (players.size() == numberOfPlayers) start();
     }
 
@@ -131,7 +131,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     @Override
     public synchronized void visit(@NotNull PrivateQuestSelectedRequest privateQuestSelectedRequest) {
-        Server.log(">> [ " + getPlayer(privateQuestSelectedRequest.getUserHash()).getUsername() + "]" + " selected private quest");
+        Server.log(">> [" + getPlayer(privateQuestSelectedRequest.getUserHash()).getUsername() + "]" + " selected private quest");
         getPlayer(privateQuestSelectedRequest.getUserHash()).setPrivateQuest(privateQuestSelectedRequest.getSelectedQuest());
         model.assignPrivateQuest(getPlayer(privateQuestSelectedRequest.getUserHash()), privateQuestSelectedRequest.getSelectedQuest());;
     }
@@ -148,7 +148,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
 
         String [] splitMessage = chatRequest.getMessage().trim().split(" ");
         if(splitMessage[0].equals("to") && splitMessage.length > 2) {
-            players.stream().filter(p -> p.getUsername().equals(splitMessage[1])).map(Player::getUserHash)
+            players.stream().filter(p -> p.getUsername().equalsIgnoreCase(splitMessage[1])).map(Player::getUserHash)
                     .findFirst()
                     .ifPresent(u -> {
                         model.notify(new ChatMessageResponse(
@@ -192,7 +192,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         Server.log(">> [" + getPlayer(drawResourceFromTableRequest.getUserHash()).getUsername() + "] draw resource card from table request");
         if (isOnTurnPlayer(drawResourceFromTableRequest.getUserHash()) && hasToPick(drawResourceFromTableRequest.getUserHash())) {
             model.drawResourceFromTable(getPlayer(drawResourceFromTableRequest.getUserHash()), drawResourceFromTableRequest.getIndex());
-            Server.log("[" + id + "]" + ">>draw request valid");
+            Server.log(">> [" + id + "]" + ">>draw request valid");
         } else notValidDrawReaction(drawResourceFromTableRequest.getUserHash());
 
     }
@@ -234,7 +234,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
 
     @Override
     public void visit(@NotNull PlaceStartingCardRequest placeStartingCardRequest) {
-        Server.log("[" + getPlayer(placeStartingCardRequest.getUserHash()).getUsername() + "] placed starting card");
+        Server.log(">> [" + getPlayer(placeStartingCardRequest.getUserHash()).getUsername() + "] placed starting card");
         model.getPlayer(placeStartingCardRequest.getUserHash()).setStartingCard(placeStartingCardRequest.getStartingCard());
         model.insertStartingCard(getPlayer(placeStartingCardRequest.getUserHash()));
         if (players.stream().noneMatch(player -> player.getMatrix().getNode(41, 41).getCorners().isEmpty()))
@@ -297,7 +297,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
 
     @Override
     public void visit(QuitMatchRequest quitMatchRequest) {
-        Server.log("[" + getPlayer(quitMatchRequest.getUserHash()).getUsername() + "] left the match");
+        Server.log(" >>[" + getPlayer(quitMatchRequest.getUserHash()).getUsername() + "] left the match");
         removePlayer(getPlayer(quitMatchRequest.getUserHash()));
     }
 
@@ -358,7 +358,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      * to all clients in the starting match
      */
     private synchronized void start() {
-        Server.log(">> [ " + id + "] match started");
+        Server.log(">> [" + id + "] match started");
         try {
             started = true;
             model = new MatchModel(numberOfPlayers, players);
