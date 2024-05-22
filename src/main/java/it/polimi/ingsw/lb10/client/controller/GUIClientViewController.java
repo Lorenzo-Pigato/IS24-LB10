@@ -130,6 +130,7 @@ public class GUIClientViewController extends ClientViewController {
     public void close() {
         if (!socket.isClosed()) {
             try{
+                client.setActive(false);
                 if(!asyncSocketReader.isInterrupted()) asyncSocketReader.interrupt();
                 ClientHeartBeatHandler.stop();
                 socket.close();
