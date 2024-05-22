@@ -386,6 +386,7 @@ public class CLIMatchPage implements CLIPage {
         CLICommand.setPosition(2, 47);
         CLICommand.clearScreenAfterCursor();
         AnsiString.print(">> ", AnsiColor.CYAN, AnsiFormat.BOLD);
+        CLICommand.saveCursorPosition();
     }
 
     // ----------- SERVER REPLY------------- //
@@ -527,6 +528,9 @@ public class CLIMatchPage implements CLIPage {
         );
 
         if (messages.size() > maxChatLength) {
+            messages.getFirst()[0].deleteString();
+            messages.getFirst()[1].deleteString();
+
             messages.removeFirst();
 
             messages.forEach(m -> {

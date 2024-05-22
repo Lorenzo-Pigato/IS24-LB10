@@ -21,12 +21,12 @@ public class CLIString {
     private final int[] position = new int[2];
     private boolean centered = false;
     private boolean visible = false;
-    private int realLength;
+    private final int realLength;
 
     //-------------------------- Builders -----------------------------//
     public CLIString(@NotNull String string, @NotNull AnsiColor color, @NotNull AnsiFormat format, int col, int row, int widthLimit) {
         this.string = string.length() > widthLimit ? string.substring(0, widthLimit - 4) + "..." + AnsiSpecial.RESET.getCode() : string;
-        this.realLength = this.string.length();
+        this.realLength = Math.min(string.length(), widthLimit);
 
         this.color = color;
         this.format = format;
@@ -135,7 +135,13 @@ public class CLIString {
         Arrays.stream(this.string.split("\n"))
                 .forEach(
                     line -> {
-                        System.out.print(" ".repeat(line.length() - 1));
+                        int lineLength = line.length();
+
+                        if(line.contains(AnsiSpecial.RESET.getCode())) lineLength -= AnsiSpecial.RESET.getCode().length();
+                        if(line.contains(format.getCode())) lineLength -= format.getCode().length();
+                        if(line.contains(color.getCode())) lineLength -= color.getCode().length();
+
+                        System.out.print(" ".repeat(lineLength));
                         CLICommand.setPosition(position[0], ++position[1]);
                 }
         );
