@@ -369,7 +369,7 @@
   },
   {
     "id" 			    : "77",
-    "corners"	        : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 77, "color" : "BLUE"}, {"available" : false , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 77, "color" : "BLUE"},{"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "POTION" , "id" : 77, "color" : "BLUE"}, {"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 77, "color" : "BLUE"}],
+    "corners"	        : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 77, "color" : "BLUE"}, {"available" : false , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 77, "color" : "BLUE"},{"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "FEATHER" , "id" : 77, "color" : "BLUE"}, {"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 77, "color" : "BLUE"}],
     "resource"          : "ANIMAL",
     "points"            : 1,
     "color"			    : "BLUE",

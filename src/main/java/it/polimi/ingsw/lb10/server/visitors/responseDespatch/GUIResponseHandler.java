@@ -141,6 +141,7 @@ public class GUIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(EndGameResponse endGameResponse) {
+        controller.close();
         Platform.runLater(() -> {
             if(!endGameResponse.isMatchStarted())
                 controller.changeScene(new GUIAllPlayersLeftPageController());
@@ -150,7 +151,6 @@ public class GUIResponseHandler implements ResponseVisitor {
                 ((GUIEndOfMatchPageController)controller.getPage()).setScoreboard(endGameResponse.getPlayers());
             }
         });
-        controller.close();
     }
 
     @Override
