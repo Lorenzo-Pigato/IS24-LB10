@@ -71,6 +71,7 @@ public class Client implements Runnable {
             controller.game();
         }
 
+        controller.quit();
     }
 
     private void heartBeatSetUp() {

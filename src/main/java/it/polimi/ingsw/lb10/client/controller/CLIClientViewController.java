@@ -135,7 +135,7 @@ public class CLIClientViewController extends ClientViewController {
                     do {
                         input = in.nextLine();
                         String[] splitInput = input.trim().split(" ");
-                        if(splitInput.length != 0) {
+                        if(splitInput.length != 0 && client.isActive()) {
                             if (splitInput[0].equalsIgnoreCase("join") && splitInput.length == 2) {
                                 try {
                                     Integer.parseInt(splitInput[1]);
@@ -169,7 +169,7 @@ public class CLIClientViewController extends ClientViewController {
                             } else view.updatePageState(new CLILobbyPage.InvalidInput());
                             view.displayPage(new String[]{input});
                         }
-                    } while (client.isNotInMatch());
+                    } while (client.isNotInMatch() && client.isActive());
                 } catch (NullPointerException e) {
                     close();
                     exceptionHandler.handle(e);
@@ -199,12 +199,23 @@ public class CLIClientViewController extends ClientViewController {
         try {
             terminalReader.join();
         } catch (InterruptedException e) {
-            client.setActive(false);
-            close();
-            exceptionHandler.handle(e);
-            //match is Terminated
+            if(client.isActive()){
+                client.setActive(false);
+                close();
+                exceptionHandler.handle(e);
+                //match is Terminated
+            }
         }
 
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void quit() {
+        view.setPage(new CLIQuitPage());
+        view.displayPage(null);
     }
 
     /**

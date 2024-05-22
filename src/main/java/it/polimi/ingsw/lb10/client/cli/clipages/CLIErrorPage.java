@@ -37,14 +37,6 @@ public class CLIErrorPage implements CLIPage {
             new CLIString(args[1] != null ? (String) args[1] : "", AnsiColor.RED, 1, 35).centerPrint();
 
             CLICommand.setPosition(1, 49);
-
-            Scanner scanner = new Scanner(System.in);
-            scanner.nextLine();
-
-            controller.getView().setPage(new CLIQuitPage());
-            controller.getView().getPage().print(null);
-
-            scanner.nextLine();
         }
     }
 }

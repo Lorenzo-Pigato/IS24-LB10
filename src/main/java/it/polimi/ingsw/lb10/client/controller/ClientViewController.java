@@ -199,11 +199,13 @@ public abstract class ClientViewController {
                 ClientHeartBeatHandler.stop();
                 socket.close();
             } catch (IOException e) {
-                exceptionHandler.handle(e);
                 client.setActive(false);
             }
         }
     }
+
+    public abstract void quit();
+
 }
 
 
