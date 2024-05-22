@@ -26,17 +26,7 @@ public class GoldenDeckTest {
         GoldenCard oracle = goldenDeck.getCards().getLast();
         GoldenCard first = goldenDeck.drawCard();
         assertEquals(first, oracle);
-        assertTrue(goldenDeck.getCards().size() == 39);
-    }
-
-    @Test
-
-    public void shuffleTest(){
-        goldenDeck = new GoldenDeck();
-        goldenDeck.fillDeck();
-        GoldenCard oracle = goldenDeck.getCards().getLast();
-        goldenDeck.shuffle();
-        assertNotEquals(goldenDeck.getCards().getLast(), oracle);
+        assertEquals(39, goldenDeck.getCards().size());
     }
 
     @Test

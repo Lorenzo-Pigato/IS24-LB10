@@ -22,9 +22,9 @@ class NodeTest {
 
     @Test
     void checkIsNotAvailableTest(){
-        node.getCorners().add(corners.get(0));
+        node.getCorners().add(corners.getFirst());
         assertFalse(node.checkIsNotAvailable());
-        node.getCorners().remove(corners.get(0));
+        node.getCorners().remove(corners.getFirst());
         node.getCorners().addAll(corners);
         assertFalse(node.checkIsNotAvailable());
 

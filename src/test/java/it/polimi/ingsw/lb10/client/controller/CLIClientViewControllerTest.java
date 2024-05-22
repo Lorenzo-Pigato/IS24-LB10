@@ -24,48 +24,6 @@ public class CLIClientViewControllerTest {
      static Client client = Client.instance();
      static CLIExceptionHandler exceptionHandler = new CLIExceptionHandler(new CLIClientView());
 
-     static void close(){
-         try{
-             outputStream.close();
-             localSocket.close();
-             serverSocket.close();
-         }catch (Exception e){
-             exceptionHandler.handle(e);
-         }
-
-     }
-
-
-    @BeforeAll
-    static void initialize() {
-        controller = CLIClientViewController.instance();
-        controller.setCliClientView(new CLIClientView());
-        try {
-            serverSocket = new ServerSocket(3557);
-            Thread listener = new Thread(new Runnable() {
-                @Override
-                public void run() {
-
-                    try {
-
-                        localSocket = serverSocket.accept();
-                        outputStream = new ObjectOutputStream(localSocket.getOutputStream());
-                        outputStream.flush();
-
-
-                    } catch (Exception e) {
-                        exceptionHandler.handle(e);
-                    }
-                }
-            });
-            listener.start();
-            Thread.sleep(1000);
-        } catch (Exception e) {}
-
-    }
-
-
-
 
     @ParameterizedTest
     @ValueSource(strings = {"128.0.-3.3", "280.0.213.230", "255.255.255.abs", "random", "-2.-3.42.43", "1.4", ""})

@@ -17,8 +17,8 @@ public class StartingDeckTest {
     public void fillDeckTest(){
         startingDeck = new StartingDeck();
         startingDeck.fillDeck();
-        assertTrue(!startingDeck.getCards().isEmpty());
-        assertTrue(startingDeck.getCards().size() == 6);
+        assertFalse(startingDeck.getCards().isEmpty());
+        assertEquals(6, startingDeck.getCards().size());
 
     }
 
