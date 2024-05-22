@@ -335,9 +335,6 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     public synchronized void removePlayer(Player p) {
         players.remove(p);
         p.setInMatch(false);
-        if(!isStarted()){
-            numberOfPlayers = numberOfPlayers - 1;
-        }
         if(isStarted()) {
             model.removeObserver(getRemoteView(p.getUserHash()));
             model.removePlayer(p);
@@ -352,7 +349,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         remoteViews.remove(getRemoteView(p.getUserHash()));
 
 
-        if (isStarted() && isTerminated() || isActive()) {
+        if (isStarted() && isTerminated() || !isActive()) {
             LobbyController.removeMatch(id);
         }
     }

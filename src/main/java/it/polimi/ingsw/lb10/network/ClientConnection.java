@@ -58,7 +58,6 @@ public class ClientConnection extends Observable implements Runnable {
         }
         remoteView.send(new HashResponse(socket.hashCode()));
         Server.log(">> new client, assigned hashcode: [" + socket.hashCode() + "]");
-
         heartBeatSetup();
         while (isActive()) {
             try {
