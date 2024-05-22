@@ -8,7 +8,6 @@ import it.polimi.ingsw.lb10.network.heartbeat.ClientHeartBeatHandler;
 import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.network.response.lobby.HashResponse;
-import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
 import it.polimi.ingsw.lb10.server.Server;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
 import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
@@ -101,8 +100,10 @@ public abstract class ClientViewController {
                     Response response = (Response) socketIn.readObject();
                     response.accept(responseHandler);
                 }
-            } catch (IOException | ClassNotFoundException e) {
+
+            }  catch (IOException | ClassNotFoundException e) {
                 close();
+                client.setActive(false);
                 exceptionHandler.handle(e);
             }
         });

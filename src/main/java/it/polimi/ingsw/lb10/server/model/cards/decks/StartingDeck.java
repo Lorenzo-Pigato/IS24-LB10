@@ -7,7 +7,10 @@ import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-
+/**
+ * Complete deck of ResourceCard, it has eight cards
+ * The cards are taken from the json in resource.
+ */
 public class StartingDeck {
 
     private ArrayList<StartingCard> cards;

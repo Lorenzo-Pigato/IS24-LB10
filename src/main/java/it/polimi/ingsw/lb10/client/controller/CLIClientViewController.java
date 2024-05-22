@@ -65,6 +65,9 @@ public class CLIClientViewController extends ClientViewController {
 
         do {
             input = in.nextLine();
+
+            if(input.isEmpty()) input = "127.0.0.1:1234";
+
             parsed = input.split(":");
 
             if (parsed.length != 2 ||

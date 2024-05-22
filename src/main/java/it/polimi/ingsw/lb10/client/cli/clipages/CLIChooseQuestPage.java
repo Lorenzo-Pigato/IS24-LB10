@@ -34,8 +34,8 @@ public class CLIChooseQuestPage implements CLIPage {
 
     /**
      * This class represents the default state of the page, where the player can choose its private quest
-     * The two quests are displayed on the screen, with their points and description
-     * The player can choose between the two quests by typing 1 or 2
+     * Two quests are displayed on the screen, with their points and description
+     * The player can choose between the two of them by typing 1 or 2
      * Quest must be passed as an argument to the print method
      */
     public static class Default implements CLIState {
@@ -67,6 +67,11 @@ public class CLIChooseQuestPage implements CLIPage {
         }
     }
 
+    /**
+     * This class is used to display a waiting message after the player has chosen its quest and is waiting for other players
+     * to do the same.
+     * In this state, player's input is disabled.
+     */
     public static class WaitingState implements CLIState {
         @Override
         public void apply(Object @NotNull [] args) {

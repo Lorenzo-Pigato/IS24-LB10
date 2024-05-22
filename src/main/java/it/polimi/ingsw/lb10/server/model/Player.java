@@ -41,6 +41,9 @@ public class Player implements Serializable {
 
     // --------> METHODS <--------
 
+    /**
+     * @param resource to add to onMapResource
+     */
     public void addOnMapResources(Resource resource) {
         if (resource != Resource.EMPTY && resource != Resource.NULL) {
             if (onMapResources.containsKey(resource)) {
@@ -50,6 +53,9 @@ public class Player implements Serializable {
         }
     }
 
+    /**
+     * @param resource to remove from the onMapResource of the player
+     */
     public void deleteOnMapResources(Resource resource) {
         if (resource != Resource.EMPTY && resource != Resource.NULL) {
             if (onMapResources.containsKey(resource)) {

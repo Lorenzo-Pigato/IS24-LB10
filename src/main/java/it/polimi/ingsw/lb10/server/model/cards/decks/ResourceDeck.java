@@ -9,7 +9,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.NoSuchElementException;
 
-public class ResourceDeck {
+/**
+ * Complete deck of ResourceCard, it has 40 cards
+ * The cards are taken from the json in resource.
+ */public class ResourceDeck {
 
     private ArrayList<ResourceCard> cards;
 

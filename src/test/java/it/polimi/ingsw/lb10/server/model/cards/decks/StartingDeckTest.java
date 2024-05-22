@@ -1,8 +1,10 @@
 package it.polimi.ingsw.lb10.server.model.cards.decks;
 
+import it.polimi.ingsw.lb10.server.model.cards.GoldenCard;
 import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,6 +31,7 @@ public class StartingDeckTest {
         assertEquals(first, oracle);
         assertEquals(5, startingDeck.getCards().size());
     }
+
 
     @Test
     public void deckEndTest(){

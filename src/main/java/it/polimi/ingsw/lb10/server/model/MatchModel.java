@@ -342,10 +342,6 @@ public class MatchModel extends Observable {
         }
     }
 
-    /**
-     * this method checks if decks are empty and, in case both decks are empty,
-     *sets up final turn state and notifies players.
-     */
     public void checkDeckEmptiness() {
         if (resourceDeck.getCards().isEmpty() && !resourceDeckIsEmpty) {
             resourceDeckIsEmpty = true;
@@ -447,7 +443,7 @@ public class MatchModel extends Observable {
     // --------> MODEL <-------- //
 
     /**
-     * This method is called to insert a Card
+     * This method is called to insert a card,
      * A boolean is returned to verify if the card is placeable
      * --> At the beginning the algorithm checks if the card is flipped, with a consequent update of the state of the card.
      * the card is placed inside the matrix if the activation cost is matched, then the method checkInsertion is called
@@ -541,6 +537,11 @@ public class MatchModel extends Observable {
         return !visitedNodes.isEmpty();
     }
 
+    /**
+     * @param player adding the card to the matrix
+     * @param card to add
+     * @return false, if the player didn't have enough resources to place the card, true otherwise
+     */
     public synchronized boolean checkActivationCost(Player player, PlaceableCard card) {
         if (card.getStateCardActivationCost().isEmpty())
             return true;
@@ -549,6 +550,12 @@ public class MatchModel extends Observable {
         return true;
     }
 
+    /**
+     * @param player adding the card to the matrix
+     * @param row of the top-left corner of the card
+     * @param column of the top-left corner of the card
+     * @return true if the corner is available, else false
+     */
     public synchronized boolean checkNotAvailability(Player player, int row, int column) {
         Map<Position, int[]> setIncrement = player.getMatrix().parsingPositionCorners();
 
@@ -560,6 +567,13 @@ public class MatchModel extends Observable {
         return true;
     }
 
+
+    /**
+     * @param player adding the card to the
+     * @param row of the top-left corner of the card
+     * @param column of the top-left corner of the card
+     * This method remove the resources (corners) covered by the new card.
+     */
     public synchronized void deleteCoveredResource(Player player, int row, int column) {
         Map<Position, int[]> setIncrement = player.getMatrix().parsingPositionCorners();
 

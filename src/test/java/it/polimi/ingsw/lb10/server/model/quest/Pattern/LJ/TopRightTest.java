@@ -38,37 +38,6 @@ class TopRightTest {
         matrix.deleteCard(40,42);
     }
 
-    @RepeatedTest(1000)
-    void checkPattern(){
-        boolean flag=false;
-        setUp();
-
-        for(int i=0;i<2;i++){
-            int nRandom = (int) (Math.random() * 40);
-            PlaceableCard card = resourceDeck.getCards().get(nRandom);
-            matrix.setCard(card, 41+(i*2), 41);
-            //BODY
-            if (card.getColorCard() != Color.GREEN)
-                flag = true;
-        }
-
-        int nRandom = (int) (Math.random() * 40);
-        PlaceableCard card = resourceDeck.getCards().get(nRandom);
-        matrix.setCard(card, 40,42);
-        //TAIL
-        if (card.getColorCard() != Color.PURPLE)
-            flag = true;
-
-        int iRandom = (int) (Math.random() * 3);
-        int[] rows = {41, 43, 40};
-        int[] cols = {41, 41, 42};
-
-        if (flag)
-            assertFalse(topRight.isPattern(matrix, rows[iRandom], cols[iRandom]));
-        else
-            assertTrue(topRight.isPattern(matrix, rows[iRandom], cols[iRandom]));
-
-    }
 
     @Test
     public void isPatternRightOne(){
@@ -128,5 +97,36 @@ class TopRightTest {
         assertFalse(topRight.isPattern(matrix,41,41));
         assertFalse(topRight.isPattern(matrix,43,41));
         assertFalse(topRight.isPattern(matrix,40,42));
+    }
+    @RepeatedTest(1000)
+    void checkPattern(){
+        boolean flag=false;
+        setUp();
+
+        for(int i=0;i<2;i++){
+            int nRandom = (int) (Math.random() * 40);
+            PlaceableCard card = resourceDeck.getCards().get(nRandom);
+            matrix.setCard(card, 41+(i*2), 41);
+            //BODY
+            if (card.getColorCard() != Color.GREEN)
+                flag = true;
+        }
+
+        int nRandom = (int) (Math.random() * 40);
+        PlaceableCard card = resourceDeck.getCards().get(nRandom);
+        matrix.setCard(card, 40,42);
+        //TAIL
+        if (card.getColorCard() != Color.PURPLE)
+            flag = true;
+
+        int iRandom = (int) (Math.random() * 3);
+        int[] rows = {41, 43, 40};
+        int[] cols = {41, 41, 42};
+
+        if (flag)
+            assertFalse(topRight.isPattern(matrix, rows[iRandom], cols[iRandom]));
+        else
+            assertTrue(topRight.isPattern(matrix, rows[iRandom], cols[iRandom]));
+
     }
 }

@@ -34,9 +34,8 @@ public class Node implements Serializable {
 
     /**
      * In the first part of the algorithm, we insert the card in any case
-     *
-     * @return false if there's only one card or both the cards have isAvailable-->true
-     * and @return true if one of them it's not available
+     * @return false if there's only one card or at least the corner of the card under the one we put now it's available,
+     * and @return true if it's not available
      */
     public boolean checkIsNotAvailable() {
         if (corners.size() == 1)

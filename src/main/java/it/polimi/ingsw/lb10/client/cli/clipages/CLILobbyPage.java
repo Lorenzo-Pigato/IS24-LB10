@@ -8,6 +8,9 @@ import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * This page is used to create a new game or to join an existing one.
+ */
 public class CLILobbyPage implements CLIPage {
     private static final CLIString enterChoice = new CLIString(">> Enter your choice <<\n>> ", AnsiColor.CYAN, AnsiFormat.BOLD, 1, 39);
     private CLIState state = new Default();

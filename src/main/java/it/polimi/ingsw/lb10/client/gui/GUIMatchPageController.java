@@ -426,12 +426,12 @@ public class GUIMatchPageController implements GUIPageController , Initializable
                             .getUserData();
                     resetRectanglesOpacity();
 
-                    if(matrixCardValidSelection){ //if user already selected a martix card
+                    if(matrixCardValidSelection){   //user already selected a matrix card
                         validatePlacing(hooverRectangle);
                     }
                     resetRectanglesOpacity();
                 }else if(!placeRequestValidating){
-                    hooverRectangle.setOpacity(0); //rectangle was the selected one, so we reset the state to non-selected
+                    hooverRectangle.setOpacity(0);  //selected rectangle, deselect it
                     clickedCard = null;
                     clickedRectangle = null;
                 }

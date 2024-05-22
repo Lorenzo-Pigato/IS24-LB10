@@ -9,6 +9,10 @@ import it.polimi.ingsw.lb10.server.model.Resource;
 import java.io.Serializable;
 import java.util.Map;
 
+/**
+ *
+ * in this class are written all methods and attributes that are common to all Quest cards
+ */
 public abstract class Quest implements Serializable {
     private int id;
     private int points;
