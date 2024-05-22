@@ -205,12 +205,6 @@ public class CLIClientViewController extends ClientViewController {
         try {
             terminalReader.join();
         } catch (InterruptedException e) {
-            if(client.isActive()){
-                client.setActive(false);
-                close();
-                exceptionHandler.handle(e);
-                //match is Terminated
-            }
         }
 
     }
