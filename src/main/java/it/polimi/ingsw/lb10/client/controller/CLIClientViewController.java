@@ -101,15 +101,18 @@ public class CLIClientViewController extends ClientViewController {
                         try {
                             do {
                                 username = in.nextLine().trim();
-                                if ((username.length() < 2 || username.length() > 15) && client.isActive())
-                                    view.updatePageState(new CLILoginPage.invalidLength());
-                                view.displayPage(new String[]{username});
+                                if(client.isActive()) {
+                                    if ((username.length() < 2 || username.length() > 15))
+                                        view.updatePageState(new CLILoginPage.invalidLength());
+                                    view.displayPage(new String[]{username});
+                                }
                             } while ((username.length() < 2 || username.length() > 15) && client.isActive());
-                            synchronized (CLIClientViewController.getLock()) {
-                                send(new LoginRequest(username));
-                                CLIClientViewController.getLock().wait();
+                            if(client.isActive()) {
+                                synchronized (CLIClientViewController.getLock()) {
+                                    send(new LoginRequest(username));
+                                    CLIClientViewController.getLock().wait();
+                                }
                             }
-
                         } catch (InterruptedException e) {
                             throw new RuntimeException(e);
                         }
