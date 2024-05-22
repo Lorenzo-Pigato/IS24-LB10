@@ -5,7 +5,10 @@ import it.polimi.ingsw.lb10.client.cli.CLICommand;
 import it.polimi.ingsw.lb10.client.cli.CLIString;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
+import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Scanner;
 
 /**
  * This class is displayed to the client when an error occurs.
@@ -13,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class CLIErrorPage implements CLIPage {
     private CLIState state = new Default();
+    private static final CLIClientViewController controller = CLIClientViewController.instance();
 
     @Override
     public void changeState(@NotNull CLIState state) {
@@ -32,7 +36,15 @@ public class CLIErrorPage implements CLIPage {
             new CLIString(args[0] != null ? (String) args[0] : "", AnsiColor.RED, AnsiFormat.BOLD, 1, 33).centerPrint();
             new CLIString(args[1] != null ? (String) args[1] : "", AnsiColor.RED, 1, 35).centerPrint();
 
-            CLICommand.setPosition(1, 50);
+            CLICommand.setPosition(1, 49);
+
+            Scanner scanner = new Scanner(System.in);
+            scanner.nextLine();
+
+            controller.getView().setPage(new CLIQuitPage());
+            controller.getView().getPage().print(null);
+
+            scanner.nextLine();
         }
     }
 }

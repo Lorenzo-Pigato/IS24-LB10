@@ -41,7 +41,7 @@ public class CLIConnectionPage implements CLIPage {
             options.centerPrint();
 
             CLICommand.saveCursorPosition();
-            AnsiString.print("127.0.0.1:3773", AnsiColor.GREY, AnsiFormat.LIGHT);
+            AnsiString.print("127.0.0.1:1234", AnsiColor.GREY, AnsiFormat.LIGHT);
             CLICommand.restoreCursorPosition();
         }
     }

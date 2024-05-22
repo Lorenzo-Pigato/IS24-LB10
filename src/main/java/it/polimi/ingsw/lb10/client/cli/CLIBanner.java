@@ -16,7 +16,7 @@ import it.polimi.ingsw.lb10.server.model.quest.QuestCounter;
  */
 public abstract class CLIBanner {
 
-    public static void displayCodex(int row) {
+    public static void displayCodex(int row, AnsiColor color) {
         new CLIString(
                 """
                                          ░███░                                         \s
@@ -38,11 +38,15 @@ public abstract class CLIBanner {
                               ░░█████████████████░                                     \s
                                   ░██████████░░                                        \s
                         """
-                , AnsiColor.GREEN, 1, row).centerPrint();
+                , color, 1, row).centerPrint();
     }
 
     public static void displayCodex() {
-        displayCodex(15);
+        displayCodex(15, AnsiColor.GREEN);
+    }
+
+    public static void displayCodex(int row) {
+        displayCodex(row, AnsiColor.GREEN);
     }
 
     public static void displayConnection() {
