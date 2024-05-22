@@ -15,7 +15,6 @@ import it.polimi.ingsw.lb10.server.model.cards.*;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import javafx.animation.FadeTransition;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -33,7 +32,6 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -59,12 +57,12 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     private static StartingCard startingCard;
     private AnchorPane boardAnchorPane;
     private final int boardCardDimension = 150;
-    private boolean matrixCardValidSelection = false;
+    private boolean matrixCardSelected = false;
     private boolean placeRequestValidating = false;
     private final Map<Position, int[]> placementOffsets = new HashMap<>();
     private static final HashMap<Integer, int[]> boardPositions = new HashMap<>();
-
-
+    private final DropShadow blackEffect = new DropShadow(BlurType.THREE_PASS_BOX, new javafx.scene.paint.Color(0, 0, 0, 0.6), 10, 0, 0,0);
+    private final DropShadow yellowEffect = new DropShadow(BlurType.THREE_PASS_BOX, new javafx.scene.paint.Color(1, 0.6, 0, 1), 10, 0, 0,0);
     @FXML
     private Button chatButton;
     @FXML
@@ -426,7 +424,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
                             .getUserData();
                     resetRectanglesOpacity();
 
-                    if(matrixCardValidSelection){   //user already selected a matrix card
+                    if(matrixCardSelected){   //user already selected a matrix card
                         validatePlacing(hooverRectangle);
                     }
                     resetRectanglesOpacity();
@@ -527,7 +525,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         placeRequestValidating = false;
         boardAnchorPane.getChildren().stream().filter(node -> node.getClass().equals(ImageView.class)).map(node -> (ImageView)(node)).forEach(imageView -> imageView.setEffect(new DropShadow(BlurType.THREE_PASS_BOX, new javafx.scene.paint.Color(0, 0, 0, 0.6), 10, 0, 0,0)));
         handCardStackPanes.forEach(stackPane -> stackPane.getChildren().stream().filter(node -> node.getClass().equals(Rectangle.class)).forEach(node -> node.setOpacity(0)));
-        matrixCardValidSelection = false;
+        matrixCardSelected = false;
         clickedCard = null;
         clickedRectangle = null;
     }
@@ -675,28 +673,29 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
     private void setCardHooverEffects(@NotNull ImageView cardOnTable) {
         cardOnTable.setOnMouseEntered(_ -> {
-            cardOnTable.setEffect(new DropShadow(BlurType.THREE_PASS_BOX, new javafx.scene.paint.Color(1, 0.6, 0, 1), 10, 0, 0,0));
+            cardOnTable.setEffect(yellowEffect);
         });
 
         cardOnTable.setOnMouseExited(_ -> {
-            if(!matrixCardValidSelection){
-                cardOnTable.setEffect(new DropShadow(BlurType.THREE_PASS_BOX, new javafx.scene.paint.Color(0, 0, 0, 0.6), 10, 0, 0,0));
-            }else if (matrixCardId != ((BaseCard)(cardOnTable.getUserData())).getId()){
-                cardOnTable.setEffect(new DropShadow(BlurType.THREE_PASS_BOX, new javafx.scene.paint.Color(0, 0, 0, 0.6), 10, 0, 0,0));
+            if(matrixCardSelected || matrixCardId != ((BaseCard)(cardOnTable.getUserData())).getId() ){
+                cardOnTable.setEffect(blackEffect);
+            }else {
+                cardOnTable.setEffect(yellowEffect);
             }
         });
 
         cardOnTable.setOnMouseClicked(_ -> {
-            if(!matrixCardValidSelection){
-                matrixCardValidSelection = true;
+            if(!matrixCardSelected){
+                matrixCardSelected = true;
                 matrixCardId = ((BaseCard)(cardOnTable.getUserData())).getId();
                 if(clickedCard != null) {
                     validatePlacing(clickedRectangle);
                 }
             }else if (matrixCardId == ((BaseCard)cardOnTable.getUserData()).getId()){
-                matrixCardValidSelection = false;
+                matrixCardSelected = false;
             }else{
                 matrixCardId = ((BaseCard)(cardOnTable.getUserData())).getId();
+                boardAnchorPane.getChildren().stream().filter(node -> node instanceof ImageView).filter(node -> ((BaseCard) (node.getUserData())).getId() == matrixCardId).findFirst().ifPresent(node -> node.setEffect(blackEffect));
             }
         });
     }
@@ -728,19 +727,10 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         int xPos = boardPositions.get(player.getPoints())[0];
         int yPos = boardPositions.get(player.getPoints())[1];
 
-//        TranslateTransition transition = new TranslateTransition();
-//
-//            transition.setNode(token);
-//            transition.setDuration(Duration.seconds(2));
-
         if(!players.stream().filter(pl -> pl != null && pl.getPoints() == points).toList().isEmpty()){
             xPos += new Random().nextInt(maxRandoOffset);
             yPos += new Random().nextInt(maxRandoOffset);
         }
-
-//            transition.setToX(xPos);
-//            transition.setToY(yPos);
-//            transition.play();
 
         token.setCenterX(xPos);
         token.setCenterY(yPos);
