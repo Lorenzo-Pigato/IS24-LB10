@@ -17,7 +17,7 @@
   
   {
     "id" 			        : "83",
-    "corners"		        : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 83, "color" : "STARTER"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 83, "color" : "STARTER"}, {"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 83 , "color" : "STARTER"},{"available" : false , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 83,  "color" : "STARTER"}],
+    "corners"		        : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 83, "color" : "STARTER"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 83, "color" : "STARTER"}, {"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 83 , "color" : "STARTER"},{"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 83,  "color" : "STARTER"}],
     "color"			        : "STARTER",
     "flippedCardCorners"    : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "INSECT" , "id" : 83, "color" : "STARTER"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "ANIMAL" , "id" : 83, "color" : "STARTER"}, {"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "MUSHROOM" , "id" : 83, "color" : "STARTER"}, {"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "PLANT" , "id" : 83, "color" : "STARTER"}],
     "middleResources"       : ["PLANT" , "MUSHROOM"]
