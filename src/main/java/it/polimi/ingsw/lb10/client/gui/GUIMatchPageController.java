@@ -677,25 +677,20 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         });
 
         cardOnTable.setOnMouseExited(_ -> {
-            if(matrixCardSelected || matrixCardId != ((BaseCard)(cardOnTable.getUserData())).getId() ){
+            if(!matrixCardSelected || matrixCardId != ((BaseCard) cardOnTable.getUserData()).getId())
                 cardOnTable.setEffect(blackEffect);
-            }else {
-                cardOnTable.setEffect(yellowEffect);
-            }
         });
 
         cardOnTable.setOnMouseClicked(_ -> {
-            if(!matrixCardSelected){
+            if(!matrixCardSelected || !(matrixCardId == ((BaseCard)cardOnTable.getUserData()).getId())){
                 matrixCardSelected = true;
+                boardAnchorPane.getChildren().stream().filter(node -> node instanceof ImageView).filter(node -> ((BaseCard) (node.getUserData())).getId() == matrixCardId).findFirst().ifPresent(node -> node.setEffect(blackEffect));
                 matrixCardId = ((BaseCard)(cardOnTable.getUserData())).getId();
                 if(clickedCard != null) {
                     validatePlacing(clickedRectangle);
                 }
             }else if (matrixCardId == ((BaseCard)cardOnTable.getUserData()).getId()){
                 matrixCardSelected = false;
-            }else{
-                matrixCardId = ((BaseCard)(cardOnTable.getUserData())).getId();
-                boardAnchorPane.getChildren().stream().filter(node -> node instanceof ImageView).filter(node -> ((BaseCard) (node.getUserData())).getId() == matrixCardId).findFirst().ifPresent(node -> node.setEffect(blackEffect));
             }
         });
     }

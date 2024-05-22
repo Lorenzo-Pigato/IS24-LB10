@@ -124,7 +124,7 @@ public class CLIMatchPage implements CLIPage {
     }
 
     public void resetBoardView() {
-        clearRegion(boardStartCol - 2, boardStartRow - 1, onFocusWidth * 3, onFocusHeight * 2 + 2);
+        clearRegion(boardStartCol, boardStartRow - 1, onFocusWidth * 3 + 2, onFocusHeight * 2 + 1);
 
         onFocusCol = defaultOnFocusCol;
         onFocusRow = defaultOnFocusRow;
