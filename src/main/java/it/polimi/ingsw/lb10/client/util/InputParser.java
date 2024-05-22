@@ -7,7 +7,11 @@ import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.network.requests.match.*;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
 
+/**
+ * This class implements static methods to parse user input commands and react
+ */
 public class InputParser {
 
     public static CLIClientViewController controller = CLIClientViewController.instance();
@@ -143,20 +147,21 @@ public class InputParser {
         return null;
     }
 
-    private static Request parseOneWordCommand(String[] parsed) {
+    private static @Nullable Request parseOneWordCommand(String[] parsed) {
         switch (parsed[0]) {
-
             case "help" -> {
                 controller.getView().getPage().changeState(new CLIMatchPage.Help());
                 controller.getView().getPage().print(null);
                 controller.getView().getPage().changeState(new CLIMatchPage.Default());
                 controller.getView().getPage().print(null);
                 CLIMatchPage.displayHand(controller.getHand());
+                return null;
             }
 
             case "quit" -> {
                 controller.getClient().setActive(false);
                 controller.close();
+
                 return null;
             }
 

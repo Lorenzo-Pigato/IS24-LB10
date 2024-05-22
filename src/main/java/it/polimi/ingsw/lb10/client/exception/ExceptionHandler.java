@@ -9,15 +9,9 @@ public interface ExceptionHandler {
 
     void handle(Exception e);
 
-    void handle(UnknownHostException e);
-
     void handle(IOException e);
 
     void handle(ConnectionErrorException e);
-
-    void handle(SocketException e);
-
-    void handle(EOFException e);
 
     void handle (ConnectionTimedOutException e);
 }

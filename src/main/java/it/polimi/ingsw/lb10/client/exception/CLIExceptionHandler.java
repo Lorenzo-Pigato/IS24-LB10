@@ -24,11 +24,6 @@ public class CLIExceptionHandler implements ExceptionHandler {
         view.displayPage(new String[]{">> Exception : <<", e.getMessage()});
     }
 
-    public void handle(UnknownHostException e) {
-        view.setPage(new CLIErrorPage());
-        view.displayPage(new String[]{">> Error closing sockets <<", e.getMessage()});
-    }
-
     public void handle(IOException e) {
         view.setPage(new CLIErrorPage());
         view.displayPage(new String[]{">> Server closed connection <<", e.getMessage()});
@@ -37,17 +32,6 @@ public class CLIExceptionHandler implements ExceptionHandler {
     public void handle(ConnectionErrorException e) {
         view.setPage(new CLI404Page());
         view.displayPage(new String[]{">> Server closed connection <<", e.getMessage()});
-    }
-
-    @Override
-    public void handle(SocketException e) {
-
-    }
-
-    @Override
-    public void handle(EOFException e) {
-        view.setPage(new CLIErrorPage());
-        view.displayPage(new String[]{">> Server closed connection<<", null});
     }
 
     @Override

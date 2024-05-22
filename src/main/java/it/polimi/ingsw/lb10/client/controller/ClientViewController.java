@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 public abstract class ClientViewController {
@@ -100,11 +101,8 @@ public abstract class ClientViewController {
                     Response response = (Response) socketIn.readObject();
                     response.accept(responseHandler);
                 }
-            } catch (EOFException e) {
-                close();
-                client.setActive(false);
-                exceptionHandler.handle(e);
             } catch (IOException | ClassNotFoundException e) {
+                close();
                 exceptionHandler.handle(e);
             }
         });
@@ -195,14 +193,12 @@ public abstract class ClientViewController {
      */
     public void close() {
         if (!socket.isClosed()) {
-            try {
+            try{
                 ClientHeartBeatHandler.stop();
                 if(!asyncSocketReader.isInterrupted()) asyncSocketReader.interrupt();
-                //socketOut.close();
-                //socket.close();
-            //} catch (IOException e) {
-            //    exceptionHandler.handle(e);
-            } finally {
+                socket.close();
+            } catch (IOException e) {
+                exceptionHandler.handle(e);
                 client.setActive(false);
             }
         }
