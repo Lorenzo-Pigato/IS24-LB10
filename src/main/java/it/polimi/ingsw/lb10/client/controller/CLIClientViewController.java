@@ -260,8 +260,12 @@ public class CLIClientViewController extends ClientViewController {
 
                     futureRequest = InputParser.parse(input);
 
-                    CLICommand.restoreCursorPosition();
-                    CLICommand.clearLineAfterCursor();
+                    if(getView().getPage() instanceof CLIMatchPage) {
+                        CLIMatchPage.moveToInputField();
+                    } else {
+                        CLICommand.restoreCursorPosition();
+                        CLICommand.clearLineAfterCursor();
+                    }
 
                     if (futureRequest != null) {
                         Thread t = asyncWriteToSocket(futureRequest);

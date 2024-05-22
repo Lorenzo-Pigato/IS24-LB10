@@ -88,7 +88,6 @@ public class CLIMatchPage implements CLIPage {
     private static int onFocusRow = defaultOnFocusRow;
 
     public static void printBoard(Matrix board) {
-
         clearRegion(boardStartCol, boardStartRow - 1, onFocusWidth * 3 + 2, onFocusHeight * 2 + 1);
         for (int col = onFocusCol; col < onFocusCol + onFocusWidth; col++)
             for (int row = onFocusRow; row < onFocusRow + onFocusHeight; row++)
@@ -100,7 +99,7 @@ public class CLIMatchPage implements CLIPage {
                                 (row - onFocusRow) * 2 + boardStartRow
                         );
 
-        CLICommand.restoreCursorPosition();
+        moveToInputField();
     }
 
     public static void moveBoard(Matrix board, int colOffset, int rowOffset) {
@@ -231,9 +230,8 @@ public class CLIMatchPage implements CLIPage {
             CLILine.drawHorizontal(2, 44, 158, AnsiColor.WHITE);
 
             CLICommand.setPosition(2, 47);
-            AnsiString.print(">> ", AnsiColor.CYAN, AnsiFormat.BOLD);
 
-            CLICommand.saveCursorPosition();
+            moveToInputField();
 
             serverReply("You can flip your cards by typing 'flip [card id]', type 'place S' to start playing");
         }
@@ -264,7 +262,7 @@ public class CLIMatchPage implements CLIPage {
             CLIBox.draw(95, 32, "Score board", AnsiColor.WHITE);
             updateScoreBoard();
 
-            CLICommand.restoreCursorPosition();
+            moveToInputField();
         }
     }
 
@@ -322,7 +320,7 @@ public class CLIMatchPage implements CLIPage {
                 CLICard.printResourceDeck((ResourceCard) args[5], 79, 21);
             }
 
-            CLICommand.restoreCursorPosition();
+            moveToInputField();
         }
     }
 
@@ -340,11 +338,10 @@ public class CLIMatchPage implements CLIPage {
                     """
                             1. <help> - prints out all possible commands
                             2. <flip> <hand card id> - flips requested card
-                            3. <show> <player> - shows requested player board
-                            4. <place> [id] [hand card's corner] [matrix card id]
-                            5. <move> [col] [row] - moves the board focus area
-                            6. <chat> <...> - sends a message to other players
-                            7. <quit> - quits match
+                            3. <place> [id] [hand card's corner] [matrix card id]
+                            4. <move> [col] [row] - moves the board focus area
+                            5. <chat> <...> - sends a message to other players
+                            6. <quit> - quits match
                             press 'q' to quit help page
                             """,
                     AnsiColor.WHITE, AnsiFormat.DEFAULT, 3, 35
@@ -372,6 +369,8 @@ public class CLIMatchPage implements CLIPage {
     // -------------- UTIL ----------------- //
 
     private static void clearRegion(int col, int row, int width, int height) {
+        CLICommand.saveCursorPosition();
+
         for (int i = 0; i < height; i++) {
             CLICommand.setPosition(col, row + i);
             System.out.println(" ".repeat(width));
@@ -380,9 +379,17 @@ public class CLIMatchPage implements CLIPage {
         CLICommand.restoreCursorPosition();
     }
 
+    public static void moveToInputField() {
+        CLICommand.setPosition(2, 47);
+        CLICommand.clearScreenAfterCursor();
+        AnsiString.print(">> ", AnsiColor.CYAN, AnsiFormat.BOLD);
+    }
+
     // ----------- SERVER REPLY------------- //
 
     public static void serverReply(String message) {
+        CLICommand.saveCursorPosition();
+
         CLICommand.setPosition(2, 45);
         CLICommand.clearLine();
 
@@ -392,6 +399,8 @@ public class CLIMatchPage implements CLIPage {
     }
 
     public static void deleteServerReply() {
+        CLICommand.saveCursorPosition();
+
         CLICommand.setPosition(2, 45);
         CLICommand.clearLine();
 
@@ -409,7 +418,7 @@ public class CLIMatchPage implements CLIPage {
         int row = handUpLeftCornersPosition[inHandPosition][1];
 
         CLICard.printPlaceableCard(card, col, row);
-        CLICommand.restoreCursorPosition();
+        moveToInputField();
     }
 
     private static void removeCardFromHand(int inHandPosition) {
@@ -433,6 +442,8 @@ public class CLIMatchPage implements CLIPage {
      * @param resources HashMap<Resource, Integer> containing the resources to be updated
      */
     public static void updateResourceCounter(HashMap<Resource, Integer> resources) {
+        CLICommand.saveCursorPosition();
+
         clearRegion(75, 35, 17, 7);
 
         for (Resource resource : onBoardResourcesPositions.keySet()) {
@@ -457,6 +468,7 @@ public class CLIMatchPage implements CLIPage {
     }
 
     private static void updateScoreBoard(){
+        CLICommand.saveCursorPosition();
 
         allPlayers.sort(Comparator.comparingInt(Player::getPoints).reversed());  // Lambda for sorting players to make scoreboard
         clearRegion(97, 35, 17, 7);
@@ -479,12 +491,14 @@ public class CLIMatchPage implements CLIPage {
     }
 
     public static void updatePlayerScore(String username, int points) {
-        findPlayer(username).setPoints(points);
+        Objects.requireNonNull(findPlayer(username)).setPoints(points);
         updateScoreBoard();
     }
 
     // ---------------- CHAT ------------------- //
     public static void chatLog(@NotNull String sender, String message) {
+        CLICommand.saveCursorPosition();
+
         Player senderPlayer;
 
         try {

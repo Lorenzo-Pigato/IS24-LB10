@@ -367,8 +367,8 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     private void boardPanesSetup() {
 
         boardAnchorPane = new AnchorPane();
-        boardScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-        boardScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        boardScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        boardScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         //boardScrollPane.setPrefViewportHeight(631);
         //boardScrollPane.setPrefViewportWidth(1186);
         boardAnchorPane.setPrefSize(20000, 20000);
