@@ -5,6 +5,7 @@ import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiSpecial;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiString;
+import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
 import it.polimi.ingsw.lb10.server.model.Matrix;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.Resource;
@@ -66,7 +67,7 @@ public class CLIMatchPage implements CLIPage {
         if(allPlayers == null) return;
 
         allPlayers.remove(allPlayers.stream().filter(player -> player.getUsername().equals(username)).findFirst().orElse(null));
-        updateScoreBoard();
+        if(CLIClientViewController.instance().startingCardHasBeenPlaced()) updateScoreBoard();
     }
 
 
@@ -88,6 +89,8 @@ public class CLIMatchPage implements CLIPage {
     private static int onFocusRow = defaultOnFocusRow;
 
     public static void printBoard(Matrix board) {
+        clientPlayer.setMatrix(board);
+
         clearRegion(boardStartCol, boardStartRow - 1, onFocusWidth * 3 + 2, onFocusHeight * 2 + 1);
         for (int col = onFocusCol; col < onFocusCol + onFocusWidth; col++)
             for (int row = onFocusRow; row < onFocusRow + onFocusHeight; row++)
@@ -120,13 +123,13 @@ public class CLIMatchPage implements CLIPage {
         printBoard(board);
     }
 
-    public void resetBoardView(Matrix board) {
+    public void resetBoardView() {
         clearRegion(boardStartCol - 2, boardStartRow - 1, onFocusWidth * 3, onFocusHeight * 2 + 2);
 
         onFocusCol = defaultOnFocusCol;
         onFocusRow = defaultOnFocusRow;
 
-        printBoard(board);
+        printBoard(clientPlayer.getMatrix());
     }
 
     /**
@@ -345,6 +348,7 @@ public class CLIMatchPage implements CLIPage {
                             4. <move> [col] [row] - moves the board focus area
                             5. <chat> <...> - sends a message to other players
                             6. <quit> - quits match
+                            7. <home> resets the board position
                             press 'q' to quit help page
                             """,
                     AnsiColor.WHITE, AnsiFormat.DEFAULT, 3, 35

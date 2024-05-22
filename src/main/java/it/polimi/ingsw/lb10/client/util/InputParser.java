@@ -166,6 +166,11 @@ public class InputParser {
                 return null;
             }
 
+            case "home" -> {
+                ((CLIMatchPage) controller.getView().getPage()).resetBoardView();
+                return null;
+            }
+
             default -> CLIMatchPage.serverReply("Invalid command, type <help> to see all commands");
         }
 
