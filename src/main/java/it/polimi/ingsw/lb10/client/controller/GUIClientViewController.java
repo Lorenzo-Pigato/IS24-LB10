@@ -75,7 +75,6 @@ public class GUIClientViewController extends ClientViewController {
         stage.setHeight(900);
         stage.getIcons().add(new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/images/icon.png"))));
         stage.setOnCloseRequest(_ -> {
-            send(new QuitRequest());
             client.setActive(false);
             Platform.exit();
         });
