@@ -2,11 +2,13 @@ package it.polimi.ingsw.lb10.client.util;
 
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIMatchPage;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIChooseQuestPage;
+import it.polimi.ingsw.lb10.client.cli.clipages.CLIQuitPage;
 import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
 import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.network.requests.match.*;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -17,7 +19,7 @@ public class InputParser {
     public static CLIClientViewController controller = CLIClientViewController.instance();
     private static boolean questSelected = false;
 
-    public static Request parse(String input) {
+    public static @Nullable Request parse(@NotNull String input) {
         String[] parsed = input.trim().split(" ");
 
         if(parsed.length == 0) return null;
@@ -161,7 +163,8 @@ public class InputParser {
             case "quit" -> {
                 controller.getClient().setActive(false);
                 controller.close();
-
+                controller.getView().setPage(new CLIQuitPage());
+                controller.getView().displayPage(null);
                 return null;
             }
 

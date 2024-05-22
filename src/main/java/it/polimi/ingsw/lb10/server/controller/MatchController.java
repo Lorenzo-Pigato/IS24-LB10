@@ -72,7 +72,6 @@ public class MatchController implements Runnable, MatchRequestVisitor {
             }
         } catch (Throwable e) {
             Server.log("[" + id + "]" + ">> " + e.getMessage());
-            remoteViews.forEach(remoteView -> remoteView.send(new TerminatedMatchResponse()));
         }
 
     }

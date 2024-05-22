@@ -13,7 +13,6 @@ import it.polimi.ingsw.lb10.network.response.PongResponse;
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.network.response.lobby.BooleanResponse;
 import it.polimi.ingsw.lb10.network.response.match.JoinMatchResponse;
-import it.polimi.ingsw.lb10.network.response.match.TerminatedMatchResponse;
 import it.polimi.ingsw.lb10.server.Server;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.view.RemoteView;
@@ -161,7 +160,6 @@ public class LobbyController implements LobbyRequestVisitor {
             try {
                 matchController.submitRequest(mr);
             } catch (Exception e) {
-                send(mr.getUserHash(), new TerminatedMatchResponse());
             }
         });
     }
@@ -181,7 +179,6 @@ public class LobbyController implements LobbyRequestVisitor {
             getPlayer(newMatchRequest.getUserHash()).setInMatch(true);
             submitToController(controller, new JoinMatchRequest(controller.getMatchId(), getPlayer(newMatchRequest.getUserHash())), newMatchRequest.getUserHash());
         } catch (InterruptedException e) {
-            send(newMatchRequest.getUserHash(), new TerminatedMatchResponse()); //match interrupted
         }
     }
 

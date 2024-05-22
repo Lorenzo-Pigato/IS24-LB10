@@ -11,8 +11,6 @@ public interface ResponseVisitor {
 
     void visit(BooleanResponse response);
 
-    void visit(TerminatedMatchResponse response);
-
     void visit(StartedMatchResponse response);
 
     void visit(PrivateQuestsResponse response);

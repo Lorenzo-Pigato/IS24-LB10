@@ -100,11 +100,12 @@ public abstract class ClientViewController {
                     Response response = (Response) socketIn.readObject();
                     response.accept(responseHandler);
                 }
-
             }  catch (IOException | ClassNotFoundException e) {
-                close();
-                client.setActive(false);
-                exceptionHandler.handle(e);
+                if(client.isActive()){
+                    exceptionHandler.handle(e);
+                    close();
+                    client.setActive(false);
+                }
             }
         });
 
@@ -195,8 +196,8 @@ public abstract class ClientViewController {
     public void close() {
         if (!socket.isClosed()) {
             try{
-                ClientHeartBeatHandler.stop();
                 if(!asyncSocketReader.isInterrupted()) asyncSocketReader.interrupt();
+                ClientHeartBeatHandler.stop();
                 socket.close();
             } catch (IOException e) {
                 exceptionHandler.handle(e);

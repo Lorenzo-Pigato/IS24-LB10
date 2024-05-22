@@ -19,23 +19,23 @@ public class CLIExceptionHandler implements ExceptionHandler {
         this.view = view;
     }
 
-    public void handle(Exception e) {
+    public synchronized void handle(Exception e) {
         view.setPage(new CLIErrorPage());
         view.displayPage(new String[]{">> Exception : <<", e.getMessage()});
     }
 
-    public void handle(IOException e) {
+    public synchronized void handle(IOException e) {
         view.setPage(new CLIErrorPage());
         view.displayPage(new String[]{">> Server closed connection <<", e.getMessage()});
     }
 
-    public void handle(ConnectionErrorException e) {
+    public synchronized void handle(ConnectionErrorException e) {
         view.setPage(new CLI404Page());
         view.displayPage(new String[]{">> Server closed connection <<", e.getMessage()});
     }
 
     @Override
-    public void handle(ConnectionTimedOutException e){
+    public synchronized void handle(ConnectionTimedOutException e){
         view.setPage(new CLIErrorPage());
         view.displayPage(new String[]{">> Connection timed out<<", null});
     }

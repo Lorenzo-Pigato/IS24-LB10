@@ -71,7 +71,6 @@ public class Client implements Runnable {
             controller.game();
         }
 
-        new Scanner(System.in).nextLine();
     }
 
     private void heartBeatSetUp() {

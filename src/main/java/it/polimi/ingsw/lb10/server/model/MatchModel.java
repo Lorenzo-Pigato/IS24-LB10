@@ -71,14 +71,12 @@ public class MatchModel extends Observable {
     public boolean hasRunOutOfCards() { return runOutOfCards;}
 
     /**
-     * this method sets terminated state to true and sets all player in-match state to false, then sends out a new TerminatedMatchResponse to
-     * all players.
+     * this method sets terminated state to true and sets all player in-match state to false.
      */
     public void terminate() {
         Server.log("[" + id + "]" + ">>match terminated");
         terminated = true;
         players.forEach(p -> p.setInMatch(false));
-        notifyAll(new TerminatedMatchResponse());
     }
 
 
@@ -626,7 +624,6 @@ public class MatchModel extends Observable {
         Server.log("[" + id + "]" + ">>match terminated");
         players.forEach(player -> notify(new EndGameResponse(player, players, true), player.getUserHash()));
         terminated = true;
-        notifyAll(new TerminatedMatchResponse());
     }
 
 
