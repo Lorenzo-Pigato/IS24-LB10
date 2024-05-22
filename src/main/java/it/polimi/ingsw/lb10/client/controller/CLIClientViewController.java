@@ -156,8 +156,10 @@ public class CLIClientViewController extends ClientViewController {
                         } else if (splitInput[0].equalsIgnoreCase("new") && splitInput.length == 2) {
                             try {
                                 if (Integer.parseInt(splitInput[1]) >= 2 && Integer.parseInt(splitInput[1]) <= 4) {
-                                    send(new NewMatchRequest(Integer.parseInt(splitInput[1])));
-                                    CLIClientViewController.getLock().wait();
+                                    synchronized (getLock()) {
+                                        send(new NewMatchRequest(Integer.parseInt(splitInput[1])));
+                                        CLIClientViewController.getLock().wait();
+                                    }
                                 } else view.updatePageState(new CLILobbyPage.InvalidInput());
                             } catch (NumberFormatException nan) {
                                 view.updatePageState(new CLILobbyPage.InvalidInput());
