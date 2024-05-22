@@ -198,6 +198,7 @@ public abstract class ClientViewController {
                 if(!asyncSocketReader.isInterrupted()) asyncSocketReader.interrupt();
                 ClientHeartBeatHandler.stop();
                 socket.close();
+                notifyAll();
             } catch (IOException e) {
                 client.setActive(false);
             }

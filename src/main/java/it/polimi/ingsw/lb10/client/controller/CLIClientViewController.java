@@ -97,17 +97,18 @@ public class CLIClientViewController extends ClientViewController {
 
                 Scanner in = new Scanner(System.in);
                 String username;
+                username = in.nextLine().trim();
+                if(client.isActive() && !username.isEmpty())
                 try {
                     do {
                         do {
-                            username = in.nextLine().trim();
                             if (username.length() < 2 || username.length() > 15)
                                 view.updatePageState(new CLILoginPage.invalidLength());
                             view.displayPage(new String[]{username});
                         } while (username.length() < 2 || username.length() > 15);
                         send(new LoginRequest(username));
                         CLIClientViewController.getLock().wait();
-                    } while (client.isNotLogged());
+                    } while (client.isNotLogged() && client.isActive());
                 } catch (NullPointerException e) {
                     close();
                     getExceptionHandler().handle(e);
