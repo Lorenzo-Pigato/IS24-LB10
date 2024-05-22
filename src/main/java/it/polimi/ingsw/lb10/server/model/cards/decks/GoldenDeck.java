@@ -45,7 +45,7 @@ public class GoldenDeck {
             cards = objectMapper.readValue(inputStream, new TypeReference<ArrayList<GoldenCard>>() {
             });
         } catch (Exception e) {
-            Server.log(e.getMessage());
+            Server.log(">> ERROR [" + e.getMessage() + "]");
         }
     }
 

@@ -46,7 +46,7 @@ public class Server implements Runnable {
             try {
                 Socket clientSocket = serverSocket.accept();
                 welcomeExecutor.submit(new ClientConnection(clientSocket));
-            } catch (IOException e) {
+            } catch (Exception e) {
                 displayError();
                 CLICommand.setPosition(2, 49);
                 AnsiString.print(">> Error: " + e.getMessage(), AnsiColor.RED);
@@ -69,15 +69,11 @@ public class Server implements Runnable {
         AnsiString.print(this.getPort() + "", AnsiColor.YELLOW, AnsiFormat.BOLD);
     }
 
-    private void displayError() {
-        CLICommand.home();
-        CLICommand.clearNextLines(14);
-        CLIBanner.displayError(17, 2);
-
+    public static void displayError() {
         CLICommand.setPosition(2, 14);
 
         AnsiString.print("Status: ", AnsiColor.CYAN);
-        AnsiString.print("OFFLINE", AnsiColor.RED, AnsiFormat.BOLD);
+        AnsiString.print("- ERROR -", AnsiColor.RED, AnsiFormat.BOLD);
     }
 
     /**
@@ -89,13 +85,14 @@ public class Server implements Runnable {
      */
     public static void log(String log) {
         saveLog(log);
+
         if (logs.size() == 28) {
             logs.removeFirst();
 
             logs.addLast(new CLIString(log.split("\n")[0],
                     AnsiColor.DEFAULT,
                     AnsiFormat.DEFAULT,
-                    2, 44, 60)); //add last log entry on line 44
+                    2, 44, 75)); //add last log entry on line 44
 
             logs.forEach(l -> {
                 l.reposition(2, l.getPosition()[1] - 1);
@@ -105,7 +102,8 @@ public class Server implements Runnable {
             logs.addLast(new CLIString(log.split("\n")[0],
                     AnsiColor.DEFAULT,
                     AnsiFormat.DEFAULT,
-                    2, logs.size() + 16, 73));
+                    2, logs.size() + 16, 75));
+
             logs.getLast().print();
         }
     }

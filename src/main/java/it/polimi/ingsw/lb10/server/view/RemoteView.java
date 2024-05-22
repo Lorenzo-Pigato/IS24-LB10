@@ -35,7 +35,6 @@ public class RemoteView implements Observer {
             outputStream.writeObject(r);
             outputStream.flush();
         } catch (IOException e) {
-            Server.log("Socket exception: " + e.getMessage());
             LobbyController.disconnectClient(hashCode);
         }
     }

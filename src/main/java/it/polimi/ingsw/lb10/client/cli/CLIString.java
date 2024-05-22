@@ -21,10 +21,13 @@ public class CLIString {
     private final int[] position = new int[2];
     private boolean centered = false;
     private boolean visible = false;
+    private int realLength;
 
     //-------------------------- Builders -----------------------------//
-    public CLIString(String string, AnsiColor color, AnsiFormat format, int col, int row, int widthLimit) {
-        this.string = string.length() > widthLimit ? string.substring(0, widthLimit - 3) + "..." + AnsiSpecial.RESET.getCode() : string;
+    public CLIString(@NotNull String string, @NotNull AnsiColor color, @NotNull AnsiFormat format, int col, int row, int widthLimit) {
+        this.string = string.length() > widthLimit ? string.substring(0, widthLimit - 4) + "..." + AnsiSpecial.RESET.getCode() : string;
+        this.realLength = this.string.length();
+
         this.color = color;
         this.format = format;
 
@@ -45,6 +48,8 @@ public class CLIString {
 
     public CLIString(String string, AnsiColor color, AnsiFormat format, int col, int row) {
         this.string = string;
+        this.realLength = string.length();
+
         this.color = color;
         this.format = format;
 
@@ -127,16 +132,11 @@ public class CLIString {
     public void deleteString() {
         CLICommand.setPosition(position[0], position[1]);
         int row = position[1];
-        Arrays.stream(string.split("\n")).forEach(
-                line -> {
-                    int lineSize = line.length();
-
-                    if (line.contains(AnsiSpecial.RESET.getCode())) lineSize -= 5;
-                    if (line.contains(color.getCode())) lineSize -= color.getCode().length();
-                    if (line.contains(format.getCode())) lineSize -= format.getCode().length();
-
-                    System.out.print(" ".repeat(lineSize));
-                    CLICommand.setPosition(position[0], ++position[1]);
+        Arrays.stream(this.string.split("\n"))
+                .forEach(
+                    line -> {
+                        System.out.print(" ".repeat(line.length()));
+                        CLICommand.setPosition(position[0], ++position[1]);
                 }
         );
         position[1] = row;
@@ -190,5 +190,9 @@ public class CLIString {
 
     public boolean isVisible() {
         return visible;
+    }
+
+    public int getRealLength() {
+        return realLength;
     }
 }

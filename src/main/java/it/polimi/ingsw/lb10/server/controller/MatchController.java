@@ -72,7 +72,8 @@ public class MatchController implements Runnable, MatchRequestVisitor {
                 request.accept(this);
             }
         } catch (Throwable e) {
-            Server.log("[" + id + "]" + ">> " + e.getMessage());
+            Server.displayError();
+            Server.log(">> ERROR handling match request");
             remoteViews.forEach(remoteView -> remoteView.send(new TerminatedMatchResponse()));
         }
 
@@ -109,7 +110,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     public synchronized void visit(@NotNull JoinMatchRequest jmr) {
         players.add(jmr.getPlayer()); //adds new player, safe because LobbyController checked if it's possible
         getRemoteView(jmr.getUserHash()).send(new JoinMatchResponse(true, getMatchId())); //sends response
-        Server.log("[ " + id + "]" + ">>match joined [username : " + getPlayer(jmr.getUserHash()).getUsername());
+        Server.log(">> [ " +  getPlayer(jmr.getUserHash()).getUsername() + "]" + " joined match [" + id);
         if (players.size() == numberOfPlayers) start();
     }
 
@@ -119,10 +120,11 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     @Override
     public synchronized void visit(@NotNull PrivateQuestsRequest privateQuestsRequest) {
         try {
-            Server.log("[ " + id + "]" + ">>private quests request [username : " + getPlayer(privateQuestsRequest.getUserHash()).getUsername() + "]");
+            Server.log(">> [ " + getPlayer(privateQuestsRequest.getUserHash()).getUsername() + "]" + " private quests request");
             getRemoteView(privateQuestsRequest.getUserHash()).send(new PrivateQuestsResponse(getPlayer(privateQuestsRequest.getUserHash()).getPrivateQuests()));
         } catch (Exception e) {
-            Server.log("[ " + id + "]" + e.getMessage());
+            Server.displayError();
+            Server.log(">> ERROR [ " + id + "] " + e.getMessage());
         }
     }
 
@@ -131,7 +133,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     @Override
     public synchronized void visit(@NotNull PrivateQuestSelectedRequest privateQuestSelectedRequest) {
-        Server.log("[ " + id + "]" + ">>private quest selected request [username : " + getPlayer(privateQuestSelectedRequest.getUserHash()).getUsername() + "]");
+        Server.log(">> [ " + getPlayer(privateQuestSelectedRequest.getUserHash()).getUsername() + "]" + " selected private quest");
         getPlayer(privateQuestSelectedRequest.getUserHash()).setPrivateQuest(privateQuestSelectedRequest.getSelectedQuest());
         model.assignPrivateQuest(getPlayer(privateQuestSelectedRequest.getUserHash()), privateQuestSelectedRequest.getSelectedQuest());;
     }
@@ -144,7 +146,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     @Override
     public void visit(@NotNull ChatRequest chatRequest) {
-        Server.log("[ " + id + "]" + ">>chat message from " + getPlayer(chatRequest.getUserHash()).getUsername() + " : " + chatRequest.getMessage());
+        Server.log(">> [" + getPlayer(chatRequest.getUserHash()).getUsername() + "] chat message: " + chatRequest.getMessage());
 
         String [] splitMessage = chatRequest.getMessage().trim().split(" ");
         if(splitMessage[0].equals("to") && splitMessage.length > 2) {
@@ -178,10 +180,9 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     @Override
     public void visit(DrawGoldenFromTableRequest drawGoldenFromTableRequest) {
-        Server.log("[" + id + "]" + ">>draw golden card from table request from " + getPlayer(drawGoldenFromTableRequest.getUserHash()).getUsername());
+        Server.log(">> [" + getPlayer(drawGoldenFromTableRequest.getUserHash()).getUsername() + "] draw golden card from table request");
         if (isOnTurnPlayer(drawGoldenFromTableRequest.getUserHash()) && hasToPick(drawGoldenFromTableRequest.getUserHash())) {
             model.drawGoldenFromTable(getPlayer(drawGoldenFromTableRequest.getUserHash()), drawGoldenFromTableRequest.getIndex());
-            Server.log("[" + id + "]" + ">>draw request valid");
         }  else notValidDrawReaction(drawGoldenFromTableRequest.getUserHash());
     }
 
@@ -190,7 +191,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     @Override
     public void visit(DrawResourceFromTableRequest drawResourceFromTableRequest) {
-        Server.log("[" + id + "]" + ">>draw resource card from table request from " + getPlayer(drawResourceFromTableRequest.getUserHash()).getUsername());
+        Server.log(">> [" + getPlayer(drawResourceFromTableRequest.getUserHash()).getUsername() + "] draw resource card from table request");
         if (isOnTurnPlayer(drawResourceFromTableRequest.getUserHash()) && hasToPick(drawResourceFromTableRequest.getUserHash())) {
             model.drawResourceFromTable(getPlayer(drawResourceFromTableRequest.getUserHash()), drawResourceFromTableRequest.getIndex());
             Server.log("[" + id + "]" + ">>draw request valid");
@@ -203,10 +204,9 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     @Override
     public void visit(DrawResourceFromDeckRequest drawResourceFromDeckRequest) {
-        Server.log("[" + id + "]" + ">>draw resource card from deck request from " + getPlayer(drawResourceFromDeckRequest.getUserHash()).getUsername());
+        Server.log(">> [" + getPlayer(drawResourceFromDeckRequest.getUserHash()).getUsername() + "] draw resource card from deck request");
         if (isOnTurnPlayer(drawResourceFromDeckRequest.getUserHash()) && hasToPick(drawResourceFromDeckRequest.getUserHash())) {
             model.drawResourceFromDeck(getPlayer(drawResourceFromDeckRequest.getUserHash()));
-            Server.log("[" + id + "]" + ">>draw request valid");
         } else {
             notValidDrawReaction(drawResourceFromDeckRequest.getUserHash());
         }
@@ -218,20 +218,17 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     @Override
     public void visit(@NotNull DrawGoldenFromDeckRequest drawGoldenFromDeckRequest) {
-        Server.log("[" + id + "]" + ">>draw resource card from deck request from " + getPlayer(drawGoldenFromDeckRequest.getUserHash()).getUsername());
+        Server.log(">> [" + getPlayer(drawGoldenFromDeckRequest.getUserHash()).getUsername() + "] draw resource golden card from deck request");
         if (isOnTurnPlayer(drawGoldenFromDeckRequest.getUserHash()) && hasToPick(drawGoldenFromDeckRequest.getUserHash())) {
             model.drawGoldenFromDeck(getPlayer(drawGoldenFromDeckRequest.getUserHash()));
-            Server.log("[" + id + "]" + ">>draw request valid");
         } else notValidDrawReaction(drawGoldenFromDeckRequest.getUserHash());
     }
 
     private void notValidDrawReaction(int userHash) {
         if (!isOnTurnPlayer(userHash) && model.getOnTurnPlayer() != null) {
             model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), userHash);
-            Server.log("[" + id + "]" + ">>draw request not valid");
         } else {
             model.notify(new ServerNotification("You must place a card before picking one!", false), userHash);
-            Server.log("[" + id + "]" + ">>draw request not valid");
         }
     }
 
@@ -239,7 +236,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
 
     @Override
     public void visit(@NotNull PlaceStartingCardRequest placeStartingCardRequest) {
-        Server.log("[" + id + "]" + "player " + getPlayer(placeStartingCardRequest.getUserHash()).getUsername() + " placed starting card");
+        Server.log("[" + getPlayer(placeStartingCardRequest.getUserHash()).getUsername() + "] placed starting card");
         model.getPlayer(placeStartingCardRequest.getUserHash()).setStartingCard(placeStartingCardRequest.getStartingCard());
         model.insertStartingCard(getPlayer(placeStartingCardRequest.getUserHash()));
         if (players.stream().noneMatch(player -> player.getMatrix().getNode(41, 41).getCorners().isEmpty()))
@@ -253,7 +250,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     @Override
     public void visit(PlaceCardRequest placeCardRequest) {
-        Server.log("[ " + id + "]" + ">>new place card request");
+        Server.log(">> [" + getPlayer(placeCardRequest.getUserHash()).getUsername() + "] requested to place a card");
         if (model.getPlayer(placeCardRequest.getUserHash()).equals(model.getOnTurnPlayer()) && !hasToPick(placeCardRequest.getUserHash())) {
             if (model.checkValidMatrixCardId(placeCardRequest.getMatrixCardId(), getPlayer(placeCardRequest.getUserHash()))) {
                 Position position = placeCardRequest.getPosition();
@@ -282,7 +279,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
 
     @Override
     public void visit(PickRequest pickRequest) { //TEST !!
-        Server.log("[ " + id + "]" + ">>new pick request");
+        Server.log(">> [" + getPlayer(pickRequest.getUserHash()).getUsername() + "] requested to pick a card");
         if(model.hasRunOutOfCards()){
             model.notify(new PickedCardResponse(null, false, "You and your friends run out of cards", getPlayer(pickRequest.getUserHash()).getMatrix(), model.hasRunOutOfCards()), pickRequest.getUserHash());
             model.endTurn(pickRequest.getUserHash(), getPlayer(pickRequest.getUserHash()).getPoints());
@@ -296,14 +293,13 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      */
     @Override
     public void visit(MoveBoardRequest moveBoardRequest) {
-        Server.log("[ " + id + "]" + ">>move board request");
         model.notify(new MoveBoardResponse(model.getPlayer(moveBoardRequest.getUserHash()).getMatrix(), moveBoardRequest.getxOffset(), moveBoardRequest.getyOffset()), moveBoardRequest.getUserHash());
     }
 
 
     @Override
     public void visit(QuitMatchRequest quitMatchRequest) {
-        Server.log("[" + id + "] " + getPlayer(quitMatchRequest.getUserHash()).getUsername() + " left match");
+        Server.log("[" + getPlayer(quitMatchRequest.getUserHash()).getUsername() + "] left the match");
         removePlayer(getPlayer(quitMatchRequest.getUserHash()));
     }
 
@@ -322,9 +318,10 @@ public class MatchController implements Runnable, MatchRequestVisitor {
                     .stream()
                     .filter(remoteView -> remoteView.getSocket().hashCode() == hashCode)
                     .findFirst()
-                    .orElseThrow(() -> new Exception(">>RemoteView not found [hash : " + hashCode + "]"));
+                    .orElseThrow(() -> new Exception(">> RemoteView not found [hash : " + hashCode + "]"));
         } catch (Exception e) {
-            Server.log("[" + id + "]" + e.getMessage());
+            Server.displayError();
+            Server.log(">> ERROR [" + id + "] " + e.getMessage());
             return null;
         }
 
@@ -363,7 +360,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
      * to all clients in the starting match
      */
     private synchronized void start() {
-        Server.log("[ " + id + "]" + ">>match started");
+        Server.log(">> [ " + id + "] match started");
         try {
             started = true;
             model = new MatchModel(numberOfPlayers, players);
@@ -386,7 +383,8 @@ public class MatchController implements Runnable, MatchRequestVisitor {
                     .findFirst()
                     .orElseThrow(() -> new Exception(">> Player not found [hash : " + userHash + "]"));
         } catch (Exception e) {
-            Server.log("[" + id + "]" + e.getMessage());
+            Server.displayError();
+            Server.log(">> ERROR [" + id + "]" + e.getMessage());
         }
         return null;
     }

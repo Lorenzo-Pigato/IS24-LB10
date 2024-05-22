@@ -45,7 +45,6 @@ public class LobbyController implements LobbyRequestVisitor {
         signedPlayers = new ArrayList<>();
         matches = new ArrayList<>();
         remoteViews = new ArrayList<>();
-        Server.log("\n\n >> Server online ");
     }
 
     public synchronized static LobbyController instance() {
@@ -90,11 +89,11 @@ public class LobbyController implements LobbyRequestVisitor {
      */
     @Override
     public synchronized void visit(@NotNull LoginRequest lr) {
-        Server.log(">>login request [username : " + lr.getUsername() + ", " + lr.getUserHash() + "]");
+        Server.log(">> [" +  lr.getUserHash() + "] login request: [" + lr.getUsername() + "]");
         boolean validated = validateUsername(lr.getUsername());
         if (validated) addSignedPlayer(lr.getUserHash(), lr.getUsername());
         send(lr.getUserHash(), new BooleanResponse(lr.getUsername(), validated));
-        Server.log(">>boolean response [username : " + lr.getUsername() + ", " + lr.getUserHash() + "] " + validated);
+        Server.log(">> [" + lr.getUserHash() + "] username validation: " + validated);
     }
 
     /**
@@ -105,11 +104,11 @@ public class LobbyController implements LobbyRequestVisitor {
      */
     @Override
     public synchronized void visit(@NotNull LobbyToMatchRequest ltmr) {
-        Server.log(">>join match [username : " + getPlayer(ltmr.getUserHash()).getUsername() + ", id : " + ltmr.getMatchId() + "]");
+        Server.log(">> [" + getPlayer(ltmr.getUserHash()).getUsername()+ "] join match [" + ltmr.getMatchId() + "]");
         if (matches.stream().filter(matchController -> !matchController.isStarted()).map(MatchController::getMatchId).noneMatch(id -> id == ltmr.getMatchId())) {
             //Predicate : matchId contained in the request is an actual waiting match
             send(ltmr.getUserHash(), new JoinMatchResponse(false, 0)); //match already started or not existing
-            Server.log(">>no match found, join match response [status : false]");
+            Server.log(">> [" + ltmr.getUserHash() + "]no match found, join match response status : [false]");
         } else {
             //envelopes the username of the player to be passed to the controller
             matches.stream().filter(matchController -> (!matchController.isStarted()) && matchController.getMatchId() == ltmr.getMatchId()).findFirst().ifPresent(matchController -> {
@@ -119,7 +118,7 @@ public class LobbyController implements LobbyRequestVisitor {
                     JoinMatchRequest jmr = new JoinMatchRequest(ltmr.getMatchId(), getPlayer(ltmr.getUserHash()));
                     submitToController(matchController, jmr, ltmr.getUserHash()); //submits request
                 } catch (InterruptedException e) {
-                    Server.log(">>match " + ltmr.getMatchId() + "interrupted");
+                    Server.log(">> match [" + ltmr.getMatchId() + "] interrupted");
                     disconnectClient(ltmr.getUserHash());
                 }
             });//submit the request to the controller of the requested match
@@ -139,12 +138,12 @@ public class LobbyController implements LobbyRequestVisitor {
 
     @Override
     public synchronized void visit(@NotNull NewMatchRequest newMatchRequest) {
-        Server.log(">>new match request [username : " + getPlayer(newMatchRequest.getUserHash()).getUsername() + "]");
+        Server.log(">> [" + getPlayer(newMatchRequest.getUserHash()).getUsername() + "] new match request");
         MatchController controller = new MatchController(newMatchRequest.getNumberOfPlayers()); //creates new controller
         matches.add(controller);
         controller.addRemoteView(getRemoteView(newMatchRequest.getUserHash())); //adds the view to the new controller
         controllersPool.submit(controller); //runs new controller thread
-        Server.log("created new match [id : " + controller.getMatchId());
+        Server.log(">> created new match: id [" + controller.getMatchId() + "]");
         try {
             getPlayer(newMatchRequest.getUserHash()).setInMatch(true);
             submitToController(controller, new JoinMatchRequest(controller.getMatchId(), getPlayer(newMatchRequest.getUserHash())), newMatchRequest.getUserHash());
@@ -213,7 +212,7 @@ public class LobbyController implements LobbyRequestVisitor {
         } catch (IOException e) {
             //
         }
-        Server.log(">>client disconnected : " + userHash);
+        Server.log(">> [" + userHash + "] client disconnected" );
     }
 
     public synchronized static void send(int hashcode, Response response){

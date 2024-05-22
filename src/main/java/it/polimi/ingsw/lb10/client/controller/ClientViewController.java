@@ -174,7 +174,6 @@ public abstract class ClientViewController {
             HashResponse hashResponse = (HashResponse) socketIn.readObject();
             hash = hashResponse.getHash();
         } catch (Exception e) {
-            Server.log(e.getMessage());
             close();
             exceptionHandler.handle(e);
         }

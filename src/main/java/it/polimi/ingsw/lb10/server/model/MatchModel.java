@@ -71,7 +71,7 @@ public class MatchModel extends Observable {
     public boolean hasRunOutOfCards() { return runOutOfCards;}
 
     public void terminate() {
-        Server.log("[" + id + "]" + ">>match terminated");
+        Server.log(">> [" + id + "] match terminated");
         terminated = true;
         players.forEach(p -> p.setInMatch(false));
         notifyAll(new TerminatedMatchResponse());
@@ -210,10 +210,10 @@ public class MatchModel extends Observable {
      *          before game termination.
      */
     private void checkFinalTurn(Player p) {
-        Server.log("[ " + id + "]" + ">>checking final turn");
+        Server.log(">> [" + id + "] checking final turn");
         if (!finalTurnStarted && p.getPoints() >= 20) {
             finalTurnStarted = true;
-            Server.log("[" + id + "]" + ">>final turn started, " + p.getUsername() + " reached 20 pts");
+            Server.log(">> [" + id + "] final turn started [" + p.getUsername() + "] reached 20 pts");
             notifyAll(new ChatMessageResponse("Server", "Final turn has started!", false));
         }
     }
@@ -232,7 +232,7 @@ public class MatchModel extends Observable {
 
         if(finalTurnStarted && !finalTurnPlayed && onTurnPlayer.equals(gameStarter)){
             finalTurnPlayed = true;
-            Server.log("[ " + id + "]" + ">>final turn played");
+            Server.log(">> [ " + id + "] final turn played");
         }
     }
 
@@ -333,7 +333,7 @@ public class MatchModel extends Observable {
 
         if (resourceDeckIsEmpty && goldenDeckIsEmpty) {
             finalTurnStarted = true;
-            Server.log("[ " + id + "]" + ">>final turn started, both decks are empty!");
+            Server.log(">> [" + id + "] final turn started, both decks are empty!");
             notifyAll(new ChatMessageResponse("Server", "Final turn has started!", false));
         }
 
@@ -394,7 +394,8 @@ public class MatchModel extends Observable {
             return players.stream().filter(player -> player.getUserHash() == userHash).findFirst().orElseThrow(() -> new Exception(">>player not found in match model"));
 
         } catch (Exception e) {
-            Server.log("[" + id + "]" + e.getMessage());
+            Server.displayError();
+            Server.log(">> ERROR [" + id + "]" + e.getMessage());
             return null;
         }
     }
@@ -584,7 +585,7 @@ public class MatchModel extends Observable {
 
 
     private void endGame() {
-        Server.log("[" + id + "]" + ">>match terminated");
+        Server.log(">> [" + id + "] match terminated");
         players.forEach(player -> notify(new EndGameResponse(player, players, true), player.getUserHash()));
         terminated = true;
         notifyAll(new TerminatedMatchResponse());
