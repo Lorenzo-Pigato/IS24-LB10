@@ -181,6 +181,7 @@ public class CLIResponseHandler implements ResponseVisitor {
     public void visit(EndGameResponse endGameResponse) {
         controller.getView().setPage(new CLIEndOfMatchPage());
         controller.getView().getPage().print(new Object[]{endGameResponse.getPlayer(), endGameResponse.getPlayers(), endGameResponse.isMatchStarted()});
+        controller.getClient().setActive(false);
         controller.close();
     }
 
