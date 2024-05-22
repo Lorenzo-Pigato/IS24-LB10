@@ -83,7 +83,7 @@ public class Server implements Runnable {
      *
      * @param log is used to store the log string
      */
-    public static void log(String log) {
+    public static synchronized void log(String log) {
         saveLog(log);
 
         if (logs.size() == 28) {
