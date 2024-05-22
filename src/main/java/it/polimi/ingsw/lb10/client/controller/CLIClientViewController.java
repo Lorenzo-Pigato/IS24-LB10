@@ -6,6 +6,7 @@ import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.util.InputParser;
 import it.polimi.ingsw.lb10.client.util.InputVerifier;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
+import it.polimi.ingsw.lb10.network.heartbeat.ClientHeartBeatHandler;
 import it.polimi.ingsw.lb10.network.requests.QuitRequest;
 import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestSelectedRequest;
@@ -90,33 +91,33 @@ public class CLIClientViewController extends ClientViewController {
 
     @Override
     public void login() {
-        synchronized (CLIClientViewController.getLock()) {
             if (client.isActive()) {
                 view.setPage(new CLILoginPage());
                 view.displayPage(null);
-
                 Scanner in = new Scanner(System.in);
                 String username;
                 username = in.nextLine().trim();
-                if(client.isActive() && !username.isEmpty())
-                try {
-                    do {
+                if(client.isActive() && !username.isEmpty()) {
+                    try {
                         do {
-                            if (username.length() < 2 || username.length() > 15)
-                                view.updatePageState(new CLILoginPage.invalidLength());
-                            view.displayPage(new String[]{username});
-                        } while (username.length() < 2 || username.length() > 15);
-                        send(new LoginRequest(username));
-                        CLIClientViewController.getLock().wait();
-                    } while (client.isNotLogged() && client.isActive());
-                } catch (NullPointerException e) {
-                    close();
-                    getExceptionHandler().handle(e);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                            do {
+                                if (username.length() < 2 || username.length() > 15)
+                                    view.updatePageState(new CLILoginPage.invalidLength());
+                                view.displayPage(new String[]{username});
+                            } while (username.length() < 2 || username.length() > 15);
+                            synchronized (CLIClientViewController.getLock()) {
+                                send(new LoginRequest(username));
+                                CLIClientViewController.getLock().wait();
+                            }
+                        } while (client.isNotLogged() && client.isActive());
+                    } catch (NullPointerException e) {
+                        close();
+                        getExceptionHandler().handle(e);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
-        }
     }
 
     /**
@@ -125,56 +126,55 @@ public class CLIClientViewController extends ClientViewController {
      */
     @Override
     public void joinMatch() {
-        synchronized (CLIClientViewController.getLock()) {
-            if (client.isActive()) {
-                view.setPage(new CLILobbyPage());
-                view.displayPage(null);
-                Scanner in = new Scanner(System.in);
-                String input;
-
-                try {
-                    do {
-                        input = in.nextLine();
-                        String[] splitInput = input.trim().split(" ");
-                        if(splitInput.length != 0 && client.isActive()) {
-                            if (splitInput[0].equalsIgnoreCase("join") && splitInput.length == 2) {
-                                try {
-                                    Integer.parseInt(splitInput[1]);
+        if (client.isActive()) {
+            view.setPage(new CLILobbyPage());
+            view.displayPage(null);
+            Scanner in = new Scanner(System.in);
+            String input;
+            try {
+                do {
+                    input = in.nextLine();
+                    String[] splitInput = input.trim().split(" ");
+                    if(splitInput.length != 0 && client.isActive()) {
+                        if (splitInput[0].equalsIgnoreCase("join") && splitInput.length == 2) {
+                            try {
+                                Integer.parseInt(splitInput[1]);
+                                synchronized (getLock()) {
                                     send(new LobbyToMatchRequest(Integer.parseInt(splitInput[1])));
                                     CLIClientViewController.getLock().wait();
-                                } catch (NumberFormatException e) {
-                                    view.updatePageState(new CLILobbyPage.InvalidInput());
-                                } catch (InterruptedException e) {
-                                    throw new RuntimeException(e);
                                 }
-                                if (client.isNotInMatch()) view.updatePageState(new CLILobbyPage.InvalidInput());
+                            } catch (NumberFormatException e) {
+                                view.updatePageState(new CLILobbyPage.InvalidInput());
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                            if (client.isNotInMatch()) view.updatePageState(new CLILobbyPage.InvalidInput());
 
-                            } else if (splitInput[0].equalsIgnoreCase("new") && splitInput.length == 2) {
-                                try {
-                                    if (Integer.parseInt(splitInput[1]) >= 2 && Integer.parseInt(splitInput[1]) <= 4) {
-                                        send(new NewMatchRequest(Integer.parseInt(splitInput[1])));
-                                        CLIClientViewController.getLock().wait();
-                                    } else view.updatePageState(new CLILobbyPage.InvalidInput());
-                                } catch (NumberFormatException nan) {
-                                    view.updatePageState(new CLILobbyPage.InvalidInput());
-                                } catch (InterruptedException e) {
-                                    throw new RuntimeException(e);
-                                }
+                        } else if (splitInput[0].equalsIgnoreCase("new") && splitInput.length == 2) {
+                            try {
+                                if (Integer.parseInt(splitInput[1]) >= 2 && Integer.parseInt(splitInput[1]) <= 4) {
+                                    send(new NewMatchRequest(Integer.parseInt(splitInput[1])));
+                                    CLIClientViewController.getLock().wait();
+                                } else view.updatePageState(new CLILobbyPage.InvalidInput());
+                            } catch (NumberFormatException nan) {
+                                view.updatePageState(new CLILobbyPage.InvalidInput());
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
 
-                            } else if (splitInput[0].equalsIgnoreCase("quit")) {
-                                getClient().setActive(false);
-                                close();
-                                getView().setPage(new CLIQuitPage());
-                                getView().displayPage(null);
-                                break;
-                            } else view.updatePageState(new CLILobbyPage.InvalidInput());
-                            view.displayPage(new String[]{input});
-                        }
-                    } while (client.isNotInMatch() && client.isActive());
-                } catch (NullPointerException e) {
-                    close();
-                    exceptionHandler.handle(e);
-                }
+                        } else if (splitInput[0].equalsIgnoreCase("quit")) {
+                            getClient().setActive(false);
+                            close();
+                            getView().setPage(new CLIQuitPage());
+                            getView().displayPage(null);
+                            break;
+                        } else view.updatePageState(new CLILobbyPage.InvalidInput());
+                        view.displayPage(new String[]{input});
+                    }
+                } while (client.isNotInMatch() && client.isActive());
+            } catch (NullPointerException e) {
+                close();
+                exceptionHandler.handle(e);
             }
         }
     }
@@ -208,6 +208,25 @@ public class CLIClientViewController extends ClientViewController {
             }
         }
 
+    }
+
+    /**
+     * This method closes all Socket streams used to communicate
+     */
+    @Override
+    public void close() {
+        synchronized (inputReaderLock) {
+            if (!socket.isClosed()) {
+                try {
+                    if (!asyncSocketReader.isInterrupted()) asyncSocketReader.interrupt();
+                    ClientHeartBeatHandler.stop();
+                    socket.close();
+                    inputReaderLock.notifyAll();
+                } catch (IOException e) {
+                    client.setActive(false);
+                }
+            }
+        }
     }
 
     /**

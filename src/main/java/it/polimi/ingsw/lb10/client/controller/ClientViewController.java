@@ -192,18 +192,7 @@ public abstract class ClientViewController {
     /**
      * This method closes all Socket streams used to communicate
      */
-    public void close() {
-        if (!socket.isClosed()) {
-            try{
-                if(!asyncSocketReader.isInterrupted()) asyncSocketReader.interrupt();
-                ClientHeartBeatHandler.stop();
-                socket.close();
-                notifyAll();
-            } catch (IOException e) {
-                client.setActive(false);
-            }
-        }
-    }
+    public abstract void close();
 
     public abstract void quit();
 

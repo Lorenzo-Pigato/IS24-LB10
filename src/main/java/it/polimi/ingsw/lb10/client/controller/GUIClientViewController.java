@@ -6,6 +6,7 @@ import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
 import it.polimi.ingsw.lb10.client.exception.GUIExceptionHandler;
 import it.polimi.ingsw.lb10.client.gui.GUIConnectionPageController;
 import it.polimi.ingsw.lb10.client.gui.GUIPageController;
+import it.polimi.ingsw.lb10.network.heartbeat.ClientHeartBeatHandler;
 import it.polimi.ingsw.lb10.network.requests.QuitRequest;
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.server.model.Player;
@@ -121,6 +122,22 @@ public class GUIClientViewController extends ClientViewController {
     @Override
     public void game() {
 
+    }
+
+    /**
+     * This method closes all Socket streams used to communicate
+     */
+    @Override
+    public void close() {
+        if (!socket.isClosed()) {
+            try{
+                if(!asyncSocketReader.isInterrupted()) asyncSocketReader.interrupt();
+                ClientHeartBeatHandler.stop();
+                socket.close();
+            } catch (IOException e) {
+                client.setActive(false);
+            }
+        }
     }
 
     @Override
