@@ -163,8 +163,6 @@ public class InputParser {
             case "quit" -> {
                 controller.getClient().setActive(false);
                 controller.close();
-                controller.getView().setPage(new CLIQuitPage());
-                controller.getView().displayPage(null);
                 return null;
             }
 

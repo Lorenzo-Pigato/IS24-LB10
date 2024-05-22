@@ -65,13 +65,6 @@ public class CLIEndOfMatchPage implements CLIPage {
             }
 
             CLICommand.setPosition(1, 49);
-
-            Scanner scanner = new Scanner(System.in);
-
-            scanner.nextLine();
-
-            CLIClientViewController.instance().getView().setPage(new CLIQuitPage());
-            CLIClientViewController.instance().getView().displayPage(null);
         }
 
     }
