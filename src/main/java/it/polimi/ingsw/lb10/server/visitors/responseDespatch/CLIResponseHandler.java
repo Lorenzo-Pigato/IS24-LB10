@@ -85,7 +85,7 @@ public class CLIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(ChatMessageResponse chatMessageResponse) {
-        CLIMatchPage.chatLog(chatMessageResponse.getSender(), chatMessageResponse.getMessage());
+        if(controller.getView().getPage() instanceof CLIMatchPage) CLIMatchPage.chatLog(chatMessageResponse.getSender(), chatMessageResponse.getMessage());
     }
 
     @Override

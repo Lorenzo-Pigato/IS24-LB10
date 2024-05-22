@@ -33,7 +33,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
 
     private boolean started = false;
     private final ArrayList<Player> players;
-    private final int numberOfPlayers;
+    private int numberOfPlayers;
 
     public MatchController(int numberOfPlayers) {
         requests = new LinkedBlockingQueue<>();
@@ -335,6 +335,9 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     public synchronized void removePlayer(Player p) {
         players.remove(p);
         p.setInMatch(false);
+        if(!isStarted()){
+            numberOfPlayers = numberOfPlayers - 1;
+        }
         if(isStarted()) {
             model.removeObserver(getRemoteView(p.getUserHash()));
             model.removePlayer(p);
@@ -345,6 +348,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
                 model.terminate();
             }
         }else if(players.isEmpty()) setActive(false);
+
         remoteViews.remove(getRemoteView(p.getUserHash()));
 
 
