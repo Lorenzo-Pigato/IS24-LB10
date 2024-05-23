@@ -672,9 +672,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     }
 
     private void setCardHooverEffects(@NotNull ImageView cardOnTable) {
-        cardOnTable.setOnMouseEntered(_ -> {
-            cardOnTable.setEffect(yellowEffect);
-        });
+        cardOnTable.setOnMouseEntered(_ -> cardOnTable.setEffect(yellowEffect));
 
         cardOnTable.setOnMouseExited(_ -> {
             if(!matrixCardSelected || matrixCardId != ((BaseCard) cardOnTable.getUserData()).getId())
@@ -682,14 +680,14 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         });
 
         cardOnTable.setOnMouseClicked(_ -> {
-            if(!matrixCardSelected || !(matrixCardId == ((BaseCard)cardOnTable.getUserData()).getId())){
+            if(!matrixCardSelected || (matrixCardId != ((BaseCard)cardOnTable.getUserData()).getId())){
                 matrixCardSelected = true;
-                boardAnchorPane.getChildren().stream().filter(node -> node instanceof ImageView).filter(node -> ((BaseCard) (node.getUserData())).getId() == matrixCardId).findFirst().ifPresent(node -> node.setEffect(blackEffect));
                 matrixCardId = ((BaseCard)(cardOnTable.getUserData())).getId();
+                boardAnchorPane.getChildren().stream().filter(node -> node instanceof ImageView).filter(node -> ((BaseCard) (node.getUserData())).getId() != matrixCardId).forEach(node -> node.setEffect(blackEffect));
                 if(clickedCard != null) {
                     validatePlacing(clickedRectangle);
                 }
-            }else if (matrixCardId == ((BaseCard)cardOnTable.getUserData()).getId()){
+            }else if (matrixCardSelected && matrixCardId == ((BaseCard)cardOnTable.getUserData()).getId()){
                 matrixCardSelected = false;
             }
         });
