@@ -93,7 +93,7 @@
 
 .tab-pane *.tab-header-background
 {
-    -fx-background-color: -fx-tab-border-color, -fx-tab-inner-border, -fx-tab-background;
+    -fx-background-color: rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0);
     -fx-effect: innershadow(two-pass-box , rgba(0, 0, 0, 0.77), 4, 0.0 , 0 , 0);
 }
 
