@@ -270,7 +270,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         } else {
             if(model.getOnTurnPlayer() == null) model.notify(new ServerNotification("Wait for all players to place starting card before placing one!", false), placeCardRequest.getUserHash());
             else if(!model.getPlayer(placeCardRequest.getUserHash()).equals(model.getOnTurnPlayer())) model.notify(new NotYourTurnResponse(model.getOnTurnPlayer().getUsername()), placeCardRequest.getUserHash());
-            else model.notify(new PlaceCardResponse(null, false, 0, 0, null, "You already placed your card,\npick one to end your turn!"), placeCardRequest.getUserHash());
+            else model.notify(new PlaceCardResponse(null, false, 0, 0, null, "You already placed your card,pick one to end your turn!"), placeCardRequest.getUserHash());
         }
 
     }

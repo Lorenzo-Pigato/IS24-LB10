@@ -454,7 +454,7 @@ public class MatchModel extends Observable {
             player.getMatrix().setCard(card, row, column);
             //if one of the two-parameter row and column is > 82 return false!
             checkInsertion(player, card, row, column);
-        } else notify(new PlaceCardResponse(card, false, row, column, null, "The card you chose has an activation cost, \n Check your resources before placing!"), player.getUserHash());
+        } else notify(new PlaceCardResponse(card, false, row, column, null, "The card you chose has an activation cost, check your resources before placing!"), player.getUserHash());
     }
 
     /**
