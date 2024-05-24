@@ -4,11 +4,9 @@ import it.polimi.ingsw.lb10.client.Client;
 import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 
 import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
-import it.polimi.ingsw.lb10.network.heartbeat.ClientHeartBeatHandler;
 import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.network.response.lobby.HashResponse;
-import it.polimi.ingsw.lb10.server.Server;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
 import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.ResponseVisitor;
@@ -20,7 +18,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.ArrayList;
 
 public abstract class ClientViewController {
@@ -60,7 +57,7 @@ public abstract class ClientViewController {
     public int getUserHash() {return hash;}
     public int getMatchId() {return matchId;}
     public StartingCard getStartingCard() {return startingCard;}
-    public boolean startingCardHasBeenPlaced() {return !startingCardHasBeenPlaced;}
+    public boolean startingCardHasNotBeenPlaced() {return !startingCardHasBeenPlaced;}
     public ArrayList<PlaceableCard> getHand() {return hand;}
     public Socket getSocket() {return socket;}
     public Client getClient() {return client;}

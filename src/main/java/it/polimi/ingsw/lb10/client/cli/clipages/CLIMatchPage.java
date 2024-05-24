@@ -67,7 +67,7 @@ public class CLIMatchPage implements CLIPage {
         if(allPlayers == null) return;
 
         allPlayers.remove(allPlayers.stream().filter(player -> player.getUsername().equals(username)).findFirst().orElse(null));
-        if(CLIClientViewController.instance().startingCardHasBeenPlaced()) updateScoreBoard();
+        if(!CLIClientViewController.instance().startingCardHasNotBeenPlaced()) updateScoreBoard();
     }
 
 

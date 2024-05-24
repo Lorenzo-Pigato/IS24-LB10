@@ -2,7 +2,6 @@ package it.polimi.ingsw.lb10.client.util;
 
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIMatchPage;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIChooseQuestPage;
-import it.polimi.ingsw.lb10.client.cli.clipages.CLIQuitPage;
 import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
 import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.network.requests.match.*;
@@ -110,7 +109,7 @@ public class InputParser {
                         CLIMatchPage.flipCard(2, controller.getHand().get(2));
                     }
                     case "s" -> {
-                        if (controller.startingCardHasBeenPlaced()) { //prevents from re drawing starting card inside table
+                        if (controller.startingCardHasNotBeenPlaced()) { //prevents from re drawing starting card inside table
                             controller.flipStarting();
                             CLIMatchPage.StartingTurn.flipStartingCard(controller.getStartingCard());
                         } else CLIMatchPage.serverReply("Starting card has already been placed");
@@ -120,7 +119,7 @@ public class InputParser {
             }
 
             case ("place") -> {
-                if (controller.startingCardHasBeenPlaced() && parsed[1].equalsIgnoreCase("s")) {
+                if (controller.startingCardHasNotBeenPlaced() && parsed[1].equalsIgnoreCase("s")) {
                     controller.setStartingCardHasBeenPlaced(true);
                     return new PlaceStartingCardRequest(controller.getMatchId(), controller.getStartingCard());
                 }
