@@ -15,6 +15,7 @@ import it.polimi.ingsw.lb10.server.model.cards.*;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import javafx.animation.FadeTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -724,6 +725,14 @@ public class GUIMatchPageController implements GUIPageController , Initializable
             xPos += new Random().nextInt(maxRandoOffset);
             yPos += new Random().nextInt(maxRandoOffset);
         }
+
+        TranslateTransition transition = new TranslateTransition();
+        transition.setNode(token);
+        transition.setDuration(Duration.seconds(2));
+        transition.setToX(xPos);
+        transition.setToY(yPos);
+
+        transition.play();
 
         token.setCenterX(xPos);
         token.setCenterY(yPos);
