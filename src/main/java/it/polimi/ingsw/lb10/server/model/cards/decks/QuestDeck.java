@@ -60,10 +60,10 @@ public class QuestDeck {
         cards.add(new TopLeftDiagonal(97, 2, Color.GREEN));
         cards.add(new TopLeftDiagonal(98, 2, Color.PURPLE));
 
-        cards.add(new BottomLeft(99, 3, Color.BLUE, Color.RED));
+        cards.add(new TopRight(99, 3, Color.BLUE, Color.RED));
         cards.add(new TopLeft(100, 3, Color.PURPLE, Color.BLUE));
         cards.add(new BottomRight(101, 3, Color.RED, Color.GREEN));
-        cards.add(new TopRight(102, 3, Color.GREEN, Color.PURPLE));
+        cards.add(new BottomLeft(102, 3, Color.GREEN, Color.PURPLE));
     }
 
 }
