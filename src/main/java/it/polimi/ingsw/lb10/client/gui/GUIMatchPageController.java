@@ -730,14 +730,19 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         }
 
         // Finalized Until Creating Conflicts
-        TranslateTransition transition = new TranslateTransition();
-        transition.setNode(token);
-        token.toFront();
-        transition.setDuration(Duration.seconds(1));
-        transition.setToX(xPos - prevX);
-        transition.setToY(yPos - prevY);
+        if(points > 0){
+            TranslateTransition transition = new TranslateTransition();
+            transition.setNode(token);
+            token.toFront();
+            transition.setDuration(Duration.seconds(1));
+            transition.setToX(xPos - prevX);
+            transition.setToY(yPos - prevY);
 
-        transition.play();
+            transition.play();
+        } else {
+            token.setCenterX(xPos);
+            token.setCenterY(yPos);
+        }
 
     }
 
