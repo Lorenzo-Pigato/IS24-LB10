@@ -721,6 +721,9 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         int xPos = boardPositions.get(player.getPoints())[0];
         int yPos = boardPositions.get(player.getPoints())[1];
 
+        int prevX = boardPositions.get(player.getPoints() - 1)[0];
+        int prevY = boardPositions.get(player.getPoints() - 1)[1];
+
         if(!players.stream().filter(pl -> pl != null && pl.getPoints() == points).toList().isEmpty()){
             xPos += new Random().nextInt(maxRandoOffset);
             yPos += new Random().nextInt(maxRandoOffset);
@@ -728,14 +731,12 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
         TranslateTransition transition = new TranslateTransition();
         transition.setNode(token);
-        transition.setDuration(Duration.seconds(2));
-        transition.setToX(xPos);
-        transition.setToY(yPos);
+        token.toFront();
+        transition.setDuration(Duration.seconds(1));
+        transition.setToX(xPos - prevX);
+        transition.setToY(yPos - prevY);
 
         transition.play();
-
-        token.setCenterX(xPos);
-        token.setCenterY(yPos);
 
     }
 
