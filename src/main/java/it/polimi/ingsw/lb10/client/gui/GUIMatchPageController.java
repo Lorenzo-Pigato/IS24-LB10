@@ -729,7 +729,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
             yPos += new Random().nextInt(maxRandoOffset);
         }
 
-        // Finalized Until Creating Conflicts
+        // Finalized Until Creating Glitches
         if(points > 0){
             TranslateTransition transition = new TranslateTransition();
             transition.setNode(token);
