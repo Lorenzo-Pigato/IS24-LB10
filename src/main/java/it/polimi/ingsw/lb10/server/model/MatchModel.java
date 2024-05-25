@@ -622,7 +622,6 @@ public class MatchModel extends Observable {
      * this method notifies all players and updates state to terminated.
      */
     private void endGame() {
-        Server.log(">> [" + id + "] match terminated");
         players.forEach(player -> notify(new EndGameResponse(player, players, true), player.getUserHash()));
         terminated = true;
     }

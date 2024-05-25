@@ -165,7 +165,7 @@ public class GUIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(PlayerLeftResponse playerLeftResponse) {
-        Platform.runLater(() -> getMatchPageFromController().removePlayerFromBoard(playerLeftResponse.getUsername()));
+        if(controller.getPage() instanceof GUIMatchPageController) Platform.runLater(() -> getMatchPageFromController().removePlayerFromBoard(playerLeftResponse.getUsername()));
     }
 
 
