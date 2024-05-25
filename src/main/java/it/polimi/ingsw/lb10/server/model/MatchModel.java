@@ -161,7 +161,7 @@ public class MatchModel extends Observable {
 
     /**
      * this method sets the player's private quest field to the given quest and sets the player state to READY, once
-     * all player's are ready, game will start.
+     * all players are ready, game will start.
      * @param player the player the private quest is assigned to.
      * @param quest the private quest assigned to the player.
      */
