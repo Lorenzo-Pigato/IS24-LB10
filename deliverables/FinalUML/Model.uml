@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>/home/lorenzo/Documents/Code/Codex/LB10/src/main/java/it/polimi/ingsw/lb10/server/model</OriginalElement>
+  <nodes>
+    <node x="-610.06283566058" y="613.1450053705694">it.polimi.ingsw.lb10.util.Observable</node>
+    <node x="-371.87951289230097" y="613.1450053705694">it.polimi.ingsw.lb10.server.model.MatchModel</node>
+    <node x="-422.95352036414226" y="53.92236519284158">it.polimi.ingsw.lb10.server.model.cards.BaseCard</node>
+    <node x="74.31954887218046" y="405.5725026852847">it.polimi.ingsw.lb10.server.model.quest.Quest</node>
+    <node x="-266.43716433941995" y="406.0">it.polimi.ingsw.lb10.server.model.cards.decks.StartingDeck</node>
+    <node x="-450.0" y="406.0">it.polimi.ingsw.lb10.server.model.cards.decks.ResourceDeck</node>
+    <node x="-440.45352036414226" y="160.8330915843473">it.polimi.ingsw.lb10.server.model.cards.PlaceableCard</node>
+    <node x="-264.43716433941995" y="254.0">it.polimi.ingsw.lb10.server.model.cards.StartingCard</node>
+    <node x="-819.2533606869193" y="565.6605800214824">it.polimi.ingsw.lb10.util.Observer</node>
+    <node x="-92.8743286788399" y="406.0">it.polimi.ingsw.lb10.server.model.cards.decks.QuestDeck</node>
+    <node x="-449.0" y="254.0">it.polimi.ingsw.lb10.server.model.cards.ResourceCard</node>
+    <node x="-617.56283566058" y="254.0">it.polimi.ingsw.lb10.server.model.cards.GoldenCard</node>
+    <node x="-618.06283566058" y="565.6605800214824">it.polimi.ingsw.lb10.server.view.RemoteView</node>
+    <node x="73.31954887218046" y="575.0273899033298">it.polimi.ingsw.lb10.server.model.Player</node>
+    <node x="259.3504296455423" y="575.0273899033298">it.polimi.ingsw.lb10.server.model.Matrix</node>
+    <node x="-617.56283566058" y="406.0">it.polimi.ingsw.lb10.server.model.cards.decks.GoldenDeck</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="it.polimi.ingsw.lb10.server.model.cards.GoldenCard" target="it.polimi.ingsw.lb10.server.model.cards.PlaceableCard" relationship="GENERALIZATION">
+      <point x="-1.6433941993909684E-4" y="-14.0" />
+      <point x="-546.563" y="208.0" />
+      <point x="-408.1910860655737" y="208.0" />
+      <point x="-47.737565701431436" y="13.766464426581592" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.MatchModel" target="it.polimi.ingsw.lb10.server.model.Player" relationship="TO_MANY">
+      <point x="30.0" y="14.0" />
+      <point x="-269.37951289230097" y="658.6450053705694" />
+      <point x="121.81954887218046" y="658.6450053705694" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.MatchModel" target="it.polimi.ingsw.lb10.util.Observable" relationship="GENERALIZATION">
+      <point x="-72.5" y="0.0" />
+      <point x="68.5" y="0.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.MatchModel" target="it.polimi.ingsw.lb10.server.model.cards.decks.StartingDeck" relationship="TO_ONE">
+      <point x="40.442348552881015" y="-14.0" />
+      <point x="-67.5" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.cards.StartingCard" target="it.polimi.ingsw.lb10.server.model.cards.BaseCard" relationship="GENERALIZATION">
+      <point x="1.6433941993909684E-4" y="-14.0" />
+      <point x="-190.437" y="214.0" />
+      <point x="-190.43716433941995" y="214.0" />
+      <point x="-190.43716433941995" y="67.922" />
+      <point x="62.499520364142256" y="-3.6519284158487153E-4" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.Player" target="it.polimi.ingsw.lb10.server.model.Matrix" relationship="TO_ONE">
+      <point x="48.5" y="0.0" />
+      <point x="-49.0" y="0.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.util.Observable" target="it.polimi.ingsw.lb10.util.Observer" relationship="TO_MANY">
+      <point x="-68.5" y="0.0" />
+      <point x="-759.2533606869193" y="627.1450053705694" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.cards.ResourceCard" target="it.polimi.ingsw.lb10.server.model.cards.PlaceableCard" relationship="GENERALIZATION">
+      <point x="-5.454000000000008" y="-14.0" />
+      <point x="-15.000479635857744" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.MatchModel" target="it.polimi.ingsw.lb10.server.model.cards.decks.GoldenDeck" relationship="TO_ONE">
+      <point x="-42.951771260704334" y="-14.0" />
+      <point x="-342.3312841530053" y="538.1914275956283" />
+      <point x="-545.56283566058" y="538.1914275956283" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.cards.PlaceableCard" target="it.polimi.ingsw.lb10.server.model.cards.BaseCard" relationship="GENERALIZATION">
+      <point x="22.953520364142264" y="13.999908415652698" />
+      <point x="-337.5" y="67.922" />
+      <point x="62.499520364142256" y="-3.6519284158487153E-4" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.cards.decks.ResourceDeck" target="it.polimi.ingsw.lb10.server.model.cards.ResourceCard" relationship="TO_MANY">
+      <point x="0.0" y="-14.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.cards.decks.GoldenDeck" target="it.polimi.ingsw.lb10.server.model.cards.GoldenCard" relationship="TO_MANY">
+      <point x="-1.0" y="-14.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.cards.decks.StartingDeck" target="it.polimi.ingsw.lb10.server.model.cards.StartingCard" relationship="TO_MANY">
+      <point x="1.0" y="-14.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.MatchModel" target="it.polimi.ingsw.lb10.server.model.cards.decks.QuestDeck" relationship="TO_ONE">
+      <point x="72.5" y="0.0" />
+      <point x="-25.874328678839902" y="627.1450053705694" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.MatchModel" target="it.polimi.ingsw.lb10.server.model.cards.decks.ResourceDeck" relationship="TO_ONE">
+      <point x="-1.6479802770978154" y="-0.14893296619788998" />
+      <point x="-301.0274931693988" y="523.1914275956283" />
+      <point x="-364.37951289230097" y="523.1914275956283" />
+      <point x="5.620487107699034" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.Player" target="it.polimi.ingsw.lb10.server.model.quest.Quest" relationship="TO_ONE">
+      <point x="-48.49954887218047" y="-3.899033297329879E-4" />
+      <point x="121.81954887218046" y="589.027" />
+      <point x="121.81954887218046" y="419.573" />
+      <point x="-47.49954887218047" y="4.973147152895763E-4" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.model.MatchModel" target="it.polimi.ingsw.lb10.server.model.quest.Quest" relationship="TO_MANY">
+      <point x="15.0" y="14.0" />
+      <point x="-284.37951289230097" y="673.6450053705694" />
+      <point x="374.8504296455423" y="673.6450053705694" />
+      <point x="374.8504296455423" y="419.5725026852847" />
+      <point x="47.5" y="0.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.view.RemoteView" target="it.polimi.ingsw.lb10.util.Observer" relationship="REALIZATION">
+      <point x="-72.5" y="0.0" />
+      <point x="60.0" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Compact" zoom="1.2830850131463631" showDependencies="true" x="-155.73869851434404" y="360.6943306010928" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
