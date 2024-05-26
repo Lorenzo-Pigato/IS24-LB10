@@ -15,9 +15,9 @@ More information about design patterns and project's architecture can be found [
 
 UML diagrams can be found below:
 
-- [Model](deliverables/FinalUML/Model.uml)
-- [Client](deliverables/FinalUML/Client.uml)
-- [Server](deliverables/FinalUML/Server.uml)
+- [Model](deliverables/FinalUML/images/Model.png)
+- [Client](deliverables/FinalUML/images/Client.png)
+- [Server](deliverables/FinalUML/images/Server.png)
 
 ### JavaDoc
 
@@ -25,7 +25,8 @@ The following documentation includes information about most relevant classes and
 
 ### Test Coverage
 
-The JUnit [tests](src/test/java) provide a model line coverage of --% and an overall line coverage of --%.
+Our focus on testing was mainly on Model's algorithms. <br/>
+The JUnit [tests](src/test/java) provide a line coverage of 97%, and we managed to test every class of the model.
 
 ### Tools
 
@@ -37,8 +38,6 @@ The JUnit [tests](src/test/java) provide a model line coverage of --% and an ove
 | __PlantUML__ | UML design tool       |
 
 ## Features
-
-### Developed Features
 
 | Feature            | Status |
 |--------------------|--------|
