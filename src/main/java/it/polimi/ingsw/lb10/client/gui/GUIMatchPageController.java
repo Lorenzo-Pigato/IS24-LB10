@@ -15,6 +15,7 @@ import it.polimi.ingsw.lb10.server.model.cards.*;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import javafx.animation.FadeTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -720,13 +721,25 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         int xPos = boardPositions.get(player.getPoints())[0];
         int yPos = boardPositions.get(player.getPoints())[1];
 
-        if(!players.stream().filter(pl -> pl != null && pl.getPoints() == points).toList().isEmpty()){
+        if(players.stream().filter(pl -> pl != null && pl.getPoints() == points).toList().size() > 1){
             xPos += new Random().nextInt(maxRandoOffset);
             yPos += new Random().nextInt(maxRandoOffset);
         }
 
-        token.setCenterX(xPos);
-        token.setCenterY(yPos);
+        // Finalized Until Creating Glitches
+        if(points > 0){
+            TranslateTransition transition = new TranslateTransition();
+            transition.setNode(token);
+            token.toFront();
+            transition.setDuration(Duration.seconds(1));
+            transition.setToX(xPos - token.getCenterX());
+            transition.setToY(yPos - token.getCenterY());
+
+            transition.play();
+        } else {
+            token.setCenterX(xPos);
+            token.setCenterY(yPos);
+        }
 
     }
 

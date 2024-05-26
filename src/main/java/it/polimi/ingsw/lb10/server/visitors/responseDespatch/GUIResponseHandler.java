@@ -136,7 +136,9 @@ public class GUIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(PlayerPointsUpdateResponse playerPointsUpdateResponse) {
-        ((GUIMatchPageController)controller.getPage()).updateBoard(playerPointsUpdateResponse.getUsername(), playerPointsUpdateResponse.getPoints());
+        Platform.runLater(() -> {
+            ((GUIMatchPageController)controller.getPage()).updateBoard(playerPointsUpdateResponse.getUsername(), playerPointsUpdateResponse.getPoints());
+        });
     }
 
     @Override
