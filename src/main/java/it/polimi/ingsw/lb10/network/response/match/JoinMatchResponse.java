@@ -9,7 +9,7 @@ public class JoinMatchResponse extends Response {
     @Serial
     private static final long serialVersionUID = 5L;
     private final boolean joined;
-    private int matchId;
+    private final int matchId;
 
     public JoinMatchResponse(boolean joined, int matchId) {
         this.joined = joined;

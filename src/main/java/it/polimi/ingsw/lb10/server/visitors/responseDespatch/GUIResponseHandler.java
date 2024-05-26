@@ -41,7 +41,7 @@ public class GUIResponseHandler implements ResponseVisitor {
     @Override
     public void visit(BooleanResponse response) {
         Platform.runLater(() -> ((GUILoginPageController)(controller.getPage())).logClient(response.getResponseState()));
-    };
+    }
 
 
     @Override

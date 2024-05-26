@@ -8,9 +8,9 @@ import java.util.ArrayList;
 
 public class EndGameResponse extends Response {
 
-    private Player player;
-    private ArrayList<Player> players;
-    private boolean matchStarted;
+    private final Player player;
+    private final ArrayList<Player> players;
+    private final boolean matchStarted;
 
     public EndGameResponse(Player player, ArrayList<Player> players, boolean matchStarted) {
         this.player = player;

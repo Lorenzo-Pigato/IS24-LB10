@@ -5,8 +5,6 @@ import it.polimi.ingsw.lb10.client.cli.CLICommand;
 import it.polimi.ingsw.lb10.client.cli.CLIString;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
 
-import java.util.Arrays;
-
 public class CLIQuitPage implements CLIPage {
     private static final CLIString goodbye = new CLIString(">> You are leaving Codex, thanks for playing! <<", AnsiColor.PURPLE, 0, 36);
 

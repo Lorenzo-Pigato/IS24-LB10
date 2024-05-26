@@ -9,7 +9,7 @@ import java.io.Serial;
 public class PrivateQuestSelectedRequest extends MatchRequest {
     @Serial
     private static final long serialVersionUID = 27L;
-    private Quest selectedQuest;
+    private final Quest selectedQuest;
 
     public PrivateQuestSelectedRequest(int matchId, Quest selectedQuest) {
         super(matchId);

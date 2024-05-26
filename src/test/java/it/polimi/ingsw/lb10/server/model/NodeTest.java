@@ -11,14 +11,14 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.*;
 
 class NodeTest {
-    static ArrayList<Corner> corners = new ArrayList<>(Arrays.asList(
+    static final ArrayList<Corner> corners = new ArrayList<>(Arrays.asList(
             new Corner(0,true, Position.TOPLEFT, Resource.MUSHROOM, Color.GREEN),
             new Corner(0,true,Position.TOPRIGHT,Resource.PLANT,Color.GREEN),
             new Corner(0,false,Position.BOTTOMLEFT,Resource.EMPTY,Color.GREEN),
             new Corner(0,true,Position.BOTTOMRIGHT,Resource.PLANT,Color.GREEN)
     ));
 
-    static Node node = new Node();
+    static final Node node = new Node();
 
     @Test
     void checkIsNotAvailableTest(){

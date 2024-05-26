@@ -13,9 +13,10 @@ import org.jetbrains.annotations.Nullable;
 /**
  * This class implements static methods to parse user input commands and react
  */
+@SuppressWarnings("SameReturnValue")
 public class InputParser {
 
-    public static CLIClientViewController controller = CLIClientViewController.instance();
+    public static final CLIClientViewController controller = CLIClientViewController.instance();
     private static boolean questSelected = false;
 
     public static @Nullable Request parse(@NotNull String input) {

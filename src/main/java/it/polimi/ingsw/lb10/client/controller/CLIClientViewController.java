@@ -7,21 +7,14 @@ import it.polimi.ingsw.lb10.client.util.InputParser;
 import it.polimi.ingsw.lb10.client.util.InputVerifier;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
 import it.polimi.ingsw.lb10.network.heartbeat.ClientHeartBeatHandler;
-import it.polimi.ingsw.lb10.network.requests.QuitRequest;
 import it.polimi.ingsw.lb10.network.requests.Request;
-import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestSelectedRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.LobbyToMatchRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.LoginRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.NewMatchRequest;
-import it.polimi.ingsw.lb10.network.response.Response;
-import it.polimi.ingsw.lb10.network.response.match.PrivateQuestsResponse;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
-
-import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -30,9 +23,6 @@ public class CLIClientViewController extends ClientViewController {
     private static CLIClientViewController instance;
     private CLIClientView view;
     private static final Object inputReaderLock = new Object();
-
-    private static final CLIResponseHandler responseHandler = CLIResponseHandler.instance();
-    private boolean matchStarted = false;
     private ArrayList<Quest> quests;
 
     public static CLIClientViewController instance() {
@@ -41,7 +31,6 @@ public class CLIClientViewController extends ClientViewController {
     }
 
     // ------------------ SETTERS ------------------ //
-    public void setMatchStarted(boolean status){this.matchStarted = status;}
     public void setCliClientView(CLIClientView cliClientView) {this.view = cliClientView;}
     public void setQuests(ArrayList<Quest> quests) {this.quests = quests;}
 

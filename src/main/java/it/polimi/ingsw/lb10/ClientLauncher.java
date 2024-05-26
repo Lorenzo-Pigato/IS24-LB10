@@ -2,9 +2,7 @@ package it.polimi.ingsw.lb10;
 
 import it.polimi.ingsw.lb10.client.Client;
 import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
-import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
 import it.polimi.ingsw.lb10.client.exception.CLIExceptionHandler;
-import it.polimi.ingsw.lb10.client.exception.GUIExceptionHandler;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
 import it.polimi.ingsw.lb10.client.view.GUIClientView;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;

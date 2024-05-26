@@ -2,20 +2,16 @@ package it.polimi.ingsw.lb10.client.gui;
 
 import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
 import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestSelectedRequest;
-import it.polimi.ingsw.lb10.network.requests.match.PrivateQuestsRequest;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 import java.net.URL;
 import java.util.Objects;

@@ -12,7 +12,6 @@ import it.polimi.ingsw.lb10.server.Server;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
-import java.util.concurrent.ScheduledExecutorService;
 
 public class ClientConnection extends Observable implements Runnable {
 

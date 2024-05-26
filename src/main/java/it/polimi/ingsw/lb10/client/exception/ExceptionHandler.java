@@ -1,9 +1,6 @@
 package it.polimi.ingsw.lb10.client.exception;
 
-import java.io.EOFException;
 import java.io.IOException;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 
 public interface ExceptionHandler {
 

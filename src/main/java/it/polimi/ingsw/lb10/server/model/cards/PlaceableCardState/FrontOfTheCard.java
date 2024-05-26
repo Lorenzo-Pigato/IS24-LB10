@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FrontOfTheCard implements StateOfTheCard, Serializable {
-    PlaceableCard placeableCard;
+    final PlaceableCard placeableCard;
 
     public FrontOfTheCard(PlaceableCard placeableCard) {
         this.placeableCard = placeableCard;

@@ -5,13 +5,16 @@ import it.polimi.ingsw.lb10.server.model.Matrix;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.ResponseVisitor;
 
+import java.io.Serial;
+
 public class PickedCardResponse extends Response {
+    @Serial
     private static final long serialVersionUID = 6L;
-    private PlaceableCard card;
+    private final PlaceableCard card;
     private final boolean status;
     private final String message;
-    private Matrix matrix;
-    private boolean runOutOfCards;
+    private final Matrix matrix;
+    private final boolean runOutOfCards;
 
     public PickedCardResponse(PlaceableCard card, boolean status, String message, Matrix matrix, boolean runOutOfCards){
         this.card = card;

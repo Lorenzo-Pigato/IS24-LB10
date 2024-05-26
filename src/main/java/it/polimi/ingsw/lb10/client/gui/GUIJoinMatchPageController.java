@@ -2,7 +2,6 @@ package it.polimi.ingsw.lb10.client.gui;
 import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
 import it.polimi.ingsw.lb10.network.requests.preMatch.LobbyToMatchRequest;
 import it.polimi.ingsw.lb10.network.requests.preMatch.NewMatchRequest;
-import it.polimi.ingsw.lb10.server.visitors.responseDespatch.GUIResponseHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.RadioButton;

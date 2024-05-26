@@ -1,8 +1,6 @@
 package it.polimi.ingsw.lb10.network.heartbeat;
 import it.polimi.ingsw.lb10.client.controller.ClientViewController;
-import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.exception.ConnectionTimedOutException;
-import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
 import it.polimi.ingsw.lb10.network.requests.preMatch.PingRequest;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

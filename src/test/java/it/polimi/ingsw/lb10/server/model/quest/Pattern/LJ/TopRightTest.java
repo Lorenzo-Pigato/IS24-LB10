@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TopRightTest {
 
-    Matrix matrix=new Matrix();
+    final Matrix matrix=new Matrix();
     private static Quest topRight;
     private static final QuestDeck questDeck=new QuestDeck();
     private static final ResourceDeck resourceDeck=new ResourceDeck();

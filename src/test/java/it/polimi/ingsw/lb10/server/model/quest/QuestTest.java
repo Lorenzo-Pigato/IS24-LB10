@@ -9,11 +9,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 class QuestCounterTest {
-    private static QuestDeck questDeck = new QuestDeck();
+    private static final QuestDeck questDeck = new QuestDeck();
     private static Quest counterQuest;
     private static Player player;
-    private static Map<Resource,Integer> activationCost = new HashMap<>();
-    private static Map<Resource,Integer> onMapResources= new HashMap<>();
+    private static final Map<Resource,Integer> activationCost = new HashMap<>();
+    private static final Map<Resource,Integer> onMapResources= new HashMap<>();
 
     @BeforeAll
     static void setUp(){

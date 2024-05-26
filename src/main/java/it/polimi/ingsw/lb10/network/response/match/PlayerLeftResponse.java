@@ -5,7 +5,7 @@ import it.polimi.ingsw.lb10.server.visitors.responseDespatch.ResponseVisitor;
 
 public class PlayerLeftResponse extends Response {
 
-    private String username;
+    private final String username;
 
     public PlayerLeftResponse(String username) {
         this.username = username;

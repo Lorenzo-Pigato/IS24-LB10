@@ -16,8 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class TopLeftTest {
     private static Matrix matrix;
     private static Quest topLeftQuest;
-    private static QuestDeck questDeck=new QuestDeck();
-    private static ResourceDeck resourceDeck=new ResourceDeck();
+    private static final QuestDeck questDeck=new QuestDeck();
+    private static final ResourceDeck resourceDeck=new ResourceDeck();
 
     /**
      * test of the card 100

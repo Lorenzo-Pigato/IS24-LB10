@@ -4,10 +4,7 @@ import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
 import it.polimi.ingsw.lb10.client.gui.GUIErrorPageController;
 import javafx.application.Platform;
 
-import java.io.EOFException;
 import java.io.IOException;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 
 public class GUIExceptionHandler implements ExceptionHandler{
 

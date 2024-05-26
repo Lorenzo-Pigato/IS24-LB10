@@ -14,7 +14,7 @@ public class Node implements Serializable {
     @Serial
     private static final long serialVersionUID = 36L;
 
-    private ArrayList<Corner> corners;
+    private final ArrayList<Corner> corners;
 
     public Node() {
         corners = new ArrayList<>();

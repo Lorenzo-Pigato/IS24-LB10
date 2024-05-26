@@ -4,7 +4,6 @@ import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.server.model.cards.GoldenCard;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
 import it.polimi.ingsw.lb10.server.model.cards.ResourceCard;
-import it.polimi.ingsw.lb10.server.visitors.responseDespatch.CLIResponseHandler;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.ResponseVisitor;
 
 import java.util.ArrayList;

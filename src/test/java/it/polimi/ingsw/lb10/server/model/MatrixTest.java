@@ -4,8 +4,6 @@ import it.polimi.ingsw.lb10.server.model.cards.Color;
 import it.polimi.ingsw.lb10.server.model.cards.ResourceCard;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
-import org.junit.Before;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,10 +17,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class MatrixTest {
     private Matrix matrix;
     static ResourceCard firstCard;
-    static int points = 0;
+    static final int points = 0;
 
 
-    static ArrayList<Corner> corners = new ArrayList<>(Arrays.asList(
+    static final ArrayList<Corner> corners = new ArrayList<>(Arrays.asList(
             new Corner(0,true, Position.TOPLEFT, Resource.MUSHROOM, Color.GREEN),
             new Corner(0,true,Position.TOPRIGHT,Resource.PLANT,Color.GREEN),
             new Corner(0,false,Position.BOTTOMLEFT,Resource.EMPTY,Color.GREEN),

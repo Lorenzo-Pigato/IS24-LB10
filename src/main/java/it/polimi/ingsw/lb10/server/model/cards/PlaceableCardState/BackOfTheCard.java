@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class BackOfTheCard implements StateOfTheCard, Serializable {
-    private PlaceableCard placeableCard;
+    private final PlaceableCard placeableCard;
     private ArrayList<Corner> flippedCorners = new ArrayList<>();
 
     public BackOfTheCard(PlaceableCard placeableCard) {

@@ -4,8 +4,6 @@ import it.polimi.ingsw.lb10.server.model.Matrix;
 import it.polimi.ingsw.lb10.server.model.Resource;
 import it.polimi.ingsw.lb10.server.model.cards.Color;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 
 public class TopLeftDiagonal extends TypeDiagonal {

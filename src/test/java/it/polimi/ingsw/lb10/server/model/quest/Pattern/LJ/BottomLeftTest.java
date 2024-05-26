@@ -3,8 +3,6 @@ package it.polimi.ingsw.lb10.server.model.quest.Pattern.LJ;
 import it.polimi.ingsw.lb10.server.model.Matrix;
 import it.polimi.ingsw.lb10.server.model.cards.Color;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
-import it.polimi.ingsw.lb10.server.model.cards.corners.Corner;
-import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.server.model.cards.decks.QuestDeck;
 import it.polimi.ingsw.lb10.server.model.cards.decks.ResourceDeck;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
@@ -13,15 +11,13 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class BottomLeftTest {
-    Matrix matrix=new Matrix();
+    final Matrix matrix=new Matrix();
     private static Quest bottomLeftQuest;
-    private static QuestDeck questDeck=new QuestDeck();
-    private static ResourceDeck resourceDeck=new ResourceDeck();
+    private static final QuestDeck questDeck=new QuestDeck();
+    private static final ResourceDeck resourceDeck=new ResourceDeck();
 
     @BeforeAll
     static void setUp(){

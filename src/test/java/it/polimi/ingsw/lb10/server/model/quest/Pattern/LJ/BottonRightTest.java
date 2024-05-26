@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BottonRightTest {
-    Matrix matrix=new Matrix();
+    final Matrix matrix=new Matrix();
     private static Quest bottomRightQuest;
     private static final QuestDeck questDeck=new QuestDeck();
     private static final ResourceDeck resourceDeck=new ResourceDeck();

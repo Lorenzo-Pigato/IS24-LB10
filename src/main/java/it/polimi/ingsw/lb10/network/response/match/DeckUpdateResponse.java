@@ -6,7 +6,7 @@ import it.polimi.ingsw.lb10.server.visitors.responseDespatch.ResponseVisitor;
 import java.util.List;
 
 public class DeckUpdateResponse extends Response {
-    private List<PlaceableCard> pickables;
+    private final List<PlaceableCard> pickables;
 
     public DeckUpdateResponse(List<PlaceableCard> pickables) {
         this.pickables = pickables;

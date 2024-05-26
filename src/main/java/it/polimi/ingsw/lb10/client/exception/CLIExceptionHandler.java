@@ -1,6 +1,5 @@
 package it.polimi.ingsw.lb10.client.exception;
 
-import com.sun.tools.javac.Main;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLI404Page;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIErrorPage;
 import it.polimi.ingsw.lb10.client.cli.clipages.CLIPage;
@@ -8,10 +7,7 @@ import it.polimi.ingsw.lb10.client.cli.clipages.CLIWaitingPage;
 import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
 
-import java.io.EOFException;
 import java.io.IOException;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 
 public class CLIExceptionHandler implements ExceptionHandler {
     private final CLIClientView view;

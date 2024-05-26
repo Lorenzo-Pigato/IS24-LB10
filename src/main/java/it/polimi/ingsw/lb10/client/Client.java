@@ -5,8 +5,6 @@ import it.polimi.ingsw.lb10.client.exception.ConnectionErrorException;
 import it.polimi.ingsw.lb10.client.exception.ExceptionHandler;
 import it.polimi.ingsw.lb10.network.heartbeat.ClientHeartBeatHandler;
 
-import java.util.Scanner;
-
 
 //Singleton?!
 

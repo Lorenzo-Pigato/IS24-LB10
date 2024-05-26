@@ -1,17 +1,12 @@
 package it.polimi.ingsw.lb10.server.model.quest.Pattern.Diagonal;
 
 import it.polimi.ingsw.lb10.server.model.Matrix;
-import it.polimi.ingsw.lb10.server.model.Resource;
 import it.polimi.ingsw.lb10.server.model.cards.Color;
-import it.polimi.ingsw.lb10.server.model.cards.GoldenCard;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
-import it.polimi.ingsw.lb10.server.model.cards.ResourceCard;
 import it.polimi.ingsw.lb10.server.model.cards.decks.GoldenDeck;
 import it.polimi.ingsw.lb10.server.model.cards.decks.QuestDeck;
 import it.polimi.ingsw.lb10.server.model.cards.decks.ResourceDeck;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
-import org.junit.Before;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -19,10 +14,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BottomLeftDiagonalTest {
-    Matrix matrix = new Matrix();
-    private static QuestDeck questDeck = new QuestDeck();
-    private static ResourceDeck resourceDeck = new ResourceDeck();
-    private static GoldenDeck goldenDeck = new GoldenDeck();
+    final Matrix matrix = new Matrix();
+    private static final QuestDeck questDeck = new QuestDeck();
+    private static final ResourceDeck resourceDeck = new ResourceDeck();
+    private static final GoldenDeck goldenDeck = new GoldenDeck();
     private static Quest diagonalQuest;
 
     @BeforeAll

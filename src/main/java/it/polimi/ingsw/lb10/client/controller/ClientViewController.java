@@ -91,7 +91,8 @@ public abstract class ClientViewController {
      * the handler method "..."
      */
     public Thread asyncReadFromSocket() {
-        Thread asyncSocketReader = new Thread(() -> {
+
+        this.asyncSocketReader = new Thread(() -> {
             try {
                 while (client.isActive()) {
                     Response response = (Response) socketIn.readObject();
@@ -105,8 +106,6 @@ public abstract class ClientViewController {
                 }
             }
         });
-
-        this.asyncSocketReader = asyncSocketReader;
 
         return this.asyncSocketReader;
     }

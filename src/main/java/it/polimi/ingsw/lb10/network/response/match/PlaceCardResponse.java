@@ -14,7 +14,7 @@ public class PlaceCardResponse extends Response {
     private final int row;
     private final int col;
     private final HashMap<Resource, Integer> playerResources;
-    private String message;
+    private final String message;
 
     public PlaceCardResponse(PlaceableCard card, boolean status, int row, int col, HashMap<Resource, Integer> playerResources, String message) {
         this.card = card;

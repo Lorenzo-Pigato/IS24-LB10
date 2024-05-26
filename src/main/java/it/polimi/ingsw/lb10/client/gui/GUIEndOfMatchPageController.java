@@ -1,13 +1,10 @@
 package it.polimi.ingsw.lb10.client.gui;
 
-import it.polimi.ingsw.lb10.client.cli.CLIBanner;
 import it.polimi.ingsw.lb10.client.controller.GUIClientViewController;
-import it.polimi.ingsw.lb10.client.view.GUIClientView;
 import it.polimi.ingsw.lb10.server.model.Player;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
-import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
 import java.net.URL;
@@ -41,8 +38,8 @@ public class GUIEndOfMatchPageController implements GUIPageController, Initializ
     @FXML
     private Group fourthBox;
 
-    private static ArrayList<Group> groups = new ArrayList<>();
-    private static ArrayList<Text> texts = new ArrayList<>();
+    private static final ArrayList<Group> groups = new ArrayList<>();
+    private static final ArrayList<Text> texts = new ArrayList<>();
 
     @Override
     public String getFXML() {

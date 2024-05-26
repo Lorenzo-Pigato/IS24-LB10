@@ -14,9 +14,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TopLeftDiagonalTest {
-    Matrix matrix = new Matrix();
-    private static QuestDeck questDeck = new QuestDeck();
-    private static ResourceDeck resourceDeck = new ResourceDeck();
+    final Matrix matrix = new Matrix();
+    private static final QuestDeck questDeck = new QuestDeck();
+    private static final ResourceDeck resourceDeck = new ResourceDeck();
     private static Quest diagonalQuest;
 
     /**

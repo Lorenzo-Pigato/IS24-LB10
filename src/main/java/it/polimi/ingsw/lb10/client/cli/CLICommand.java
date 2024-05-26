@@ -45,7 +45,6 @@ public abstract class CLICommand {
         for (int i = 0; i < lineCount; i++) {
             clearLine();
             System.out.println("\n");
-            ;
         }
     }
 

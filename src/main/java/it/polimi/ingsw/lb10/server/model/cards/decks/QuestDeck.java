@@ -23,7 +23,7 @@ import java.util.NoSuchElementException;
  */
 public class QuestDeck {
 
-    private ArrayList<Quest> cards;
+    private final ArrayList<Quest> cards;
 
     public QuestDeck() {
         cards = new ArrayList<>();
@@ -52,7 +52,6 @@ public class QuestDeck {
             counterQuest = objectMapper.readValue(inputStream, new TypeReference<ArrayList<QuestCounter>>() {
             });
         } catch (Exception e) {
-            e.printStackTrace();
         }
         cards.addAll(counterQuest);
         cards.add(new BottomLeftDiagonal(95, 2, Color.RED));

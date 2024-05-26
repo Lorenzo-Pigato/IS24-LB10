@@ -43,7 +43,6 @@ public class StartingDeck {
             cards = objectMapper.readValue(inputStream, new TypeReference<ArrayList<StartingCard>>() {
             });
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

@@ -33,7 +33,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
 
     private boolean started = false;
     private final ArrayList<Player> players;
-    private int numberOfPlayers;
+    private final int numberOfPlayers;
 
     public MatchController(int numberOfPlayers) {
         requests = new LinkedBlockingQueue<>();
@@ -133,7 +133,7 @@ public class MatchController implements Runnable, MatchRequestVisitor {
     public synchronized void visit(@NotNull PrivateQuestSelectedRequest privateQuestSelectedRequest) {
         Server.log(">> [" + getPlayer(privateQuestSelectedRequest.getUserHash()).getUsername() + "]" + " selected private quest");
         getPlayer(privateQuestSelectedRequest.getUserHash()).setPrivateQuest(privateQuestSelectedRequest.getSelectedQuest());
-        model.assignPrivateQuest(getPlayer(privateQuestSelectedRequest.getUserHash()), privateQuestSelectedRequest.getSelectedQuest());;
+        model.assignPrivateQuest(getPlayer(privateQuestSelectedRequest.getUserHash()), privateQuestSelectedRequest.getSelectedQuest());
     }
 
     /**
@@ -161,14 +161,6 @@ public class MatchController implements Runnable, MatchRequestVisitor {
         } else if (!splitMessage[0].equals("to")) {
             model.notifyAll(new ChatMessageResponse(getPlayer(chatRequest.getUserHash()).getUsername(), chatRequest.getMessage(), false));
         }
-    }
-
-    /**
-     * @param showPlayerRequest this request is sent by the client to see a specific player's board on his view
-     */
-    @Override
-    public void visit(@NotNull ShowPlayerRequest showPlayerRequest) {
-
     }
 
     // ---------- Drawing cards --------------- //

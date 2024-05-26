@@ -9,6 +9,7 @@ import it.polimi.ingsw.lb10.server.model.cards.Color;
 import java.io.Serializable;
 
 
+@SuppressWarnings("ALL")
 public class Corner implements Serializable {
 
     @JsonProperty("id")

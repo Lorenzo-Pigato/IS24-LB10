@@ -2,7 +2,6 @@ package it.polimi.ingsw.lb10.server.model.cards.decks;
 import it.polimi.ingsw.lb10.server.model.quest.Quest;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;

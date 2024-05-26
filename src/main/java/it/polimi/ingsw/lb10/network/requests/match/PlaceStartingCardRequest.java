@@ -5,7 +5,7 @@ import it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitor;
 
 public class PlaceStartingCardRequest extends MatchRequest {
     private static final long serialVersionUID = 25L;
-    private StartingCard startingCard;
+    private final StartingCard startingCard;
 
     public PlaceStartingCardRequest(int matchId, StartingCard startingCard) {
         super(matchId);

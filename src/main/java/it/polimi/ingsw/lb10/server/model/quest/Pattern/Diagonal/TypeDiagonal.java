@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 public abstract class TypeDiagonal extends Quest {
 
-    private ArrayList<Integer> coordinatePositions= new ArrayList<>();
+    private final ArrayList<Integer> coordinatePositions= new ArrayList<>();
     private final Color color;
 
     public TypeDiagonal(int id, int points, Color color) {

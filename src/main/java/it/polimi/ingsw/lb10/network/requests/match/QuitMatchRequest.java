@@ -1,6 +1,5 @@
 package it.polimi.ingsw.lb10.network.requests.match;
 
-import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.server.visitors.requestDispatch.LobbyRequestVisitor;
 import it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitor;
 
@@ -12,7 +11,7 @@ public class QuitMatchRequest extends MatchRequest {
 
     @Override
     public void accept(LobbyRequestVisitor handler) {
-        handler.visit(this);
+        super.accept(handler);
     }
 
     /**

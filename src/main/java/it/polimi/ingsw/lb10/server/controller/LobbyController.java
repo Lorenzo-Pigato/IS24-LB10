@@ -159,6 +159,7 @@ public class LobbyController implements LobbyRequestVisitor {
             try {
                 matchController.submitRequest(mr);
             } catch (Exception e) {
+                Server.log("Unexpected match interruption");
             }
         });
     }
@@ -178,6 +179,7 @@ public class LobbyController implements LobbyRequestVisitor {
             getPlayer(newMatchRequest.getUserHash()).setInMatch(true);
             submitToController(controller, new JoinMatchRequest(controller.getMatchId(), getPlayer(newMatchRequest.getUserHash())), newMatchRequest.getUserHash());
         } catch (InterruptedException e) {
+            Server.log("Unexpected match interruption");
         }
     }
 
@@ -268,7 +270,7 @@ public class LobbyController implements LobbyRequestVisitor {
      * Client is removed from his match if he is actually playing,
      * is removed from signedPlayers if he belongs to the list, this double check is done because of multiple threads
      * can disconnect a single client in case of connection error.
-     * Remote view is closed and removed from remotViews list and heartBeat gets shut down.
+     * Remote view is closed and removed from remoteViews list and heartBeat gets shut down.
      * @param userHash hash code of the player.
      */
     public static synchronized void disconnectClient(int userHash) {

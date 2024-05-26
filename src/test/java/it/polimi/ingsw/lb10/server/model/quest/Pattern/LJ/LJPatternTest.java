@@ -4,16 +4,15 @@ import it.polimi.ingsw.lb10.server.model.Matrix;
 import it.polimi.ingsw.lb10.server.model.cards.Color;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
 import it.polimi.ingsw.lb10.server.model.cards.decks.ResourceDeck;
-import it.polimi.ingsw.lb10.server.model.quest.Pattern.Diagonal.TypeDiagonal;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class LJPatternTest {
-    Matrix matrix=new Matrix();
-    private LJPattern questCard= new BottomLeft(220,2, Color.BLUE,Color.RED);
-    private static ResourceDeck resourceDeck=new ResourceDeck();
+    final Matrix matrix=new Matrix();
+    private final LJPattern questCard= new BottomLeft(220,2, Color.BLUE,Color.RED);
+    private static final ResourceDeck resourceDeck=new ResourceDeck();
 
     @BeforeAll
     static void setUp(){

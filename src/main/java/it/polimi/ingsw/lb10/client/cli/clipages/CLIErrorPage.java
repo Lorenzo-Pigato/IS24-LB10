@@ -8,8 +8,6 @@ import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
 import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Scanner;
-
 /**
  * This class is displayed to the client when an error occurs.
  * The error message is usually set by an ExceptionHandler implementation

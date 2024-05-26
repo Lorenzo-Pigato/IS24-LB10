@@ -1,14 +1,12 @@
 package it.polimi.ingsw.lb10;
 
 import it.polimi.ingsw.lb10.client.cli.CLIBanner;
-import it.polimi.ingsw.lb10.client.cli.CLIBox;
 import it.polimi.ingsw.lb10.client.cli.CLICommand;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiColor;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiFormat;
 import it.polimi.ingsw.lb10.client.cli.ansi.AnsiString;
 import it.polimi.ingsw.lb10.server.Server;
 
-import java.io.IOException;
 import java.net.ServerSocket;
 
 public class ServerLauncher {

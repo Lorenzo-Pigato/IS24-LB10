@@ -6,10 +6,7 @@ import it.polimi.ingsw.lb10.network.requests.Request;
 import it.polimi.ingsw.lb10.network.requests.match.*;
 import it.polimi.ingsw.lb10.server.model.Player;
 import it.polimi.ingsw.lb10.server.model.Resource;
-import it.polimi.ingsw.lb10.server.model.cards.Color;
-import it.polimi.ingsw.lb10.server.model.cards.PlaceableCard;
 import it.polimi.ingsw.lb10.server.model.cards.PlaceableCardState.BackOfTheCard;
-import it.polimi.ingsw.lb10.server.model.cards.StartingCard;
 import it.polimi.ingsw.lb10.server.model.cards.StartingCardState.FrontStartingCard;
 import it.polimi.ingsw.lb10.server.model.cards.*;
 import it.polimi.ingsw.lb10.server.model.cards.corners.Position;
@@ -44,6 +41,7 @@ import org.jetbrains.annotations.NotNull;
 import java.net.URL;
 import java.util.*;
 
+@SuppressWarnings("ALL")
 public class GUIMatchPageController implements GUIPageController , Initializable {
 
     private final GUIClientViewController controller = GUIClientViewController.instance();
@@ -126,7 +124,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     private Group deckTwoGroup;
 
 
-    private ArrayList<Circle> playerTokens = new ArrayList<>();
+    private final ArrayList<Circle> playerTokens = new ArrayList<>();
     private ArrayList<Label> resourceLabels;
 
 
@@ -179,8 +177,6 @@ public class GUIMatchPageController implements GUIPageController , Initializable
 
         VBox buttonsBox = new VBox();
         buttonsBox.getChildren().addAll(flip, place);
-        //VBox.setMargin(flip, new Insets(0, 200, 10, 0));
-        //VBox.setMargin(place, new Insets(10, 200, 0, 0));
         HBox.setHgrow(place, Priority.ALWAYS);
         HBox.setHgrow(flip, Priority.ALWAYS);
         buttonsBox.setPrefWidth(1000);
@@ -368,8 +364,6 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         boardAnchorPane = new AnchorPane();
         boardScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         boardScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        //boardScrollPane.setPrefViewportHeight(631);
-        //boardScrollPane.setPrefViewportWidth(1186);
         boardAnchorPane.setPrefSize(20000, 20000);
 
         boardScrollPane.setContent(boardAnchorPane);

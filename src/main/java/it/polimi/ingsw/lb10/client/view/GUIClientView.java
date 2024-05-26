@@ -8,7 +8,7 @@ public class GUIClientView extends Application {
     private final GUIClientViewController controller = GUIClientViewController.instance();
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         controller.initialize(stage);
     }
 

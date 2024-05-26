@@ -13,8 +13,6 @@ public interface MatchRequestVisitor {
 
     void visit(ChatRequest chatRequest);
 
-    void visit(ShowPlayerRequest showPlayerRequest);
-
     void visit(DrawGoldenFromTableRequest drawGoldenFromTableRequest);
 
     void visit(DrawResourceFromTableRequest drawResourceFromTableRequest);

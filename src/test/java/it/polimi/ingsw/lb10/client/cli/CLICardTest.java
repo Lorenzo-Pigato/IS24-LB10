@@ -1,6 +1,5 @@
 package it.polimi.ingsw.lb10.client.cli;
 
-import it.polimi.ingsw.lb10.server.model.Resource;
 import it.polimi.ingsw.lb10.server.model.cards.GoldenCard;
 import it.polimi.ingsw.lb10.server.model.cards.ResourceCard;
 import it.polimi.ingsw.lb10.server.model.cards.StartingCard;

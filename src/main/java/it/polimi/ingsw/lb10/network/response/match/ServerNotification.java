@@ -2,7 +2,6 @@ package it.polimi.ingsw.lb10.network.response.match;
 
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.ResponseVisitor;
-import javafx.scene.paint.Color;
 
 public class ServerNotification extends Response {
 

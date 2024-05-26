@@ -4,9 +4,6 @@ module it.polimi.ingsw.lb10 {
     requires javafx.graphics;
     requires com.fasterxml.jackson.databind;
     requires org.jetbrains.annotations;
-    requires net.bytebuddy;
-    requires java.desktop;
-    requires java.smartcardio;
     requires jdk.compiler;
 
 

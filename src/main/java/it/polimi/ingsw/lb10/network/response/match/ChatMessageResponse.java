@@ -3,11 +3,14 @@ package it.polimi.ingsw.lb10.network.response.match;
 import it.polimi.ingsw.lb10.network.response.Response;
 import it.polimi.ingsw.lb10.server.visitors.responseDespatch.ResponseVisitor;
 
+import java.io.Serial;
+
 public class ChatMessageResponse extends Response {
+    @Serial
     private static final long serialVersionUID = 3L;
-    private String senderUsername;
-    private String message;
-    private boolean isPrivate;
+    private final String senderUsername;
+    private final String message;
+    private final boolean isPrivate;
 
     public ChatMessageResponse(String senderUsername, String message, boolean isPrivate) {
         this.senderUsername = senderUsername;
