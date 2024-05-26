@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>it.polimi.ingsw</groupId>
-    <artifactId>LB10</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <name>LB10</name>
+    <artifactId>Codex</artifactId>
+    <version>1.0</version>
+    <name>LB10-Codex-Naturalis</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

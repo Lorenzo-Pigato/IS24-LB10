@@ -69,7 +69,6 @@ public class CLIResponseHandler implements ResponseVisitor {
 
     @Override
     public void visit(GameSetupResponse response) {
-        controller.setMatchStarted(true);
         Player player = ((response.getPlayers().stream().filter(p -> p.getUserHash() == controller.getUserHash())).findFirst().orElseThrow(RuntimeException::new));
         controller.setHand(player.getHand());
         controller.setStartingCard(player.getStartingCard());

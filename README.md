@@ -15,13 +15,13 @@ More information about design patterns and project's architecture can be found [
 
 UML diagrams can be found below:
 
-- [Model]()
-- [Client]()
-- [Network](https://github.com/SigCatta/prog-ingsw-The_Compiler_Coalition/blob/main/deliveries/UML/network.jpg)
+- [Model](deliverables/FinalUML/Model.uml)
+- [Client](deliverables/FinalUML/Client.uml)
+- [Server](deliverables/FinalUML/Server.uml)
 
 ### JavaDoc
 
-The following documentation includes information about most relevant classes and methods: [Javadoc]()
+The following documentation includes information about most relevant classes and methods: [Javadoc](deliverables/JavaDoc/index.html)
 
 ### Test Coverage
 
@@ -29,7 +29,7 @@ The JUnit [tests](src/test/java) provide a model line coverage of --% and an ove
 
 ### Tools
 
-| Lib/Plugin   | Descrizione           |
+| Lib/Plugin   | Description           |
 |--------------|-----------------------|
 | __Maven__    | Build automation tool |
 | __JavaFx__   | Java GUI Framework    |
@@ -40,12 +40,13 @@ The JUnit [tests](src/test/java) provide a model line coverage of --% and an ove
 
 ### Developed Features
 
-- Complete Rules
-- CLI 
-- GUI
-- __Advanced Features__:
-    - Chat: players can exchange messages on a match-specific chat.
-    - Multiple Games: The server must be able to simultaneously manage multiple games.
+| Feature            | Status |
+|--------------------|--------|
+| __Complete rules__ | ✅      |
+| __CLI__            | ✅      |
+| __GUI__            | ✅      |
+| __Chat__           | ✅      |
+| __Multiple Games__ | ✅      |
 
 ## Running the application
 
@@ -56,13 +57,13 @@ To independently create a client application jar, execute the following command 
 mvn clean install assembly:single
 ```
 
-The compiled jar will be found in ```target/``` under the name ```my-shelfie-client-jar-with-dependencies.jar```. <br />
-To run the application launcher, open the terminal and run ```java -jar -----.jar``` or ```java -jar -------.jar```.
+The compiled jar will be found in ```target/``` under the name ```Codex-1.0.jar```. <br />
+To run the application launcher, open the terminal and run ```java -jar Codex-1.0.jar```.
 The user can choose to run a server or a client, either on the CLI or GUI, after the application has started.
 
 ## Group members
 
-- [__Abate Kevin Pio__](https://github.com/)
+- [__Abate Kevin Pio__](https://github.com/keevin16)
 - [__Bottaro Simone Pio__](https://github.com/)
-- [__Cestele Guido__](https://github.com/)
+- [__Cestele Guido__](https://github.com/guido_cestele)
 - [__Pigato Lorenzo__](https://github.com/lorenzo-pigato)

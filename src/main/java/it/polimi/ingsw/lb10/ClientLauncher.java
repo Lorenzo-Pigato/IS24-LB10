@@ -1,6 +1,7 @@
 package it.polimi.ingsw.lb10;
 
 import it.polimi.ingsw.lb10.client.Client;
+import it.polimi.ingsw.lb10.client.cli.CLICommand;
 import it.polimi.ingsw.lb10.client.controller.CLIClientViewController;
 import it.polimi.ingsw.lb10.client.exception.CLIExceptionHandler;
 import it.polimi.ingsw.lb10.client.view.CLIClientView;
@@ -31,6 +32,7 @@ public class ClientLauncher {
             clientThread.start();
 
         } else {
+            CLICommand.setInvisibleInput();
             Application.launch(GUIClientView.class);
         }
 
