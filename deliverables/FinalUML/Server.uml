@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>it.polimi.ingsw.lb10.server.controller</OriginalElement>
+  <nodes>
+    <node x="-488.83953241232723" y="-453.0">it.polimi.ingsw.lb10.server.model.MatchModel</node>
+    <node x="-687.0" y="-218.61105207226353">it.polimi.ingsw.lb10.server.controller.LobbyController</node>
+    <node x="-755.4877789585547" y="-573.0">it.polimi.ingsw.lb10.network.requests.match.MatchRequest</node>
+    <node x="-1038.1057385759827" y="-573.0">it.polimi.ingsw.lb10.network.ClientConnection</node>
+    <node x="-488.83953241232723" y="-573.0">it.polimi.ingsw.lb10.network.requests.preMatch.LobbyRequest</node>
+    <node x="-708.2040382571732" y="-122.94261424017009">it.polimi.ingsw.lb10.network.heartbeat.ServerHeartBeatHandler</node>
+    <node x="-657.6514346439958" y="-813.0">it.polimi.ingsw.lb10.server.visitors.requestDispatch.LobbyRequestVisitable</node>
+    <node x="-398.85441020191297" y="-813.0">it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitor</node>
+    <node x="-995.105738575983" y="-482.4643995749203">it.polimi.ingsw.lb10.server.Server</node>
+    <node x="-916.4484590860786" y="-813.0">it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitable</node>
+    <node x="-604.2205100956429" y="-668.8979808714134">it.polimi.ingsw.lb10.network.requests.Request</node>
+    <node x="-456.5" y="-313.0">it.polimi.ingsw.lb10.server.controller.MatchController</node>
+    <node x="-1154.8969181721573" y="-813.0">it.polimi.ingsw.lb10.server.visitors.requestDispatch.LobbyRequestVisitor</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="it.polimi.ingsw.lb10.network.requests.match.MatchRequest" target="it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitable" relationship="REALIZATION">
+      <point x="-43.93869245483495" y="-13.873538788522865" />
+      <point x="-719.4264714133897" y="-679.0" />
+      <point x="-718.607" y="-679.0" />
+      <point x="84.84145908607866" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.requests.preMatch.LobbyRequest" target="it.polimi.ingsw.lb10.network.requests.Request" relationship="GENERALIZATION">
+      <point x="-48.59670563230611" y="-12.176408076514349" />
+      <point x="-457.43623804463334" y="-589.0" />
+      <point x="-524.601816790648" y="-589.0" />
+      <point x="23.618693304994963" y="4.697130712008516" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.requests.Request" target="it.polimi.ingsw.lb10.server.visitors.requestDispatch.LobbyRequestVisitable" relationship="REALIZATION">
+      <point x="0.0" y="13.999980871413413" />
+      <point x="-3.569075451647109" y="-9.179596174282665" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.requests.match.MatchRequest" target="it.polimi.ingsw.lb10.server.visitors.requestDispatch.LobbyRequestVisitable" relationship="REALIZATION">
+      <point x="-1.9872476082127832E-4" y="-14.0" />
+      <point x="-675.4879776833155" y="-703.211477151966" />
+      <point x="-629.3639744952178" y="-703.211477151966" />
+      <point x="-84.712539851222" y="14.119022316684323" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.controller.LobbyController" target="it.polimi.ingsw.lb10.network.heartbeat.ServerHeartBeatHandler" relationship="TO_MANY">
+      <point x="15.0" y="14.0" />
+      <point x="5.704038257173238" y="-14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.ClientConnection" target="it.polimi.ingsw.lb10.server.visitors.requestDispatch.LobbyRequestVisitor" relationship="TO_ONE">
+      <point x="-3.794165356004214" y="-8.852284803400607" />
+      <point x="-949.399903931987" y="-669.1528374070139" />
+      <point x="-1018.6932089266734" y="-669.1528374070139" />
+      <point x="31.20370924548388" y="11.712391073326216" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.controller.LobbyController" target="it.polimi.ingsw.lb10.server.visitors.requestDispatch.LobbyRequestVisitor" relationship="REALIZATION">
+      <point x="-87.5" y="0.0" />
+      <point x="-1103.0502758767266" y="-204.61105207226353" />
+      <point x="-53.153357704569316" y="13.720892667375097" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.controller.MatchController" target="it.polimi.ingsw.lb10.server.model.MatchModel" relationship="TO_ONE">
+      <point x="-62.61424017003185" y="-14.0" />
+      <point x="-431.61424017003185" y="-369.0" />
+      <point x="-431.72741764080763" y="-369.0" />
+      <point x="-15.3878852284804" y="17.256110520722643" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.controller.MatchController" target="it.polimi.ingsw.lb10.server.model.MatchModel" relationship="CREATE">
+      <point x="0.0" y="-14.0" />
+      <point x="-369.0" y="-369.0" />
+      <point x="-369.0621679064825" y="-369.0" />
+      <point x="47.27736450584473" y="14.042507970244458" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.controller.MatchController" target="it.polimi.ingsw.lb10.network.requests.match.MatchRequest" relationship="TO_MANY">
+      <point x="-87.5" y="0.0" />
+      <point x="-672.5850159404888" y="-299.0" />
+      <point x="2.9027630180659116" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.controller.MatchController" target="it.polimi.ingsw.lb10.server.visitors.requestDispatch.MatchRequestVisitor" relationship="REALIZATION">
+      <point x="75.14558979808703" y="-14.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.requests.preMatch.LobbyRequest" target="it.polimi.ingsw.lb10.server.visitors.requestDispatch.LobbyRequestVisitable" relationship="REALIZATION">
+      <point x="-9.311699893729838" y="-11.865037194473985" />
+      <point x="-418.15123230605707" y="-703.211477151966" />
+      <point x="-451.00903294367686" y="-703.211477151966" />
+      <point x="93.64240170031894" y="9.298618490967101" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.Server" target="it.polimi.ingsw.lb10.network.ClientConnection" relationship="CREATE">
+      <point x="0.0" y="-14.0" />
+      <point x="-945.605738575983" y="-462.5712008501594" />
+      <point x="-945.6057385759827" y="-462.5712008501594" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.server.controller.LobbyController" target="it.polimi.ingsw.lb10.server.controller.MatchController" relationship="TO_MANY">
+      <point x="87.5" y="0.0" />
+      <point x="-369.0" y="-204.61105207226353" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.lb10.network.requests.match.MatchRequest" target="it.polimi.ingsw.lb10.network.requests.Request" relationship="GENERALIZATION">
+      <point x="14.999801275239179" y="-14.0" />
+      <point x="-660.4879776833155" y="-589.0" />
+      <point x="-563.2205100956429" y="-589.0" />
+      <point x="-15.0" y="13.999980871413413" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Compact" zoom="0.9957671957671957" showDependencies="true" x="-571.8016042507967" y="-366.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
