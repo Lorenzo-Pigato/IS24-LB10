@@ -40,8 +40,8 @@ public class GUIExceptionHandler implements ExceptionHandler{
     @Override
     public void handle(ConnectionErrorException e) {
         GUIErrorPageController errorPage = new GUIErrorPageController();
-        controller.setGameSize();
         Platform.runLater(() -> {
+            controller.setGameSize();
             controller.changeScene(errorPage);
             ((GUIErrorPageController)(controller.getPage())).setErrorText("There were some issues connecting to the server: " + (e.getMessage() != null ? e.getMessage() : ""));
         });
@@ -51,8 +51,8 @@ public class GUIExceptionHandler implements ExceptionHandler{
     @Override
     public void handle(ConnectionTimedOutException e) {
         GUIErrorPageController errorPage = new GUIErrorPageController();
-        controller.setGameSize();
         Platform.runLater(() -> {
+            controller.setGameSize();
             controller.changeScene(errorPage);
             ((GUIErrorPageController) (controller.getPage())).setErrorText("Connection timed out");
         });

@@ -49,7 +49,6 @@ public abstract class ClientViewController {
     public void setStartingCard(StartingCard startingCard) {this.startingCard = startingCard;}
     public void setStartingCardHasBeenPlaced(boolean status) {this.startingCardHasBeenPlaced = status;}
     public void setResponseHandler(ResponseVisitor responseHandler) {this.responseHandler = responseHandler;}
-    public void setAsyncSocketReader(Thread asyncSocketReader) {this.asyncSocketReader = asyncSocketReader;}
 
     // -------------- GETTERS -------------- //
 
@@ -91,7 +90,6 @@ public abstract class ClientViewController {
      * the handler method "..."
      */
     public Thread asyncReadFromSocket() {
-
         this.asyncSocketReader = new Thread(() -> {
             try {
                 while (client.isActive()) {
@@ -100,9 +98,9 @@ public abstract class ClientViewController {
                 }
             }  catch (IOException | ClassNotFoundException e) {
                 if(client.isActive()){
+                    client.setActive(false);
                     exceptionHandler.handle(e);
                     close();
-                    client.setActive(false);
                 }
             }
         });
