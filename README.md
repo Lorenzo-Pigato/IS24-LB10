@@ -68,5 +68,5 @@ The user can choose to run a server or a client, either on the CLI or GUI, after
 
 - [__Abate Kevin Pio__](https://github.com/keevin16)
 - [__Bottaro Simone Pio__](https://github.com/)
-- [__Cestele Guido__](https://github.com/guido_cestele)
+- [__Cestele Guido__](https://github.com/guido-cestele)
 - [__Pigato Lorenzo__](https://github.com/lorenzo-pigato)
