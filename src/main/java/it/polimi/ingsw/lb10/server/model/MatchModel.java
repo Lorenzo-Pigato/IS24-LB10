@@ -403,7 +403,7 @@ public class MatchModel extends Observable {
             notify(new ServerNotification("It's your turn, place your card!", true), onTurnPlayer.getUserHash());
         }
         if(player.equals(gameStarter)){
-            gameStarter = players.get(players.indexOf(gameStarter) + 1 % players.size());
+            gameStarter = players.get((players.indexOf(gameStarter) + 1) % players.size());
         }
 
         players.remove(player);
