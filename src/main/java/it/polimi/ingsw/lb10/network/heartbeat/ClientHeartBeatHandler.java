@@ -28,17 +28,19 @@ public class ClientHeartBeatHandler {
 
         es = Executors.newSingleThreadScheduledExecutor();
         es.scheduleAtFixedRate(() -> {
-            try{
-                clientViewController.send(new PingRequest());
-                incrementCounter();
-                if (counter > 10) {
-                    throw new ConnectionTimedOutException();
-                }
-            }catch(ConnectionTimedOutException e){
-                if(clientViewController.getClient().isActive()) {
-                    clientViewController.getExceptionHandler().handle(e);
-                    clientViewController.close();
-                    clientViewController.getClient().setActive(false);
+            if(clientViewController.getClient().isActive()) {
+                try {
+                    clientViewController.send(new PingRequest());
+                    incrementCounter();
+                    if (counter > 10) {
+                        throw new ConnectionTimedOutException();
+                    }
+                } catch (ConnectionTimedOutException e) {
+                    if (clientViewController.getClient().isActive()) {
+                        clientViewController.getExceptionHandler().handle(e);
+                        clientViewController.close();
+                        clientViewController.getClient().setActive(false);
+                    }
                 }
             }
         }, 0, 1,  TimeUnit.SECONDS);

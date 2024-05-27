@@ -20,12 +20,11 @@ public class CLIExceptionHandler implements ExceptionHandler {
     public synchronized void handle(Exception e) {
         CLIPage previousPage = view.getPage();
         view.setPage(new CLIErrorPage());
-        view.displayPage(new String[]{">> Exception : <<", e.getMessage()});
+        view.displayPage(new String[]{">> Exception <<", "An error occurred"});
         if(previousPage instanceof CLIWaitingPage) {
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException ex) {
-                throw new RuntimeException(ex);
             }
         }
     }
@@ -38,7 +37,6 @@ public class CLIExceptionHandler implements ExceptionHandler {
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException ex) {
-                throw new RuntimeException(ex);
             }
         }
     }
