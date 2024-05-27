@@ -17,7 +17,7 @@ UML diagrams can be found below:
 
 - [Model](deliverables/FinalUML/images/Model.png)
 - [Client](deliverables/FinalUML/images/Client.png)
-- [Server](deliverables/FinalUML/images/Server.png) with [Server Documentation](deliverables/NetworkLayerDocs/Network.md)
+- [Server](deliverables/FinalUML/images/Server.png) with [Network Documentation](deliverables/NetworkLayerDocs/Network.md)
 
 ### JavaDoc
 

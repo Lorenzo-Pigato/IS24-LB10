@@ -21,7 +21,7 @@ public class GUIExceptionHandler implements ExceptionHandler{
         Platform.runLater(() -> {
             GUIClientViewController.instance().setGameSize();
             controller.changeScene(errorPage);
-            ((GUIErrorPageController)(controller.getPage())).setErrorText("An Exception occurred: " + (e.getStackTrace() != null ? e.getMessage() : "") + Thread.currentThread().getName());
+            ((GUIErrorPageController)(controller.getPage())).setErrorText("An error occurred: server closed connection");
         });
     }
 
