@@ -60,9 +60,13 @@ The compiled jar will be found in ```target/``` under the name ```Codex-1.0.jar`
 To run the application launcher, open the terminal and run ```java -jar Codex-1.0.jar```.
 The user can choose to run a server or a client, either on the CLI or GUI, after the application has started.
 
+## CLI and GUI interfaces
+
+![alt text](deliverables/UI/UI.png)
+
 ## Group members
 
 - [__Abate Kevin Pio__](https://github.com/keevin16)
 - [__Bottaro Simone Pio__](https://github.com/)
-- [__Cestele Guido__](https://github.com/guido_cestele)
+- [__Cestele Guido__](https://github.com/guido-cestele)
 - [__Pigato Lorenzo__](https://github.com/lorenzo-pigato)
