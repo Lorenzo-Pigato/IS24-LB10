@@ -349,7 +349,7 @@
       "id" 			    : "38",
       "corners"	        : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 38, "color" : "BLUE"}, {"available" : false , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 38, "color" : "BLUE"},{"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 38, "color" : "BLUE"},{"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "ANIMAL" , "id" : 38, "color" : "BLUE"}],
       "resource"         : "ANIMAL" , 
-      "points"          : 0 ,
+      "points"          : 1 ,
       "color"			: "BLUE",
       "activationCost" 	: {"MUSHROOM" :  0 , "PLANT" :  0 , "INSECT" :  0, "ANIMAL" : 0} 
 
@@ -359,7 +359,7 @@
       "id" 			    : "39",
       "corners"	        : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 39, "color" : "BLUE"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "ANIMAL" , "id" : 39, "color" : "BLUE"},{"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 39, "color" : "BLUE"},{"available" : false , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 39, "color" : "BLUE"}],
       "resource"        : "ANIMAL" , 
-      "points"          : 0 ,
+      "points"          : 1 ,
       "color"			: "BLUE",
       "activationCost" 	: {"MUSHROOM" :  0 , "PLANT" :  0 , "INSECT" :  0, "ANIMAL" : 0} 
 
@@ -369,7 +369,7 @@
       "id" 			    : "40",
       "corners"	        : [{"available" : false , "position" : "TOPLEFT" , "resource"  : "EMPTY" , "id" : 40, "color" : "BLUE"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 40, "color" : "BLUE"},{"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "ANIMAL" , "id" : 40, "color" : "BLUE"},{"available" : true , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 40, "color" : "BLUE"}],
       "resource"        : "ANIMAL",
-      "points"          : 0 ,
+      "points"          : 1 ,
       "color"	        : "BLUE",
       "activationCost" 	: {"MUSHROOM" :  0 , "PLANT" :  0 , "INSECT" :  0, "ANIMAL" : 0}
 
