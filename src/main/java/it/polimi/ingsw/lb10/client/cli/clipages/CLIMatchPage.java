@@ -149,6 +149,8 @@ public class CLIMatchPage implements CLIPage {
                     (row - onFocusRow) * 2 + boardStartRow +
                             (corner.getPosition().getCliRowOffset() > 0 ? 2 : 0));
 
+        if(card instanceof PlaceableCard) clientPlayer.getMatrix().setCard((PlaceableCard) card, row, col);
+        else clientPlayer.getMatrix().setCard((StartingCard) card);
 
         CLICommand.restoreCursorPosition();
     }
