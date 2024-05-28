@@ -73,6 +73,7 @@ public class GUIClientViewController extends ClientViewController {
         stage.setOnCloseRequest(_ -> {
             client.setActive(false);
             Platform.exit();
+            System.exit(0);
         });
 
         setPage(new GUIConnectionPageController());
