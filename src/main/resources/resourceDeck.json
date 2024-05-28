@@ -1,7 +1,7 @@
 [
     {
       "id" 			    : "1",
-      "corners"		    : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "MUSHROOM" , "id" : 1, "color" : "RED"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 1, "color"			: "RED"},		{"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "EMPTY" , "id" : 1 , "color"			: "RED"},{"available" : false , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 1,  "color"	: "RED"}],
+      "corners"		    : [{"available" : true , "position" : "TOPLEFT" , "resource"  : "MUSHROOM" , "id" : 1, "color" : "RED"}, {"available" : true , "position" : "TOPRIGHT" , "resource"  : "EMPTY" , "id" : 1, "color" : "RED"}, {"available" : true , "position" : "BOTTOMLEFT" , "resource"  : "MUSHROOM" , "id" : 1 , "color" : "RED"},{"available" : false , "position" : "BOTTOMRIGHT" , "resource"  : "EMPTY" , "id" : 1,  "color"	: "RED"}],
       "resource"        : "MUSHROOM" , 
       "points"          : 0 ,
       "color"			: "RED",

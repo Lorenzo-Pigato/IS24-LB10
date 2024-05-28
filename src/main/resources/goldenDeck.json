@@ -85,7 +85,7 @@
     "points"            : 2 ,
     "color"			    : "RED",
     "goldenBuffResource": "PATTERN",
-    "activationCost" 	: {"MUSHROOM" :  2 , "PLANT" :  0 , "INSECT" :  0, "ANIMAL" : 1}
+    "activationCost" 	: {"MUSHROOM" :  3 , "PLANT" :  0 , "INSECT" :  0, "ANIMAL" : 1}
   },
 
   {
