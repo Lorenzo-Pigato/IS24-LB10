@@ -213,11 +213,11 @@ public class MatchModel extends Observable {
                 goldenDeck.getCards().isEmpty() ? null : goldenDeck.getCards().getLast(),
                 resourceDeck.getCards().isEmpty() ? null : resourceDeck.getCards().getLast(),
 
-                goldenUncovered.isEmpty() ? null : (goldenUncovered.size() > 1 ? goldenUncovered.getFirst() : null),
-                goldenUncovered.isEmpty() ? null : (goldenUncovered.size() > 1 ? goldenUncovered.get(1) : goldenUncovered.getFirst()),
+                goldenUncovered.isEmpty() ? null : (goldenUncovered.getFirst()),
+                goldenUncovered.isEmpty() ? null : (goldenUncovered.size() > 1 ? goldenUncovered.get(1) : null),
 
-                resourceUncovered.isEmpty() ? null : (resourceUncovered.size() > 1 ? resourceUncovered.getFirst() : null),
-                resourceUncovered.isEmpty() ? null : (resourceUncovered.size() > 1 ? resourceUncovered.get(1) : resourceUncovered.getFirst()),
+                resourceUncovered.isEmpty() ? null : resourceUncovered.getFirst(),
+                resourceUncovered.isEmpty() ? null : (resourceUncovered.size() > 1 ? resourceUncovered.get(1) : null),
         };
         notifyAll(new DeckUpdateResponse(Arrays.asList(decks)));
     }
@@ -349,7 +349,7 @@ public class MatchModel extends Observable {
             goldenDeckIsEmpty = true;
         }
 
-        if (resourceDeckIsEmpty && goldenDeckIsEmpty) {
+        if (resourceDeckIsEmpty && goldenDeckIsEmpty && !finalTurnStarted) {
             finalTurnStarted = true;
             Server.log(">> [" + id + "] final turn started, both decks are empty!");
             notifyAll(new ChatMessageResponse("Server", "Final turn has started!", false));
