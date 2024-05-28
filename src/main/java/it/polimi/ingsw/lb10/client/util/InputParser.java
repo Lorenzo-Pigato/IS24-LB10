@@ -20,7 +20,7 @@ public class InputParser {
     private static boolean questSelected = false;
 
     public static @Nullable Request parse(@NotNull String input) {
-        String[] parsed = input.trim().split(" ");
+        String[] parsed = input.toLowerCase().trim().split(" ");
 
         if(parsed.length == 0) return null;
 
