@@ -187,4 +187,17 @@ public class Player implements Serializable {
     public boolean isReady() {return ready;}
 
     public void setReady(boolean status) {ready = status;}
+
+    public void resetPlayer() {
+        onMapResources.clear();
+        points = 0;
+        questPoints = 0;
+        inMatch = false;
+        privateQuests.clear();
+        privateQuest = null;
+        color = null;
+        startingCard = null;
+        ready = false;
+        matrix.getMatrix().clear();
+    }
 }
