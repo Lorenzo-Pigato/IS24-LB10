@@ -88,7 +88,7 @@ public class CLIClientViewController extends ClientViewController {
                     if (client.isActive()) {
                         try {
                             do {
-                                username = in.nextLine().trim();
+                                username = in.nextLine().trim().replaceAll(" ", "");
                                 if(client.isActive()) {
                                     if ((username.length() < 2 || username.length() > 15))
                                         view.updatePageState(new CLILoginPage.invalidLength());

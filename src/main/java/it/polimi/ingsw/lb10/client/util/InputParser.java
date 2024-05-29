@@ -10,6 +10,8 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.stream.Collectors;
+
 /**
  * This class implements static methods to parse user input commands and react
  */
@@ -21,7 +23,6 @@ public class InputParser {
 
     public static @Nullable Request parse(@NotNull String input) {
         String[] parsed = input.toLowerCase().trim().split(" ");
-
         if(parsed.length == 0) return null;
 
         if(questSelected && (controller.getView().getPage() instanceof CLIMatchPage)){
