@@ -52,7 +52,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     private static final ArrayList<StackPane> handCardStackPanes = new ArrayList<>();
     private int matrixCardId;
     private static Rectangle clickedRectangle = null;
-    private PlaceableCard clickedCard;
+    private static PlaceableCard clickedCard;
     private static StartingCard startingCard;
     private AnchorPane boardAnchorPane;
     private final int boardCardDimension = 150;
@@ -489,6 +489,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
             if(!stackPane.getChildren().stream().filter(node -> node.getClass().equals(Rectangle.class)).filter(node -> node.equals(clickedRectangle)).toList().isEmpty()){
                 stackPane.getChildren().stream().filter(node -> node.getClass().equals(Rectangle.class)).forEach(node -> node.setOpacity(0));
                 clickedRectangle = null;
+                clickedCard = null;
             }
         });
 
