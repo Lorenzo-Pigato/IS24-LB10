@@ -397,6 +397,7 @@ public class MatchModel extends Observable {
 
         notifyAll(new PlayerLeftResponse(player.getUsername()));
         notifyAll(new ChatMessageResponse("Server", player.getUsername() + " left", false));
+        player.resetPlayer();
         if(player.equals(onTurnPlayer)){
             onTurnPlayer = players.get((players.indexOf(onTurnPlayer) + 1) % players.size());
             notifyAll(new ChatMessageResponse("Server", "it's " + onTurnPlayer.getUsername() + "'s turn", false));
