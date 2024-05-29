@@ -194,10 +194,10 @@ public class Player implements Serializable {
         questPoints = 0;
         inMatch = false;
         privateQuests.clear();
-        privateQuest = null;
         color = null;
         startingCard = null;
         ready = false;
         matrix.getMatrix().clear();
+        hand.clear();
     }
 }
