@@ -43,13 +43,12 @@ import java.util.*;
 
 @SuppressWarnings("ALL")
 public class GUIMatchPageController implements GUIPageController , Initializable {
-
     private final GUIClientViewController controller = GUIClientViewController.instance();
     private static Player thisPlayer;
     private static ArrayList<Player> otherPlayers;
     private static Quest privateQuest;
     private static ArrayList<Quest> commonQuests;
-    private static final ArrayList<StackPane> handCardStackPanes = new ArrayList<>();
+    private static ArrayList<StackPane> handCardStackPanes = new ArrayList<>();
     private int matrixCardId;
     private static Rectangle clickedRectangle = null;
     private static PlaceableCard clickedCard;
@@ -206,7 +205,7 @@ public class GUIMatchPageController implements GUIPageController , Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         controller.setPage(this);
-
+        resetPage();
         chatVBox.heightProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
@@ -793,4 +792,11 @@ public class GUIMatchPageController implements GUIPageController , Initializable
         boardScrollPane.setHvalue(0.5);
         boardScrollPane.setVvalue(0.5);
     }
+
+    private void resetPage(){
+        handCardStackPanes = new ArrayList<>();
+        clickedRectangle = null;
+        clickedCard = null;
+    }
+
 }
