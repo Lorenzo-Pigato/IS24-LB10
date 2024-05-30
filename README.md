@@ -49,11 +49,10 @@ The JUnit [tests](src/test/java) provide a line coverage of 97%, and we managed 
 
 ## Running the application
 
-The [precompiled jar]() can be used to run the application. <br />
-To independently create a client application jar, execute the following command in the project root:
+To independently create an application jar, execute the following command in the project root:
 
 ```
-mvn clean install assembly:single
+mvn clean package
 ```
 
 The compiled jar will be found in ```target/``` under the name ```Codex-1.0.jar```. <br />
